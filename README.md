@@ -1,7 +1,7 @@
 # CASA0007 module repo
-This repo contains lecture notes and practical notebooks for CASA0007 Quantitative Methods, which is part of **CASA MSc/MRes Urban Spatial Science** programme.
+This repo contains lecture notes and practical notebooks for CASA0006 Data Science for Spatial Systems, which is part of **CASA MSc/MRes Urban Spatial Science** programme.
 
-The website is here: https://huanfachen.github.io/QM/.
+The website is here: https://huanfachen.github.io/DSSS_2025/.
 
 ## Notes for Editors
 
@@ -34,5 +34,3 @@ The website is here: https://huanfachen.github.io/QM/.
 1. Moodle: Ask PGTAs to prepare quiz questions
 1. Moodle: Suggested reading
 1. Moodle: add link to lecture recording video
-1. Quarto: week 1 practical - add standard deviation
-1. Quarto: week 5/9/10
