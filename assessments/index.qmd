@@ -76,22 +76,13 @@ Your report and technical appendix should be uploaded to Moodle as a single PDF 
 
 This is how we will mark your work - take note of them
 
-::: column-page
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-#| fig-width: 12
-#| paged-print: false
-library(tidyverse)
-library(kableExtra)
-library(here)
+```{python}
+import pandas as pd
 
-assessment <- read_csv(here("data", "assessment.csv"), locale = locale(encoding = "ISO-8859-1"))
-
-kable(assessment)
+df = pd.read_csv("data/assessment.csv")
+from IPython.display import display, Markdown
+display(Markdown(df.to_markdown()))
 ```
-:::
 
 The purpose of this assessment is to test your understanding of the various methods introduced in this course and your ability to apply them appropriately to a topic of your choice. One of the differentiators at Masters level is the ability to think both creatively and critically while showing an awareness or knowledge of contemporary issues either in relation to your specific discipline of study or more widely. Being able to demonstrate how established techniques of research and enquiry can be used to create and interpret knowledge is at the core of Masters level thinking and this assessment piece. The ability to demonstrate self-direction (in choosing an appropriate topic for this assessment) and to think autonomously in designing your own article.
 
