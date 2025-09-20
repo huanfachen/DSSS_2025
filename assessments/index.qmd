@@ -79,7 +79,7 @@ This is how we will mark your work - take note of them
 ```{python}
 import pandas as pd
 
-df = pd.read_csv("data/assessment.csv")
+df = pd.read_csv("../data/assessment.csv")
 from IPython.display import display, Markdown
 display(Markdown(df.to_markdown()))
 ```
