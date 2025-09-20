@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -33,19 +68,14 @@ ul.task-list li input[type="checkbox"] {
 <link href="..//img/favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c65962dbb5d575cbb06919ca07087d11.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-c65962dbb5d575cbb06919ca07087d11.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c65962dbb5d575cbb06919ca07087d11.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0e1a0b5eddb947468ade5bb78d269cd2.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-62c9cf19534799b1b7666b4a47d0c403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-62c9cf19534799b1b7666b4a47d0c403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-62c9cf19534799b1b7666b4a47d0c403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-20787c9992f790cecb29782b9da224bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -90,8 +120,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../img/logo/logo_only_sm.png" alt="" class="navbar-logo light-content">
-    <img src="../img/logo/logo_only_sm.png" alt="" class="navbar-logo dark-content">
+    <img src="../img/logo/logo_only_sm.png" alt="" class="navbar-logo">
     </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Quantitative Methods</span>
@@ -211,8 +240,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../img/logo/full_md.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="../img/logo/full_md.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      <img src="../img/logo/full_md.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       </div>
     <div class="sidebar-menu-container"> 
@@ -253,7 +281,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="toc-actions"><ul><li><a href="https://github.com/huanfachen/CASA0007/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -328,14 +356,19 @@ ul.task-list li input[type="checkbox"] {
 <p>Your report and technical appendix should be uploaded to Moodle as a single PDF document.</p>
 </section>
 </section>
-<section id="mark-scheme" class="level2 page-columns page-full">
+<section id="mark-scheme" class="level2">
 <h2 class="anchored" data-anchor-id="mark-scheme">Mark Scheme</h2>
 <p>This is how we will mark your work - take note of them</p>
-<div class="column-page">
-<div class="cell">
-<div class="cell-output-display">
+<div id="78ee4932" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"../data/assessment.csv"</span>, encoding <span class="op">=</span> <span class="st">"ISO-8859-1"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display, Markdown</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>display(Markdown(df.to_markdown()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
+<col style="width: 0%">
 <col style="width: 3%">
 <col style="width: 21%">
 <col style="width: 20%">
@@ -346,6 +379,7 @@ ul.task-list li input[type="checkbox"] {
 </colgroup>
 <thead>
 <tr class="header">
+<th style="text-align: right;"></th>
 <th style="text-align: left;">Criterion</th>
 <th style="text-align: left;">80-100%</th>
 <th style="text-align: left;">70-79% (A)</th>
@@ -357,6 +391,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: right;">0</td>
 <td style="text-align: left;">Exploratory Analysis (25%)</td>
 <td style="text-align: left;">Outstanding selection of exploratory statistics and/or sophisticated data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations in the data with absolute clarity. Graphics are labelled such that readers are in no doubt about what is being shown. Data may have been transformed, normalised or standardised in some way to reveal otherwise hidden patterns and justified impeccably.</td>
 <td style="text-align: left;">Excellent selection of exploratory statistics and/or sophisticated data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations in the data. Graphics are labelled such that readers are in no doubt about what is being shown. Data may have been transformed, normalised or standardised in some way to reveal otherwise hidden patterns and justified.</td>
@@ -366,6 +401,7 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: left;">Negligible use of statistics or visualisations. Any visualisations are irrelevant, inaccurate, or inaccessible. The analysis shows no grasp of the underlying data.</td>
 </tr>
 <tr class="even">
+<td style="text-align: right;">1</td>
 <td style="text-align: left;">Use of multivariate statistical analysis or explanatory / predictive methods (25%)</td>
 <td style="text-align: left;">Exceptional selection of data / variables entirely appropriate for the chosen article topic. Masterful understanding of the nuances related to the careful pruning and selection of appropriate variables. Outstanding understanding of the methods employed and their interaction with the data to hand with masterful understanding of outputs produced</td>
 <td style="text-align: left;">Excellent selection of data / variables entirely appropriate for the chosen article topic. Highly competent understanding of the nuances related to the careful pruning and selection of appropriate variables. Highly competent understanding of the methods employed and their interaction with the data to hand.</td>
@@ -375,6 +411,7 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: left;">Negligible or irrelevant selection of data / variables. No grasp of the methods or their application to the data.</td>
 </tr>
 <tr class="odd">
+<td style="text-align: right;">2</td>
 <td style="text-align: left;">Originality, article narrative and communication (25%)</td>
 <td style="text-align: left;">Highly original topic selection, or of exceptional relevance to a contemporary debate in the society, the media or politics at a local, national or international level with broad interest. Article narrative shows flare or originality which draws the reader in and reveals something entirely new. Writing style is highly accessible - clear, concise and creative and the reader is left without query or misunderstanding.</td>
 <td style="text-align: left;">Excellent topic selection, of high relevance to a contemporary debate. The narrative is engaging and written with excellent clarity, flowing well from one section to the next. The work is of a very high standard. Writing style clear and concise with few wasted words.</td>
@@ -384,6 +421,7 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: left;">The work has no clear topic or narrative. The communication is confused, unclear, or inaccessible.</td>
 </tr>
 <tr class="even">
+<td style="text-align: right;">3</td>
 <td style="text-align: left;">Conceptual understanding and Critical Reflection (25%)</td>
 <td style="text-align: left;">Both the Article and Technical Appendix show exemplary understanding of the topic / wider issues associated with it and of the methods employed to interrogate the data. A clear understanding of any data / methodological shortcomings / issues / challenges is presented with a highly sophisticated degree of critical reflection in relation to the substantive topic and / or methods employed is demonstrated.</td>
 <td style="text-align: left;">Article and Technical Appendix show excellent and highly competent conceptual understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a thorough understanding of the chosen example and recognises and reflects lucidly on any shortcomings and / or the wider significance of the findings in a way that is not contrived or formulaic but shows a sophisticated level of insight.</td>
@@ -394,7 +432,6 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 <p>The purpose of this assessment is to test your understanding of the various methods introduced in this course and your ability to apply them appropriately to a topic of your choice. One of the differentiators at Masters level is the ability to think both creatively and critically while showing an awareness or knowledge of contemporary issues either in relation to your specific discipline of study or more widely. Being able to demonstrate how established techniques of research and enquiry can be used to create and interpret knowledge is at the core of Masters level thinking and this assessment piece. The ability to demonstrate self-direction (in choosing an appropriate topic for this assessment) and to think autonomously in designing your own article.</p>
@@ -476,14 +513,13 @@ ul.task-list li input[type="checkbox"] {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
