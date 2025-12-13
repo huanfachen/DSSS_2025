@@ -1,12 +1,12 @@
 version: 2025
 
 module:
-  code: "CASA0007"
-  name: "Quantitative Methods"
-  abbr: "QM"
-  web: "https://huanfachen.github.io/QM"
+  code: "CASA0006"
+  name: "Data Science for Spatial Systems"
+  abbr: "DSSS"
+  web: "https://huanfachen.github.io/DSSS_2025"
 
 assess:
-  deadline-date: "Tuesday, 13 January 2026"
+  deadline-date: "Monday, 27 April 2026"
   deadline-time: "10:00"
 
