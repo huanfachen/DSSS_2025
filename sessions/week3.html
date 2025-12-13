@@ -14,7 +14,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Beatrice Taylor">
-  <title>Quantitative Methods – Hypothesis Testing</title>
+  <title>Data Science for Spatial Systems – Hypothesis Testing</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -190,7 +190,7 @@
       margin-right: 0; 
     }
   </style>
-<meta property="og:title" content="Hypothesis Testing – Quantitative Methods">
+<meta property="og:title" content="Hypothesis Testing – Data Science for Spatial Systems">
 <meta property="og:description" content="Establishing and evaluating research hypotheses">
 <meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/img/logo/full_sm.png">
 <meta property="og:site_name" content="Foundations">
@@ -1029,7 +1029,7 @@ D_{n,m} = \sup_x \, | F_n(x) - G_m(x) |
 <section id="kde-of-simulated-heights" class="slide level2">
 <h2>KDE of simulated heights</h2>
 <p>It’s easy to fit a KDE to data in Python:</p>
-<div id="ca51d695" class="cell" data-execution_count="1">
+<div id="a5655714" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd </span>
 <span id="cb3-3"><a></a><span class="im">from</span> scipy.stats <span class="im">import</span> gaussian_kde</span>
@@ -1110,7 +1110,7 @@ t &amp;= \frac{170 - 180}{5.55 \cdot \sqrt{\tfrac{1}{95} + \tfrac{1}{103}}} \app
 df = n_1 + n_2 - 2 = 95 + 103 - 2 = 196
 \end{align}\]</span>
 <p>Then use Python to calculate the two-tailed critical t-value at <span class="math inline">\(\alpha = 0.05\)</span>.</p>
-<div id="7ab6b387" class="cell" data-execution_count="2">
+<div id="d53433f2" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">from</span> scipy.stats <span class="im">import</span> t</span>
 <span id="cb4-2"><a></a></span>
 <span id="cb4-3"><a></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
