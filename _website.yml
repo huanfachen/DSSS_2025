@@ -1,7 +1,7 @@
 website:
-  title: "Quantitative Methods"
+  title: "Data Science for Spatial Systems"
   image: "img/logo/full_sm.png"
-  repo-url: https://github.com/huanfachen/CASA0007/
+  repo-url: https://github.com/huanfachen/DSSS_2025/
   repo-actions: [issue]
   favicon: "/img/favicon.ico"
   open-graph: 
@@ -12,10 +12,10 @@ website:
   bread-crumbs: false
   page-footer: 
     left: "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 2025–, Huanfa Chen, Adam Dennett, Bea Taylor"
-    center: "![](/img/logo/logo_only_sm.png){height=25} Quantitative Methods"
+    center: "![](/img/logo/logo_only_sm.png){height=25} Data Science for Spatial Systems"
     right: 
       - icon: github
-        href: https://github.com/huanfachen/CASA0007
+        href: https://github.com/huanfachen/DSSS_2025
       - icon: LinkedIn 
         href: https://www.linkedin.com/in/huanfa-chen/
   navbar:
