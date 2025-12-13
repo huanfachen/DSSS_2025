@@ -4,9 +4,14 @@ subtitle: "Understanding and describing data"
 author: 
   - name: "Huanfa Chen"
 email: "huanfa.chen@ucl.ac.uk"
-date-as-string: "12 September 2025"
+# date-as-string: "12 September 2025"
+date: last-modified
 from: markdown+emoji
-format: revealjs
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
 ---
 # This week 
 
