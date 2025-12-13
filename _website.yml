@@ -1,7 +1,8 @@
 website:
   title: "Data Science for Spatial Systems"
   image: "img/logo/full_sm.png"
-  repo-url: https://github.com/huanfachen/DSSS_2025/
+  # repo-url: https://github.com/huanfachen/DSSS_2025/
+  repo-url: {{< var module.github-web >}}
   repo-actions: [issue]
   favicon: "/img/favicon.ico"
   open-graph: 
