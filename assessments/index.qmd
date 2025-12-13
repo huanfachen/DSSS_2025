@@ -1,7 +1,6 @@
 ---
-title: "CASA0007 Assessment"
+title: "CASA0006 Assessment"
 format: html
-editor: visual
 ---
 
 This Assessment is worth 100% of the grade for this course.

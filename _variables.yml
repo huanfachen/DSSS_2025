@@ -5,6 +5,7 @@ module:
   name: "Data Science for Spatial Systems"
   abbr: "DSSS"
   web: "https://huanfachen.github.io/DSSS_2025"
+  github-web: "https://github.com/huanfachen/DSSS_2025"
 
 assess:
   deadline-date: "Monday, 27 April 2026"
