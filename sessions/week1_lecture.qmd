@@ -301,7 +301,7 @@ $Accuracy=\frac{TP+TN}{TP+TN+FP+FN}$
 
 ## Example using Breast Cancer dataset
 
-```python
+```{python}
 from sklearn.metrics import confusion_matrix, plot_confusion_matrix
 # load data and split
 data = load_breast_cancer()
@@ -319,6 +319,7 @@ print(lr.score(X_test, y_test))
 #| echo: false
 #| warning: false
 #| message: false
+
 X = data.data
 y = data.target
 
