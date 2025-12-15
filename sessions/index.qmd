@@ -5,11 +5,6 @@ author: "Huanfa Chen"
 title: "Overview"
 ---
 
-## Attendance Recording
-- 70% attendance required for student visa holders.
-- Please Attend all lectures and workshops.
-- Contact module lead & bartlett.pg-casa@ucl.ac.uk, if you can't attend.
-
 ## Objectives
 1. Understand the structure and focus of the module.
 2. Develop a method for tackling quantitative problems.
@@ -33,8 +28,8 @@ title: "Overview"
 - Python is required for practicals and assessments.
 
 ## Course Structure
-- Lectures: 10 weeks (Wednesdays 9:00–10:30), split into two sessions.
-- Tutorials: 10 weeks (Wednesdays 10:30–12:30).
+- Lectures: 10 weeks (Wednesdays 9:00–10:30).
+- Tutorials: 10 weeks (Wednesdays 10:30–12:00).
 
 ## Platforms
 - **Email** for important notices and private questions.
@@ -56,6 +51,11 @@ title: "Overview"
 | 9       | Dimensionality reduction       | Huanfa   |
 | 10      | Clustering Analysis            | Huanfa   |
 
+## Attendance Recording
+- 70% attendance required for student visa holders.
+- Please attend all lectures and workshops.
+- Contact module lead & bartlett.pg-casa@ucl.ac.uk, if you can't attend.
+
 # Assessment
 
 ## Assessment
@@ -70,10 +70,7 @@ title: "Overview"
 - Avoid plagiarism and **fake references**
 
 ## Moodle Feedback
-Please provide anonymous feedback on Moodle
-![](L1_images/moodle_feedback.png)
+Please provide anonymous feedback on Moodle for every week.
 
 ## Github Feedback
-You can also give feedback on [Github issues](https://github.com/huanfachen/DSSS_2025/issues).
-
 You can also give feedback on [Github issues]({{< var module.github-web >}}/issues).
