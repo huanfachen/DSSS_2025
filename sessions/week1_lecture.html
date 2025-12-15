@@ -14,8 +14,7 @@
   <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Huanfa Chen">
-  <meta name="dcterms.date" content="2025-12-13">
-  <title>Data Science for Spatial Systems – Exploratory Data Analysis #1</title>
+  <title>Data Science for Spatial Systems – Introduction to machine learning</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -33,6 +32,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-708fdb05d86516b6f171cd9cf793ecac.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -126,8 +190,7 @@
       margin-right: 0; 
     }
   </style>
-<meta property="og:title" content="Exploratory Data Analysis #1 – Data Science for Spatial Systems">
-<meta property="og:description" content="Understanding and describing data">
+<meta property="og:title" content="Introduction to machine learning – Data Science for Spatial Systems">
 <meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/img/logo/full_sm.png">
 <meta property="og:site_name" content="Foundations">
 <meta property="og:locale" content="en_GB">
@@ -142,496 +205,558 @@
 <br>
 <br>
 
-<h1 class="title">Exploratory Data Analysis #1</h1>
+<h1 class="title">Introduction to machine learning</h1>
 
-  <h3 style="opacity:0.8;" class="subtitle">Understanding and describing data</h3>
 
 <p><span style="margin:0px; font-weight:700;" class="author">Huanfa Chen</span> - huanfa.chen@ucl.ac.uk </p>
 
+<p style="opacity: 0.8">13 December 2025</p>
 
 
 </section>
+<section>
+<section id="term-1-fsds-qm-and-gis" class="title-slide slide level1 center">
+<h1>Term 1: FSDS, QM, and GIS</h1>
+
+</section>
+<section id="what-we-learnt-in-term-1" class="slide level2">
+<h2>What we learnt in Term 1</h2>
+<ul>
+<li>Python programming</li>
+<li>Data types, visualisation</li>
+<li>Regression (Ordinary Least Square; Linear Mixed Effects; multicollinearity)</li>
+<li>Dimensionality reduction</li>
+<li>Clustering</li>
+</ul>
+</section></section>
 <section>
 <section id="this-week" class="title-slide slide level1 center">
 <h1>This week</h1>
 
 </section>
-<section id="understanding-and-describing-data" class="slide level2">
-<h2>Understanding and describing data</h2>
-<ul>
-<li><p>Quantitative research is the process of collecting and analysing <strong>numerical data</strong> to describe, model, and predict variables of interest.</p></li>
-<li><p>Garbage in, garbage out.</p></li>
-</ul>
-<aside class="notes">
-<p>This lecture focuses on understanding and describing data.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
 <section id="learning-objectives" class="slide level2">
 <h2>Learning Objectives</h2>
 <p>By the end of this lecture you should:</p>
 <ol type="1">
-<li>Understand basic data types;</li>
-<li>Consider how to summarise and represent data.</li>
+<li>Understand the basics and classification of machine learning</li>
+<li>Understand the differences between statistical methods and machine learning (estimation vs.&nbsp;prediction)</li>
+<li>Appreciate GIGO theorems in machine learning and data science</li>
+<li>Understand the framework and metrics of supervised learning</li>
 </ol>
 </section></section>
 <section>
-<section id="data-types" class="title-slide slide level1 center">
-<h1>Data types</h1>
+<section id="introduction-to-machine-learning" class="title-slide slide level1 center">
+<h1>Introduction to machine learning</h1>
 
 </section>
-<section id="four-levels-of-measurements" class="slide level2">
-<h2>Four levels of measurements</h2>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th></th>
-<th style="text-align: center;">Nominal</th>
-<th style="text-align: center;">Ordinal</th>
-<th style="text-align: center;">Interval</th>
-<th style="text-align: center;">Ratio</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Categorizes and labels variables</td>
-<td style="text-align: center;">✔</td>
-<td style="text-align: center;">✔</td>
-<td style="text-align: center;">✔</td>
-<td style="text-align: center;">✔</td>
-</tr>
-<tr class="even">
-<td>Ranks categories in order</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✔</td>
-<td style="text-align: center;">✔</td>
-<td style="text-align: center;">✔</td>
-</tr>
-<tr class="odd">
-<td>Has known, equal intervals</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✔</td>
-<td style="text-align: center;">✔</td>
-</tr>
-<tr class="even">
-<td>Has a true or meaningful zero</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">✔</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Developed by psychologist Stanley Smith Stevens (1906 - 1973)</li>
-</ul>
-</section>
-<section id="nominal" class="slide level2">
-<h2>Nominal</h2>
-<ul>
-<li>Differentiates items based only on names; no order between them.</li>
-<li>Also called <strong>categorical data</strong></li>
-<li>Example: colour, gender, country names</li>
-<li>What can be said about them?
-<ul>
-<li><em>Equality</em>: ‘apple’ is not ‘pear’, ‘apple’ is ‘apple’</li>
-<li><em>Mode</em>: the most common item</li>
-</ul></li>
-</ul>
-</section>
-<section id="ordinal" class="slide level2">
-<h2>Ordinal</h2>
-<ul>
-<li>Allow for rank order, but not the relative degree of difference</li>
-<li>Example: measurement of opinions
-<ul>
-<li><em>completely agree</em></li>
-<li><em>mostly agree</em></li>
-<li><em>neither degree nor disagree</em></li>
-<li><em>mostly disagree</em></li>
-<li><em>completely disagree</em></li>
-</ul></li>
-<li>What can be said about them?
-<ul>
-<li>✅ Equality; mode</li>
-<li>✅ Median: middle-ranked item</li>
-<li>❌ Differences between two levels; arithmetic mean</li>
-</ul></li>
-</ul>
-</section>
-<section id="interval" class="slide level2">
-<h2>Interval</h2>
-<ul>
-<li>Allow for degree of difference between items, but not the ratio</li>
-<li>The <em>zero</em> value is arbitrary</li>
-<li>Example: Celsius temperature
-<ul>
-<li>Definition: define 0°C &amp; 100°C, and then separate them into 100 intervals.</li>
-<li>Depends on altitude/elevation</li>
-</ul></li>
-<li>What can be said about them?
-<ul>
-<li>✅ equality, mode, median</li>
-<li>✅ addition, arithmetic mean</li>
-<li>❌ ratio (<em>100°C is NOT twice 50°C</em>)</li>
-</ul></li>
-</ul>
-</section>
-<section id="interval-1" class="slide level2">
-<h2>Interval</h2>
-<ul>
-<li>Another example: longtitude &amp; latitude coordinates</li>
-<li><em>The coordinate of 8 is twice as far as that of 4</em>? ❌</li>
-</ul>
-</section>
-<section id="ratio" class="slide level2">
-<h2>Ratio</h2>
-<ul>
-<li>Allow for <strong>ratio</strong> between items</li>
-<li>The zero value is unique and non-arbitrary.</li>
-<li>Example: mass, length, energy</li>
-<li>What can be said about them?
-<ul>
-<li>✅ Equality, mode, median, arithmetic mean</li>
-<li>✅ Ratio (<em>2kg is twice as heavy as 1kg</em>)</li>
-</ul></li>
-</ul>
-</section>
-<section id="notes" class="slide level2">
-<h2>Notes</h2>
-<ul>
-<li>‘Encoding’ does not change the nature of a measurement.</li>
-<li>Gender variable (male, female, others) is NOMINAL.</li>
-<li>If this variable is encodeded {male:0, female:1, others:2}, is it NOMINAL, or INTERVAL?</li>
-</ul>
-</section>
-<section id="another-categorisation-numerical-vs.-categorical" class="slide level2">
-<h2>Another categorisation: numerical vs.&nbsp;categorical</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 32%">
-<col style="width: 16%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Category</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Quantitative (numerical) data</td>
-<td>Discrete data</td>
-<td>Only in whole numbers, <em>e.g.</em> number of staffs</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Continuous data</td>
-<td><em>e.g.</em> temperature, 23°C, 23.4°C</td>
-</tr>
-<tr class="odd">
-<td>Qualitative (categorical) data</td>
-<td>Nominal</td>
-<td>Same as nominal in ‘Levels of measurement’</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Ordinal</td>
-<td>See above</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="quiz-time" class="slide level2">
-<h2>Quiz time</h2>
-<aside class="notes">
-<p>Mentimeter quiz</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="how-do-you-descibe-a-ratio-data" class="title-slide slide level1 center">
-<h1>How do you descibe a ratio data?</h1>
-
-</section>
-<section id="key-metrics" class="slide level2">
-<h2>Key metrics</h2>
+<section id="ml-as-subset-of-ai" class="slide level2">
+<h2>ML as subset of AI</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li class="fragment">Quantity</li>
-<li class="fragment">The middle</li>
-<li class="fragment">The spread</li>
+<li><strong>Machine learning</strong> (decision tree, random forest, k-means, etc.)<br>
+</li>
+<li><strong>Deep learning</strong> (deep neural networks)<br>
+</li>
+<li><strong>Other AI tools</strong>: graphical models, symbolic AI<br>
+</li>
+<li>Note: we don’t distinguish ML/DL and consider NN as part of ML</li>
 </ul>
-</div></div>
-</section>
-<section id="us-city-population" class="slide level2">
-<h2>US city population</h2>
-<div class="columns">
-<div class="column" style="width:100%;">
-<ul>
-<li class="fragment">Quantity: 282 values</li>
-<li class="fragment">The middle: Mean 302869.3</li>
-<li class="fragment">The middle: Median 167744.5 (<em>Very different from mean</em>)</li>
-<li class="fragment">The middle: Mode 106433 (Useful? ❌)</li>
-<li class="fragment">Should use mean or median? median is better than mean, as data is unlikely normal distributed</li>
-</ul>
-</div></div>
-</section>
-<section id="variance-quantifying-spread" class="slide level2">
-<h2>Variance: quantifying spread</h2>
-<p>Denote city population by <span class="math inline">\([y_1, y_2, ..., y_n]\)</span> and variance by <span class="math inline">\(\sigma^2\)</span></p>
-<p><span class="math display">\[
-\begin{aligned}
-\sigma^2 &amp;= \frac{\sum_{i=1}^{n} (y_i - \bar{y})^2}{n} \\
-&amp;= \frac{(y_1 - \bar{y})^2 + (y_2 - \bar{y})^2 + \dots + (y_n - \bar{y})^2}{n}
-\end{aligned}
-\]</span></p>
-<p>A large variance means considerable spreadedness in data.</p>
-</section>
-<section id="standard-deviation-sigma" class="slide level2">
-<h2>Standard deviation <span class="math inline">\(\sigma\)</span></h2>
-<p><span class="math display">\[
-\begin{aligned}
-\text{Standard Deviation} = \sqrt{\text{Variance}}
-\end{aligned}
-\]</span></p>
-<ul>
-<li>Unit: if <span class="math inline">\(y\)</span> is in unit of meter (m), then St.&nbsp;Dev is in unit of m, variance in unit of <span class="math inline">\(\text{m}^2\)</span></li>
-</ul>
-</section>
-<section id="summary-of-key-metrics" class="slide level2">
-<h2>Summary of key metrics</h2>
-<div class="columns">
-<ul>
-<li class="fragment">Quantity</li>
-<li class="fragment">The middle: mean, median, mode</li>
-<li class="fragment">The spread: variance, standard deviation</li>
-<li class="fragment"><em>Visualising data is also important</em>: BOXPLOT!</li>
-<li class="fragment"><em>Please check two types of SPECIAL VALUES before computing these metrics.</em></li>
-</ul>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<img src="images/ml_as_subset_of_ai.png" alt="ML is a subset of AI" style="max-width:80%;">
+<div style="font-size:0.8em; color: #555; margin-top:4px;">
+<pre><code>Image Credit: Lecture slide (ML is a subset of AI)</code></pre>
 </div>
+</div>
+</div></div>
+</section>
+<section id="definition-of-machine-learning" class="slide level2">
+<h2>Definition of machine learning</h2>
+<blockquote>
+<p><strong>Arthur Samuel (1959)</strong>: (Machine learning is the) field of study that gives computers the ability to learn without being explicitly programmed.</p>
+</blockquote>
+<blockquote>
+<p><strong>Tom Mitchell (1997)</strong>: A computer program is said to learn from experience <em>E</em> with respect to some task <em>T</em> and some performance measure <em>P</em>, if its performance on <em>T</em>, as measured by <em>P</em>, improves with experience <em>E</em>.</p>
+</blockquote>
+</section>
+<section id="three-types-of-machine-learning" class="slide level2">
+<h2>Three types of machine learning</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Supervised</strong>: Learn to predict output given input (with labelled data).<br>
+</li>
+<li><strong>Unsupervised</strong>: Discover internal representation/structure of input (without labelled data).<br>
+</li>
+<li><strong>Reinforcement</strong>: Learn actions to maximise payoff (via interactions with the environment).</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<img src="images/three_types_of_ml.png" alt="Three types of ML" style="max-width:80%;">
+<div style="font-size:0.8em; color: #555; margin-top:4px;">
+<pre><code>Image Credit: Big Data and machine learning for businesses, Slideshare</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="statistics-vs.-machine-learning" class="slide level2">
+<h2>Statistics VS. machine learning</h2>
+<ul>
+<li>With the powerful AI/ML algorithms, are statistical models (such as linear regression) still important?</li>
+<li>What are the differences between statistical models and ML?</li>
+</ul>
+</section>
+<section id="statistical-models" class="slide level2">
+<h2>Statistical models</h2>
+<ul>
+<li><strong>Simple model structure</strong></li>
+<li><strong>Good interpretation</strong>: when X increases by 1 unit, y decreases 0.1 (by association/causality)</li>
+<li><strong>Needing modest data size</strong></li>
+<li>Having lots of <strong>Assumptions</strong>, need to test if they hold true</li>
+<li><strong>Relatively low generalisation; low predictive accuracy</strong></li>
+</ul>
+<p>Linear regression model:</p>
+<p><span class="math display">\[
+\hat{y}_i = \sum_k \beta_k x_{ik} + \beta_0
+\]</span></p>
+</section>
+<section id="ml-models" class="slide level2">
+<h2>ML models</h2>
+<ul>
+<li>Complex model structure</li>
+<li>Limited interpretation (black-box)</li>
+<li>Requiring a lot of data</li>
+<li>Very few assumptions (but there are still assumptions!)<br>
+</li>
+<li><strong>High predictive accuracy</strong> (with proper model training)</li>
+</ul>
+</section>
+<section id="major-difference-purposes" class="slide level2">
+<h2>Major difference: purposes</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 40%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>purpose</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>statistics</td>
+<td>Estimate and interpret (often causal) relationships between variables, especially in social and economic research</td>
+<td>Does smoking lead to lung cancer? Does family background affect the level of education?</td>
+</tr>
+<tr class="even">
+<td>ML</td>
+<td>Make accurate predictions, especially when data size is large and predictive performance is the priority.</td>
+<td>Predict tomorrow’s weather; automatically classify emails into spam and non-spam.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="theorem-1-garbage-in-garbage-out-gigo" class="slide level2">
+<h2>Theorem 1: Garbage in, garbage out (GIGO)</h2>
+<ul>
+<li><strong>Great algorithms + bad data = bad results</strong></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Model performance is constrained by data quality.</li>
+<li>Biased, noisy, or incomplete data leads to misleading predictions.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<img src="images/garbage_in_garbage_out.png" alt="Garbage in, garbage out" style="max-width:80%;">
+<div style="font-size:0.8em; color: #555; margin-top:4px;">
+<pre><code>Image Credit: x.com/xschelling/status/954936528555429888</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="good-data-large-size-high-quality." class="slide level2">
+<h2>Good data = <strong>large size + high quality</strong>.</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Sufficient sample size to capture variability in the problem<br>
+</li>
+<li>High-quality labels and accurate measurements.<br>
+</li>
+<li>Representative of the population and application context.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<img src="images/benchmark_datasets_size.png" alt="Size of benchmark datasets" style="max-width:80%;">
+<div style="font-size:0.8em; color: #555; margin-top:4px;">
+<pre><code>Image Credit: Internet</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="data-size-and-performance" class="slide level2">
+<h2>Data size and performance</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The performance of ML/DL increases rapidly with the size of the data:</p>
+<ul>
+<li>Large neural nets benefit the most from big data.<br>
+</li>
+<li>Medium and small neural nets also improve with more data.<br>
+</li>
+<li>Traditional ML algorithms (e.g.&nbsp;random forest, SVM) may saturate earlier.</li>
+</ul>
+<p>As the <strong>amount of data</strong> increases, performance improves, especially for larger neural networks.</p>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<img src="images/performance_vs_data_size.png" alt="Performance vs data size" style="max-width:80%;">
+<div style="font-size:0.8em; color: #555; margin-top:4px;">
+<pre><code>Image Credit: TBC</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="feature-engineering-eda-90-time" class="slide level2">
+<h2>Feature engineering &amp; EDA (~90% time)</h2>
+<ul>
+<li>Mostly <strong>manual</strong> rather than automated (no automated methods for EDA)</li>
+<li>Domain knowledge from expertise is desirable</li>
+<li>Using <strong>Visualisation</strong> to identify patterns &amp; data relationship</li>
+<li>Removing noisy or erroneous data<br>
+</li>
+<li>Dealing with missing data<br>
+</li>
+<li>Generating new features by combining existing ones</li>
+</ul>
+</section>
+<section id="example-representation-of-geospatial-locations-in-ml-models" class="slide level2">
+<h2>Example: Representation of geospatial locations in ML models</h2>
+<ul>
+<li>Long/lat<br>
+</li>
+<li>Distance to POIs (train stations/schools).<br>
+</li>
+<li>Using adjacency matrix between spatial units</li>
+</ul>
 </section></section>
 <section>
-<section id="visualising-data" class="title-slide slide level1 center">
-<h1>Visualising data</h1>
-<p><a href="https://huanfachen.github.io/DSSS_2025/sessions/L1_images/picture_worth_thousand_words.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="https://huanfachen.github.io/DSSS_2025/sessions/L1_images/picture_worth_thousand_words.jpg" style="max-width:70%; max-height:70%; margin:auto;"></a></p>
-</section>
-<section id="ft-visual-vocabulary" class="slide level2">
-<h2>FT visual vocabulary</h2>
-<ul>
-<li>https://ft-interactive.github.io/visual-vocabulary/ <img data-src="https://huanfachen.github.io/DSSS_2025/sessions/L1_images/FT_visual_vocabulary.jpg" style="max-width:90%; max-height:90%; margin:auto;"></li>
-</ul>
-</section>
-<section id="boxplot-for-a-dataset" class="slide level2">
-<h2>Boxplot for a dataset</h2>
-<ul>
-<li>Showing distribution of a dataset</li>
-</ul>
-<p><a href="https://huanfachen.github.io/DSSS_2025/sessions/L1_images/Boxplot.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="https://huanfachen.github.io/DSSS_2025/sessions/L1_images/Boxplot.jpg" style="width:70%; height:70%;"></a></p>
-</section>
-<section id="boxplot-for-comparing-multiple-datasets" class="slide level2">
-<h2>Boxplot for comparing multiple datasets</h2>
-</section>
-<section id="when-boxplot-fails" class="slide level2">
-<h2>When boxplot fails?</h2>
-<ul>
-<li>When there are lots of ‘outliers’ in the data</li>
-<li>What are ‘Outliers’?</li>
-</ul>
-</section></section>
-<section>
-<section id="special-values-null-and-outliers" class="title-slide slide level1 center">
-<h1>Special values: null and outliers</h1>
+<section id="supervised-learning" class="title-slide slide level1 center">
+<h1>Supervised learning</h1>
 
 </section>
-<section id="null-values" class="slide level2">
-<h2><em>Null</em> values</h2>
-<ul>
-<li>Representing the absence of data or an unknow value</li>
-<li>Different from <em>zero</em> or <em>a blank space</em></li>
-<li>Null values should be excluded before computing mean or std</li>
-</ul>
+<section id="framework" class="slide level2">
+<h2>Framework</h2>
+<p><span class="math display">\[
+\begin{aligned}
+(x_i, y_i) &amp;\sim p(x, y) \text{ i.i.d.} \\
+x_i &amp;\in \mathbb{R}^p \\
+y_i &amp;\in
+\begin{cases}
+\mathbb{R}, &amp; \text{(regression)} \\
+\mathcal{Y} \text{ (finite set)}, &amp; \text{(classification)}
+\end{cases} \\
+\text{learn } f(x_i) &amp;\approx y_i \\
+\text{such that } f(x) &amp;\approx y
+\end{aligned}
+\]</span></p>
 </section>
-<section id="null-island-in-geography" class="slide level2">
-<h2>Null island in geography</h2>
-<ul>
-<li>long=0, lat=0. Not even an island!</li>
-<li>It became famous because some software assigned “0,0” for long-lat when location is missing</li>
-<li>Many events were mapped to this one, including lots on Strava</li>
-<li>Source: wikipedia.org</li>
-</ul>
-<p><img data-src="https://huanfachen.github.io/DSSS_2025/sessions/L1_images/map_null_island.jpg" height="300"> <img data-src="images/image_null_island_2017.jpg" height="300"></p>
-</section>
-<section id="outliers" class="slide level2">
-<h2>Outliers</h2>
-<ul>
-<li>A data point that differs significantly from other observations</li>
-<li>There are three types of outliers</li>
-<li>Please explain the rationale for removing any identified outliers, including the criteria and methods used</li>
-</ul>
-</section>
-<section id="outliers-1" class="slide level2">
-<h2>Outliers</h2>
+<section id="regression-vs.-classification" class="slide level2">
+<h2>Regression vs.&nbsp;classification</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 40%">
-<col style="width: 40%">
+<col style="width: 19%">
+<col style="width: 38%">
+<col style="width: 42%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Type</th>
-<th>Source</th>
-<th>Handling</th>
+<th></th>
+<th>Regression</th>
+<th>Classification</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Error Outliers</strong></td>
-<td>From mistakes in data collection/entry/measurement, e.g.&nbsp;a temperature sensor reading 500 °C</td>
-<td>Should be corrected or removed</td>
+<td>Target variable type</td>
+<td>Continuous numeric value (y )</td>
+<td>Discrete label (y ) (finite set)</td>
 </tr>
 <tr class="even">
-<td><strong>Irregular Pattern Outliers</strong></td>
-<td></td>
-<td></td>
+<td>Task</td>
+<td>Predict “how much” / “how many”</td>
+<td>Predict “which class” / “which category”</td>
 </tr>
 <tr class="odd">
-<td><strong>Influential Outliers</strong></td>
-<td></td>
-<td></td>
+<td>Intuition</td>
+<td>Find a ‘line’ close to all points</td>
+<td>Find a ‘boundary’ between classis</td>
+</tr>
+<tr class="even">
+<td>Example</td>
+<td>Predicting house prices from features</td>
+<td>Predicting spam vs.&nbsp;not spam for an email</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="outliers-2" class="slide level2">
-<h2>Outliers</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 40%">
-<col style="width: 40%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Source</th>
-<th>Handling</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Error Outliers</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><strong>Irregular Pattern Outliers</strong></td>
-<td>Genuinely occur, but do not follow general pattern or relationship in the dataset, e.g.&nbsp;sudden spikes in sales in Black Friday</td>
-<td>They might indicate unusual events or anomalies worth investigating. If the purpose is to study overall pattern, they should be removed</td>
-</tr>
-<tr class="odd">
-<td><strong>Influential Outliers</strong></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<section id="example---linear-regression" class="slide level2">
+<h2>Example - linear regression</h2>
+<p>** Linear regression code here **</p>
 </section>
-<section id="outliers-3" class="slide level2">
-<h2>Outliers</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 40%">
-<col style="width: 40%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Source</th>
-<th>Handling</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Error Outliers</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><strong>Irregular Pattern Outliers</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><strong>Influential Outliers</strong></td>
-<td>Appear extreme but are integral to the underlying pattern or model, e.g.&nbsp;NYC in US city population data</td>
-<td>Should keep them, as removing them could distort the analysis or overlook important features of the data</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="detecting-outlier-interquartile-range-iqr" class="slide level2">
-<h2>Detecting outlier: interquartile range (IQR)</h2>
-<p><a href="https://huanfachen.github.io/DSSS_2025/sessions/L1_images/outlier_detection_Tukey_Fences.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="https://huanfachen.github.io/DSSS_2025/sessions/L1_images/outlier_detection_Tukey_Fences.jpg"></a></p>
-</section>
-<section id="quiz-which-type-of-outliers" class="slide level2">
-<h2>Quiz: which type of outliers?</h2>
+<section id="terms" class="slide level2">
+<h2>Terms</h2>
 <ul>
-<li>error vs.&nbsp;irregular pattern vs.&nbsp;influential</li>
+<li>Algorithms: procedure that runs on data to create a <em>model</em>. <span style="color:blue">(linear regression)</span></li>
+<li>Model: an output by algorithm and data. <span style="color:blue">(<span class="math inline">\(\hat{y}_i = \sum_k \beta_k x_{ik} + \beta_0\)</span>)</span></li>
+<li>Metric: <span style="color:blue">(R2)</span></li>
+<li>Hyperparameter: algorithm settings, predefined by user.<span style="color:blue">None</span></li>
+<li>Parameter: <span style="color:blue">(coefficients)</span></li>
+<li>Model training: to estimate the cofficients</li>
 </ul>
+</section>
+<section id="challenges" class="slide level2">
+<h2>Challenges</h2>
 <ol type="1">
-<li>In building height data, 10-storey building with 1m height</li>
-<li>In gender ratios of countries data, Vatican City with gender ratio of 7:1</li>
-<li>In UK city GDP data, GDP of Greater London</li>
+<li>To select evaluation metrics</li>
+<li>To design workflow (so that the model generalises well and avoids overfitting)</li>
 </ol>
 </section>
-<section id="summary-describing-a-dataset" class="slide level2">
-<h2>Summary: describing a dataset</h2>
+<section id="metrics-for-regression" class="slide level2">
+<h2>Metrics for regression</h2>
+<p>Here’s the updated table with the leading “RMSE =”, “R² =”, etc. removed from the formula column:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 3%">
+<col style="width: 36%">
+<col style="width: 17%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th>formula</th>
+<th>unit</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">RMSE</td>
+<td><span class="math inline">\(\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}\)</span></td>
+<td>Same unit as target <span class="math inline">\(y\)</span></td>
+<td>Penalises large errors more; sensitive to outliers</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">R²</td>
+<td><span class="math inline">\(1 - \dfrac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}\)</span></td>
+<td>Dimensionless (between 0 and 1 for most cases)</td>
+<td>Measures proportion of variance explained by the model; can be negative if model is worse than <span class="math inline">\(y_i=\bar{y}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">MAE</td>
+<td><span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}\lvert y_i - \hat{y}_i\rvert\)</span></td>
+<td>Same unit as target <span class="math inline">\(y\)</span></td>
+<td>More robust to outliers than RMSE; interpretable as average absolute error</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">MAPE</td>
+<td><span class="math inline">\(\frac{100}{n}\sum_{i=1}^{n}\left\lvert \frac{y_i - \hat{y}_i}{y_i} \right\rvert\)</span></td>
+<td>Percent (%)</td>
+<td>sensitive to very small <span class="math inline">\(y_i\)</span>; relative error</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="metrics-for-regression-1" class="slide level2">
+<h2>Metrics for regression</h2>
 <ul>
-<li>Key metrics</li>
-<li>Null values and outliers (and handle them!)</li>
-<li>Visualising data</li>
+<li>Using RMSE in most cases</li>
+<li>In sklearn and XGBoost</li>
+<li>Difference between R2 for OLS (<span style="color:blue">within [0,1]</span>) vs.&nbsp;R2 for regression (<span style="color:blue">&lt;=1, can be negative</span>)</li>
 </ul>
+</section>
+<section id="metrics-for-classification-binary" class="slide level2">
+<h2>Metrics for classification (binary)</h2>
+<div style="text-align:center;">
+<img src="images/confusion_matrix.png" alt="ML is a subset of AI" style="max-width:60%;">
+<div style="font-size:0.8em; color: #555; margin-top:4px;">
+<pre><code>Image Credit: COMS4995-s20</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(Accuracy=\frac{TP+TN}{TP+TN+FP+FN}\)</span></p>
+<ul>
+<li>Selecting <em>Positive</em> label: often the minority class</li>
+</ul>
+</section>
+<section id="example-using-breast-cancer-dataset" class="slide level2">
+<h2>Example using Breast Cancer dataset</h2>
+<div id="3d68a499" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix, ConfusionMatrixDisplay</span>
+<span id="cb7-2"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb7-3"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb7-4"><a></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb7-5"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb7-6"><a></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> (</span>
+<span id="cb7-7"><a></a>    f1_score,</span>
+<span id="cb7-8"><a></a>    average_precision_score,</span>
+<span id="cb7-9"><a></a>)</span>
+<span id="cb7-10"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-11"><a></a></span>
+<span id="cb7-12"><a></a><span class="co"># load data and split</span></span>
+<span id="cb7-13"><a></a>data <span class="op">=</span> load_breast_cancer()</span>
+<span id="cb7-14"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb7-15"><a></a>    data.data, data.target, stratify<span class="op">=</span>data.target, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-16"><a></a></span>
+<span id="cb7-17"><a></a>lr <span class="op">=</span> LogisticRegression().fit(X_train, y_train)</span>
+<span id="cb7-18"><a></a>y_pred <span class="op">=</span> lr.predict(X_test)</span>
+<span id="cb7-19"><a></a></span>
+<span id="cb7-20"><a></a><span class="co"># print(confusion_matrix(y_test, y_pred))</span></span>
+<span id="cb7-21"><a></a>ConfusionMatrixDisplay(confusion_matrix(y_test, y_pred), display_labels<span class="op">=</span>[<span class="st">'N'</span>, <span class="st">'P'</span>]).plot(cmap<span class="op">=</span><span class="st">'gray_r'</span>)</span>
+<span id="cb7-22"><a></a><span class="bu">print</span>(lr.score(X_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.9300699300699301</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><a href="week1_lecture_files/figure-revealjs/cell-2-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="week1_lecture_files/figure-revealjs/cell-2-output-2.png" width="508" height="429"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="2faac3d8" class="cell" data-message="false" data-execution_count="2">
+<div class="cell-output cell-output-stdout">
+<pre><code>class malignant: # = 212, 37.258%
+class benign: # = 357, 62.742%</code></pre>
+</div>
+</div>
+</section>
+<section id="limitation-of-accuracy-accuracy-paradox" class="slide level2">
+<h2>Limitation of accuracy (Accuracy paradox)</h2>
+<ul>
+<li><strong>Scenario: Data with 90% negatives</strong> (imbalanced data)</li>
+<li>A majority strategy that predicts everything as negative will get 90% accuracy.</li>
+<li>Different models can have the same accuracy (0.9) but make very different types of errors.
+<ul>
+<li>y_pred_1: Predicts all negative (90 TN, 0 TP)</li>
+<li>y_pred_2: Predicts some positives correctly but misses others</li>
+<li>y_pred_3: A mix of errors</li>
+</ul></li>
+</ul>
+</section>
+<section id="limitation-of-accuracy-accuracy-paradox-1" class="slide level2">
+<h2>Limitation of accuracy (Accuracy paradox)</h2>
+<div id="b693e826" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><a href="week1_lecture_files/figure-revealjs/cell-4-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="week1_lecture_files/figure-revealjs/cell-4-output-1.png" width="801" height="299"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="precision-recall-f1-score-auc" class="slide level2">
+<h2>Precision, Recall, F1-score, AUC</h2>
+<ul>
+<li><strong>Precision</strong> (Positive Predicted Value): <span class="math inline">\(\frac{TP}{TP+FP}\)</span>.</li>
+<li><strong>Recall</strong> (Sensitivity, True Positive Rate): <span class="math inline">\(\frac{TP}{TP+FN}\)</span></li>
+<li><strong>F1-score</strong> (Harmonic mean): <span class="math inline">\(F=2\frac{\text{precision}\cdot \text{recall}}{\text{precision}+\text{recall}}\)</span></li>
+</ul>
+</section>
+<section id="trade-off-between-precision-and-recall" class="slide level2">
+<h2>Trade-off between precision and recall</h2>
+<ul>
+<li>When precision increases, recall decreases. Vice versa.</li>
+</ul>
+<div id="47707b1d" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="week1_lecture_files/figure-revealjs/cell-5-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Precision–Recall curve for LR and Random Forest"><img data-src="week1_lecture_files/figure-revealjs/cell-5-output-1.png" width="445" height="449" alt="Precision–Recall curve for LR and Random Forest"></a></p>
+<figcaption>Precision–Recall curve for LR and Random Forest</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="roc-curve" class="slide level2">
+<h2>ROC Curve</h2>
+<ul>
+<li>Receiver Operating Characteristic (ROC) curve plots <em>True Positive Rate</em> vs.&nbsp;<em>False Positive Rate</em>.</li>
+</ul>
+<div id="48b112eb" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><a href="week1_lecture_files/figure-revealjs/cell-6-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img data-src="week1_lecture_files/figure-revealjs/cell-6-output-1.png" width="453" height="449"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="auc-area-under-roc-curve" class="slide level2">
+<h2>AUC (Area under ROC Curve)</h2>
+<ul>
+<li>The integral of the ROC curve</li>
+<li>AUC is always 0.5 for random predictions</li>
+</ul>
+<div id="c0309715" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><a href="week1_lecture_files/figure-revealjs/cell-7-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img data-src="week1_lecture_files/figure-revealjs/cell-7-output-1.png" width="812" height="449"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="averaging-aggregating-metrics-across-classes" class="slide level2">
+<h2>Averaging: aggregating metrics across classes</h2>
+<ul>
+<li><strong>Macro average</strong>: <em>{lL}R(y</em>{l},_{l}) (Unweighted mean of per-class scores).</li>
+<li><strong>Weighted average</strong>: <em>{lL}n</em>{l}R(y_{l},_{l}) (Weighted by support).</li>
+<li>TBC</li>
+</ul>
+</section>
+<section id="picking-a-metric" class="slide level2">
+<h2>Picking a metric</h2>
+<ul>
+<li>Real-world problems are rarely balanced.</li>
+<li>Accuracy is rarely what you want.</li>
+<li>Find the right criterion for the specific task.</li>
+<li>Decide between emphasis on recall or precision.</li>
+<li>Identify which classes are important.</li>
+</ul>
+</section>
+<section id="generalising-to-multi-class" class="slide level2">
+<h2>Generalising to multi-class</h2>
+</section>
+<section class="slide level2">
+
 </section></section>
 <section id="overview" class="title-slide slide level1 center">
 <h1>Overview</h1>
 <p>We’ve covered:</p>
 <ul>
-<li>Data types: levels of measurements; quantitative &amp; qualitative</li>
-<li>Key metrics</li>
-<li>Null values and outliers</li>
-<li>Visualising data</li>
+<li>Introduction to machine learning</li>
+<li>Types of machine learning (Supervised, unsupervised, reinforcement)</li>
+<li>Garbage in, garbage out</li>
+<li>Framework and evaluation metrics of supervised learning</li>
 </ul>
 </section>
 
 <section id="practical" class="title-slide slide level1 center">
 <h1>Practical</h1>
-<p>Practical will focus on setting up Python environment and describing a dataset.</p>
 <ul>
+<li>Practical will focus on using sklearn for supervised learning.</li>
 <li>Have questions prepared!</li>
 </ul>
 
