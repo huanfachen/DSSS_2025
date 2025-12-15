@@ -303,6 +303,15 @@ $Accuracy=\frac{TP+TN}{TP+TN+FP+FN}$
 
 ```{python}
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (
+    f1_score,
+    average_precision_score,
+)
+
 # load data and split
 data = load_breast_cancer()
 X_train, X_test, y_train, y_test = train_test_split(
@@ -387,14 +396,7 @@ for i, (ax, y_pred) in enumerate(zip(axes, [y_pred_1, y_pred_2, y_pred_3])):
 #| echo: false
 #| fig-cap: "Precision–Recall curve for SVC and Random Forest"
 
-from sklearn.datasets import load_breast_cancer
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (
-    f1_score,
-    average_precision_score,
-)
+
 
 # load data and split
 data = load_breast_cancer()
