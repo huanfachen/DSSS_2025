@@ -397,6 +397,7 @@ for i, (ax, y_pred) in enumerate(zip(axes, [y_pred_1, y_pred_2, y_pred_3])):
 ```{python}
 #| echo: false
 #| fig-cap: "Precision–Recall curve for LR and Random Forest"
+from sklearn.metrics import RocCurveDisplay, PrecisionRecallDisplay
 
 # load data and split
 data = load_breast_cancer()
