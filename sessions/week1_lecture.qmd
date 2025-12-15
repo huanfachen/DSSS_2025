@@ -311,6 +311,7 @@ from sklearn.metrics import (
     f1_score,
     average_precision_score,
 )
+import numpy as np
 
 # load data and split
 data = load_breast_cancer()
