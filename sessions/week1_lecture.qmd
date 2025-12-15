@@ -396,9 +396,7 @@ for i, (ax, y_pred) in enumerate(zip(axes, [y_pred_1, y_pred_2, y_pred_3])):
 
 ```{python}
 #| echo: false
-#| fig-cap: "Precision–Recall curve for SVC and Random Forest"
-
-
+#| fig-cap: "Precision–Recall curve for LR and Random Forest"
 
 # load data and split
 data = load_breast_cancer()
@@ -418,10 +416,10 @@ rf = RandomForestClassifier(
 rf.fit(X_train, y_train)
 
 # Plot PR curve for lr
-pr_svc = plot_precision_recall_curve(lr, X_test, y_test, name='LR')
+pr_lr = PrecisionRecallDisplay.from_estimator(lr, X_test, y_test, name='LR')
 
 # Plot PR curve for RandomForest on the same axes
-pr_rf = plot_precision_recall_curve(rf, X_test, y_test, ax=plt.gca(),
+pr_rf = PrecisionRecallDisplay.from_estimator(rf, X_test, y_test, ax=plt.gca(),
 name='RandomForestClassifier')
 
 plt.title("Precision–Recall Curve")
@@ -434,11 +432,11 @@ plt.show()
 
 ```{python}
 #| echo: false
-from sklearn.metrics import plot_roc_curve
+from sklearn.metrics import RocCurveDisplay, PrecisionRecallDisplay
 ax = plt.gca()
 
-plot_roc_curve(lr, X_test, y_test, ax=ax, name='LR')
-plot_roc_curve(rf, X_test, y_test, ax=ax, name='rf')
+RocCurveDisplay.from_predictions(lr, X_test, y_test, ax=ax, name='LR')
+RocCurveDisplay.from_predictions(rf, X_test, y_test, ax=ax, name='rf')
 # Add identity line (random classifier)
 plt.plot([0, 1], [0, 1], linestyle='--', color='grey', label='Random')
 plt.title("ROC Curve: Logistic Regression vs Random Forest")
