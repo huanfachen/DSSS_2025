@@ -364,6 +364,7 @@ for name in data.feature_names:
 #| echo: false
 from sklearn.metrics import ConfusionMatrixDisplay
 from matplotlib.colors import Normalize
+import matplotlib.pyplot as plt
 
 y_true = np.zeros(100, dtype=int)
 y_true[:10] = 1
