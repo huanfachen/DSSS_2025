@@ -4,4 +4,4 @@ jupyter
 scipy
 matplotlib
 tabulate
-sklearn
+scikit-learn
