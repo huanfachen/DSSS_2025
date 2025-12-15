@@ -1,15 +1,17 @@
 ---
 format: html
 title: "Welcome"
-author: "Huanfa Chen, Adam Dennett, Bea Taylor"
+author: "Huanfa Chen, TBC"
 date: last-modified
 ---
 
-The *Quantitative Methods* (QM) module is a compulsory element of CASA's [MSc/MRes USS programmes](https://www.ucl.ac.uk/bartlett/casa/study) and is intended provide an introduction to **quantitative methods** for all students.
+The *Data Science for Spatial Systems* (DSSS) module is a optional element of CASA's [MSc/MRes USS Course](https://www.ucl.ac.uk/bartlett/casa/study) and is intended provide an introduction to advanced computational techniques in spatial analysis, or advanced spatial data sicence.
 
-As data becomes central to decision-making across all sectors, the ability to move beyond simple description to robust and evidence-based analysis is essential for researchers and practitioners in geography and urban studies. Making sense of the complex patterns that define our world requires a firm understanding of the language of data. This module provides the essential grammar for that language and aims to equip students with the foundational quantitative skills needed to describe data, build models, and derive meaningful insights from numerical evidence.
+As with most computational analysis, spatial data science builds on two pillars: methods and data. In recent year, as AI (represented by deep learning and large-language models) has developed rapidly, numerous efficient techniques have been invented and open-sourced, which enables integration of heterougenous data. For example, we are now able to combine census data, remote sensing data, street-view imagery, and text data for understanding urban security or urban heat island effect on an ordnary laptop. Notably, (geospatial) foundation models, which are large, pre-trained AI models, are expected to become versatile bases for many specific tasks. It seems like we could model and predict almost everything in spatial analysis, even if we don't understand what foundation models are doing. However, this is not entirely true. So far, AI is not silver bullet and AI has halluciations. We need to understand the principle and limitations of various computational models; we need to be critical about methods and results; we need to ask critical questions for any task; and we need to link modelling with applications so as to inform policy and practice.
 
-To achieve this, the module is structured progressively across three core sections. The first section establishes the **fundamental toolkit** for quantitative analysts. Beginning with Exploratory Data Analysis, students will learn how to visualise, summarise, and critically interrogate datasets. This is followed by a rigorous grounding in the principles of statistical inference through hypothesis testing, and an introduction to the linear algebra that provides the mathematical architecture for many of the models used in modern data science.
+The module is structured progressively across three core sections. The first section introduces supervised machine learning and their applications. We will firstly introduce the principle and workflow of supervised machine learning, and then talk about tree-based methods and neural networks....
+
+**Following TBC**
 
 The second section builds upon this foundation to explore the core of statistical modelling: **understanding and quantifying relationships between variables**. Students will progress from *measuring correlations* to *building sophisticated regression models*. The curriculum covers the workhorse of social science, the Generalised Linear Model (GLM), before advancing to Multilevel Models, a critical technique for handling the nested and hierarchical data that is common in geographical and social research.
 

@@ -6,7 +6,12 @@ author:
 email: "XXX"
 date-as-string: "12 September 2025"
 from: markdown+emoji
-format: revealjs
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+
 ---
 # This week 
 

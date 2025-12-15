@@ -7,15 +7,16 @@ title: "Week 1"
 
 ## Introduction
 
-This week will introduce data types and key metrics for describing and representing data.
+This week will introduce definition and types of machine learning as well as the framework and metrics of supervised machine learning.
 
 ## Learning Objectives
 
 By the end of this week, you will be able to:
 
-1. Understand data types for quantitative research.
-2. Describe and represent data using key metrics.
-3. Visualise data with boxplot.
+1. Understand three types for machine learning.
+2. Appreciate *Garbage in, Garbage out* theorem.
+3. Understand the framework of supervised learning.
+4. Understand the common metrics of supervised learning.
 
 ## Lecture 
 
@@ -23,7 +24,7 @@ To access the lecture notes: [Lecture](week1_lecture.qmd)
 
 ## Quiz
 
-To access the quiz on Moodle, please check [Moodle page](https://moodle.ucl.ac.uk/course/view.php?id=53568).
+To access the quiz on Moodle, please check [Moodle page](https://moodle.ucl.ac.uk/course/view.php?id=53572).
 
 ## Practical
 

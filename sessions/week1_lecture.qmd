@@ -1,11 +1,10 @@
 ---
-title: "Exploratory Data Analysis #1"
-subtitle: "Understanding and describing data"
+title: "Introduction to machine learning"
+# subtitle: "Understanding and describing data"
 author: 
   - name: "Huanfa Chen"
 email: "huanfa.chen@ucl.ac.uk"
-# date-as-string: "12 September 2025"
-date: last-modified
+date-as-string: "13 December 2025"
 from: markdown+emoji
 format:
   revealjs:
@@ -13,261 +12,506 @@ format:
     slide-number: TRUE
     preview-links: auto
 ---
+# Term 1: FSDS, QM, and GIS
+
+## We survived and learnt a lot
+
+- Python programming
+- Data types, visualisation
+- Regression (Ordinary Least Square; Linear Mixed Effects; multicollinearity)
+- Dimensionality reduction
+- Clustering
+
 # This week 
 
-## Understanding and describing data 
-
-- Quantitative research is the process of collecting and analysing **numerical data** to describe, model, and predict variables of interest.
-
-- Garbage in, garbage out.
-
-::: {.notes}
-This lecture focuses on understanding and describing data. 
-
-:::
-
 ## Learning Objectives
+
 By the end of this lecture you should:
 
-1. Understand basic data types;
-2. Consider how to summarise and represent data.
+1. Understand the basics and classification of machine learning 
+2. Understand the differences between statistical methods and machine learning (estimation vs. prediction)
+3. Appreciate GIGO theorems in machine learning and data science 
+4. Understand the framework and metrics of supervised learning
 
+# Introduction to machine learning
 
-# Data types
+## ML as subset of AI
 
-## Four levels of measurements
-
-|                          | Nominal | Ordinal | Interval | Ratio |
-|--------------------------|:-------:|:-------:|:--------:|:-----:|
-| Categorizes and labels variables | ✔ | ✔ | ✔ | ✔ |
-| Ranks categories in order        |   | ✔ | ✔ | ✔ |
-| Has known, equal intervals       |   |   | ✔ | ✔ |
-| Has a true or meaningful zero    |   |   |   | ✔ |
-
-- Developed by psychologist Stanley Smith Stevens (1906 - 1973)
-
-## Nominal
-
-- Differentiates items based only on names; no order between them.
-- Also called **categorical data**
-- Example: colour, gender, country names
-- What can be said about them?
-  - *Equality*: ‘apple’ is not ‘pear’, ‘apple’ is ‘apple’
-  - *Mode*: the most common item
-
-## Ordinal
-
-- Allow for rank order, but not the relative degree of difference
-- Example: measurement of opinions
-  - *completely agree*
-  - *mostly agree*
-  - *neither degree nor disagree*
-  - *mostly disagree*
-  - *completely disagree*
-- What can be said about them?
-  - ✅ Equality; mode
-  - ✅ Median: middle-ranked item
-  - ❌ Differences between two levels; arithmetic mean
-
-## Interval
-
-- Allow for degree of difference between items, but not the ratio
-- The *zero* value is arbitrary
-- Example: Celsius temperature
-  - Definition: define 0°C & 100°C, and then separate them into 100 intervals.
-  - Depends on altitude/elevation 
-
-- What can be said about them?
-  - ✅ equality, mode, median
-  - ✅ addition, arithmetic mean
-  - ❌ ratio (*100°C is NOT twice 50°C*) 
-
-## Interval
-
-- Another example: longtitude & latitude coordinates
-- *The coordinate of 8 is twice as far as that of 4*? ❌
-
-## Ratio
-- Allow for **ratio** between items
-- The zero value is unique and non-arbitrary.
-- Example: mass, length, energy
-- What can be said about them?
-  - ✅ Equality, mode, median, arithmetic mean
-  - ✅ Ratio (*2kg is twice as heavy as 1kg*)
-
-## Notes
-- 'Encoding' does not change the nature of a measurement.
-- Gender variable (male, female, others) is NOMINAL.
-- If this variable is encodeded {male:0, female:1, others:2}, is it NOMINAL, or INTERVAL?
-
-## Another categorisation: numerical vs. categorical
-| Type                           | Category        | Notes                                          |
-| ------------------------------ | --------------- | ---------------------------------------------- |
-| Quantitative (numerical) data  | Discrete data   | Only in whole numbers, *e.g.* number of staffs |
-|                                | Continuous data | *e.g.* temperature, 23°C, 23.4°C               |
-| Qualitative (categorical) data | Nominal         | Same as nominal in 'Levels of measurement'     |
-|                                | Ordinal         | See above                                      |
-
-
-## Quiz time
-::: {.notes}
-Mentimeter quiz 
-
-:::
-
-# How do you descibe a ratio data? 
-
-## Key metrics
-:::: {.columns}
+:::: columns
 
 ::: {.column width="50%"}
 
-::: {.incremental}
-- Quantity
-- The middle
-- The spread
+- **Machine learning** (decision tree, random forest, k-means, etc.)  
+- **Deep learning** (deep neural networks)  
+- **Other AI tools**: graphical models, symbolic AI  
+- Note: we don’t distinguish ML/DL and consider NN as part of ML
+
 :::
+
+::: {.column width="50%"}
+
+<div style="text-align:center;">
+  <img src="images/ml_as_subset_of_ai.png" alt="ML is a subset of AI" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: Lecture slide (ML is a subset of AI)
+  </div>
+</div>
+
+:::
+::::
+
+---
+
+## Definition of machine learning   
+> **Arthur Samuel (1959)**: (Machine learning is the) field of study that gives computers the ability to learn without being explicitly programmed.  
+
+> **Tom Mitchell (1997)**: A computer program is said to learn from experience \(E\) with respect to some task \(T\) and some performance measure \(P\), if its performance on \(T\), as measured by \(P\), improves with experience \(E\).---
+
+## Three types of machine learning
+
+:::: columns
+
+::: {.column width="50%"}
+
+- **Supervised**: Learn to predict output given input (with labelled data).  
+- **Unsupervised**: Discover internal representation/structure of input (without labelled data).  
+- **Reinforcement**: Learn actions to maximise payoff (via interactions with the environment).
+
+:::
+
+::: {.column width="50%"}
+
+<div style="text-align:center;">
+  <img src="images/three_types_of_ml.png" alt="Three types of ML" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: Big Data and machine learning for businesses, Slideshare
+  </div>
+</div>
+
+:::
+::::
+
+---
+
+## Statistics VS. machine learning
+
+- With the powerful AI/ML algorithms, are statistical models (such as linear regression) still important?
+- What are the differences between statistical models and ML?
+
+## Statistical models
+
+- **Simple model structure**
+- **Good interpretation**: when X increases by 1 unit, y decreases 0.1 (by association/causality)
+- **Needing modest data size**
+- Having lots of **Assumptions**, need to test if they hold true
+- **Relatively low generalisation; low predictive accuracy**
+
+Linear regression model:  
+
+$$
+\hat{y}_i = \sum_k \beta_k x_{ik} + \beta_0
+$$
+
+## ML models  
+
+- Complex model structure
+- Limited interpretation (black-box)
+- Requiring a lot of data
+- Very few assumptions (but there are still assumptions!)  
+- **High predictive accuracy** (with proper model training)
+
+## Major difference: purposes
+
+|         |purpose             | example                    |
+|--------------|------------------|-------------|
+| statistics   | Estimate and interpret (often causal) relationships between variables, especially in social and economic research| Does smoking lead to lung cancer? Does family background affect the level of education?|
+| ML           | Make accurate predictions, especially when data size is large and predictive performance is the priority.| Predict tomorrow’s weather; automatically classify emails into spam and non-spam.|
+
+## Theorem 1: Garbage in, garbage out (GIGO) 
+
+- **Great algorithms + bad data = bad results**
+
+:::: columns
+
+::: {.column width="50%"}
+
+- Model performance is constrained by data quality.
+- Biased, noisy, or incomplete data leads to misleading predictions.
+
+:::
+
+::: {.column width="50%"}
+
+<div style="text-align:center;">
+  <img src="images/garbage_in_garbage_out.png" alt="Garbage in, garbage out" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: x.com/xschelling/status/954936528555429888
+  </div>
+</div>
 
 :::
 
 ::::
 
-## US city population
-:::: {.columns}
+## Good data = **large size + high quality**.
 
-::: {.column width="100%"}
+:::: columns
 
-::: {.incremental}
-- Quantity: 282 values
-- The middle: Mean 302869.3
-- The middle: Median 167744.5 (*Very different from mean*)
-- The middle: Mode 106433 (Useful? ❌) 
-- Should use mean or median? median is better than mean, as data is unlikely normal distributed
-:::
+::: {.column width="50%"}
+
+- Sufficient sample size to capture variability in the problem  
+- High-quality labels and accurate measurements.  
+- Representative of the population and application context.
 
 :::
 
+::: {.column width="50%"}
+
+<div style="text-align:center;">
+  <img src="images/benchmark_datasets_size.png" alt="Size of benchmark datasets" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: Internet
+  </div>
+</div>
+
+:::
 ::::
 
-## Variance: quantifying spread
-Denote city population by $[y_1, y_2, ..., y_n]$ and variance by $\sigma^2$
+---
 
-$$
-\begin{aligned}
-\sigma^2 &= \frac{\sum_{i=1}^{n} (y_i - \bar{y})^2}{n} \\
-&= \frac{(y_1 - \bar{y})^2 + (y_2 - \bar{y})^2 + \dots + (y_n - \bar{y})^2}{n}
-\end{aligned}
-$$
+## Data size and performance
 
-A large variance means considerable spreadedness in data.
+:::: columns
 
-## Standard deviation $\sigma$
-$$
-\begin{aligned}
-\text{Standard Deviation} = \sqrt{\text{Variance}}
-\end{aligned}
-$$
+::: {.column width="50%"}
 
-- Unit: if $y$ is in unit of meter (m), then St. Dev is in unit of m, variance in unit of $\text{m}^2$
+The performance of ML/DL increases rapidly with the size of the data:  
 
-## Summary of key metrics
-:::: {.columns}
+- Large neural nets benefit the most from big data.  
+- Medium and small neural nets also improve with more data.  
+- Traditional ML algorithms (e.g. random forest, SVM) may saturate earlier.  
 
-::: {.incremental}
-- Quantity
-- The middle: mean, median, mode
-- The spread: variance, standard deviation
-- *Visualising data is also important*: BOXPLOT!
-- *Please check two types of SPECIAL VALUES before computing these metrics.*
+As the **amount of data** increases, performance improves, especially for larger neural networks.
+
 :::
 
+::: {.column width="50%"}
+
+<div style="text-align:center;">
+  <img src="images/performance_vs_data_size.png" alt="Performance vs data size" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: TBC
+  </div>
+</div>
+
+:::
 ::::
 
-# Visualising data
-![]({{< var module.web >}}/sessions/L1_images/picture_worth_thousand_words.jpg){style="max-width:70%; max-height:70%; margin:auto;"}
+---
 
-## FT visual vocabulary
-- https://ft-interactive.github.io/visual-vocabulary/
-![]({{< var module.web >}}/sessions/L1_images/FT_visual_vocabulary.jpg){style="max-width:90%; max-height:90%; margin:auto;"}
+## Feature engineering & EDA (~90% time)
 
-## Boxplot for a dataset
-- Showing distribution of a dataset
+- Mostly **manual** rather than automated (no automated methods for EDA)
+- Domain knowledge from expertise is desirable
+- Using **Visualisation** to identify patterns & data relationship
+- Removing noisy or erroneous data  
+- Dealing with missing data  
+- Generating new features by combining existing ones
 
-![]({{< var module.web >}}/sessions/L1_images/Boxplot.jpg){style="width:70%; height:70%;"}
+## Example: Representation of geospatial locations in ML models
 
-## Boxplot for comparing multiple datasets
+- Long/lat  
+- Distance to POIs (train stations/schools).  
+- Using adjacency matrix between spatial units  
 
-## When boxplot fails?
-- When there are lots of 'outliers' in the data
-- What are 'Outliers'?
+# Supervised learning
 
-# Special values: null and outliers
+## Framework
 
-## *Null* values
-- Representing the absence of data or an unknow value
-- Different from *zero* or *a blank space*
-- Null values should be excluded before computing mean or std
+$$
+(x_i, y_i) \sim p(x, y) \text{ i.i.d.}
 
-## Null island in geography
-- long=0, lat=0. Not even an island!
-- It became famous because some software assigned "0,0" for long-lat when location is missing
-- Many events were mapped to this one, including lots on Strava
-- Source: wikipedia.org
+x_i \in \mathbb{R}^p
 
-![]({{< var module.web >}}/sessions/L1_images/map_null_island.jpg){height=300px} ![](images/image_null_island_2017.jpg){height=300px}
+\begin{cases}
+y_i \in \mathbb{R}, & \text{(regression)} \\
+y_i \in \mathcal{Y} \text{ (finite set)}, & \text{(classification)}
+\end{cases}
 
-## Outliers
-- A data point that differs significantly from other observations
-- There are three types of outliers
-- Please explain the rationale for removing any identified outliers, including the criteria and methods used
+\text{learn } f(x_i) \approx y_i 
 
-## Outliers
+\text{ such that } 
 
-| Type                           | Source                                                       | Handling                                                     |
-| ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Error Outliers**             | From mistakes in data collection/entry/measurement, e.g. a temperature sensor reading 500 °C | Should be corrected or removed                               |
-| **Irregular Pattern Outliers** |  |  |
-| **Influential Outliers**       |  |  |
+f(x) \approx y
+$$
 
-## Outliers
-| Type                           | Source                                                       | Handling                                                     |
-| ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Error Outliers**             |  |                                |
-| **Irregular Pattern Outliers** | Genuinely occur, but do not follow general pattern or relationship in the dataset, e.g. sudden spikes in sales in Black Friday | They might indicate unusual events or anomalies worth investigating. If the purpose is to study overall pattern, they should be removed |
-| **Influential Outliers**       |  |  |
+## Regression vs. classification
 
+|                           | Regression                                          | Classification                                           |
+|---------------------------|-----------------------------------------------------|----------------------------------------------------------|
+| Target variable type      | Continuous numeric value \(y \in \mathbb{R}\)      | Discrete label \(y \in \mathcal{Y}\) (finite set)        |
+| Task                 | Predict “how much” / “how many”                    | Predict “which class” / “which category”                |
+| Intuition            | Find a 'line' close to all points      | Find a 'boundary' between classis     |
+| Example                   | Predicting house prices from features              | Predicting spam vs. not spam for an email               |
 
-## Outliers
-| Type                           | Source                                                       | Handling                                                     |
-| ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Error Outliers**             |  |                                |
-| **Irregular Pattern Outliers** |  |  |
-| **Influential Outliers**       | Appear extreme but are integral to the underlying pattern or model, e.g. NYC in US city population data | Should keep them, as removing them could distort the analysis or overlook important features of the data |
+## Example - linear regression
 
-## Detecting outlier: interquartile range (IQR)
-![]({{< var module.web >}}/sessions/L1_images/outlier_detection_Tukey_Fences.jpg)
+** Linear regression code here **
 
-## Quiz: which type of outliers?
-- error vs. irregular pattern vs. influential
+## Terms
 
-1. In building height data, 10-storey building with 1m height
-1. In gender ratios of countries data, Vatican City with gender ratio of 7:1
-1. In UK city GDP data, GDP of Greater London
+- Algorithms: procedure that runs on data to create a *model*. [(linear regression)]{style="color:blue"}
+- Model: an output by algorithm and data. [($\hat{y}_i = \sum_k \beta_k x_{ik} + \beta_0$)]{style="color:blue"}
+- Metric: [(R2)]{style="color:blue"}
+- Hyperparameter: algorithm settings, predefined by user.[None]{style="color:blue"}
+- Parameter: [(coefficients)]{style="color:blue"}
+- Model training: to estimate the cofficients
 
-## Summary: describing a dataset
-- Key metrics
-- Null values and outliers (and handle them!)
-- Visualising data
+## Challenges
+
+1. To select evaluation metrics
+2. To design workflow (so that the model generalises well and avoids overfitting)
+
+## Metrics for regression
+
+| Row     | RMSE                                        | R²                                                  | MAE                                         | MAPE                                                        |
+|--------:|---------------------------------------------|-----------------------------------------------------|---------------------------------------------|-------------------------------------------------------------|
+| formula | $\mathrm{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}$ | $R^2 = 1 - \dfrac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}$ | $\mathrm{MAE} = \frac{1}{n}\sum_{i=1}^{n}\lvert y_i - \hat{y}_i\rvert$ | $\mathrm{MAPE} = \frac{100}{n}\sum_{i=1}^{n}\left\lvert \frac{y_i - \hat{y}_i}{y_i} \right\rvert$ |
+| unit    | Same unit as target $y$                     | Dimensionless (between 0 and 1 for most cases)   | Same unit as target $y$                     | Percent (%)                                                 |
+| notes   | Penalises large errors more; sensitive to outliers | Measures proportion of variance explained by the model; can be negative if model is worse than $y_i=\bar{y}$ | More robust to outliers than RMSE; interpretable as average absolute error | sensitive to very small $y_i$; relative error |
+
+## Metrics for regression
+
+- Using RMSE in most cases
+- In sklearn and XGBoost
+- Difference between R2 for OLS ([within [0,1]]{style="color:blue"}) vs. R2 for regression ([<=1, can be negative]{style="color:blue"})
+
+## Metrics for classification (binary)
+
+<div style="text-align:center;">
+  <img src="images/confusion_matrix.png" alt="ML is a subset of AI" style="max-width:60%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: COMS4995-s20
+  </div>
+</div>
+
+$Accuracy=\frac{TP+TN}{TP+TN+FP+FN}$
+
+- Selecting *Positive* label: often the minority class
+
+## Example using Breast Cancer dataset
+
+```python
+from sklearn.metrics import confusion_matrix, plot_confusion_matrix
+# load data and split
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, stratify=data.target, random_state=0)
+
+lr = LogisticRegression().fit(X_train, y_train)
+y_pred = lr.predict(X_test)
+
+print(confusion_matrix(y_test, y_pred))
+print(lr.score(X_test, y_test))
+```
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+X = data.data
+y = data.target
+
+# 1) Proportion of 0/1 classes in the full dataset
+unique, counts = np.unique(y, return_counts=True)
+proportions = counts / len(y)
+
+for cls, cnt, prop in zip(unique, counts, proportions):
+    print(f"class {cls}: count = {cnt}, proportion = {prop:.3f}")
+
+# 2) Names of X variables (feature names)
+print("\nFeature names:")
+for name in data.feature_names:
+    print(name)
+```
+
+## Limitation of accuracy (Accuracy paradox)
+
+- **Scenario: Data with 90% negatives** (imbalanced data)
+
+- A majority strategy that predicts everything as negative will get 90% accuracy.
+
+- Different models can have the same accuracy (0.9) but make very different types of errors.
+
+  - y_pred_1: Predicts all negative (90 TN, 0 TP)
+  - y_pred_2: Predicts some positives correctly but misses others
+  - y_pred_3: A mix of errors
+
+## Limitation of accuracy (Accuracy paradox)
+```{python}
+#| echo: false
+from sklearn.metrics import ConfusionMatrixDisplay
+from matplotlib.colors import Normalize
+
+y_true = np.zeros(100, dtype=int)
+y_true[:10] = 1
+y_pred_1 = np.zeros(100, dtype=int)
+y_pred_2 = y_true.copy()
+y_pred_2[10:20] = 1
+y_pred_3 = y_true.copy()
+y_pred_3[5:15] = 1 - y_pred_3[5:15]
+
+fig, axes = plt.subplots(1, 3)
+for i, (ax, y_pred) in enumerate(zip(axes, [y_pred_1, y_pred_2, y_pred_3])):
+    ConfusionMatrixDisplay(confusion_matrix(y_true, y_pred), display_labels=['N', 'P']).plot(ax=ax, cmap='gray_r')
+    ax.set_title("y_pred_{}".format(i + 1))
+    ax.images[-1].colorbar.remove()
+    ax.images[0].set_norm(Normalize(vmin=0, vmax=100))
+#plt.tight_layout()
+# plt.savefig("images/problems_with_accuracy.png")
+```
+
+## Precision, Recall, F1-score, AUC
+
+- **Precision** (Positive Predicted Value): $\frac{TP}{TP+FP}$.
+- **Recall** (Sensitivity, True Positive Rate): $\frac{TP}{TP+FN}$
+- **F1-score** (Harmonic mean): $F=2\frac{\text{precision}\cdot \text{recall}}{\text{precision}+\text{recall}}$
+
+## Trade-off between precision and recall
+
+- When precision increases, recall decreases. Vice versa.
+
+```{python}
+#| echo: false
+#| fig-cap: "Precision–Recall curve for SVC and Random Forest"
+
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (
+    f1_score,
+    average_precision_score,
+)
+
+# load data and split
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, stratify=data.target, random_state=0
+)
+
+# 1. Train Logistic Regression
+lr = LogisticRegression(max_iter=10000)  # larger max_iter for convergence
+lr.fit(X_train, y_train)
+
+# 2. Train Random Forest
+rf = RandomForestClassifier(
+    n_estimators=100,
+    random_state=0
+)
+rf.fit(X_train, y_train)
+
+# Plot PR curve for lr
+pr_svc = plot_precision_recall_curve(lr, X_test, y_test, name='LR')
+
+# Plot PR curve for RandomForest on the same axes
+pr_rf = plot_precision_recall_curve(rf, X_test, y_test, ax=plt.gca(),
+name='RandomForestClassifier')
+
+plt.title("Precision–Recall Curve")
+plt.show()
+```
+
+## ROC Curve
+
+- Receiver Operating Characteristic (ROC) curve plots *True Positive Rate* vs. *False Positive Rate*.
+
+```{python}
+#| echo: false
+from sklearn.metrics import plot_roc_curve
+ax = plt.gca()
+
+plot_roc_curve(lr, X_test, y_test, ax=ax, name='LR')
+plot_roc_curve(rf, X_test, y_test, ax=ax, name='rf')
+# Add identity line (random classifier)
+plt.plot([0, 1], [0, 1], linestyle='--', color='grey', label='Random')
+plt.title("ROC Curve: Logistic Regression vs Random Forest")
+plt.show()
+```
+
+## AUC (Area under ROC Curve)
+
+- The integral of the ROC curve
+- AUC is always 0.5 for random predictions
+
+```{python}
+#| echo: false
+# Import packages
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import roc_curve, auc
+import matplotlib.pyplot as plt
+
+# Load data and split
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, stratify=data.target, random_state=0
+)
+
+# Train Random Forest only
+rf = RandomForestClassifier(n_estimators=100, random_state=0)
+rf.fit(X_train, y_train)
+
+# Compute ROC for Random Forest
+y_score = rf.predict_proba(X_test)[:, 1]
+fpr, tpr, thresholds = roc_curve(y_test, y_score)
+roc_auc = auc(fpr, tpr)
+
+# Plot ROC curve for Random Forest and fill the area under the curve in red
+plt.plot(fpr, tpr, color='darkorange', lw=2,
+         label='Random Forest (AUC = %0.2f)' % roc_auc)
+plt.fill_between(fpr, tpr, 0, alpha=0.3, color='red')
+
+# Identity (random) line
+plt.plot([0, 1], [0, 1], linestyle='--', color='grey', label='Random')
+
+plt.title("ROC Curve: Random Forest")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.legend()
+plt.show()
+```
+
+## Averaging: aggregating metrics across classes
+
+- **Macro average**: \frac{1}{|L|}\sum_{l\in L}R(y_{l},\hat{y}_{l}) (Unweighted mean of per-class scores).
+
+- **Weighted average**: \frac{1}{n}\sum_{l\in L}n_{l}R(y_{l},\hat{y}_{l}) (Weighted by support).
+
+- TBC
+
+## Picking a metric
+
+* Real-world problems are rarely balanced.
+* Accuracy is rarely what you want.
+* Find the right criterion for the specific task.
+* Decide between emphasis on recall or precision.
+* Identify which classes are important.
+
+## Generalising to multi-class
+
+---
 
 # Overview 
 We've covered: 
 
-- Data types: levels of measurements; quantitative & qualitative
-- Key metrics 
-- Null values and outliers
-- Visualising data
+- Introduction to machine learning
+- Types of machine learning (Supervised, unsupervised, reinforcement) 
+- Garbage in, garbage out
+- Framework and evaluation metrics of supervised learning
 
 # Practical 
-Practical will focus on setting up Python environment and describing a dataset.
 
+- Practical will focus on using sklearn for supervised learning.
 - Have questions prepared!
