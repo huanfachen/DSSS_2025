@@ -675,7 +675,7 @@
     "href": "sessions/week1_lecture.html#learning-objectives",
     "title": "Introduction to machine learning",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this lecture you should:\n\nUnderstand the basics and classification of machine learning\nUnderstand the differences between statistical methods and machine learning (estimation vs. prediction)\nAppreciate GIGO theorems in machine learning and data science\nUnderstand the framework and metrics of supervised learning"
+    "text": "Learning Objectives\nBy the end of this lecture you should:\n\nUnderstand the basics and classifications of machine learning\nUnderstand the differences between statistical methods and machine learning (estimation vs. prediction)\nAppreciate GIGO theorems in machine learning and data science"
   },
   {
     "objectID": "sessions/week1_lecture.html#ml-as-subset-of-ai",
@@ -692,46 +692,207 @@
     "text": "Definition of machine learning\n\nArthur Samuel (1959): (Machine learning is the) field of study that gives computers the ability to learn without being explicitly programmed.\n\n\nTom Mitchell (1997): A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E."
   },
   {
-    "objectID": "sessions/week1_lecture.html#three-types-of-machine-learning",
-    "href": "sessions/week1_lecture.html#three-types-of-machine-learning",
+    "objectID": "sessions/week1_lecture.html#what-is-machine-learning",
+    "href": "sessions/week1_lecture.html#what-is-machine-learning",
     "title": "Introduction to machine learning",
-    "section": "Three types of machine learning",
-    "text": "Three types of machine learning\n\n\n\nSupervised: Learn to predict output given input (with labelled data).\n\nUnsupervised: Discover internal representation/structure of input (without labelled data).\n\nReinforcement: Learn actions to maximise payoff (via interactions with the environment).\n\n\n\n\n\nImage Credit: Big Data and machine learning for businesses, Slideshare"
+    "section": "What is Machine Learning?",
+    "text": "What is Machine Learning?\n\nExtracting knowledge from data\nRelying on data and algorithms\nClosely related to statistics but distinct from linear models\nFocus on prediction rather than estimating relationships or interpretation"
   },
   {
-    "objectID": "sessions/week1_lecture.html#statistics-vs.-machine-learning",
-    "href": "sessions/week1_lecture.html#statistics-vs.-machine-learning",
+    "objectID": "sessions/week1_lecture.html#examples-facebook",
+    "href": "sessions/week1_lecture.html#examples-facebook",
     "title": "Introduction to machine learning",
-    "section": "Statistics VS. machine learning",
-    "text": "Statistics VS. machine learning\n\nWith the powerful AI/ML algorithms, are statistical models (such as linear regression) still important?\nWhat are the differences between statistical models and ML?"
+    "section": "Examples: Facebook",
+    "text": "Examples: Facebook\n\n\n\n\nMachine learning in news feed ranking\nContent selection and targeting\nAds and recommendations"
   },
   {
-    "objectID": "sessions/week1_lecture.html#statistical-models",
-    "href": "sessions/week1_lecture.html#statistical-models",
+    "objectID": "sessions/week1_lecture.html#examples-facebook-cont.",
+    "href": "sessions/week1_lecture.html#examples-facebook-cont.",
     "title": "Introduction to machine learning",
-    "section": "Statistical models",
-    "text": "Statistical models\n\nSimple model structure\nGood interpretation: when X increases by 1 unit, y decreases 0.1 (by association/causality)\nNeeding modest data size\nHaving lots of Assumptions, need to test if they hold true\nRelatively low generalisation; low predictive accuracy\n\nLinear regression model:\n\\[\n\\hat{y}_i = \\sum_k \\beta_k x_{ik} + \\beta_0\n\\]"
+    "section": "Examples: Facebook (cont.)",
+    "text": "Examples: Facebook (cont.)\n\n\n\n\nFace detection and recognition\nPhoto organization"
   },
   {
-    "objectID": "sessions/week1_lecture.html#ml-models",
-    "href": "sessions/week1_lecture.html#ml-models",
+    "objectID": "sessions/week1_lecture.html#examples-facebook-cont.-1",
+    "href": "sessions/week1_lecture.html#examples-facebook-cont.-1",
     "title": "Introduction to machine learning",
-    "section": "ML models",
-    "text": "ML models\n\nComplex model structure\nLimited interpretation (black-box)\nRequiring a lot of data\nVery few assumptions (but there are still assumptions!)\n\nHigh predictive accuracy (with proper model training)"
+    "section": "Examples: Facebook (cont.)",
+    "text": "Examples: Facebook (cont.)\n\n\n\n\nPhoto selection and layout"
   },
   {
-    "objectID": "sessions/week1_lecture.html#major-difference-purposes",
-    "href": "sessions/week1_lecture.html#major-difference-purposes",
+    "objectID": "sessions/week1_lecture.html#examples-amazon",
+    "href": "sessions/week1_lecture.html#examples-amazon",
     "title": "Introduction to machine learning",
-    "section": "Major difference: purposes",
-    "text": "Major difference: purposes\n\n\n\n\n\n\n\n\n\npurpose\nexample\n\n\n\n\nstatistics\nEstimate and interpret (often causal) relationships between variables, especially in social and economic research\nDoes smoking lead to lung cancer? Does family background affect the level of education?\n\n\nML\nMake accurate predictions, especially when data size is large and predictive performance is the priority.\nPredict tomorrow’s weather; automatically classify emails into spam and non-spam."
+    "section": "Examples: Amazon",
+    "text": "Examples: Amazon\n\n\n\n\nProduct ranking\nPersonalised recommendations\nAds selection"
   },
   {
-    "objectID": "sessions/week1_lecture.html#theorem-1-garbage-in-garbage-out-gigo",
-    "href": "sessions/week1_lecture.html#theorem-1-garbage-in-garbage-out-gigo",
+    "objectID": "sessions/week1_lecture.html#examples-amazon-cont.",
+    "href": "sessions/week1_lecture.html#examples-amazon-cont.",
     "title": "Introduction to machine learning",
-    "section": "Theorem 1: Garbage in, garbage out (GIGO)",
-    "text": "Theorem 1: Garbage in, garbage out (GIGO)\n\nGreat algorithms + bad data = bad results\n\n\n\n\nModel performance is constrained by data quality.\nBiased, noisy, or incomplete data leads to misleading predictions.\n\n\n\n\n\nImage Credit: x.com/xschelling/status/954936528555429888"
+    "section": "Examples: Amazon (cont.)",
+    "text": "Examples: Amazon (cont.)\n\n\n\n\nSeller selection\nDefault choices\nRelated products"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#science-applications",
+    "href": "sessions/week1_lecture.html#science-applications",
+    "title": "Introduction to machine learning",
+    "section": "Science Applications",
+    "text": "Science Applications\n\n\n\n\nPersonalised cancer treatment\nMedical diagnosis\nDrug discovery\nHiggs boson discovery\nExoplanet detection"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#types-of-machine-learning",
+    "href": "sessions/week1_lecture.html#types-of-machine-learning",
+    "title": "Introduction to machine learning",
+    "section": "Types of Machine Learning",
+    "text": "Types of Machine Learning\n\nSupervised Learning: Learn from input-output pairs (with labelled data)\nUnsupervised Learning: Discover structure in data (without labelled data)\nReinforcement Learning: Learn through interaction with environment (with an actual/simulated environment)"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#supervised-learning",
+    "href": "sessions/week1_lecture.html#supervised-learning",
+    "title": "Introduction to machine learning",
+    "section": "Supervised Learning",
+    "text": "Supervised Learning\n\\[\n\\begin{aligned}\n(x_i, y_i) &\\sim p(x, y) \\text{ i.i.d.} \\\\\nx_i &\\in \\mathbb{R}^n \\\\\ny_i &\\in \\mathbb{R} \\\\\nf(x_i) &\\approx y_i\n\\end{aligned}\n\\]\nLearn a function \\(f\\) from input-output pairs to predict on new data."
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#generalisation-to-unseen-data",
+    "href": "sessions/week1_lecture.html#generalisation-to-unseen-data",
+    "title": "Introduction to machine learning",
+    "section": "Generalisation to unseen data",
+    "text": "Generalisation to unseen data\n\nGoal: \\(f(x_i) \\approx y_i\\) on training data\nMore important: \\(f(x) \\approx y\\) on new data\nCore distinction: not just function approximation, but prediction on unseen data\nAvoiding overfitting to training data is key"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#examples-of-supervised-learning",
+    "href": "sessions/week1_lecture.html#examples-of-supervised-learning",
+    "title": "Introduction to machine learning",
+    "section": "Examples of Supervised Learning",
+    "text": "Examples of Supervised Learning\n\nSpam detection\nMedical diagnosis\nAd click prediction"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#unsupervised-learning",
+    "href": "sessions/week1_lecture.html#unsupervised-learning",
+    "title": "Introduction to machine learning",
+    "section": "Unsupervised Learning",
+    "text": "Unsupervised Learning\n\\[\nx_i \\sim p(x) \\text{ i.i.d.}\n\\]\nLearn about the distribution \\(p\\):\n\nClustering\nDimensionality reduction\nTopic modeling\nOutlier detection"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#other-types-of-learning",
+    "href": "sessions/week1_lecture.html#other-types-of-learning",
+    "title": "Introduction to machine learning",
+    "section": "Other Types of Learning",
+    "text": "Other Types of Learning\n\nSemi-supervised\nActive Learning\nForecasting\nTransfer learning\nIf you understand supervised/unsupervised/reinforcement learning, others are easier to grasp"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#dont-read-a-book-by-its-name",
+    "href": "sessions/week1_lecture.html#dont-read-a-book-by-its-name",
+    "title": "Introduction to machine learning",
+    "section": "Don’t read a book by its name",
+    "text": "Don’t read a book by its name\n\nClassifications of neighbourhoods (e.g. London output area classification) that are actually clustering\nAnomaly detection methods can be unsupervised or supervised learning\nForecasting can be done with lagged features (via supervised learning), or with time series data (via time series analysis), or both"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#what-does-llm-belong-to",
+    "href": "sessions/week1_lecture.html#what-does-llm-belong-to",
+    "title": "Introduction to machine learning",
+    "section": "What does LLM belong to?",
+    "text": "What does LLM belong to?\n\n\n\nImage Credit: medium.com"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#classification-vs.-regression",
+    "href": "sessions/week1_lecture.html#classification-vs.-regression",
+    "title": "Introduction to machine learning",
+    "section": "Classification vs. Regression",
+    "text": "Classification vs. Regression\n\n\nClassification\n\nTarget \\(y\\) is discrete\nExample: Is this patient sick?\n\n\nRegression\n\nTarget \\(y\\) is continuous\nExample: How long to recover?"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#relationship-to-statistics",
+    "href": "sessions/week1_lecture.html#relationship-to-statistics",
+    "title": "Introduction to machine learning",
+    "section": "Relationship to Statistics",
+    "text": "Relationship to Statistics\n\n\nStatistics\n\nModel first\nEstimation emphasis\nYes/no questions\nWith many assumptions, need to test\nInterpretation is key\ne.g. Does smoking lead to lung cancer?\n\n\nMachine Learning\n\nData first\nPrediction emphasis\nFuture predictions\nFew assumptions (but not assumption-free)\nInterpretation isn’t primary\ne.g. Predict tomorrow’s weather"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#following-statements-are-not-recommended",
+    "href": "sessions/week1_lecture.html#following-statements-are-not-recommended",
+    "title": "Introduction to machine learning",
+    "section": "Following statements are not recommended",
+    "text": "Following statements are not recommended\n\n“Linear regression is not needed anymore because of machine learning.”\n“Machine learning is just a fad; statistics is more important.”\n“Machine learning models are black boxes; we can’t interpret them at all.”\n“Machine learning models are as interpretable as linear models.”\n“Machine learning models have no assumptions.”"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#guiding-principles-goal-considerations",
+    "href": "sessions/week1_lecture.html#guiding-principles-goal-considerations",
+    "title": "Introduction to machine learning",
+    "section": "Guiding Principles: Goal Considerations",
+    "text": "Guiding Principles: Goal Considerations\n\nDefine the goal clearly\nDefine how to measure success\nThink about context and baseline\nAsk: what’s the benefit?"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#thinking-in-context",
+    "href": "sessions/week1_lecture.html#thinking-in-context",
+    "title": "Introduction to machine learning",
+    "section": "Thinking in Context",
+    "text": "Thinking in Context\n\nWhat do you want to achieve?\nWhat’s the easiest way?\nWhat improvement over baseline do you need?"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#good-and-bad-substitutes",
+    "href": "sessions/week1_lecture.html#good-and-bad-substitutes",
+    "title": "Introduction to machine learning",
+    "section": "Good and Bad Substitutes",
+    "text": "Good and Bad Substitutes\n\nChoose metrics carefully\nSubstitute metrics can be misleading\nOptimize for the right goal\nUnderstand side effects"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#communicating-results",
+    "href": "sessions/week1_lecture.html#communicating-results",
+    "title": "Introduction to machine learning",
+    "section": "Communicating Results",
+    "text": "Communicating Results\n\nExplain why your approach works\nCommunicate uncertainty\nShow impact and limitations\nConvince stakeholders"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#explainable-results",
+    "href": "sessions/week1_lecture.html#explainable-results",
+    "title": "Introduction to machine learning",
+    "section": "Explainable Results",
+    "text": "Explainable Results\n\n\n\n\nUsers want to know why recommendations are made\nExplainability improves engagement\nImportant for trust and transparency"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#ethical-considerations",
+    "href": "sessions/week1_lecture.html#ethical-considerations",
+    "title": "Introduction to machine learning",
+    "section": "Ethical Considerations",
+    "text": "Ethical Considerations\n\n\n\n\nBias in risk assessments\nFairness in automated decisions\nTransparency and accountability"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#ethics-its-in-the-application",
+    "href": "sessions/week1_lecture.html#ethics-its-in-the-application",
+    "title": "Introduction to machine learning",
+    "section": "Ethics: It’s in the Application!",
+    "text": "Ethics: It’s in the Application!\n\nUnderstand biases in your system\nConsider the impact of predictions\nUse algorithms responsibly\nSame algorithm, different outcomes"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#data-and-data-collection",
+    "href": "sessions/week1_lecture.html#data-and-data-collection",
+    "title": "Introduction to machine learning",
+    "section": "Data and Data Collection",
+    "text": "Data and Data Collection\n\nCritical component of ML\nMore data usually helps (if from right source)\nConsider marginal cost vs. marginal benefit"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#free-vs-expensive-data",
+    "href": "sessions/week1_lecture.html#free-vs-expensive-data",
+    "title": "Introduction to machine learning",
+    "section": "Free vs Expensive Data",
+    "text": "Free vs Expensive Data\n\n\nFree Data\n\nOpen data from gov and census, often aggregated (e.g. ONS, London Fire Brigade, NASA)\nOpen data from companies (e.g. Google Street View) (Read the license first)\nSynthetic data\nWeb scraping (be careful with legality and ethics)\n\n\nExpensive Data\n\nIndividual data (e.g. health records)\nMobile phone data (high cost)\nUser survey\nHigh-resolution imagery (e.g. satellite, aerial, drone)"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#big-data-considerations",
+    "href": "sessions/week1_lecture.html#big-data-considerations",
+    "title": "Introduction to machine learning",
+    "section": "Big Data Considerations",
+    "text": "Big Data Considerations\n\nMore data can be more expensive to work with\nSubsample to RAM when possible (512GB available in cloud)\nRuntime and analyst time matter\nAlways try with a small sample first"
+  },
+  {
+    "objectID": "sessions/week1_lecture.html#theorem-garbage-in-garbage-out-gigo",
+    "href": "sessions/week1_lecture.html#theorem-garbage-in-garbage-out-gigo",
+    "title": "Introduction to machine learning",
+    "section": "Theorem: Garbage in, garbage out (GIGO)",
+    "text": "Theorem: Garbage in, garbage out (GIGO)\n\nGreat algorithms + bad data = bad results\n\n\n\n\nModel performance is constrained by data quality.\nBiased, noisy, or incomplete data leads to misleading predictions.\n\n\n\n\n\nImage Credit: x.com/xschelling/status/954936528555429888"
   },
   {
     "objectID": "sessions/week1_lecture.html#good-data-large-size-high-quality.",
@@ -745,147 +906,21 @@
     "href": "sessions/week1_lecture.html#data-size-and-performance",
     "title": "Introduction to machine learning",
     "section": "Data size and performance",
-    "text": "Data size and performance\n\n\nThe performance of ML/DL increases rapidly with the size of the data:\n\nLarge neural nets benefit the most from big data.\n\nMedium and small neural nets also improve with more data.\n\nTraditional ML algorithms (e.g. random forest, SVM) may saturate earlier.\n\nAs the amount of data increases, performance improves, especially for larger neural networks.\n\n\n\n\nImage Credit: TBC"
+    "text": "Data size and performance\n\n\nThe performance of ML/DL increases rapidly with the size of the data:\n\nLarge neural nets benefit the most from big data.\n\nMedium and small neural nets also improve with more data.\n\nTraditional ML algorithms (e.g. random forest, SVM) may saturate earlier.\n\n\n\n\n\nPerformance vs data size for ML/DL models"
   },
   {
     "objectID": "sessions/week1_lecture.html#feature-engineering-eda-90-time",
     "href": "sessions/week1_lecture.html#feature-engineering-eda-90-time",
     "title": "Introduction to machine learning",
     "section": "Feature engineering & EDA (~90% time)",
-    "text": "Feature engineering & EDA (~90% time)\n\nMostly manual rather than automated (no automated methods for EDA)\nDomain knowledge from expertise is desirable\nUsing Visualisation to identify patterns & data relationship\nRemoving noisy or erroneous data\n\nDealing with missing data\n\nGenerating new features by combining existing ones"
+    "text": "Feature engineering & EDA (~90% time)\n\nMostly manual rather than automated (no automated methods for EDA)\nDomain knowledge from expertise is desirable\nUsing visualisation to identify patterns & data relationship\nRemoving noisy or erroneous data\n\nDealing with missing data\n\nGenerating new features by combining existing ones"
   },
   {
     "objectID": "sessions/week1_lecture.html#example-representation-of-geospatial-locations-in-ml-models",
     "href": "sessions/week1_lecture.html#example-representation-of-geospatial-locations-in-ml-models",
     "title": "Introduction to machine learning",
     "section": "Example: Representation of geospatial locations in ML models",
-    "text": "Example: Representation of geospatial locations in ML models\n\nLong/lat\n\nDistance to POIs (train stations/schools).\n\nUsing adjacency matrix between spatial units"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#framework",
-    "href": "sessions/week1_lecture.html#framework",
-    "title": "Introduction to machine learning",
-    "section": "Framework",
-    "text": "Framework\n\\[\n\\begin{aligned}\n(x_i, y_i) &\\sim p(x, y) \\text{ i.i.d.} \\\\\nx_i &\\in \\mathbb{R}^p \\\\\ny_i &\\in\n\\begin{cases}\n\\mathbb{R}, & \\text{(regression)} \\\\\n\\mathcal{Y} \\text{ (finite set)}, & \\text{(classification)}\n\\end{cases} \\\\\n\\text{learn } f(x_i) &\\approx y_i \\\\\n\\text{such that } f(x) &\\approx y\n\\end{aligned}\n\\]"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#regression-vs.-classification",
-    "href": "sessions/week1_lecture.html#regression-vs.-classification",
-    "title": "Introduction to machine learning",
-    "section": "Regression vs. classification",
-    "text": "Regression vs. classification\n\n\n\n\n\n\n\n\n\nRegression\nClassification\n\n\n\n\nTarget variable type\nContinuous numeric value (y )\nDiscrete label (y ) (finite set)\n\n\nTask\nPredict “how much” / “how many”\nPredict “which class” / “which category”\n\n\nIntuition\nFind a ‘line’ close to all points\nFind a ‘boundary’ between classis\n\n\nExample\nPredicting house prices from features\nPredicting spam vs. not spam for an email"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#example---linear-regression",
-    "href": "sessions/week1_lecture.html#example---linear-regression",
-    "title": "Introduction to machine learning",
-    "section": "Example - linear regression",
-    "text": "Example - linear regression\n** Linear regression code here **"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#terms",
-    "href": "sessions/week1_lecture.html#terms",
-    "title": "Introduction to machine learning",
-    "section": "Terms",
-    "text": "Terms\n\nAlgorithms: procedure that runs on data to create a model. (linear regression)\nModel: an output by algorithm and data. (\\(\\hat{y}_i = \\sum_k \\beta_k x_{ik} + \\beta_0\\))\nMetric: (R2)\nHyperparameter: algorithm settings, predefined by user.None\nParameter: (coefficients)\nModel training: to estimate the cofficients"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#challenges",
-    "href": "sessions/week1_lecture.html#challenges",
-    "title": "Introduction to machine learning",
-    "section": "Challenges",
-    "text": "Challenges\n\nTo select evaluation metrics\nTo design workflow (so that the model generalises well and avoids overfitting)"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#metrics-for-regression",
-    "href": "sessions/week1_lecture.html#metrics-for-regression",
-    "title": "Introduction to machine learning",
-    "section": "Metrics for regression",
-    "text": "Metrics for regression\nHere’s the updated table with the leading “RMSE =”, “R² =”, etc. removed from the formula column:\n\n\n\n\n\n\n\n\n\n\nformula\nunit\nnotes\n\n\n\n\nRMSE\n\\(\\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2}\\)\nSame unit as target \\(y\\)\nPenalises large errors more; sensitive to outliers\n\n\nR²\n\\(1 - \\dfrac{\\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2}{\\sum_{i=1}^{n}(y_i - \\bar{y})^2}\\)\nDimensionless (between 0 and 1 for most cases)\nMeasures proportion of variance explained by the model; can be negative if model is worse than \\(y_i=\\bar{y}\\)\n\n\nMAE\n\\(\\frac{1}{n}\\sum_{i=1}^{n}\\lvert y_i - \\hat{y}_i\\rvert\\)\nSame unit as target \\(y\\)\nMore robust to outliers than RMSE; interpretable as average absolute error\n\n\nMAPE\n\\(\\frac{100}{n}\\sum_{i=1}^{n}\\left\\lvert \\frac{y_i - \\hat{y}_i}{y_i} \\right\\rvert\\)\nPercent (%)\nsensitive to very small \\(y_i\\); relative error"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#metrics-for-regression-1",
-    "href": "sessions/week1_lecture.html#metrics-for-regression-1",
-    "title": "Introduction to machine learning",
-    "section": "Metrics for regression",
-    "text": "Metrics for regression\n\nUsing RMSE in most cases\nIn sklearn and XGBoost\nDifference between R2 for OLS (within [0,1]) vs. R2 for regression (&lt;=1, can be negative)"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#metrics-for-classification-binary",
-    "href": "sessions/week1_lecture.html#metrics-for-classification-binary",
-    "title": "Introduction to machine learning",
-    "section": "Metrics for classification (binary)",
-    "text": "Metrics for classification (binary)\n\n\n\nImage Credit: COMS4995-s20\n\n\n\\(Accuracy=\\frac{TP+TN}{TP+TN+FP+FN}\\)\n\nSelecting Positive label: often the minority class"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#example-using-breast-cancer-dataset",
-    "href": "sessions/week1_lecture.html#example-using-breast-cancer-dataset",
-    "title": "Introduction to machine learning",
-    "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\nfrom sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay\nfrom sklearn.datasets import load_breast_cancer\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import (\n    f1_score,\n    average_precision_score,\n)\nimport numpy as np\n\n# load data and split\ndata = load_breast_cancer()\nX_train, X_test, y_train, y_test = train_test_split(\n    data.data, data.target, stratify=data.target, random_state=0)\n\nlr = LogisticRegression().fit(X_train, y_train)\ny_pred = lr.predict(X_test)\n\n# print(confusion_matrix(y_test, y_pred))\nConfusionMatrixDisplay(confusion_matrix(y_test, y_pred), display_labels=['N', 'P']).plot(cmap='gray_r')\nprint(lr.score(X_test, y_test))\n\n0.9300699300699301\n\n\n\n\n\n\n\n\n\n\n\nclass malignant: # = 212, 37.258%\nclass benign: # = 357, 62.742%"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#limitation-of-accuracy-accuracy-paradox",
-    "href": "sessions/week1_lecture.html#limitation-of-accuracy-accuracy-paradox",
-    "title": "Introduction to machine learning",
-    "section": "Limitation of accuracy (Accuracy paradox)",
-    "text": "Limitation of accuracy (Accuracy paradox)\n\nScenario: Data with 90% negatives (imbalanced data)\nA majority strategy that predicts everything as negative will get 90% accuracy.\nDifferent models can have the same accuracy (0.9) but make very different types of errors.\n\ny_pred_1: Predicts all negative (90 TN, 0 TP)\ny_pred_2: Predicts some positives correctly but misses others\ny_pred_3: A mix of errors"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#limitation-of-accuracy-accuracy-paradox-1",
-    "href": "sessions/week1_lecture.html#limitation-of-accuracy-accuracy-paradox-1",
-    "title": "Introduction to machine learning",
-    "section": "Limitation of accuracy (Accuracy paradox)",
-    "text": "Limitation of accuracy (Accuracy paradox)"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#precision-recall-f1-score-auc",
-    "href": "sessions/week1_lecture.html#precision-recall-f1-score-auc",
-    "title": "Introduction to machine learning",
-    "section": "Precision, Recall, F1-score, AUC",
-    "text": "Precision, Recall, F1-score, AUC\n\nPrecision (Positive Predicted Value): \\(\\frac{TP}{TP+FP}\\).\nRecall (Sensitivity, True Positive Rate): \\(\\frac{TP}{TP+FN}\\)\nF1-score (Harmonic mean): \\(F=2\\frac{\\text{precision}\\cdot \\text{recall}}{\\text{precision}+\\text{recall}}\\)"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#trade-off-between-precision-and-recall",
-    "href": "sessions/week1_lecture.html#trade-off-between-precision-and-recall",
-    "title": "Introduction to machine learning",
-    "section": "Trade-off between precision and recall",
-    "text": "Trade-off between precision and recall\n\nWhen precision increases, recall decreases. Vice versa.\n\n\n\n\n\n\nPrecision–Recall curve for LR and Random Forest"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#roc-curve",
-    "href": "sessions/week1_lecture.html#roc-curve",
-    "title": "Introduction to machine learning",
-    "section": "ROC Curve",
-    "text": "ROC Curve\n\nReceiver Operating Characteristic (ROC) curve plots True Positive Rate vs. False Positive Rate."
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#auc-area-under-roc-curve",
-    "href": "sessions/week1_lecture.html#auc-area-under-roc-curve",
-    "title": "Introduction to machine learning",
-    "section": "AUC (Area under ROC Curve)",
-    "text": "AUC (Area under ROC Curve)\n\nThe integral of the ROC curve\nAUC is always 0.5 for random predictions"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#averaging-aggregating-metrics-across-classes",
-    "href": "sessions/week1_lecture.html#averaging-aggregating-metrics-across-classes",
-    "title": "Introduction to machine learning",
-    "section": "Averaging: aggregating metrics across classes",
-    "text": "Averaging: aggregating metrics across classes\n\nMacro average: {lL}R(y{l},_{l}) (Unweighted mean of per-class scores).\nWeighted average: {lL}n{l}R(y_{l},_{l}) (Weighted by support).\nTBC"
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#picking-a-metric",
-    "href": "sessions/week1_lecture.html#picking-a-metric",
-    "title": "Introduction to machine learning",
-    "section": "Picking a metric",
-    "text": "Picking a metric\n\nReal-world problems are rarely balanced.\nAccuracy is rarely what you want.\nFind the right criterion for the specific task.\nDecide between emphasis on recall or precision.\nIdentify which classes are important."
-  },
-  {
-    "objectID": "sessions/week1_lecture.html#generalising-to-multi-class",
-    "href": "sessions/week1_lecture.html#generalising-to-multi-class",
-    "title": "Introduction to machine learning",
-    "section": "Generalising to multi-class",
-    "text": "Generalising to multi-class"
+    "text": "Example: Representation of geospatial locations in ML models\n\nRaw coordinates (e.g. long/lat) may not be directly useful\nNeed to engineer features that capture spatial relationships\nLong/lat\n\nDistance to POIs (train stations/schools).\n\nUsing adjacency matrix between spatial units"
   },
   {
     "objectID": "sessions/week2.html",
