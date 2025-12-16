@@ -12,507 +12,495 @@ format:
     slide-number: TRUE
     preview-links: auto
 ---
-# Term 1: FSDS, QM, and GIS
+
+# Recap of Term 1: FSDS, QM, and GIS
 
 ## What we learnt in Term 1
 
-- Python programming
-- Data types, visualisation
-- Regression (Ordinary Least Square; Linear Mixed Effects; multicollinearity)
-- Dimensionality reduction
-- Clustering
+-   Python programming
+-   Data types, visualisation
+-   Regression (Ordinary Least Square; Linear Mixed Effects; multicollinearity)
+-   Dimensionality reduction
+-   Clustering
 
-# This week 
+# This week
 
 ## Learning Objectives
 
 By the end of this lecture you should:
 
-1. Understand the basics and classification of machine learning 
-2. Understand the differences between statistical methods and machine learning (estimation vs. prediction)
-3. Appreciate GIGO theorems in machine learning and data science 
-4. Understand the framework and metrics of supervised learning
+1.  Understand the basics and classifications of machine learning
+2.  Understand the differences between statistical methods and machine learning (estimation vs. prediction)
+3.  Appreciate GIGO theorems in machine learning and data science
 
 # Introduction to machine learning
 
 ## ML as subset of AI
 
-:::: columns
-
+::::::: columns
 ::: {.column width="50%"}
-
-- **Machine learning** (decision tree, random forest, k-means, etc.)  
-- **Deep learning** (deep neural networks)  
-- **Other AI tools**: graphical models, symbolic AI  
-- Note: we don’t distinguish ML/DL and consider NN as part of ML
-
+-   **Machine learning** (decision tree, random forest, k-means, etc.)\
+-   **Deep learning** (deep neural networks)\
+-   **Other AI tools**: graphical models, symbolic AI\
+-   Note: we don’t distinguish ML/DL and consider NN as part of ML
 :::
 
-::: {.column width="50%"}
+::::: {.column width="50%"}
+:::: {style="text-align:center;"}
+<img src="images/ml_as_subset_of_ai.png" alt="ML is a subset of AI" style="max-width:80%;"/>
 
-<div style="text-align:center;">
-  <img src="images/ml_as_subset_of_ai.png" alt="ML is a subset of AI" style="max-width:80%;">
-  <div style="font-size:0.8em; color: #555; margin-top:4px;">
-    Image Credit: Lecture slide (ML is a subset of AI)
-  </div>
-</div>
-
+::: {style="font-size:0.8em; color: #555; margin-top:4px;"}
+```         
+Image Credit: Lecture slide (ML is a subset of AI)
+```
 :::
 ::::
+:::::
+:::::::
 
----
 
-## Definition of machine learning   
-> **Arthur Samuel (1959)**: (Machine learning is the) field of study that gives computers the ability to learn without being explicitly programmed.  
+
+## Definition of machine learning
+
+> **Arthur Samuel (1959)**: (Machine learning is the) field of study that gives computers the ability to learn without being explicitly programmed.
 
 > **Tom Mitchell (1997)**: A computer program is said to learn from experience *E* with respect to some task *T* and some performance measure *P*, if its performance on *T*, as measured by *P*, improves with experience *E*.
 
-## Three types of machine learning
+## What is Machine Learning?
 
-:::: columns
+-   Extracting knowledge from data
+-   Relying on data and algorithms
+-   Closely related to statistics but distinct from linear models
+-   Focus on prediction rather than estimating relationships or interpretation
 
-::: {.column width="50%"}
 
-- **Supervised**: Learn to predict output given input (with labelled data).  
-- **Unsupervised**: Discover internal representation/structure of input (without labelled data).  
-- **Reinforcement**: Learn actions to maximise payoff (via interactions with the environment).
+## Examples: Facebook
 
+::: {style="text-align:center;"}
+<img src="images/fb1.png" alt="Facebook news feed" style="max-width:70%;"/>
 :::
 
-::: {.column width="50%"}
+-   Machine learning in news feed ranking
+-   Content selection and targeting
+-   Ads and recommendations
 
-<div style="text-align:center;">
-  <img src="images/three_types_of_ml.png" alt="Three types of ML" style="max-width:80%;">
-  <div style="font-size:0.8em; color: #555; margin-top:4px;">
-    Image Credit: Big Data and machine learning for businesses, Slideshare
-  </div>
-</div>
+## Examples: Facebook (cont.)
 
-:::
-::::
-
----
-
-## Statistics VS. machine learning
-
-- With the powerful AI/ML algorithms, are statistical models (such as linear regression) still important?
-- What are the differences between statistical models and ML?
-
-## Statistical models
-
-- **Simple model structure**
-- **Good interpretation**: when X increases by 1 unit, y decreases 0.1 (by association/causality)
-- **Needing modest data size**
-- Having lots of **Assumptions**, need to test if they hold true
-- **Relatively low generalisation; low predictive accuracy**
-
-Linear regression model:  
-
-$$
-\hat{y}_i = \sum_k \beta_k x_{ik} + \beta_0
-$$
-
-## ML models  
-
-- Complex model structure
-- Limited interpretation (black-box)
-- Requiring a lot of data
-- Very few assumptions (but there are still assumptions!)  
-- **High predictive accuracy** (with proper model training)
-
-## Major difference: purposes
-
-|         |purpose             | example                    |
-|--------------|------------------|-------------|
-| statistics   | Estimate and interpret (often causal) relationships between variables, especially in social and economic research| Does smoking lead to lung cancer? Does family background affect the level of education?|
-| ML           | Make accurate predictions, especially when data size is large and predictive performance is the priority.| Predict tomorrow’s weather; automatically classify emails into spam and non-spam.|
-
-## Theorem 1: Garbage in, garbage out (GIGO) 
-
-- **Great algorithms + bad data = bad results**
-
-:::: columns
-
-::: {.column width="50%"}
-
-- Model performance is constrained by data quality.
-- Biased, noisy, or incomplete data leads to misleading predictions.
-
+::: {style="text-align:center;"}
+<img src="images/facebook_gael.png" alt="Facebook face recognition" style="max-width:70%;"/>
 :::
 
-::: {.column width="50%"}
+-   Face detection and recognition
+-   Photo organization
 
-<div style="text-align:center;">
-  <img src="images/garbage_in_garbage_out.png" alt="Garbage in, garbage out" style="max-width:80%;">
-  <div style="font-size:0.8em; color: #555; margin-top:4px;">
-    Image Credit: x.com/xschelling/status/954936528555429888
-  </div>
-</div>
+## Examples: Facebook (cont.)
 
+::: {style="text-align:center;"}
+<img src="images/fb3.png" alt="Facebook photo mosaic" style="max-width:70%;"/>
 :::
 
-::::
+-   Photo selection and layout
 
-## Good data = **large size + high quality**.
+## Examples: Amazon
 
-:::: columns
-
-::: {.column width="50%"}
-
-- Sufficient sample size to capture variability in the problem  
-- High-quality labels and accurate measurements.  
-- Representative of the population and application context.
-
+::: {style="text-align:center;"}
+<img src="images/amazon1.png" alt="Amazon search" style="max-width:70%;"/>
 :::
 
-::: {.column width="50%"}
+-   Product ranking
+-   Personalised recommendations
+-   Ads selection
 
-<div style="text-align:center;">
-  <img src="images/benchmark_datasets_size.png" alt="Size of benchmark datasets" style="max-width:80%;">
-  <div style="font-size:0.8em; color: #555; margin-top:4px;">
-    Image Credit: Internet
-  </div>
-</div>
+## Examples: Amazon (cont.)
 
-:::
-::::
-
----
-
-## Data size and performance
-
-:::: columns
-
-::: {.column width="50%"}
-
-The performance of ML/DL increases rapidly with the size of the data:  
-
-- Large neural nets benefit the most from big data.  
-- Medium and small neural nets also improve with more data.  
-- Traditional ML algorithms (e.g. random forest, SVM) may saturate earlier.  
-
-As the **amount of data** increases, performance improves, especially for larger neural networks.
-
+::: {style="text-align:center;"}
+<img src="images/amazon2.png" alt="Amazon product page" style="max-width:70%;"/>
 :::
 
-::: {.column width="50%"}
+-   Seller selection
+-   Default choices
+-   Related products
 
-<div style="text-align:center;">
-  <img src="images/performance_vs_data_size.png" alt="Performance vs data size" style="max-width:80%;">
-  <div style="font-size:0.8em; color: #555; margin-top:4px;">
-    Image Credit: TBC
-  </div>
-</div>
+## Science Applications
 
+::: {style="text-align:center;"}
+<img src="images/exoplanet.png" alt="Exoplanet" style="max-width:70%;"/>
 :::
-::::
 
----
+-   Personalised cancer treatment
+-   Medical diagnosis
+-   Drug discovery
+-   Higgs boson discovery
+-   Exoplanet detection
 
-## Feature engineering & EDA (~90% time)
+## Types of Machine Learning
 
-- Mostly **manual** rather than automated (no automated methods for EDA)
-- Domain knowledge from expertise is desirable
-- Using **Visualisation** to identify patterns & data relationship
-- Removing noisy or erroneous data  
-- Dealing with missing data  
-- Generating new features by combining existing ones
+-   **Supervised Learning**: Learn from input-output pairs (with labelled data)
+-   **Unsupervised Learning**: Discover structure in data (without labelled data)
+-   **Reinforcement Learning**: Learn through interaction with environment (with an actual/simulated environment)
 
-## Example: Representation of geospatial locations in ML models
 
-- Long/lat  
-- Distance to POIs (train stations/schools).  
-- Using adjacency matrix between spatial units  
 
-# Supervised learning
-
-## Framework
+## Supervised Learning
 
 $$
 \begin{aligned}
 (x_i, y_i) &\sim p(x, y) \text{ i.i.d.} \\
-x_i &\in \mathbb{R}^p \\
-y_i &\in 
-\begin{cases}
-\mathbb{R}, & \text{(regression)} \\
-\mathcal{Y} \text{ (finite set)}, & \text{(classification)}
-\end{cases} \\
-\text{learn } f(x_i) &\approx y_i \\
-\text{such that } f(x) &\approx y
+x_i &\in \mathbb{R}^n \\
+y_i &\in \mathbb{R} \\
+f(x_i) &\approx y_i
 \end{aligned}
 $$
 
-## Regression vs. classification
+Learn a function $f$ from input-output pairs to predict on new data.
 
-|                           | Regression                                          | Classification                                           |
-|---------------------------|-----------------------------------------------------|----------------------------------------------------------|
-| Target variable type      | Continuous numeric value \(y \in \mathbb{R}\)      | Discrete label \(y \in \mathcal{Y}\) (finite set)        |
-| Task                 | Predict “how much” / “how many”                    | Predict “which class” / “which category”                |
-| Intuition            | Find a 'line' close to all points      | Find a 'boundary' between classis     |
-| Example                   | Predicting house prices from features              | Predicting spam vs. not spam for an email               |
 
-## Example - linear regression
 
-** Linear regression code here **
+## Generalisation to unseen data
 
-## Terms
+-   Goal: $f(x_i) \approx y_i$ on training data
+-   More important: $f(x) \approx y$ on new data
+-   Core distinction: not just function approximation, but prediction on unseen data
+-   Avoiding overfitting to training data is key
 
-- Algorithms: procedure that runs on data to create a *model*. [(linear regression)]{style="color:blue"}
-- Model: an output by algorithm and data. [($\hat{y}_i = \sum_k \beta_k x_{ik} + \beta_0$)]{style="color:blue"}
-- Metric: [(R2)]{style="color:blue"}
-- Hyperparameter: algorithm settings, predefined by user.[None]{style="color:blue"}
-- Parameter: [(coefficients)]{style="color:blue"}
-- Model training: to estimate the cofficients
 
-## Challenges
 
-1. To select evaluation metrics
-2. To design workflow (so that the model generalises well and avoids overfitting)
+## Examples of Supervised Learning
 
-## Metrics for regression
+-   Spam detection
+-   Medical diagnosis
+-   Ad click prediction
 
-Here’s the updated table with the leading “RMSE =”, “R² =”, etc. removed from the formula column:
 
-|        | formula                                                                                       | unit                                         | notes                                                                                                        |
-|-------:|-----------------------------------------------------------------------------------------------|----------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| RMSE   | $\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}$                                         | Same unit as target $y$                      | Penalises large errors more; sensitive to outliers                                                           |
-| R²     | $1 - \dfrac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}$              | Dimensionless (between 0 and 1 for most cases) | Measures proportion of variance explained by the model; can be negative if model is worse than $y_i=\bar{y}$ |
-| MAE    | $\frac{1}{n}\sum_{i=1}^{n}\lvert y_i - \hat{y}_i\rvert$                                       | Same unit as target $y$                      | More robust to outliers than RMSE; interpretable as average absolute error                                   |
-| MAPE   | $\frac{100}{n}\sum_{i=1}^{n}\left\lvert \frac{y_i - \hat{y}_i}{y_i} \right\rvert$             | Percent (%)                                  | sensitive to very small $y_i$; relative error                                                                |
 
-## Metrics for regression
+## Unsupervised Learning
 
-- Using RMSE in most cases
-- In sklearn and XGBoost
-- Difference between R2 for OLS ([within [0,1]]{style="color:blue"}) vs. R2 for regression ([<=1, can be negative]{style="color:blue"})
+$$
+x_i \sim p(x) \text{ i.i.d.}
+$$
 
-## Metrics for classification (binary)
+Learn about the distribution $p$:
+
+-   Clustering
+-   Dimensionality reduction
+-   Topic modeling
+-   Outlier detection
+
+
+
+# Reinforcement Learning
+
+:::::: columns
+::: {.column width="50%"}
+-   Agent learns to interact with environment
+-   Goal-directed behavior
+-   Examples: Alpha Go, self-driving cars
+:::
+
+:::: {.column width="50%"}
+::: {style="text-align:center;"}
+<img src="images/alpha_go.png" alt="AlphaGo" style="max-width:80%;"/> <img src="images/nao.png" alt="NAO robot" style="max-width:80%;"/>
+:::
+::::
+::::::
+
+
+
+# Reinforcement Learning: Explore & Learn
+
+::: {style="text-align:center;"}
+<img src="images/reinforcement_cycle.png" alt="Reinforcement learning cycle" style="max-width:80%;"/>
+:::
+
+
+
+## Other Types of Learning
+
+-   Semi-supervised
+-   Active Learning
+-   Forecasting
+-   Transfer learning
+-   If you understand supervised/unsupervised/reinforcement learning, others are easier to grasp
+
+
+
+## Don't read a book by its name
+
+- *Classifications* of neighbourhoods (e.g. London output area classification) that are actually clustering
+- *Anomaly detection* methods can be unsupervised or supervised learning
+- *Forecasting* can be done with lagged features (via supervised learning), or with time series data (via time series analysis), or both
+
+
+
+## What does LLM belong to?
 
 <div style="text-align:center;">
-  <img src="images/confusion_matrix.png" alt="ML is a subset of AI" style="max-width:60%;">
+  <img src="images/LLM_training_pipeline.webp" alt="LLM_training_pipeline" style="max-width:60%;">
   <div style="font-size:0.8em; color: #555; margin-top:4px;">
-    Image Credit: COMS4995-s20
+    Image Credit: medium.com
   </div>
 </div>
 
-$Accuracy=\frac{TP+TN}{TP+TN+FP+FN}$
 
-- Selecting *Positive* label: often the minority class
 
-## Example using Breast Cancer dataset
+## Classification vs. Regression
 
-```{python}
-#| echo: true
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-from sklearn.datasets import load_breast_cancer
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (
-    f1_score,
-    average_precision_score,
-)
-import numpy as np
+::::: columns
+::: {.column width="50%"}
+### Classification
 
-# load data and split
-data = load_breast_cancer()
-X_train, X_test, y_train, y_test = train_test_split(
-    data.data, data.target, stratify=data.target, random_state=0)
+-   Target $y$ is discrete
+-   Example: Is this patient sick?
+:::
 
-lr = LogisticRegression().fit(X_train, y_train)
-y_pred = lr.predict(X_test)
+::: {.column width="50%"}
+### Regression
 
-# print(confusion_matrix(y_test, y_pred))
-ConfusionMatrixDisplay(confusion_matrix(y_test, y_pred), display_labels=['N', 'P']).plot(cmap='gray_r')
-print(lr.score(X_test, y_test))
+-   Target $y$ is continuous
+-   Example: How long to recover?
+:::
+:::::
+
+
+
+## Relationship to Statistics
+
+::::: columns
+::: {.column width="50%"}
+### Statistics
+
+-   Model first
+-   Estimation emphasis
+-   Yes/no questions
+-   With many assumptions, need to test
+-   Interpretation is key
+-   e.g. Does smoking lead to lung cancer?
+:::
+
+::: {.column width="50%"}
+### Machine Learning
+
+-   Data first
+-   Prediction emphasis
+-   Future predictions
+-   Few assumptions (but not assumption-free)
+-   Interpretation isn't primary
+-   e.g. Predict tomorrow’s weather
+:::
+:::::
+
+
+
+## Following statements are not recommended
+
+-   "Linear regression is not needed anymore because of machine learning."
+-   "Machine learning is just a fad; statistics is more important."
+-   "Machine learning models are black boxes; we can't interpret them at all."
+-   "Machine learning models are as interpretable as linear models."
+-   "Machine learning models have no assumptions."
+
+
+
+## Guiding Principles: Goal Considerations
+
+-   Define the goal clearly
+-   Define how to measure success
+-   Think about context and baseline
+-   Ask: what's the benefit?
+
+
+
+## Thinking in Context
+
+-   What do you want to achieve?
+-   What's the easiest way?
+-   What improvement over baseline do you need?
+
+
+
+## Good and Bad Substitutes
+
+-   Choose metrics carefully
+-   Substitute metrics can be misleading
+-   Optimize for the right goal
+-   Understand side effects
+
+
+
+## Communicating Results
+
+-   Explain why your approach works
+-   Communicate **uncertainty**
+-   Show impact and limitations
+-   Convince stakeholders
+
+
+
+## Explainable Results
+
+::: {style="text-align:center;"}
+<img src="images/amazon_explanations.png" alt="Amazon explanations" style="max-width:60%;"/>
+:::
+
+-   Users want to know why recommendations are made
+-   Explainability improves engagement
+-   Important for trust and transparency
+
+
+
+## Ethical Considerations
+
+::: {style="text-align:center;"}
+<img src="images/propublica_compas.png" alt="ProPublica COMPAS" style="max-width:30%;"/>
+:::
+
+-   Bias in risk assessments
+-   Fairness in automated decisions
+-   Transparency and accountability
+
+
+
+## Ethics: It's in the Application!
+
+-   Understand biases in your system
+-   Consider the impact of predictions
+-   Use algorithms responsibly
+-   Same algorithm, different outcomes
+
+
+
+## Data and Data Collection
+
+-   Critical component of ML
+-   More data usually helps (if from right source)
+-   Consider marginal cost vs. marginal benefit
+
+
+
+## Free vs Expensive Data
+
+::::: columns
+::: {.column width="50%"}
+### Free Data
+
+-   Open data from gov and census, often aggregated (e.g. ONS, London Fire Brigade, NASA)
+-   Open data from companies (e.g. Google Street View) (Read the license first)
+-   Synthetic data
+-   Web scraping (be careful with legality and ethics)
+:::
+
+::: {.column width="50%"}
+### Expensive Data
+
+-   Individual data (e.g. health records)
+-   Mobile phone data (high cost)
+-   User survey
+-   High-resolution imagery (e.g. satellite, aerial, drone)
+:::
+:::::
+
+
+
+## Big Data Considerations
+
+-   More data can be more expensive to work with
+-   Subsample to RAM when possible (512GB available in cloud)
+-   Runtime and analyst time matter
+-   Always try with a small sample first
+
+
+
+## Theorem: Garbage in, garbage out (GIGO)
+
+-   **Great algorithms + bad data = bad results**
+
+::::::: columns
+::: {.column width="50%"}
+-   Model performance is constrained by data quality.
+-   Biased, noisy, or incomplete data leads to misleading predictions.
+:::
+
+::::: {.column width="50%"}
+:::: {style="text-align:center;"}
+<img src="images/garbage_in_garbage_out.png" alt="Garbage in, garbage out" style="max-width:80%;"/>
+
+::: {style="font-size:0.8em; color: #555; margin-top:4px;"}
+```         
+Image Credit: x.com/xschelling/status/954936528555429888
 ```
+:::
+::::
+:::::
+:::::::
 
-```{python}
-#| echo: false
-#| warning: false
-#| message: false
+## Good data = **large size + high quality**.
 
-X = data.data
-y = data.target
+::::::: columns
+::: {.column width="50%"}
+-   Sufficient sample size to capture variability in the problem\
+-   High-quality labels and accurate measurements.\
+-   Representative of the population and application context.
+:::
 
-# 1) Proportion of 0/1 classes in the full dataset
-unique, counts = np.unique(y, return_counts=True)
-proportions = counts / len(y)
+::::: {.column width="50%"}
+:::: {style="text-align:center;"}
+<img src="images/benchmark_datasets_size.png" alt="Size of benchmark datasets" style="max-width:80%;"/>
 
-for cls, cnt, prop in zip((data.target_names), counts, proportions):
-    print(f"class {cls}: # = {cnt}, {prop*100:.3f}%")
-
-# 2) Names of X variables (feature names)
-# print("\nFeature names:")
-# for name in data.feature_names:
-#     print(name)
+::: {style="font-size:0.8em; color: #555; margin-top:4px;"}
+```         
+Image Credit: Internet
 ```
+:::
+::::
+:::::
+:::::::
 
-## Limitation of accuracy (Accuracy paradox)
 
-- **Scenario: Data with 90% negatives** (imbalanced data)
-- A majority strategy that predicts everything as negative will get 90% accuracy.
-- Different models can have the same accuracy (0.9) but make very different types of errors.
-  - y_pred_1: Predicts all negative (90 TN, 0 TP)
-  - y_pred_2: Predicts some positives correctly but misses others
-  - y_pred_3: A mix of errors
 
-## Limitation of accuracy (Accuracy paradox)
-```{python}
-#| echo: false
-from sklearn.metrics import ConfusionMatrixDisplay
-from matplotlib.colors import Normalize
-import matplotlib.pyplot as plt
+## Data size and performance
 
-y_true = np.zeros(100, dtype=int)
-y_true[:10] = 1
-y_pred_1 = np.zeros(100, dtype=int)
-y_pred_2 = y_true.copy()
-y_pred_2[10:20] = 1
-y_pred_3 = y_true.copy()
-y_pred_3[5:15] = 1 - y_pred_3[5:15]
+::::::: columns
+::: {.column width="50%"}
+The performance of ML/DL increases rapidly with the size of the data:
 
-fig, axes = plt.subplots(1, 3)
-for i, (ax, y_pred) in enumerate(zip(axes, [y_pred_1, y_pred_2, y_pred_3])):
-    ConfusionMatrixDisplay(confusion_matrix(y_true, y_pred), display_labels=['N', 'P']).plot(ax=ax, cmap='gray_r')
-    ax.set_title("y_pred_{}".format(i + 1))
-    ax.images[-1].colorbar.remove()
-    ax.images[0].set_norm(Normalize(vmin=0, vmax=100))
-#plt.tight_layout()
-# plt.savefig("images/problems_with_accuracy.png")
+-   Large neural nets benefit the most from big data.\
+-   Medium and small neural nets also improve with more data.\
+-   Traditional ML algorithms (e.g. random forest, SVM) may saturate earlier.
+:::
+
+::::: {.column width="50%"}
+:::: {style="text-align:center;"}
+<img src="images/performance_vs_data_size.png" alt="Performance vs data size" style="max-width:80%;"/>
+
+::: {style="font-size:0.8em; color: #555; margin-top:4px;"}
+```         
+Performance vs data size for ML/DL models
 ```
+:::
+::::
+:::::
+:::::::
 
-## Precision, Recall, F1-score, AUC
 
-- **Precision** (Positive Predicted Value): $\frac{TP}{TP+FP}$.
-- **Recall** (Sensitivity, True Positive Rate): $\frac{TP}{TP+FN}$
-- **F1-score** (Harmonic mean): $F=2\frac{\text{precision}\cdot \text{recall}}{\text{precision}+\text{recall}}$
 
-## Trade-off between precision and recall
+## Feature engineering & EDA (\~90% time)
 
-- When precision increases, recall decreases. Vice versa.
+-   Mostly **manual** rather than automated (no automated methods for EDA)
+-   Domain knowledge from expertise is desirable
+-   Using **visualisation** to identify patterns & data relationship
+-   Removing noisy or erroneous data\
+-   Dealing with missing data\
+-   Generating new features by combining existing ones
 
-```{python}
-#| echo: false
-#| fig-cap: "Precision–Recall curve for LR and Random Forest"
-from sklearn.metrics import RocCurveDisplay, PrecisionRecallDisplay
+## Example: Representation of geospatial locations in ML models
 
-# load data and split
-data = load_breast_cancer()
-X_train, X_test, y_train, y_test = train_test_split(
-    data.data, data.target, stratify=data.target, random_state=0
-)
+-   Raw coordinates (e.g. long/lat) may not be directly useful
+-   Need to engineer features that capture spatial relationships
+-   Long/lat\
+-   Distance to POIs (train stations/schools).\
+-   Using adjacency matrix between spatial units
 
-# 1. Train Logistic Regression
-lr = LogisticRegression(max_iter=10000)  # larger max_iter for convergence
-lr.fit(X_train, y_train)
+# Practical
 
-# 2. Train Random Forest
-rf = RandomForestClassifier(
-    n_estimators=100,
-    random_state=0
-)
-rf.fit(X_train, y_train)
-
-# Plot PR curve for lr
-pr_lr = PrecisionRecallDisplay.from_estimator(lr, X_test, y_test, name='LR')
-
-# Plot PR curve for RandomForest on the same axes
-pr_rf = PrecisionRecallDisplay.from_estimator(rf, X_test, y_test, ax=plt.gca(),
-name='RandomForestClassifier')
-
-plt.title("Precision–Recall Curve")
-plt.show()
-```
-
-## ROC Curve
-
-- Receiver Operating Characteristic (ROC) curve plots *True Positive Rate* vs. *False Positive Rate*.
-
-```{python}
-#| echo: false
-from sklearn.metrics import RocCurveDisplay, PrecisionRecallDisplay
-ax = plt.gca()
-
-RocCurveDisplay.from_estimator(lr, X_test, y_test, ax=ax, name='LR')
-RocCurveDisplay.from_estimator(rf, X_test, y_test, ax=ax, name='rf')
-# Add identity line (random classifier)
-plt.plot([0, 1], [0, 1], linestyle='--', color='grey', label='Random')
-plt.title("ROC Curve: Logistic Regression vs Random Forest")
-plt.show()
-```
-
-## AUC (Area under ROC Curve)
-
-- The integral of the ROC curve
-- AUC is always 0.5 for random predictions
-
-```{python}
-#| echo: false
-# Import packages
-from sklearn.datasets import load_breast_cancer
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import roc_curve, auc
-import matplotlib.pyplot as plt
-
-# Load data and split
-data = load_breast_cancer()
-X_train, X_test, y_train, y_test = train_test_split(
-    data.data, data.target, stratify=data.target, random_state=0
-)
-
-# Train Random Forest only
-rf = RandomForestClassifier(n_estimators=100, random_state=0)
-rf.fit(X_train, y_train)
-
-# Compute ROC for Random Forest
-y_score = rf.predict_proba(X_test)[:, 1]
-fpr, tpr, thresholds = roc_curve(y_test, y_score)
-roc_auc = auc(fpr, tpr)
-
-# Plot ROC curve for Random Forest and fill the area under the curve in red
-plt.plot(fpr, tpr, color='darkorange', lw=2,
-         label='Random Forest (AUC = %0.2f)' % roc_auc)
-plt.fill_between(fpr, tpr, 0, alpha=0.3, color='red')
-
-# Identity (random) line
-plt.plot([0, 1], [0, 1], linestyle='--', color='grey', label='Random')
-
-plt.title("ROC Curve: Random Forest")
-plt.xlabel("False Positive Rate")
-plt.ylabel("True Positive Rate")
-plt.legend()
-plt.show()
-```
-
-## Averaging: aggregating metrics across classes
-
-- **Macro average**: \frac{1}{|L|}\sum_{l\in L}R(y_{l},\hat{y}_{l}) (Unweighted mean of per-class scores).
-- **Weighted average**: \frac{1}{n}\sum_{l\in L}n_{l}R(y_{l},\hat{y}_{l}) (Weighted by support).
-- TBC
-
-## Picking a metric
-
-* Real-world problems are rarely balanced.
-* Accuracy is rarely what you want.
-* Find the right criterion for the specific task.
-* Decide between emphasis on recall or precision.
-* Identify which classes are important.
-
-## Generalising to multi-class
-
----
-
-# Overview 
-We've covered: 
-
-- Introduction to machine learning
-- Types of machine learning (Supervised, unsupervised, reinforcement) 
-- Garbage in, garbage out
-- Framework and evaluation metrics of supervised learning
-
-# Practical 
-
-- Practical will focus on using sklearn for supervised learning.
-- Have questions prepared!
+-   Practical will focus on using sklearn for supervised learning.
+-   Have questions prepared!
