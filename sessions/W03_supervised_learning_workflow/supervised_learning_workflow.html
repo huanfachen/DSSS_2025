@@ -189,7 +189,7 @@
   </style>
 <meta property="og:title" content="Supervised learning workflow – Data Science for Spatial Systems">
 <meta property="og:description" content="Model selection">
-<meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/supervised_learning_workflow/img/logo/full_sm.png">
+<meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/W03_supervised_learning_workflow/img/logo/full_sm.png">
 <meta property="og:site_name" content="Foundations">
 <meta property="og:locale" content="en_GB">
 </head>
@@ -305,9 +305,9 @@ y_i &amp;\in
 <section>
 <section id="knn-with-scikit-learn" class="title-slide slide level1 center">
 <h1>KNN with scikit-learn</h1>
-<div id="99fbd41d" class="cell" data-execution_count="2">
+<div id="361835fd" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
-<pre><code>accuracy: 0.6153846153846154</code></pre>
+<pre><code>accuracy: 0.8461538461538461</code></pre>
 </div>
 </div>
 </section>
@@ -453,7 +453,7 @@ y_i &amp;\in
 <li>Fixed train/val/test split → results depend on split</li>
 <li>High variance in best k and test score, not robust</li>
 </ul>
-<div id="b2f5a5ee" class="cell" data-execution_count="3">
+<div id="f23b5f79" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>   random_seed  best_validation_score  best_k  test_set_score
 0            0                    0.7       5        0.846154
@@ -481,9 +481,9 @@ y_i &amp;\in
 </section></section>
 <section id="grid-search-with-cv-code" class="title-slide slide level1 center">
 <h1>Grid-Search with CV (Code)</h1>
-<div id="a392bcd1" class="cell" data-execution_count="4">
+<div id="2a2a4096" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
-<pre><code>test-set score: 0.692</code></pre>
+<pre><code>test-set score: 0.615</code></pre>
 </div>
 </div>
 </section>
@@ -497,10 +497,10 @@ y_i &amp;\in
 
 <section id="gridsearchcv-code" class="title-slide slide level1 center">
 <h1>GridSearchCV (Code)</h1>
-<div id="9500d23d" class="cell" data-execution_count="5">
+<div id="711c268e" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
-<pre><code>best parameters: {'n_neighbors': np.int64(21)}
-test-set score: 0.846</code></pre>
+<pre><code>best parameters: {'n_neighbors': np.int64(19)}
+test-set score: 0.769</code></pre>
 </div>
 </div>
 </section>
@@ -508,7 +508,7 @@ test-set score: 0.846</code></pre>
 <section>
 <section id="gridsearchcv-results" class="title-slide slide level1 center">
 <h1>GridSearchCV Results</h1>
-<div id="2fb78150" class="cell" data-execution_count="6">
+<div id="474614ab" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>0    {'n_neighbors': 1}
 1    {'n_neighbors': 3}

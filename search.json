@@ -882,18 +882,242 @@
     "text": "Example: Representation of geospatial locations in ML models\n\nRaw coordinates (e.g. long/lat) may not be directly useful\nNeed to engineer features that capture spatial relationships\nLong/lat\nDistance to POIs (train stations/schools).\nUsing adjacency matrix between spatial units"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome",
-    "section": "",
-    "text": "The Data Science for Spatial Systems (DSSS) module is a optional element of CASA’s MSc/MRes USS Course and is intended provide an introduction to advanced computational techniques in spatial analysis, or advanced spatial data sicence.\nAs with most computational analysis, spatial data science builds on two pillars: methods and data. In recent year, as AI (represented by deep learning and large-language models) has developed rapidly, numerous efficient techniques have been invented and open-sourced, which enables integration of heterougenous data. For example, we are now able to combine census data, remote sensing data, street-view imagery, and text data for understanding urban security or urban heat island effect on an ordnary laptop. Notably, (geospatial) foundation models, which are large, pre-trained AI models, are expected to become versatile bases for many specific tasks. It seems like we could model and predict almost everything in spatial analysis, even if we don’t understand what foundation models are doing. However, this is not entirely true. So far, AI is not silver bullet and AI has halluciations. We need to understand the principle and limitations of various computational models; we need to be critical about methods and results; we need to ask critical questions for any task; and we need to link modelling with applications so as to inform policy and practice.\nThe module is structured progressively across three core sections. The first section introduces supervised machine learning and their applications. We will firstly introduce the principle and workflow of supervised machine learning, and then talk about tree-based methods and neural networks….\nFollowing TBC\nThe second section builds upon this foundation to explore the core of statistical modelling: understanding and quantifying relationships between variables. Students will progress from measuring correlations to building sophisticated regression models. The curriculum covers the workhorse of social science, the Generalised Linear Model (GLM), before advancing to Multilevel Models, a critical technique for handling the nested and hierarchical data that is common in geographical and social research.\nThe final section of the course introduces advanced techniques for uncovering hidden structures within complex, high-dimensional datasets. Students will learn methods for dimensionality reduction to simplify complexity without losing vital information, and clustering analysis to identify natural groupings and patterns in data.\nTherefore, this module guides students on a complete analytical journey, from foundational principles to the application of advanced modelling techniques. It serves as a vital prerequisite for more specialised analytical modules and is essential for students wishing to undertake quantitative geospatial research. Ultimately, this module will provide quantitative skills that are in high demand across public, private, and academic sectors."
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#last-week",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#last-week",
+    "title": "Supervised learning workflow",
+    "section": "Last week",
+    "text": "Last week\n\nFramework of supervised learning\nEvaluation metrics for regression and classification"
   },
   {
-    "objectID": "index.html#acknowledgements",
-    "href": "index.html#acknowledgements",
-    "title": "Welcome",
-    "section": "Acknowledgements",
-    "text": "Acknowledgements\nWe really appreciate the support from various people:\n\nJon for setting up this wonderful CASA-themed quarto template.\nOllie and Andy for inspiring us to pursue a Quarto-based module website."
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#objectives-of-this-week",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#objectives-of-this-week",
+    "title": "Supervised learning workflow",
+    "section": "Objectives of this week",
+    "text": "Objectives of this week\n\nUnderstand different workflow of supervised learning.\nUnderstand train-test split and train-validation-test split.\nUnderstand cross validation and its extensions\nKnow when to use different model evaluation methods."
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#supervised-learning",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#supervised-learning",
+    "title": "Supervised learning workflow",
+    "section": "Supervised Learning",
+    "text": "Supervised Learning\n\\[\n\\begin{aligned}\n(x_i, y_i) &\\sim p(x, y) \\text{ i.i.d.} \\\\\nx_i &\\in \\mathbb{R}^n \\\\\ny_i &\\in\n\\begin{cases}\n\\mathbb{R}, & \\text{(regression)} \\\\\n\\mathcal{Y} \\text{ (finite set)}, & \\text{(classification)}\n\\end{cases} \\\\\n\\text{learn } f(x_i) &\\approx y_i \\\\\n\\text{such that } f(x) &\\approx y\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#challenges-of-training-supervised-models",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#challenges-of-training-supervised-models",
+    "title": "Supervised learning workflow",
+    "section": "Challenges of training supervised models",
+    "text": "Challenges of training supervised models\n\nGeneralise to new data\nAvoid overfitting/underfitting\nModel selection (hyperparameter tuning)"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-7525",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-7525",
+    "title": "Supervised learning workflow",
+    "section": "Train-Test Split (75/25)",
+    "text": "Train-Test Split (75/25)"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-train-test-split",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-train-test-split",
+    "title": "Supervised learning workflow",
+    "section": "Why Train-Test Split?",
+    "text": "Why Train-Test Split?\n\n\nStatistics\n\nNo train-test split\nTrain and evaluate on whole data\nEstimation is key\nLow model complexity\n\n\nMachine Learning\n\nTrain-test split\nTrain on part, evaluate on held-out part\nPrediction (Generalisation) is key\nHigh model complexity; overfitting risk"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#influence-of-n_neighbors-k3",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#influence-of-n_neighbors-k3",
+    "title": "Supervised learning workflow",
+    "section": "Influence of n_neighbors (k=3)",
+    "text": "Influence of n_neighbors (k=3)\n\nLarger k → smoother boundary\nSmaller k → complex boundary"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting",
+    "title": "Supervised learning workflow",
+    "section": "Overfitting vs Underfitting",
+    "text": "Overfitting vs Underfitting"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-2",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-2",
+    "title": "Supervised learning workflow",
+    "section": "Overfitting vs Underfitting",
+    "text": "Overfitting vs Underfitting"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#so-far-happy-ending",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#so-far-happy-ending",
+    "title": "Supervised learning workflow",
+    "section": "So far: Happy ending?",
+    "text": "So far: Happy ending?\n\nReport: best k=19, test accuracy=0.77\nGood for choosing k\nBut: overly optimistic for generalisation\nProblem: test set used for both choosing k and final evaluation"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-overfitting-the-validation-set",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-overfitting-the-validation-set",
+    "title": "Supervised learning workflow",
+    "section": "Why? overfitting the Validation Set",
+    "text": "Why? overfitting the Validation Set\n\n\n\n\nInteresting reading Preventing Overfitting in cross-validation - Ng 1997"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-the-validation-set",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-the-validation-set",
+    "title": "Supervised learning workflow",
+    "section": "Overfitting the Validation Set",
+    "text": "Overfitting the Validation Set"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#threefold-split-code",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#threefold-split-code",
+    "title": "Supervised learning workflow",
+    "section": "Threefold Split (Code)",
+    "text": "Threefold Split (Code)\nX_trainval, X_test, y_trainval, y_test = train_test_split(X, y, random_state=0)\nX_train, X_val, y_train, y_val = train_test_split(X_trainval, y_trainval, random_state=0)\n\nval_scores = []\nneighbors = np.arange(1, 15, 2)\nfor i in neighbors:\n    knn = KNeighborsClassifier(n_neighbors=i)\n    knn.fit(X_train, y_train)\n    val_scores.append(knn.score(X_val, y_val))\nprint(f\"best validation score: {np.max(val_scores):.3}\\n\")\nbest_n_neighbors = neighbors[np.argmax(val_scores)]\nprint(f\"best n_neighbors:{best_n_neighbors}\\n\")\n\nknn = KNeighborsClassifier(n_neighbors=best_n_neighbors)\nknn.fit(X_trainval, y_trainval)\nprint(f\"test-set score: {knn.score(X_test, y_test):.3f}\")\nbest validation score: 0.991 best n_neighbors: 11 test-set score: 0.951\n\nHere is an implementation of the three-fold split for selecting the number of neighbors. For each number of neighbors that we want to try, we build a model on the training set, and evaluate it on the validation set. We then pick the best validation set score, here that’s 99.1%, achieved when using 11 neighbors. We then retrain the model with this parameter, and evaluate on the test set. The retraining step is somewhat optional. We could also just use the best model. But retraining allows us to make better use of all the data.\nStill, our results depend on how exactly we split the datasets. So how can we make this more robust?"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#new-problem-with-threefold-split",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#new-problem-with-threefold-split",
+    "title": "Supervised learning workflow",
+    "section": "New problem with threefold split",
+    "text": "New problem with threefold split\n\nFixed train/val/test split → results depend on split\nHigh variance in best k and test score, not robust\n\n\n\n   random_seed  best_validation_score  best_k  test_set_score\n0            0                    0.7       5        0.846154\n1            1                    0.7       1        0.538462\n2            2                    1.0      13        0.692308\n3            3                    0.7       1        0.846154\n4            4                    0.9       5        0.769231\n5            5                    0.8      11        0.769231"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-cv-test-set",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-cv-test-set",
+    "title": "Supervised learning workflow",
+    "section": "Cross-Validation (CV) + Test Set",
+    "text": "Cross-Validation (CV) + Test Set"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#n_neighbors-search-results",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#n_neighbors-search-results",
+    "title": "Supervised learning workflow",
+    "section": "n_neighbors Search Results",
+    "text": "n_neighbors Search Results"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-strategies",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-strategies",
+    "title": "Supervised learning workflow",
+    "section": "Cross-Validation Strategies",
+    "text": "Cross-Validation Strategies"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#how-many-cv-folds",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#how-many-cv-folds",
+    "title": "Supervised learning workflow",
+    "section": "How many CV folds?",
+    "text": "How many CV folds?\n\nRecommend to run 5-fold or 10-fold CV multiple times, while shuffling the dataset\nMore folds → more training data per fold → better generlisation performance estimate, but slower\nExtreme: LeaveOneOut CV (one fold per sample)"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#repeated-kfold-and-leaveoneout",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#repeated-kfold-and-leaveoneout",
+    "title": "Supervised learning workflow",
+    "section": "Repeated KFold and LeaveOneOut",
+    "text": "Repeated KFold and LeaveOneOut\n\nLeaveOneOut: high variance, slow\nShuffleSplit: repeated random splits\nRepeatedKFold: multiple shuffled KFold runs"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#shuffle-split",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#shuffle-split",
+    "title": "Supervised learning workflow",
+    "section": "Shuffle Split",
+    "text": "Shuffle Split"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#standard-cv-not-preserving-class-distribution",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#standard-cv-not-preserving-class-distribution",
+    "title": "Supervised learning workflow",
+    "section": "Standard CV not preserving class distribution",
+    "text": "Standard CV not preserving class distribution\n\nStandard CV leads to folds with different class distributions"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#stratified-cv-for-multiclass-classification-or-imbalanced-data",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#stratified-cv-for-multiclass-classification-or-imbalanced-data",
+    "title": "Supervised learning workflow",
+    "section": "Stratified CV: for multiclass classification or imbalanced data",
+    "text": "Stratified CV: for multiclass classification or imbalanced data\n\nPreserve class distribution in each fold"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cv-in-scikit-learn",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cv-in-scikit-learn",
+    "title": "Supervised learning workflow",
+    "section": "CV in scikit-learn",
+    "text": "CV in scikit-learn\n\n5-fold CV (default)\nClassification CV is stratified by default\ntrain_test_split(..., stratify=y) to stratify\nNo shuffle by default (repeatable results)"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cv-for-grouped-data",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cv-for-grouped-data",
+    "title": "Supervised learning workflow",
+    "section": "CV for grouped data?",
+    "text": "CV for grouped data?\n\nCV is more complicated when data are grouped\nData points within a group are correlated (e.g., city, patient, user)\ne.g. The task is to if a patient has a disease based on medical records from 9 cities\nHow CV should be done depends on the application scenario"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#scenario-1-to-predict-new-data-from-existing-cities-i.i.d.",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#scenario-1-to-predict-new-data-from-existing-cities-i.i.d.",
+    "title": "Supervised learning workflow",
+    "section": "Scenario 1: To predict new data from existing cities (i.i.d.)",
+    "text": "Scenario 1: To predict new data from existing cities (i.i.d.)\n\nStandard CV (e.g. KFold, RepeatedKFold) can be used\nGroup information can be ignored"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#scenario-2-to-predict-new-data-from-unknown-cities-not-i.i.d.",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#scenario-2-to-predict-new-data-from-unknown-cities-not-i.i.d.",
+    "title": "Supervised learning workflow",
+    "section": "Scenario 2: To predict new data from unknown cities (not i.i.d.)",
+    "text": "Scenario 2: To predict new data from unknown cities (not i.i.d.)\n\nGroupKFold should be used; ensure each group is contained in exactly one fold (either train or test)\nData from 9 cities; 5-fold CV; GroupKFold as below."
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#standard-train-test-split-or-cv-not-suitable-for-time-series",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#standard-train-test-split-or-cv-not-suitable-for-time-series",
+    "title": "Supervised learning workflow",
+    "section": "Standard train-test split or CV not suitable for time series",
+    "text": "Standard train-test split or CV not suitable for time series"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-for-time-series",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-for-time-series",
+    "title": "Supervised learning workflow",
+    "section": "Train-Test Split for Time Series",
+    "text": "Train-Test Split for Time Series\n\nUsing past data to train, future data to test"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#timeseriessplit",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#timeseriessplit",
+    "title": "Supervised learning workflow",
+    "section": "TimeSeriesSplit",
+    "text": "TimeSeriesSplit"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#time-series-cv",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#time-series-cv",
+    "title": "Supervised learning workflow",
+    "section": "Time Series CV",
+    "text": "Time Series CV"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overview",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overview",
+    "title": "Supervised learning workflow",
+    "section": "Overview",
+    "text": "Overview\nWe’ve covered:\n\nTrain-test split, threefold split\nCross-validation and its extensions, especially RepeatedKFold\nStratified CV (StratifiedKFold) for multiple classes and imbalanced data\nCV for grouped data and time series data"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#questions",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#questions",
+    "title": "Supervised learning workflow",
+    "section": "Questions",
+    "text": "Questions"
+  },
+  {
+    "objectID": "help.html",
+    "href": "help.html",
+    "title": "Getting Help",
+    "section": "",
+    "text": "We all need help from time to time, and while we will always do our best to support you because we know that this module is hard for students who are new to quantitative modules or statistics, the best way to ‘get help’ will also always be taking steps to ‘help yourself’ first."
+  },
+  {
+    "objectID": "help.html#how-to-help-yourself",
+    "href": "help.html#how-to-help-yourself",
+    "title": "Getting Help",
+    "section": "How to Help Yourself",
+    "text": "How to Help Yourself\nHere are at least six things that you can do to ‘help yourself’:\n\nMake use of practical sessions–we can’t help you if we don’t know that you’re struggling. Please talk to the lecturer or TAs during the pratical sessions.\nUse the dedicated #casa0007_qm channel on Slack –this provides a much richer experience than the Moodle Forum and should be your primary means of requesting help outside of scheduled teaching hours.\nDo the readings–regardless of whether we ask you questions in class about them (or not), the readings are designed to support the module’s learning outcomes, so if you are struggling with a concept or an idea then please look to the week’s readings! You should also review the full bibliography while developing your thinking for the final project.\nUse Google or Stack Overflow–as you become a better programmer you’ll start to understand how to frame your question in ways that produce the right answer right away, but whether you’re a beginner or an expert Stack Overflow is your friend.\nSign up for online classes–there are lots of plausible online classes on LinkedIn course or Coursera. Please check the reviews before you take an online module."
   },
   {
     "objectID": "assessments/index.html",
@@ -926,18 +1150,18 @@
     ]
   },
   {
-    "objectID": "help.html",
-    "href": "help.html",
-    "title": "Getting Help",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
     "section": "",
-    "text": "We all need help from time to time, and while we will always do our best to support you because we know that this module is hard for students who are new to quantitative modules or statistics, the best way to ‘get help’ will also always be taking steps to ‘help yourself’ first."
+    "text": "The Data Science for Spatial Systems (DSSS) module is a optional element of CASA’s MSc/MRes USS Course and is intended provide an introduction to advanced computational techniques in spatial analysis, or advanced spatial data sicence.\nAs with most computational analysis, spatial data science builds on two pillars: methods and data. In recent year, as AI (represented by deep learning and large-language models) has developed rapidly, numerous efficient techniques have been invented and open-sourced, which enables integration of heterougenous data. For example, we are now able to combine census data, remote sensing data, street-view imagery, and text data for understanding urban security or urban heat island effect on an ordnary laptop. Notably, (geospatial) foundation models, which are large, pre-trained AI models, are expected to become versatile bases for many specific tasks. It seems like we could model and predict almost everything in spatial analysis, even if we don’t understand what foundation models are doing. However, this is not entirely true. So far, AI is not silver bullet and AI has halluciations. We need to understand the principle and limitations of various computational models; we need to be critical about methods and results; we need to ask critical questions for any task; and we need to link modelling with applications so as to inform policy and practice.\nThe module is structured progressively across three core sections. The first section introduces supervised machine learning and their applications. We will firstly introduce the principle and workflow of supervised machine learning, and then talk about tree-based methods and neural networks….\nFollowing TBC\nThe second section builds upon this foundation to explore the core of statistical modelling: understanding and quantifying relationships between variables. Students will progress from measuring correlations to building sophisticated regression models. The curriculum covers the workhorse of social science, the Generalised Linear Model (GLM), before advancing to Multilevel Models, a critical technique for handling the nested and hierarchical data that is common in geographical and social research.\nThe final section of the course introduces advanced techniques for uncovering hidden structures within complex, high-dimensional datasets. Students will learn methods for dimensionality reduction to simplify complexity without losing vital information, and clustering analysis to identify natural groupings and patterns in data.\nTherefore, this module guides students on a complete analytical journey, from foundational principles to the application of advanced modelling techniques. It serves as a vital prerequisite for more specialised analytical modules and is essential for students wishing to undertake quantitative geospatial research. Ultimately, this module will provide quantitative skills that are in high demand across public, private, and academic sectors."
   },
   {
-    "objectID": "help.html#how-to-help-yourself",
-    "href": "help.html#how-to-help-yourself",
-    "title": "Getting Help",
-    "section": "How to Help Yourself",
-    "text": "How to Help Yourself\nHere are at least six things that you can do to ‘help yourself’:\n\nMake use of practical sessions–we can’t help you if we don’t know that you’re struggling. Please talk to the lecturer or TAs during the pratical sessions.\nUse the dedicated #casa0007_qm channel on Slack –this provides a much richer experience than the Moodle Forum and should be your primary means of requesting help outside of scheduled teaching hours.\nDo the readings–regardless of whether we ask you questions in class about them (or not), the readings are designed to support the module’s learning outcomes, so if you are struggling with a concept or an idea then please look to the week’s readings! You should also review the full bibliography while developing your thinking for the final project.\nUse Google or Stack Overflow–as you become a better programmer you’ll start to understand how to frame your question in ways that produce the right answer right away, but whether you’re a beginner or an expert Stack Overflow is your friend.\nSign up for online classes–there are lots of plausible online classes on LinkedIn course or Coursera. Please check the reviews before you take an online module."
+    "objectID": "index.html#acknowledgements",
+    "href": "index.html#acknowledgements",
+    "title": "Welcome",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nWe really appreciate the support from various people:\n\nJon for setting up this wonderful CASA-themed quarto template.\nOllie and Andy for inspiring us to pursue a Quarto-based module website."
   },
   {
     "objectID": "sessions/index.html",
@@ -1137,7 +1361,7 @@
     "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
     "title": "Supervised learning",
     "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.923"
   },
   {
     "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
