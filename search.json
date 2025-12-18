@@ -179,7 +179,7 @@
     "href": "sessions/week3.html",
     "title": "Week 3",
     "section": "",
-    "text": "This week will introduce tree-based methods.",
+    "text": "This week will introduce analysis workflow of supervised learning.",
     "crumbs": [
       "Part 1: Basics",
       "3. Hypothesis Testing"
@@ -190,7 +190,7 @@
     "href": "sessions/week3.html#introduction",
     "title": "Week 3",
     "section": "",
-    "text": "This week will introduce tree-based methods.",
+    "text": "This week will introduce analysis workflow of supervised learning.",
     "crumbs": [
       "Part 1: Basics",
       "3. Hypothesis Testing"
@@ -201,7 +201,7 @@
     "href": "sessions/week3.html#learning-objectives",
     "title": "Week 3",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand the pros and cons of decision trees.\nUnderstand the principle of emsemble learning.\nUnderstand the principle of random forest and XGBoost.\nCan apply random forest and XGBoost to supervised learning tasks.",
+    "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand different workflow of supervised learning.\nUnderstand train-test split and train-validation-test split.\nUnderstand cross validation and its extensions\nKnow when to use different model evaluation methods.",
     "crumbs": [
       "Part 1: Basics",
       "3. Hypothesis Testing"
@@ -399,6 +399,547 @@
     ]
   },
   {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#last-week",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#last-week",
+    "title": "Supervised learning workflow",
+    "section": "Last week",
+    "text": "Last week\n\nFramework of supervised learning\nEvaluation metrics for regression and classification"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#objectives-of-this-week",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#objectives-of-this-week",
+    "title": "Supervised learning workflow",
+    "section": "Objectives of this week",
+    "text": "Objectives of this week\n\nUnderstand different workflow of supervised learning.\nUnderstand train-test split and train-validation-test split.\nUnderstand cross validation and its extensions\nKnow when to use different model evaluation methods."
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#supervised-learning",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#supervised-learning",
+    "title": "Supervised learning workflow",
+    "section": "Supervised Learning",
+    "text": "Supervised Learning\n\\[\n\\begin{aligned}\n(x_i, y_i) &\\sim p(x, y) \\text{ i.i.d.} \\\\\nx_i &\\in \\mathbb{R}^n \\\\\ny_i &\\in\n\\begin{cases}\n\\mathbb{R}, & \\text{(regression)} \\\\\n\\mathcal{Y} \\text{ (finite set)}, & \\text{(classification)}\n\\end{cases} \\\\\n\\text{learn } f(x_i) &\\approx y_i \\\\\n\\text{such that } f(x) &\\approx y\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#challenges-of-training-supervised-models",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#challenges-of-training-supervised-models",
+    "title": "Supervised learning workflow",
+    "section": "Challenges of training supervised models",
+    "text": "Challenges of training supervised models\n\nGeneralise to new data\nAvoid overfitting/underfitting\nModel selection (hyperparameter tuning)"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-7525",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-7525",
+    "title": "Supervised learning workflow",
+    "section": "Train-Test Split (75/25)",
+    "text": "Train-Test Split (75/25)"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#why-train-test-split",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#why-train-test-split",
+    "title": "Supervised learning workflow",
+    "section": "Why Train-Test Split?",
+    "text": "Why Train-Test Split?\n\n\nStatistics\n\nNo train-test split\nTrain and evaluate on whole data\nEstimation is key\nLow model complexity\n\n\nMachine Learning\n\nTrain-test split\nTrain on part, evaluate on held-out part\nPrediction (Generalisation) is key\nHigh model complexity; overfitting risk"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#influence-of-n_neighbors-k3",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#influence-of-n_neighbors-k3",
+    "title": "Supervised learning workflow",
+    "section": "Influence of n_neighbors (k=3)",
+    "text": "Influence of n_neighbors (k=3)\n\nLarger k → smoother boundary\nSmaller k → complex boundary"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting",
+    "title": "Supervised learning workflow",
+    "section": "Overfitting vs Underfitting",
+    "text": "Overfitting vs Underfitting"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-2",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-2",
+    "title": "Supervised learning workflow",
+    "section": "Overfitting vs Underfitting",
+    "text": "Overfitting vs Underfitting"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#so-far-happy-ending",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#so-far-happy-ending",
+    "title": "Supervised learning workflow",
+    "section": "So far: Happy ending?",
+    "text": "So far: Happy ending?\n\nReport: best k=19, test accuracy=0.77\nGood for choosing k\nBut: overly optimistic for generalisation\nProblem: test set used for both choosing k and final evaluation"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#why-overfitting-the-validation-set",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#why-overfitting-the-validation-set",
+    "title": "Supervised learning workflow",
+    "section": "Why? overfitting the Validation Set",
+    "text": "Why? overfitting the Validation Set\n\n\n\n\nInteresting reading Preventing Overfitting in cross-validation - Ng 1997"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#overfitting-the-validation-set",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#overfitting-the-validation-set",
+    "title": "Supervised learning workflow",
+    "section": "Overfitting the Validation Set",
+    "text": "Overfitting the Validation Set"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#threefold-split-code",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#threefold-split-code",
+    "title": "Supervised learning workflow",
+    "section": "Threefold Split (Code)",
+    "text": "Threefold Split (Code)\nX_trainval, X_test, y_trainval, y_test = train_test_split(X, y, random_state=0)\nX_train, X_val, y_train, y_val = train_test_split(X_trainval, y_trainval, random_state=0)\n\nval_scores = []\nneighbors = np.arange(1, 15, 2)\nfor i in neighbors:\n    knn = KNeighborsClassifier(n_neighbors=i)\n    knn.fit(X_train, y_train)\n    val_scores.append(knn.score(X_val, y_val))\nprint(f\"best validation score: {np.max(val_scores):.3}\\n\")\nbest_n_neighbors = neighbors[np.argmax(val_scores)]\nprint(f\"best n_neighbors:{best_n_neighbors}\\n\")\n\nknn = KNeighborsClassifier(n_neighbors=best_n_neighbors)\nknn.fit(X_trainval, y_trainval)\nprint(f\"test-set score: {knn.score(X_test, y_test):.3f}\")\nbest validation score: 0.991 best n_neighbors: 11 test-set score: 0.951\n\nHere is an implementation of the three-fold split for selecting the number of neighbors. For each number of neighbors that we want to try, we build a model on the training set, and evaluate it on the validation set. We then pick the best validation set score, here that’s 99.1%, achieved when using 11 neighbors. We then retrain the model with this parameter, and evaluate on the test set. The retraining step is somewhat optional. We could also just use the best model. But retraining allows us to make better use of all the data.\nStill, our results depend on how exactly we split the datasets. So how can we make this more robust?"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#new-problem-with-threefold-split",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#new-problem-with-threefold-split",
+    "title": "Supervised learning workflow",
+    "section": "New problem with threefold split",
+    "text": "New problem with threefold split\n\nFixed train/val/test split → results depend on split\nHigh variance in best k and test score, not robust\n\n\n\n   random_seed  best_validation_score  best_k  test_set_score\n0            0                    0.7       5        0.846154\n1            1                    0.7       1        0.538462\n2            2                    1.0      13        0.692308\n3            3                    0.7       1        0.846154\n4            4                    0.9       5        0.769231\n5            5                    0.8      11        0.769231"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-cv-test-set",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-cv-test-set",
+    "title": "Supervised learning workflow",
+    "section": "Cross-Validation (CV) + Test Set",
+    "text": "Cross-Validation (CV) + Test Set"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#n_neighbors-search-results",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#n_neighbors-search-results",
+    "title": "Supervised learning workflow",
+    "section": "n_neighbors Search Results",
+    "text": "n_neighbors Search Results"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-strategies",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-strategies",
+    "title": "Supervised learning workflow",
+    "section": "Cross-Validation Strategies",
+    "text": "Cross-Validation Strategies"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#how-many-cv-folds",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#how-many-cv-folds",
+    "title": "Supervised learning workflow",
+    "section": "How many CV folds?",
+    "text": "How many CV folds?\n\nRecommend to run 5-fold or 10-fold CV multiple times, while shuffling the dataset\nMore folds → more training data per fold → better generlisation performance estimate, but slower\nExtreme: LeaveOneOut CV (one fold per sample)"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#repeated-kfold-and-leaveoneout",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#repeated-kfold-and-leaveoneout",
+    "title": "Supervised learning workflow",
+    "section": "Repeated KFold and LeaveOneOut",
+    "text": "Repeated KFold and LeaveOneOut\n\nLeaveOneOut: high variance, slow\nShuffleSplit: repeated random splits\nRepeatedKFold: multiple shuffled KFold runs"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#shuffle-split",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#shuffle-split",
+    "title": "Supervised learning workflow",
+    "section": "Shuffle Split",
+    "text": "Shuffle Split"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#standard-cv-not-preserving-class-distribution",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#standard-cv-not-preserving-class-distribution",
+    "title": "Supervised learning workflow",
+    "section": "Standard CV not preserving class distribution",
+    "text": "Standard CV not preserving class distribution\n\nStandard CV leads to folds with different class distributions"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#stratified-cv-for-multiclass-classification-or-imbalanced-data",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#stratified-cv-for-multiclass-classification-or-imbalanced-data",
+    "title": "Supervised learning workflow",
+    "section": "Stratified CV: for multiclass classification or imbalanced data",
+    "text": "Stratified CV: for multiclass classification or imbalanced data\n\nPreserve class distribution in each fold"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#cv-in-scikit-learn",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#cv-in-scikit-learn",
+    "title": "Supervised learning workflow",
+    "section": "CV in scikit-learn",
+    "text": "CV in scikit-learn\n\n5-fold CV (default)\nClassification CV is stratified by default\ntrain_test_split(..., stratify=y) to stratify\nNo shuffle by default (repeatable results)"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#cv-for-grouped-data",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#cv-for-grouped-data",
+    "title": "Supervised learning workflow",
+    "section": "CV for grouped data?",
+    "text": "CV for grouped data?\n\nCV is more complicated when data are grouped\nData points within a group are correlated (e.g., city, patient, user)\ne.g. The task is to if a patient has a disease based on medical records from 9 cities\nHow CV should be done depends on the application scenario"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#scenario-1-to-predict-new-data-from-existing-cities-i.i.d.",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#scenario-1-to-predict-new-data-from-existing-cities-i.i.d.",
+    "title": "Supervised learning workflow",
+    "section": "Scenario 1: To predict new data from existing cities (i.i.d.)",
+    "text": "Scenario 1: To predict new data from existing cities (i.i.d.)\n\nStandard CV (e.g. KFold, RepeatedKFold) can be used\nGroup information can be ignored"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#scenario-2-to-predict-new-data-from-unknown-cities-not-i.i.d.",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#scenario-2-to-predict-new-data-from-unknown-cities-not-i.i.d.",
+    "title": "Supervised learning workflow",
+    "section": "Scenario 2: To predict new data from unknown cities (not i.i.d.)",
+    "text": "Scenario 2: To predict new data from unknown cities (not i.i.d.)\n\nGroupKFold should be used; ensure each group is contained in exactly one fold (either train or test)\nData from 9 cities; 5-fold CV; GroupKFold as below."
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#standard-train-test-split-or-cv-not-suitable-for-time-series",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#standard-train-test-split-or-cv-not-suitable-for-time-series",
+    "title": "Supervised learning workflow",
+    "section": "Standard train-test split or CV not suitable for time series",
+    "text": "Standard train-test split or CV not suitable for time series"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-for-time-series",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-for-time-series",
+    "title": "Supervised learning workflow",
+    "section": "Train-Test Split for Time Series",
+    "text": "Train-Test Split for Time Series\n\nUsing past data to train, future data to test"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#timeseriessplit",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#timeseriessplit",
+    "title": "Supervised learning workflow",
+    "section": "TimeSeriesSplit",
+    "text": "TimeSeriesSplit"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#time-series-cv",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#time-series-cv",
+    "title": "Supervised learning workflow",
+    "section": "Time Series CV",
+    "text": "Time Series CV"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#overview",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#overview",
+    "title": "Supervised learning workflow",
+    "section": "Overview",
+    "text": "Overview\nWe’ve covered:\n\nTrain-test split, threefold split\nCross-validation and its extensions, especially RepeatedKFold\nStratified CV (StratifiedKFold) for multiple classes and imbalanced data\nCV for grouped data and time series data"
+  },
+  {
+    "objectID": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#questions",
+    "href": "sessions/supervised_learning_workflow/supervised_learning_workflow.html#questions",
+    "title": "Supervised learning workflow",
+    "section": "Questions",
+    "text": "Questions"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#what-we-learnt-in-term-1",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#what-we-learnt-in-term-1",
+    "title": "Introduction to machine learning",
+    "section": "What we learnt in Term 1",
+    "text": "What we learnt in Term 1\n\nPython programming\nData types\nVisualisation\nRegression (Ordinary Least Square; Linear Mixed Effects; multicollinearity)\nDimensionality reduction\nClustering"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#learning-objectives",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#learning-objectives",
+    "title": "Introduction to machine learning",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\nBy the end of this lecture you should:\n\nUnderstand the basics and classifications of machine learning\nUnderstand the differences between statistical methods and machine learning (estimation vs. prediction)\nAppreciate GIGO theorems in machine learning and data science"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#ml-as-subset-of-ai",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#ml-as-subset-of-ai",
+    "title": "Introduction to machine learning",
+    "section": "ML as subset of AI",
+    "text": "ML as subset of AI\n\n\n\nMachine learning (decision tree, random forest, k-means, etc.)\n\nDeep learning (deep neural networks)\n\nOther AI tools: graphical models, symbolic AI\n\nNote: we don’t distinguish ML/DL and consider NN as part of ML\n\n\n\n\n\nImage Credit: Lecture slide (ML is a subset of AI)"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#definition-of-machine-learning",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#definition-of-machine-learning",
+    "title": "Introduction to machine learning",
+    "section": "Definition of machine learning",
+    "text": "Definition of machine learning\n\nArthur Samuel (1959): (Machine learning is the) field of study that gives computers the ability to learn without being explicitly programmed.\n\n\nTom Mitchell (1997): A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E."
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#what-is-machine-learning",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#what-is-machine-learning",
+    "title": "Introduction to machine learning",
+    "section": "What is Machine Learning?",
+    "text": "What is Machine Learning?\n\nExtracting knowledge from data\nRelying on data and algorithms\nClosely related to statistics but distinct from linear models\nFocus on prediction rather than estimating relationships or interpretation"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#examples-facebook",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#examples-facebook",
+    "title": "Introduction to machine learning",
+    "section": "Examples: Facebook",
+    "text": "Examples: Facebook\n\n\n\n\nMachine learning in news feed ranking\nContent selection and targeting\nAds and recommendations"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#examples-facebook-cont.",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#examples-facebook-cont.",
+    "title": "Introduction to machine learning",
+    "section": "Examples: Facebook (cont.)",
+    "text": "Examples: Facebook (cont.)\n\n\n\n\nFace detection and recognition\nPhoto organization"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#examples-facebook-cont.-1",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#examples-facebook-cont.-1",
+    "title": "Introduction to machine learning",
+    "section": "Examples: Facebook (cont.)",
+    "text": "Examples: Facebook (cont.)\n\n\n\n\nPhoto selection and layout"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#examples-amazon",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#examples-amazon",
+    "title": "Introduction to machine learning",
+    "section": "Examples: Amazon",
+    "text": "Examples: Amazon\n\n\n\n\nProduct ranking\nPersonalised recommendations\nAds selection"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#examples-amazon-cont.",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#examples-amazon-cont.",
+    "title": "Introduction to machine learning",
+    "section": "Examples: Amazon (cont.)",
+    "text": "Examples: Amazon (cont.)\n\n\n\n\nSeller selection\nDefault choices\nRelated products"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#science-applications",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#science-applications",
+    "title": "Introduction to machine learning",
+    "section": "Science Applications",
+    "text": "Science Applications\n\n\n\n\nPersonalised cancer treatment\nMedical diagnosis\nDrug discovery\nHiggs boson discovery\nExoplanet detection"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#types-of-machine-learning",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#types-of-machine-learning",
+    "title": "Introduction to machine learning",
+    "section": "Types of Machine Learning",
+    "text": "Types of Machine Learning\n\nSupervised Learning: Learn from input-output pairs (with labelled data)\nUnsupervised Learning: Discover structure in data (without labelled data)\nReinforcement Learning: Learn through interaction with environment (with an actual/simulated environment)"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#supervised-learning",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#supervised-learning",
+    "title": "Introduction to machine learning",
+    "section": "Supervised Learning",
+    "text": "Supervised Learning\n\\[\n\\begin{aligned}\n(x_i, y_i) &\\sim p(x, y) \\text{ i.i.d.} \\\\\nx_i &\\in \\mathbb{R}^n \\\\\ny_i &\\in \\mathbb{R} \\\\\nf(x_i) &\\approx y_i\n\\end{aligned}\n\\]\nLearn a function \\(f\\) from input-output pairs to predict on new data."
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#generalisation-to-unseen-data",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#generalisation-to-unseen-data",
+    "title": "Introduction to machine learning",
+    "section": "Generalisation to unseen data",
+    "text": "Generalisation to unseen data\n\nGoal: \\(f(x_i) \\approx y_i\\) on training data\nMore important: \\(f(x) \\approx y\\) on new data\nCore distinction: not just function approximation, but prediction on unseen data\nAvoiding overfitting to training data is key"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#examples-of-supervised-learning",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#examples-of-supervised-learning",
+    "title": "Introduction to machine learning",
+    "section": "Examples of Supervised Learning",
+    "text": "Examples of Supervised Learning\n\nSpam detection\nMedical diagnosis\nAd click prediction"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#unsupervised-learning",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#unsupervised-learning",
+    "title": "Introduction to machine learning",
+    "section": "Unsupervised Learning",
+    "text": "Unsupervised Learning\n\\[\nx_i \\sim p(x) \\text{ i.i.d.}\n\\]\nLearn about the distribution \\(p\\):\n\nClustering\nDimensionality reduction\nTopic modeling\nOutlier detection"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#other-types-of-learning",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#other-types-of-learning",
+    "title": "Introduction to machine learning",
+    "section": "Other Types of Learning",
+    "text": "Other Types of Learning\n\nSemi-supervised\nActive Learning\nForecasting\nTransfer learning\nIf you understand supervised/unsupervised/reinforcement learning, others are easier to grasp"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#dont-read-a-book-by-its-name",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#dont-read-a-book-by-its-name",
+    "title": "Introduction to machine learning",
+    "section": "Don’t read a book by its name",
+    "text": "Don’t read a book by its name\n\nClassifications of neighbourhoods (e.g. London output area classification) that are actually clustering\nAnomaly detection methods can be unsupervised or supervised learning\nForecasting can be done with lagged features (via supervised learning), or with time series data (via time series analysis), or both"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#what-does-llm-belong-to",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#what-does-llm-belong-to",
+    "title": "Introduction to machine learning",
+    "section": "What does LLM belong to?",
+    "text": "What does LLM belong to?\n\n\n\nImage Credit: medium.com"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#classification-vs.-regression",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#classification-vs.-regression",
+    "title": "Introduction to machine learning",
+    "section": "Classification vs. Regression",
+    "text": "Classification vs. Regression\n\n\nClassification\n\nTarget \\(y\\) is discrete\nExample: Is this patient sick?\n\n\nRegression\n\nTarget \\(y\\) is continuous\nExample: How long to recover?"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#relationship-to-statistics",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#relationship-to-statistics",
+    "title": "Introduction to machine learning",
+    "section": "Relationship to Statistics",
+    "text": "Relationship to Statistics\n\n\nStatistics\n\nModel first\nEstimation emphasis\nYes/no questions\nWith many assumptions, need to test\nInterpretation is key\ne.g. Does smoking lead to lung cancer?\n\n\nMachine Learning\n\nData first\nPrediction emphasis\nFuture predictions\nFew assumptions (but not assumption-free)\nInterpretation isn’t primary\ne.g. Predict tomorrow’s weather"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#following-statements-are-not-recommended",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#following-statements-are-not-recommended",
+    "title": "Introduction to machine learning",
+    "section": "Following statements are not recommended",
+    "text": "Following statements are not recommended\n\n“Linear regression is not needed anymore because of machine learning.”\n“Machine learning is just a fad; statistics is more important.”\n“Machine learning models are black boxes; we can’t interpret them at all.”\n“Machine learning models are as interpretable as linear models.”\n“Machine learning models have no assumptions.”"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#guiding-principles-goal-considerations",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#guiding-principles-goal-considerations",
+    "title": "Introduction to machine learning",
+    "section": "Guiding Principles: Goal Considerations",
+    "text": "Guiding Principles: Goal Considerations\n\nDefine the goal clearly\nDefine how to measure success\nThink about context and baseline\nAsk: what’s the benefit?"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#thinking-in-context",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#thinking-in-context",
+    "title": "Introduction to machine learning",
+    "section": "Thinking in Context",
+    "text": "Thinking in Context\n\nWhat do you want to achieve?\nWhat’s the baseline and its performance?\nWhat improvement over baseline do you need?"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#good-and-bad-substitutes",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#good-and-bad-substitutes",
+    "title": "Introduction to machine learning",
+    "section": "Good and Bad Substitutes",
+    "text": "Good and Bad Substitutes\n\nChoose metrics carefully\nSubstitute metrics can be misleading\nOptimize for the right goal\nUnderstand side effects"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#communicating-results",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#communicating-results",
+    "title": "Introduction to machine learning",
+    "section": "Communicating Results",
+    "text": "Communicating Results\n\nExplain why your approach works\nCommunicate uncertainty\nShow impact and limitations\nConvince stakeholders"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#explainable-results",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#explainable-results",
+    "title": "Introduction to machine learning",
+    "section": "Explainable Results",
+    "text": "Explainable Results\n\n\n\n\nUsers want to know why recommendations are made\nExplainability improves engagement\nImportant for trust and transparency"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#ethical-considerations",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#ethical-considerations",
+    "title": "Introduction to machine learning",
+    "section": "Ethical Considerations",
+    "text": "Ethical Considerations\n\n\n\n\nBias in risk assessments\nFairness in automated decisions\nTransparency and accountability"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#ethics-its-in-the-application",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#ethics-its-in-the-application",
+    "title": "Introduction to machine learning",
+    "section": "Ethics: It’s in the Application!",
+    "text": "Ethics: It’s in the Application!\n\nUnderstand biases in your system\nConsider the impact of predictions\nUse algorithms responsibly\nSame algorithm, different outcomes"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#data-and-data-collection",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#data-and-data-collection",
+    "title": "Introduction to machine learning",
+    "section": "Data and Data Collection",
+    "text": "Data and Data Collection\n\nCritical component of ML\nMore data usually helps (if from right source)\nConsider marginal cost vs. marginal benefit"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#free-vs-expensive-data",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#free-vs-expensive-data",
+    "title": "Introduction to machine learning",
+    "section": "Free vs Expensive Data",
+    "text": "Free vs Expensive Data\n\n\nFree Data\n\nOpen data from gov and census, often aggregated (e.g. ONS, London Fire Brigade, NASA)\nOpen data from companies (e.g. Google Street View) (Read the license first)\nSynthetic data\nWeb scraping (be careful with legality and ethics)\n\n\nExpensive Data\n\nIndividual data (e.g. health records)\nMobile phone data (high cost)\nUser survey\nHigh-resolution imagery (e.g. satellite, aerial, drone)"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#big-data-considerations",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#big-data-considerations",
+    "title": "Introduction to machine learning",
+    "section": "Big Data Considerations",
+    "text": "Big Data Considerations\n\nMore data can be more expensive to work with\nSubsample to RAM when possible (512GB available in cloud)\nRuntime and analyst time matter\nAlways try with a small sample first"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#theorem-garbage-in-garbage-out-gigo",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#theorem-garbage-in-garbage-out-gigo",
+    "title": "Introduction to machine learning",
+    "section": "Theorem: Garbage in, garbage out (GIGO)",
+    "text": "Theorem: Garbage in, garbage out (GIGO)\n\nGreat algorithms + bad data = bad results\n\n\n\n\nModel performance is constrained by data quality.\nBiased, noisy, or incomplete data leads to misleading predictions.\n\n\n\n\n\nImage Credit: x.com/xschelling/status/954936528555429888"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#good-data-large-size-high-quality.",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#good-data-large-size-high-quality.",
+    "title": "Introduction to machine learning",
+    "section": "Good data = large size + high quality.",
+    "text": "Good data = large size + high quality.\n\n\n\nSufficient sample size to capture variability in the problem\n\nHigh-quality labels and accurate measurements.\n\nRepresentative of the population and application context.\n\n\n\n\n\nImage Credit: Internet"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#data-size-and-performance",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#data-size-and-performance",
+    "title": "Introduction to machine learning",
+    "section": "Data size and performance",
+    "text": "Data size and performance\n\n\nThe performance of ML/DL increases rapidly with the size of the data:\n\nLarge neural nets benefit the most from big data.\n\nMedium and small neural nets also improve with more data.\n\nTraditional ML algorithms (e.g. random forest, SVM) may saturate earlier.\n\n\n\n\n\nPerformance vs data size for ML/DL models"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#feature-engineering-eda-90-time",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#feature-engineering-eda-90-time",
+    "title": "Introduction to machine learning",
+    "section": "Feature engineering & EDA (~90% time)",
+    "text": "Feature engineering & EDA (~90% time)\n\nMostly manual rather than automated (no automated methods for EDA)\nDomain knowledge from expertise is desirable\nUsing visualisation to identify patterns & data relationship\nRemoving noisy or erroneous data\n\nDealing with missing data\n\nGenerating new features by combining existing ones"
+  },
+  {
+    "objectID": "sessions/intro_machine_learning/intro_machine_learning.html#example-representation-of-geospatial-locations-in-ml-models",
+    "href": "sessions/intro_machine_learning/intro_machine_learning.html#example-representation-of-geospatial-locations-in-ml-models",
+    "title": "Introduction to machine learning",
+    "section": "Example: Representation of geospatial locations in ML models",
+    "text": "Example: Representation of geospatial locations in ML models\n\nRaw coordinates (e.g. long/lat) may not be directly useful\nNeed to engineer features that capture spatial relationships\nLong/lat\nDistance to POIs (train stations/schools).\nUsing adjacency matrix between spatial units"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "The Data Science for Spatial Systems (DSSS) module is a optional element of CASA’s MSc/MRes USS Course and is intended provide an introduction to advanced computational techniques in spatial analysis, or advanced spatial data sicence.\nAs with most computational analysis, spatial data science builds on two pillars: methods and data. In recent year, as AI (represented by deep learning and large-language models) has developed rapidly, numerous efficient techniques have been invented and open-sourced, which enables integration of heterougenous data. For example, we are now able to combine census data, remote sensing data, street-view imagery, and text data for understanding urban security or urban heat island effect on an ordnary laptop. Notably, (geospatial) foundation models, which are large, pre-trained AI models, are expected to become versatile bases for many specific tasks. It seems like we could model and predict almost everything in spatial analysis, even if we don’t understand what foundation models are doing. However, this is not entirely true. So far, AI is not silver bullet and AI has halluciations. We need to understand the principle and limitations of various computational models; we need to be critical about methods and results; we need to ask critical questions for any task; and we need to link modelling with applications so as to inform policy and practice.\nThe module is structured progressively across three core sections. The first section introduces supervised machine learning and their applications. We will firstly introduce the principle and workflow of supervised machine learning, and then talk about tree-based methods and neural networks….\nFollowing TBC\nThe second section builds upon this foundation to explore the core of statistical modelling: understanding and quantifying relationships between variables. Students will progress from measuring correlations to building sophisticated regression models. The curriculum covers the workhorse of social science, the Generalised Linear Model (GLM), before advancing to Multilevel Models, a critical technique for handling the nested and hierarchical data that is common in geographical and social research.\nThe final section of the course introduces advanced techniques for uncovering hidden structures within complex, high-dimensional datasets. Students will learn methods for dimensionality reduction to simplify complexity without losing vital information, and clustering analysis to identify natural groupings and patterns in data.\nTherefore, this module guides students on a complete analytical journey, from foundational principles to the application of advanced modelling techniques. It serves as a vital prerequisite for more specialised analytical modules and is essential for students wishing to undertake quantitative geospatial research. Ultimately, this module will provide quantitative skills that are in high demand across public, private, and academic sectors."
+  },
+  {
+    "objectID": "index.html#acknowledgements",
+    "href": "index.html#acknowledgements",
+    "title": "Welcome",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nWe really appreciate the support from various people:\n\nJon for setting up this wonderful CASA-themed quarto template.\nOllie and Andy for inspiring us to pursue a Quarto-based module website."
+  },
+  {
+    "objectID": "assessments/index.html",
+    "href": "assessments/index.html",
+    "title": "CASA0006 Assessment",
+    "section": "",
+    "text": "This Assessment is worth 100% of the grade for this course.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#assessment-aims",
+    "href": "assessments/index.html#assessment-aims",
+    "title": "CASA0006 Assessment",
+    "section": "Assessment Aims",
+    "text": "Assessment Aims\nThis assessment is designed to test your understanding of the quantitative methods introduced in this course, but also, crucially, your ability to really understand how, if used correctly and applied to appropriate data, these methods can help you tell a powerful story and be the underpinning evidence-base for a relevant local, national or international issue.\nUsing quantitative methods to contribute to public debates is vital if students, academics and universities are to demonstrate our value to the wider world. We don’t want you to just apply a method and regurgitate unintelligible coefficients. Quantitative methods can only have real value if they are used to support wider debates in ways that everyone should be able to understand.\nWe are not testing your coding abilities – you may use either of the main coding languages taught this term (R or Python). We are not testing your ability to write a standard piece of academic writing. But we are testing your ability to use quantitative methods appropriately and with a clear connection between the data, methods and outputs, to help others understand a particular issue through a data lens.\n\nPart 1 - Article\nYour task is to write a short 800-1000-word piece of ‘public-facing scholarly writing’ in the style of an article that that could appear in The Conversation or the Financial Times in their data section. This piece could relate to a local, national or international topic which could be either serious or frivolous but must employ appropriate quantitative methods learned in this course to derive novel insights from a particular dataset (or range of datasets) associated with a particular topic of your choosing. Data analysis and the use of quantitative methods should be central to your piece, but outputs must be appropriate for a general (non-academic) audience with your piece illuminated by appropriate visual outputs – maps, graphs or other data visualisations. Your piece should contain a range of graphical or tabular elements.\n\n\nPart 2 - Technical Appendix\nYour 800-1000-word article should be accompanied by a max 1000-word technical appendix detailing the analysis you have carried out behind the scenes to allow you to make the observations you have in your article. Here you might want to include additional exploratory visualisations, tabular outputs, interpretations of those outputs, equations etc. and you could also include any observations about the dataset or the validity / statistical significance of any models you employ. The purpose of the appendix is to reassure anyone who wants to delve deeper, that the observations you made in your main article are valid and reliable and your interpretations valid.\n\n\nTopic\nYour topic can be anything you like broadly related to human, urban or social issues, as long as you can find some suitable data to analyse. For inspiration on relevant topics, you might want to review some of the articles that John Burn-Murdoch has written for the Financial Times in recent years - https://www.ft.com/john-burn-murdoch (you can log-in via your UCL credentials) or some of the pieces in the Conversation - https://theconversation.com/.\nIf you are struggling for inspiration, you are welcome to explore an educational topic using DfE schools data used in class, but you are encouraged to be creative in your data choices (as you are being partially marked on your originality), and you should not repeat analyses carried out on variables in any of the practical sessions. The only topic we will not permit in this assessment is anything related to AirBnB as this is the focus of CASA0013.\n\n\nArticle Content\nYou will note that most of John Burn-Murdoch’s articles generally contain the sorts of analyses we would describe as exploratory. While your article should contain basic exploratory analysis in the form of visualisations, you should also use an appropriate method from the second half of the course (lectures 5-10) related to either more sophisticated exploratory analysis like multivariate statistical analysis (e.g. dimensionality reduction or cluster analysis) or some explanatory / predictive methods such as ANOVA, linear regression or some of the generalised linear models also introduced.\n\n\nStyle of Briefing\nYou should write in plain English and avoid the use of jargon or technical language. For tips on how to write in this style, The Conversation has produced a guide: https://socsci.web.ox.ac.uk/files/conversation-writing-public-why-and-how\n\n\nTypes of Data Permissible and Sources\nAnything you like, but you should choose carefully so that you are able to demonstrate the appropriate skills. There are many potential sources of data – these could be linked from FT or Conversation articles, or you could try sites like:\nhttps://data.gov/\nhttps://www.data.gov.uk/\nhttps://opendata.nhsbsa.net/\nhttps://tfl.gov.uk/info-for/open-data-users/  \nhttps://data.europa.eu/data/datasets?locale=en\nhttps://data.worldbank.org/\nhttps://data.london.gov.uk/\nYou can probably find many more!\n\n\nReferencing\nWe will not expect standard academic referencing in this piece, however, this doesn’t mean that you shouldn’t include references – you should. In this style of public facing scholarly writing, it is common to use hyperlinks and footnotes and you should make use of these to support your narrative.\n\n\nFormat of the Piece\nExamples – Here is just one example of the kind of article you might produce (minus the technical appendix), but read widely around the data journalism sites linked from publications like the Financial Times, New York Times, Guardian.\nhttps://theconversation.com/constituency-level-data-reveals-which-parties-are-most-threatened-by-reform-264422\n\n\nDeadline and Handing In\nThe Deadline for the assessment is Monday, 27 April 2026 @ 10:00.\nYour report and technical appendix should be uploaded to Moodle as a single PDF document.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#mark-scheme",
+    "href": "assessments/index.html#mark-scheme",
+    "title": "CASA0006 Assessment",
+    "section": "Mark Scheme",
+    "text": "Mark Scheme\nThis is how we will mark your work - take note of them\n\nimport pandas as pd\n\ndf = pd.read_csv(\"../data/assessment.csv\", encoding = \"ISO-8859-1\")\nfrom IPython.display import display, Markdown\ndisplay(Markdown(df.to_markdown()))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCriterion\n80-100%\n70-79% (A)\n60-69% (B)\n50-59% (C)\n40-49% (D)\n1-39% (E)\n\n\n\n\n0\nExploratory Analysis (25%)\nOutstanding selection of exploratory statistics and/or sophisticated data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations in the data with absolute clarity. Graphics are labelled such that readers are in no doubt about what is being shown. Data may have been transformed, normalised or standardised in some way to reveal otherwise hidden patterns and justified impeccably.\nExcellent selection of exploratory statistics and/or sophisticated data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations in the data. Graphics are labelled such that readers are in no doubt about what is being shown. Data may have been transformed, normalised or standardised in some way to reveal otherwise hidden patterns and justified.\nGood selection of exploratory statistics and/or data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations. Graphics are labelled such that readers are able to interpret the plots with ease.\nAdequate selection of exploratory statistics and/or data visualisations which illuminate some of the underlying data, revealing some distributions / trends / relationships and associations. Graphics are labelled, but may lack clarity. Data may not be transformed, normalised or standardised in a way to reveal patterns.\nInadequate selection of statistics or visualisations. Graphics are poorly labelled or unclear, and do not illuminate the underlying data. Data transformations are incorrect or missing.\nNegligible use of statistics or visualisations. Any visualisations are irrelevant, inaccurate, or inaccessible. The analysis shows no grasp of the underlying data.\n\n\n1\nUse of multivariate statistical analysis or explanatory / predictive methods (25%)\nExceptional selection of data / variables entirely appropriate for the chosen article topic. Masterful understanding of the nuances related to the careful pruning and selection of appropriate variables. Outstanding understanding of the methods employed and their interaction with the data to hand with masterful understanding of outputs produced\nExcellent selection of data / variables entirely appropriate for the chosen article topic. Highly competent understanding of the nuances related to the careful pruning and selection of appropriate variables. Highly competent understanding of the methods employed and their interaction with the data to hand.\nGood selection of data / variables appropriate for the chosen article topic. Competent understanding of the methods employed and their interaction with the data.\nAdequate selection of data / variables for the chosen article topic. Basic understanding of the methods employed and their interaction with the data. May get some of the nuances in the outputs, but may also ignore some key features in the data\nInadequate selection of data / variables for the chosen article topic. Little to no understanding of the methods employed or how they interact with the data.\nNegligible or irrelevant selection of data / variables. No grasp of the methods or their application to the data.\n\n\n2\nOriginality, article narrative and communication (25%)\nHighly original topic selection, or of exceptional relevance to a contemporary debate in the society, the media or politics at a local, national or international level with broad interest. Article narrative shows flare or originality which draws the reader in and reveals something entirely new. Writing style is highly accessible - clear, concise and creative and the reader is left without query or misunderstanding.\nExcellent topic selection, of high relevance to a contemporary debate. The narrative is engaging and written with excellent clarity, flowing well from one section to the next. The work is of a very high standard. Writing style clear and concise with few wasted words.\nGood topic selection, of relevance to a contemporary debate. The narrative is clear and well-structured. The work shows some evidence of originality. The narrative is good and the message emerging from the analysis is conveyed well.\nAdequate topic selection, but may lack relevance or wider interest. The narrative is satisfactory but may lack clarity or logical flow  ideas appearing slightly disorganised. The reader can understand the piece but may have to work hard to derive meaning from it.\nInadequate topic selection  perhaps dated or totally irrelevant to the degree programme (i.e. not even a human topic). The narrative is lacking in clarity and is difficult to follow. Deriving meaning from the work is a challenge.\nThe work has no clear topic or narrative. The communication is confused, unclear, or inaccessible.\n\n\n3\nConceptual understanding and Critical Reflection (25%)\nBoth the Article and Technical Appendix show exemplary understanding of the topic / wider issues associated with it and of the methods employed to interrogate the data. A clear understanding of any data / methodological shortcomings / issues / challenges is presented with a highly sophisticated degree of critical reflection in relation to the substantive topic and / or methods employed is demonstrated.\nArticle and Technical Appendix show excellent and highly competent conceptual understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a thorough understanding of the chosen example and recognises and reflects lucidly on any shortcomings and / or the wider significance of the findings in a way that is not contrived or formulaic but shows a sophisticated level of insight.\nArticle and Technical Appendix show good understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a sound understanding of the chosen example and recognises and reflects lucidly on any shortcomings and / or the wider significance of the findings in a way that is not contrived or formulaic but shows a sophisticated level of insight.\nArticle and Technical Appendix show basic understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a rudimentary understanding of the chosen example and recognises and may offer only some reflection on the shortcomings of the work or not at all / contrived at the bottom end.\nInadequate and insufficient conceptual understanding of key concepts and theories. The work demonstrates an invalid or lack of understanding of the concepts introduced. Any analysis attempted fails to support the observations made.\nNegligible or no conceptual understanding of key concepts and theories. The work demonstrates an irrelevant, inaccurate, confused, unclear, or inaccessible understanding of the concepts.\n\n\n\n\n\nThe purpose of this assessment is to test your understanding of the various methods introduced in this course and your ability to apply them appropriately to a topic of your choice. One of the differentiators at Masters level is the ability to think both creatively and critically while showing an awareness or knowledge of contemporary issues either in relation to your specific discipline of study or more widely. Being able to demonstrate how established techniques of research and enquiry can be used to create and interpret knowledge is at the core of Masters level thinking and this assessment piece. The ability to demonstrate self-direction (in choosing an appropriate topic for this assessment) and to think autonomously in designing your own article.\n\nMark Scheme – Explained\nLevel 7 Descriptors - https://www.qaa.ac.uk/docs/qaa/quality-code/the-frameworks-for-higher-education-qualifications-of-uk-degree-awarding-bodies-2024.pdf - p26\nMaster’s degree\nThe descriptor provided for this level of the Frameworks is for any master’s degree which should meet the descriptor in full. This qualification descriptor should also be used as a reference point for other qualifications at Level 7 on the FHEQ/SCQF Level 11 on the FQHEIS, including postgraduate certificates and postgraduate diplomas.\nMaster’s degrees are awarded to students who have demonstrated:\n•         a systematic understanding of knowledge, and a critical awareness of current problems and/or new insights, much of which is at, or informed by, the forefront of their academic discipline, field of study or area of professional practice\n•         a comprehensive understanding of techniques applicable to their own research or advanced scholarship\n•         originality in the application of knowledge, together with a practical understanding of how established techniques of research and enquiry are used to create and interpret knowledge in the discipline\n•         conceptual understanding that enables the student:\n•         to evaluate critically current research and advanced scholarship in the discipline\n•         to evaluate methodologies and develop critiques of them and, where appropriate, to propose new hypotheses.\nTypically, holders of the qualification will be able to:\n•         deal with complex issues - both systematically and creatively, make sound judgements in the absence of complete data, and communicate their conclusions clearly to specialist and non-specialist audiences\n•         demonstrate self-direction and originality in tackling and solving problems, and act autonomously in planning and implementing tasks at a professional or equivalent level\n•         continue to advance their knowledge and understanding, and to develop new skills to a high level. \nAnd holders will have:\n•         the qualities and transferable skills necessary for employment requiring:  \n•         the exercise of initiative and personal responsibility\n•         decision-making in complex and unpredictable situations\n•         the independent learning ability required for continuing professional development.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "help.html",
+    "href": "help.html",
+    "title": "Getting Help",
+    "section": "",
+    "text": "We all need help from time to time, and while we will always do our best to support you because we know that this module is hard for students who are new to quantitative modules or statistics, the best way to ‘get help’ will also always be taking steps to ‘help yourself’ first."
+  },
+  {
+    "objectID": "help.html#how-to-help-yourself",
+    "href": "help.html#how-to-help-yourself",
+    "title": "Getting Help",
+    "section": "How to Help Yourself",
+    "text": "How to Help Yourself\nHere are at least six things that you can do to ‘help yourself’:\n\nMake use of practical sessions–we can’t help you if we don’t know that you’re struggling. Please talk to the lecturer or TAs during the pratical sessions.\nUse the dedicated #casa0007_qm channel on Slack –this provides a much richer experience than the Moodle Forum and should be your primary means of requesting help outside of scheduled teaching hours.\nDo the readings–regardless of whether we ask you questions in class about them (or not), the readings are designed to support the module’s learning outcomes, so if you are struggling with a concept or an idea then please look to the week’s readings! You should also review the full bibliography while developing your thinking for the final project.\nUse Google or Stack Overflow–as you become a better programmer you’ll start to understand how to frame your question in ways that produce the right answer right away, but whether you’re a beginner or an expert Stack Overflow is your friend.\nSign up for online classes–there are lots of plausible online classes on LinkedIn course or Coursera. Please check the reviews before you take an online module."
+  },
+  {
     "objectID": "sessions/index.html",
     "href": "sessions/index.html",
     "title": "Overview",
@@ -529,69 +1070,165 @@
     ]
   },
   {
-    "objectID": "help.html",
-    "href": "help.html",
-    "title": "Getting Help",
-    "section": "",
-    "text": "We all need help from time to time, and while we will always do our best to support you because we know that this module is hard for students who are new to quantitative modules or statistics, the best way to ‘get help’ will also always be taking steps to ‘help yourself’ first."
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#framework",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#framework",
+    "title": "Supervised learning",
+    "section": "Framework",
+    "text": "Framework\n\\[\n\\begin{aligned}\n(x_i, y_i) &\\sim p(x, y) \\text{ i.i.d.} \\\\\nx_i &\\in \\mathbb{R}^n \\\\\ny_i &\\in\n\\begin{cases}\n\\mathbb{R}, & \\text{(regression)} \\\\\n\\mathcal{Y} \\text{ (finite set)}, & \\text{(classification)}\n\\end{cases} \\\\\n\\text{learn } f(x_i) &\\approx y_i \\\\\n\\text{such that } f(x) &\\approx y\n\\end{aligned}\n\\]"
   },
   {
-    "objectID": "help.html#how-to-help-yourself",
-    "href": "help.html#how-to-help-yourself",
-    "title": "Getting Help",
-    "section": "How to Help Yourself",
-    "text": "How to Help Yourself\nHere are at least six things that you can do to ‘help yourself’:\n\nMake use of practical sessions–we can’t help you if we don’t know that you’re struggling. Please talk to the lecturer or TAs during the pratical sessions.\nUse the dedicated #casa0007_qm channel on Slack –this provides a much richer experience than the Moodle Forum and should be your primary means of requesting help outside of scheduled teaching hours.\nDo the readings–regardless of whether we ask you questions in class about them (or not), the readings are designed to support the module’s learning outcomes, so if you are struggling with a concept or an idea then please look to the week’s readings! You should also review the full bibliography while developing your thinking for the final project.\nUse Google or Stack Overflow–as you become a better programmer you’ll start to understand how to frame your question in ways that produce the right answer right away, but whether you’re a beginner or an expert Stack Overflow is your friend.\nSign up for online classes–there are lots of plausible online classes on LinkedIn course or Coursera. Please check the reviews before you take an online module."
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#regression-vs.-classification",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#regression-vs.-classification",
+    "title": "Supervised learning",
+    "section": "Regression vs. classification",
+    "text": "Regression vs. classification\n\n\n\n\n\n\n\n\n\nRegression\nClassification\n\n\n\n\nTarget variable\nContinuous value (y )\nDiscrete label (y ) (finite set)\n\n\nTask\nPredict “how much” / “how many”\nPredict “which class” / “which category”\n\n\nIntuition\nFind a ‘line’ close to all points\nFind a ‘boundary’ between classis\n\n\nExample\nPredicting house prices from features\nPredicting spam vs. not spam for an email"
   },
   {
-    "objectID": "assessments/index.html",
-    "href": "assessments/index.html",
-    "title": "CASA0006 Assessment",
-    "section": "",
-    "text": "This Assessment is worth 100% of the grade for this course.",
-    "crumbs": [
-      "Overview"
-    ]
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#example---linear-regression",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#example---linear-regression",
+    "title": "Supervised learning",
+    "section": "Example - linear regression",
+    "text": "Example - linear regression\n\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.datasets import fetch_california_housing\nfrom sklearn.model_selection import train_test_split\nimport pandas as pd\n\ndata = fetch_california_housing()\nX = pd.DataFrame(data.data, columns=data.feature_names)\ny = data.target\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nmodel = LinearRegression()\nmodel.fit(X_train, y_train)\n\nfor feature, coef in zip(X.columns, model.coef_):\n    print(f\"{feature}: {coef:.2f}\")\nprint(f\"Intercept: {model.intercept_:.2f}\")\n\nMedInc: 0.45\nHouseAge: 0.01\nAveRooms: -0.12\nAveBedrms: 0.78\nPopulation: -0.00\nAveOccup: -0.00\nLatitude: -0.42\nLongitude: -0.43\nIntercept: -37.02"
   },
   {
-    "objectID": "assessments/index.html#assessment-aims",
-    "href": "assessments/index.html#assessment-aims",
-    "title": "CASA0006 Assessment",
-    "section": "Assessment Aims",
-    "text": "Assessment Aims\nThis assessment is designed to test your understanding of the quantitative methods introduced in this course, but also, crucially, your ability to really understand how, if used correctly and applied to appropriate data, these methods can help you tell a powerful story and be the underpinning evidence-base for a relevant local, national or international issue.\nUsing quantitative methods to contribute to public debates is vital if students, academics and universities are to demonstrate our value to the wider world. We don’t want you to just apply a method and regurgitate unintelligible coefficients. Quantitative methods can only have real value if they are used to support wider debates in ways that everyone should be able to understand.\nWe are not testing your coding abilities – you may use either of the main coding languages taught this term (R or Python). We are not testing your ability to write a standard piece of academic writing. But we are testing your ability to use quantitative methods appropriately and with a clear connection between the data, methods and outputs, to help others understand a particular issue through a data lens.\n\nPart 1 - Article\nYour task is to write a short 800-1000-word piece of ‘public-facing scholarly writing’ in the style of an article that that could appear in The Conversation or the Financial Times in their data section. This piece could relate to a local, national or international topic which could be either serious or frivolous but must employ appropriate quantitative methods learned in this course to derive novel insights from a particular dataset (or range of datasets) associated with a particular topic of your choosing. Data analysis and the use of quantitative methods should be central to your piece, but outputs must be appropriate for a general (non-academic) audience with your piece illuminated by appropriate visual outputs – maps, graphs or other data visualisations. Your piece should contain a range of graphical or tabular elements.\n\n\nPart 2 - Technical Appendix\nYour 800-1000-word article should be accompanied by a max 1000-word technical appendix detailing the analysis you have carried out behind the scenes to allow you to make the observations you have in your article. Here you might want to include additional exploratory visualisations, tabular outputs, interpretations of those outputs, equations etc. and you could also include any observations about the dataset or the validity / statistical significance of any models you employ. The purpose of the appendix is to reassure anyone who wants to delve deeper, that the observations you made in your main article are valid and reliable and your interpretations valid.\n\n\nTopic\nYour topic can be anything you like broadly related to human, urban or social issues, as long as you can find some suitable data to analyse. For inspiration on relevant topics, you might want to review some of the articles that John Burn-Murdoch has written for the Financial Times in recent years - https://www.ft.com/john-burn-murdoch (you can log-in via your UCL credentials) or some of the pieces in the Conversation - https://theconversation.com/.\nIf you are struggling for inspiration, you are welcome to explore an educational topic using DfE schools data used in class, but you are encouraged to be creative in your data choices (as you are being partially marked on your originality), and you should not repeat analyses carried out on variables in any of the practical sessions. The only topic we will not permit in this assessment is anything related to AirBnB as this is the focus of CASA0013.\n\n\nArticle Content\nYou will note that most of John Burn-Murdoch’s articles generally contain the sorts of analyses we would describe as exploratory. While your article should contain basic exploratory analysis in the form of visualisations, you should also use an appropriate method from the second half of the course (lectures 5-10) related to either more sophisticated exploratory analysis like multivariate statistical analysis (e.g. dimensionality reduction or cluster analysis) or some explanatory / predictive methods such as ANOVA, linear regression or some of the generalised linear models also introduced.\n\n\nStyle of Briefing\nYou should write in plain English and avoid the use of jargon or technical language. For tips on how to write in this style, The Conversation has produced a guide: https://socsci.web.ox.ac.uk/files/conversation-writing-public-why-and-how\n\n\nTypes of Data Permissible and Sources\nAnything you like, but you should choose carefully so that you are able to demonstrate the appropriate skills. There are many potential sources of data – these could be linked from FT or Conversation articles, or you could try sites like:\nhttps://data.gov/\nhttps://www.data.gov.uk/\nhttps://opendata.nhsbsa.net/\nhttps://tfl.gov.uk/info-for/open-data-users/  \nhttps://data.europa.eu/data/datasets?locale=en\nhttps://data.worldbank.org/\nhttps://data.london.gov.uk/\nYou can probably find many more!\n\n\nReferencing\nWe will not expect standard academic referencing in this piece, however, this doesn’t mean that you shouldn’t include references – you should. In this style of public facing scholarly writing, it is common to use hyperlinks and footnotes and you should make use of these to support your narrative.\n\n\nFormat of the Piece\nExamples – Here is just one example of the kind of article you might produce (minus the technical appendix), but read widely around the data journalism sites linked from publications like the Financial Times, New York Times, Guardian.\nhttps://theconversation.com/constituency-level-data-reveals-which-parties-are-most-threatened-by-reform-264422\n\n\nDeadline and Handing In\nThe Deadline for the assessment is Monday, 27 April 2026 @ 10:00.\nYour report and technical appendix should be uploaded to Moodle as a single PDF document.",
-    "crumbs": [
-      "Overview"
-    ]
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#terms",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#terms",
+    "title": "Supervised learning",
+    "section": "Terms",
+    "text": "Terms\n\n\n\n\nTerm\n\n\nDefinition\n\n\nExample\n\n\n\n\n\n\nAlgorithm\n\n\nprocedure that runs on data to create a model\n\n\nlinear regression\n\n\n\n\nModel\n\n\nan output by algorithm and data\n\n\n\\(\\hat{y}_i = \\sum_k \\beta_k x_{ik} + \\beta_0\\)\n\n\n\n\nMetric\n\n\nto evalute the model performace\n\n\nSquared error\n\n\n\n\nHyperparameter\n\n\nalgorithm settings, predefined by user instead of learned from data\n\n\nNone\n\n\n\n\nParameter\n\n\nmodel components learned from data\n\n\ncoefficients & intercept\n\n\n\n\nModel training\n\n\nprocess of estimating parameters from data\n\n\nusing maximum likelihood estimation"
   },
   {
-    "objectID": "assessments/index.html#mark-scheme",
-    "href": "assessments/index.html#mark-scheme",
-    "title": "CASA0006 Assessment",
-    "section": "Mark Scheme",
-    "text": "Mark Scheme\nThis is how we will mark your work - take note of them\n\nimport pandas as pd\n\ndf = pd.read_csv(\"../data/assessment.csv\", encoding = \"ISO-8859-1\")\nfrom IPython.display import display, Markdown\ndisplay(Markdown(df.to_markdown()))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCriterion\n80-100%\n70-79% (A)\n60-69% (B)\n50-59% (C)\n40-49% (D)\n1-39% (E)\n\n\n\n\n0\nExploratory Analysis (25%)\nOutstanding selection of exploratory statistics and/or sophisticated data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations in the data with absolute clarity. Graphics are labelled such that readers are in no doubt about what is being shown. Data may have been transformed, normalised or standardised in some way to reveal otherwise hidden patterns and justified impeccably.\nExcellent selection of exploratory statistics and/or sophisticated data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations in the data. Graphics are labelled such that readers are in no doubt about what is being shown. Data may have been transformed, normalised or standardised in some way to reveal otherwise hidden patterns and justified.\nGood selection of exploratory statistics and/or data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations. Graphics are labelled such that readers are able to interpret the plots with ease.\nAdequate selection of exploratory statistics and/or data visualisations which illuminate some of the underlying data, revealing some distributions / trends / relationships and associations. Graphics are labelled, but may lack clarity. Data may not be transformed, normalised or standardised in a way to reveal patterns.\nInadequate selection of statistics or visualisations. Graphics are poorly labelled or unclear, and do not illuminate the underlying data. Data transformations are incorrect or missing.\nNegligible use of statistics or visualisations. Any visualisations are irrelevant, inaccurate, or inaccessible. The analysis shows no grasp of the underlying data.\n\n\n1\nUse of multivariate statistical analysis or explanatory / predictive methods (25%)\nExceptional selection of data / variables entirely appropriate for the chosen article topic. Masterful understanding of the nuances related to the careful pruning and selection of appropriate variables. Outstanding understanding of the methods employed and their interaction with the data to hand with masterful understanding of outputs produced\nExcellent selection of data / variables entirely appropriate for the chosen article topic. Highly competent understanding of the nuances related to the careful pruning and selection of appropriate variables. Highly competent understanding of the methods employed and their interaction with the data to hand.\nGood selection of data / variables appropriate for the chosen article topic. Competent understanding of the methods employed and their interaction with the data.\nAdequate selection of data / variables for the chosen article topic. Basic understanding of the methods employed and their interaction with the data. May get some of the nuances in the outputs, but may also ignore some key features in the data\nInadequate selection of data / variables for the chosen article topic. Little to no understanding of the methods employed or how they interact with the data.\nNegligible or irrelevant selection of data / variables. No grasp of the methods or their application to the data.\n\n\n2\nOriginality, article narrative and communication (25%)\nHighly original topic selection, or of exceptional relevance to a contemporary debate in the society, the media or politics at a local, national or international level with broad interest. Article narrative shows flare or originality which draws the reader in and reveals something entirely new. Writing style is highly accessible - clear, concise and creative and the reader is left without query or misunderstanding.\nExcellent topic selection, of high relevance to a contemporary debate. The narrative is engaging and written with excellent clarity, flowing well from one section to the next. The work is of a very high standard. Writing style clear and concise with few wasted words.\nGood topic selection, of relevance to a contemporary debate. The narrative is clear and well-structured. The work shows some evidence of originality. The narrative is good and the message emerging from the analysis is conveyed well.\nAdequate topic selection, but may lack relevance or wider interest. The narrative is satisfactory but may lack clarity or logical flow  ideas appearing slightly disorganised. The reader can understand the piece but may have to work hard to derive meaning from it.\nInadequate topic selection  perhaps dated or totally irrelevant to the degree programme (i.e. not even a human topic). The narrative is lacking in clarity and is difficult to follow. Deriving meaning from the work is a challenge.\nThe work has no clear topic or narrative. The communication is confused, unclear, or inaccessible.\n\n\n3\nConceptual understanding and Critical Reflection (25%)\nBoth the Article and Technical Appendix show exemplary understanding of the topic / wider issues associated with it and of the methods employed to interrogate the data. A clear understanding of any data / methodological shortcomings / issues / challenges is presented with a highly sophisticated degree of critical reflection in relation to the substantive topic and / or methods employed is demonstrated.\nArticle and Technical Appendix show excellent and highly competent conceptual understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a thorough understanding of the chosen example and recognises and reflects lucidly on any shortcomings and / or the wider significance of the findings in a way that is not contrived or formulaic but shows a sophisticated level of insight.\nArticle and Technical Appendix show good understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a sound understanding of the chosen example and recognises and reflects lucidly on any shortcomings and / or the wider significance of the findings in a way that is not contrived or formulaic but shows a sophisticated level of insight.\nArticle and Technical Appendix show basic understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a rudimentary understanding of the chosen example and recognises and may offer only some reflection on the shortcomings of the work or not at all / contrived at the bottom end.\nInadequate and insufficient conceptual understanding of key concepts and theories. The work demonstrates an invalid or lack of understanding of the concepts introduced. Any analysis attempted fails to support the observations made.\nNegligible or no conceptual understanding of key concepts and theories. The work demonstrates an irrelevant, inaccurate, confused, unclear, or inaccessible understanding of the concepts.\n\n\n\n\n\nThe purpose of this assessment is to test your understanding of the various methods introduced in this course and your ability to apply them appropriately to a topic of your choice. One of the differentiators at Masters level is the ability to think both creatively and critically while showing an awareness or knowledge of contemporary issues either in relation to your specific discipline of study or more widely. Being able to demonstrate how established techniques of research and enquiry can be used to create and interpret knowledge is at the core of Masters level thinking and this assessment piece. The ability to demonstrate self-direction (in choosing an appropriate topic for this assessment) and to think autonomously in designing your own article.\n\nMark Scheme – Explained\nLevel 7 Descriptors - https://www.qaa.ac.uk/docs/qaa/quality-code/the-frameworks-for-higher-education-qualifications-of-uk-degree-awarding-bodies-2024.pdf - p26\nMaster’s degree\nThe descriptor provided for this level of the Frameworks is for any master’s degree which should meet the descriptor in full. This qualification descriptor should also be used as a reference point for other qualifications at Level 7 on the FHEQ/SCQF Level 11 on the FQHEIS, including postgraduate certificates and postgraduate diplomas.\nMaster’s degrees are awarded to students who have demonstrated:\n•         a systematic understanding of knowledge, and a critical awareness of current problems and/or new insights, much of which is at, or informed by, the forefront of their academic discipline, field of study or area of professional practice\n•         a comprehensive understanding of techniques applicable to their own research or advanced scholarship\n•         originality in the application of knowledge, together with a practical understanding of how established techniques of research and enquiry are used to create and interpret knowledge in the discipline\n•         conceptual understanding that enables the student:\n•         to evaluate critically current research and advanced scholarship in the discipline\n•         to evaluate methodologies and develop critiques of them and, where appropriate, to propose new hypotheses.\nTypically, holders of the qualification will be able to:\n•         deal with complex issues - both systematically and creatively, make sound judgements in the absence of complete data, and communicate their conclusions clearly to specialist and non-specialist audiences\n•         demonstrate self-direction and originality in tackling and solving problems, and act autonomously in planning and implementing tasks at a professional or equivalent level\n•         continue to advance their knowledge and understanding, and to develop new skills to a high level. \nAnd holders will have:\n•         the qualities and transferable skills necessary for employment requiring:  \n•         the exercise of initiative and personal responsibility\n•         decision-making in complex and unpredictable situations\n•         the independent learning ability required for continuing professional development.",
-    "crumbs": [
-      "Overview"
-    ]
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#classification",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#classification",
+    "title": "Supervised learning",
+    "section": "Classification",
+    "text": "Classification\n\nMost classification algorithms follow two steps:\n\n\npredict probabilities for each class\nassign class with highest probability\n\n\nWe can talk about common challenges for supervised learning (despite their differences)"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome",
-    "section": "",
-    "text": "The Data Science for Spatial Systems (DSSS) module is a optional element of CASA’s MSc/MRes USS Course and is intended provide an introduction to advanced computational techniques in spatial analysis, or advanced spatial data sicence.\nAs with most computational analysis, spatial data science builds on two pillars: methods and data. In recent year, as AI (represented by deep learning and large-language models) has developed rapidly, numerous efficient techniques have been invented and open-sourced, which enables integration of heterougenous data. For example, we are now able to combine census data, remote sensing data, street-view imagery, and text data for understanding urban security or urban heat island effect on an ordnary laptop. Notably, (geospatial) foundation models, which are large, pre-trained AI models, are expected to become versatile bases for many specific tasks. It seems like we could model and predict almost everything in spatial analysis, even if we don’t understand what foundation models are doing. However, this is not entirely true. So far, AI is not silver bullet and AI has halluciations. We need to understand the principle and limitations of various computational models; we need to be critical about methods and results; we need to ask critical questions for any task; and we need to link modelling with applications so as to inform policy and practice.\nThe module is structured progressively across three core sections. The first section introduces supervised machine learning and their applications. We will firstly introduce the principle and workflow of supervised machine learning, and then talk about tree-based methods and neural networks….\nFollowing TBC\nThe second section builds upon this foundation to explore the core of statistical modelling: understanding and quantifying relationships between variables. Students will progress from measuring correlations to building sophisticated regression models. The curriculum covers the workhorse of social science, the Generalised Linear Model (GLM), before advancing to Multilevel Models, a critical technique for handling the nested and hierarchical data that is common in geographical and social research.\nThe final section of the course introduces advanced techniques for uncovering hidden structures within complex, high-dimensional datasets. Students will learn methods for dimensionality reduction to simplify complexity without losing vital information, and clustering analysis to identify natural groupings and patterns in data.\nTherefore, this module guides students on a complete analytical journey, from foundational principles to the application of advanced modelling techniques. It serves as a vital prerequisite for more specialised analytical modules and is essential for students wishing to undertake quantitative geospatial research. Ultimately, this module will provide quantitative skills that are in high demand across public, private, and academic sectors."
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#common-challenges",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#common-challenges",
+    "title": "Supervised learning",
+    "section": "Common Challenges",
+    "text": "Common Challenges\n\nTo select evaluation metrics (so that the model solves the right problem)\nTo design workflow (so that the model generalises well and avoids overfitting)"
   },
   {
-    "objectID": "index.html#acknowledgements",
-    "href": "index.html#acknowledgements",
-    "title": "Welcome",
-    "section": "Acknowledgements",
-    "text": "Acknowledgements\nWe really appreciate the support from various people:\n\nJon for setting up this wonderful CASA-themed quarto template.\nOllie and Andy for inspiring us to pursue a Quarto-based module website."
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#metrics-for-regression",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#metrics-for-regression",
+    "title": "Supervised learning",
+    "section": "Metrics for regression",
+    "text": "Metrics for regression\n\n\n\n\n\n\n\nformula\n\n\nunit\n\n\nnotes\n\n\n\n\n\n\nRMSE\n\n\n\\(\\sqrt{\\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2}\\)\n\n\nSame unit as target \\(y\\)\n\n\nPenalises large errors more; sensitive to outliers\n\n\n\n\nR²\n\n\n\\(1 - \\dfrac{\\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2}{\\sum_{i=1}^{n}(y_i - \\bar{y})^2}\\)\n\n\nDimensionless (between 0 and 1 for most cases)\n\n\nMeasures proportion of variance explained by the model; can be negative if model is worse than \\(y_i=\\bar{y}\\)\n\n\n\n\nMAE\n\n\n\\(\\frac{1}{n}\\sum_{i=1}^{n}\\lvert y_i - \\hat{y}_i\\rvert\\)\n\n\nSame unit as target \\(y\\)\n\n\nMore robust to outliers than RMSE; interpretable as average absolute error\n\n\n\n\nMAPE\n\n\n\\(\\frac{100}{n}\\sum_{i=1}^{n}\\left\\lvert \\frac{y_i - \\hat{y}_i}{y_i} \\right\\rvert\\)\n\n\nPercent (%)\n\n\nsensitive to very small \\(y_i\\); relative error"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#metrics-for-regression-1",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#metrics-for-regression-1",
+    "title": "Supervised learning",
+    "section": "Metrics for regression",
+    "text": "Metrics for regression\n\nUsing RMSE or squared error in most cases\nBy default, regressors in sklearn and XGBoost use Squared Error as loss function\nDifference between R2 for OLS (within [0,1]) vs. R2 for regression (&lt;=1, can be negative)"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#metrics-for-classification-binary",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#metrics-for-classification-binary",
+    "title": "Supervised learning",
+    "section": "Metrics for classification (binary)",
+    "text": "Metrics for classification (binary)\n\n\n\nImage Credit: COMS4995-s20\n\n\n\\(Accuracy=\\frac{TP+TN}{TP+TN+FP+FN}\\)\n\nSelecting Positive label: often the minority class"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
+    "title": "Supervised learning",
+    "section": "Example using Breast Cancer dataset",
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
+    "title": "Supervised learning",
+    "section": "Limitation of accuracy (Accuracy paradox)",
+    "text": "Limitation of accuracy (Accuracy paradox)\n\nScenario: Data with 90% negatives (imbalanced data)\nA majority strategy that predicts all as negative gets 90% accuracy, but this is useless.\nDifferent models can have the same accuracy (0.9) but make very different types of errors.\n\ny_pred_1: Predicts all negative (90 TN, 0 TP)\ny_pred_2: Predicts some positives correctly but misses others\ny_pred_3: A mix of errors"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#precision-recall-f1-score-auc",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#precision-recall-f1-score-auc",
+    "title": "Supervised learning",
+    "section": "Precision, Recall, F1-score, AUC",
+    "text": "Precision, Recall, F1-score, AUC\n\nPrecision (Positive Predicted Value): \\(\\frac{TP}{TP+FP}\\). Among predicted positives, how many are actually positive.\nRecall (Sensitivity, True Positive Rate): \\(\\frac{TP}{TP+FN}\\). Among actual positives, how many are correctly predicted.\nF1-score (Harmonic mean of precision & recall): \\(F=2\\frac{\\text{precision}\\cdot \\text{recall}}{\\text{precision}+\\text{recall}}\\)"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#addressing-accuracy-paradox",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#addressing-accuracy-paradox",
+    "title": "Supervised learning",
+    "section": "Addressing accuracy paradox",
+    "text": "Addressing accuracy paradox"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#trade-off-between-precision-and-recall",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#trade-off-between-precision-and-recall",
+    "title": "Supervised learning",
+    "section": "Trade-off between precision and recall",
+    "text": "Trade-off between precision and recall\n\nWhen precision increases, recall decreases. Vice versa.\nBy changing classification threshold (default=0.5, from 0 to 1), we can see the balance between precision and recall.\n\n\n\n\n\n\nPrecision–Recall curve for LR and Random Forest"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#roc-curve",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#roc-curve",
+    "title": "Supervised learning",
+    "section": "ROC Curve",
+    "text": "ROC Curve\n\nReceiver Operating Characteristic (ROC) curve plots True Positive Rate vs. False Positive Rate. Similar to precision-recall curve.\nThe identity line y=x represents random classifier (e.g. tossing a coin)."
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#auc-area-under-roc-curve",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#auc-area-under-roc-curve",
+    "title": "Supervised learning",
+    "section": "AUC (Area under ROC Curve)",
+    "text": "AUC (Area under ROC Curve)\n\nThe integral of the ROC curve (or the area size under the curve)\nAUC is always 0.5 for random predictions\nMaximum AUC is 1.0 for perfect predictions"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#aggregating-metrics-across-classes",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#aggregating-metrics-across-classes",
+    "title": "Supervised learning",
+    "section": "Aggregating metrics across classes",
+    "text": "Aggregating metrics across classes\n\nMacro average: \\(\\frac{1}{|L|}\\sum_{l\\in L}R(y_{l},\\hat{y}_{l})\\)\nUnweighted mean of per-class scores. Each class contributes equally, regardless of sample size.\nMicro average: \\(\\frac{1}{n}\\sum_{i=1}^{n}R(y_{i},\\hat{y}_{i})\\)\nSum individual TP, FP, FN, TN across all classes, then compute metric. Equivalent to accuracy for multiclass.\nWeighted average: \\(\\frac{1}{n}\\sum_{l\\in L}n_{l}R(y_{l},\\hat{y}_{l})\\)\nWeighted by support (number of samples in each class). Balances class sizes in the final score."
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#classification-report",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#classification-report",
+    "title": "Supervised learning",
+    "section": "Classification report",
+    "text": "Classification report\n\nprint(classification_report(y_test, rf.predict(X_test), target_names=data.target_names))\n\n              precision    recall  f1-score   support\n\n   malignant       0.92      0.92      0.92        53\n      benign       0.96      0.96      0.96        90\n\n    accuracy                           0.94       143\n   macro avg       0.94      0.94      0.94       143\nweighted avg       0.94      0.94      0.94       143"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#picking-a-metric",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#picking-a-metric",
+    "title": "Supervised learning",
+    "section": "Picking a metric",
+    "text": "Picking a metric\n\nReal-world problems are rarely balanced.\nAccuracy is rarely what you want.\nFind the right criterion for the specific task.\nDecide between emphasis on recall or precision.\nIdentify which classes are important."
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#metric-for-breast-cancer-detection",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#metric-for-breast-cancer-detection",
+    "title": "Supervised learning",
+    "section": "Metric for breast cancer detection",
+    "text": "Metric for breast cancer detection\n\n“1” indicates malignant/cancer, “0” indicates benign/no cancer.\nMissing a cancer (FN) is much worse than a false alarm (FP)\nSo, we care more about recall than precision or accuracy.\nA model with high recall is preferred, even if it has lower precision."
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#next-question-how-can-i-optimise-for-a-specific-metric",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#next-question-how-can-i-optimise-for-a-specific-metric",
+    "title": "Supervised learning",
+    "section": "Next question: how can I optimise for a specific metric?",
+    "text": "Next question: how can I optimise for a specific metric?\n\nRandomForestClassifier (and other classifiers) in sklearn by default optimises for accuracy and have no direct way to optimise for recall.\nWe have workarounds (topics for next week)\n\nUse recall metric during hyperparameter tuning and cross-validation\nAdjust classification threshold after training\nUse class weights to penalise misclassifications of the positive class more heavily during training"
+  },
+  {
+    "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#generalisation-to-multi-class",
+    "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#generalisation-to-multi-class",
+    "title": "Supervised learning",
+    "section": "Generalisation to multi-class",
+    "text": "Generalisation to multi-class\n\nMost metrics can be generalised to multi-class using macro, micro, or weighted averaging.\nROC curve and AUC can be computed using one-vs-rest approach for each class and then averaged."
   },
   {
     "objectID": "sessions/week1.html",
     "href": "sessions/week1.html",
     "title": "Week 1",
     "section": "",
-    "text": "This week will introduce definition and types of machine learning as well as the framework and metrics of supervised machine learning.",
+    "text": "This week will introduce definition and types of machine learning.",
     "crumbs": [
       "Part 1: Basics",
       "1. Explanatory Data Analysis #1"
@@ -602,7 +1239,7 @@
     "href": "sessions/week1.html#introduction",
     "title": "Week 1",
     "section": "",
-    "text": "This week will introduce definition and types of machine learning as well as the framework and metrics of supervised machine learning.",
+    "text": "This week will introduce definition and types of machine learning.",
     "crumbs": [
       "Part 1: Basics",
       "1. Explanatory Data Analysis #1"
@@ -613,7 +1250,7 @@
     "href": "sessions/week1.html#learning-objectives",
     "title": "Week 1",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand three types for machine learning.\nAppreciate Garbage in, Garbage out theorem.\nUnderstand the framework of supervised learning.\nUnderstand the common metrics of supervised learning.",
+    "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand three primary types for machine learning.\nAppreciate Garbage in, Garbage out theorem.",
     "crumbs": [
       "Part 1: Basics",
       "1. Explanatory Data Analysis #1"
@@ -927,7 +1564,7 @@
     "href": "sessions/week2.html",
     "title": "Week 2",
     "section": "",
-    "text": "This week will introduce analysis workflow of supervised learning.",
+    "text": "This week will introduce framework and evaluation metrics of supervised learning.",
     "crumbs": [
       "Part 1: Basics",
       "2. Explanatory Data Analysis #2"
@@ -938,7 +1575,7 @@
     "href": "sessions/week2.html#introduction",
     "title": "Week 2",
     "section": "",
-    "text": "This week will introduce analysis workflow of supervised learning.",
+    "text": "This week will introduce framework and evaluation metrics of supervised learning.",
     "crumbs": [
       "Part 1: Basics",
       "2. Explanatory Data Analysis #2"
@@ -949,7 +1586,7 @@
     "href": "sessions/week2.html#learning-objectives",
     "title": "Week 2",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand different analysis workflow of supervised learning.\nUnderstand train-test split and train-validation-test split.\nUnderstand cross validation and its extensions as well as when to use them.",
+    "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand the framework of supervised learning.\nUnderstand the common metrics for regression and classification.\nAppreciate the accuracy paradox and its implications.\nKnow how to pick the right metric for your problem.",
     "crumbs": [
       "Part 1: Basics",
       "2. Explanatory Data Analysis #2"
