@@ -7,20 +7,20 @@ title: "Week 3"
 
 ## Introduction
 
-This week will introduce tree-based methods.
+This week will introduce analysis workflow of supervised learning.
 
 ## Learning Objectives
 
 By the end of this week, you will be able to:
 
-1. Understand the pros and cons of decision trees.
-2. Understand the principle of emsemble learning.
-3. Understand the principle of random forest and XGBoost.
-3. Can apply random forest and XGBoost to supervised learning tasks.
+1. Understand different workflow of supervised learning.
+2. Understand train-test split and train-validation-test split.
+3. Understand cross validation and its extensions
+4. Know when to use different model evaluation methods.
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](week3_lecture.qmd)
+To access the lecture notes: [Lecture](supervised_learning_workflow/supervised_learning_workflow.qmd)
 
 ## Quiz
 
@@ -36,7 +36,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](week3_practical.html)
-2. [Download](week3_practical.ipynb)
+1. [Preview](supervised_learning_workflow/supervised_learning_workflow_practical.html)
+2. [Download](supervised_learning_workflow/supervised_learning_workflow_practical.ipynb)
 
 ## Further resources

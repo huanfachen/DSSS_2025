@@ -1,0 +1,505 @@
+---
+title: "Introduction to machine learning"
+# subtitle: "Understanding and describing data"
+author: 
+  - name: "Huanfa Chen"
+email: "huanfa.chen@ucl.ac.uk"
+date-as-string: "13 December 2025"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+---
+
+# Recap of Term 1: FSDS, QM, and GIS
+
+## What we learnt in Term 1
+
+-   Python programming
+-   Data types 
+-   Visualisation
+-   Regression (Ordinary Least Square; Linear Mixed Effects; multicollinearity)
+-   Dimensionality reduction
+-   Clustering
+
+# This week
+
+## Learning Objectives
+
+By the end of this lecture you should:
+
+1.  Understand the basics and classifications of machine learning
+2.  Understand the differences between statistical methods and machine learning (estimation vs. prediction)
+3.  Appreciate GIGO theorems in machine learning and data science
+
+# Introduction to machine learning
+
+## ML as subset of AI
+
+::::::: columns
+::: {.column width="50%"}
+-   **Machine learning** (decision tree, random forest, k-means, etc.)\
+-   **Deep learning** (deep neural networks)\
+-   **Other AI tools**: graphical models, symbolic AI\
+-   Note: we don’t distinguish ML/DL and consider NN as part of ML
+:::
+
+::::: {.column width="50%"}
+:::: {style="text-align:center;"}
+<img src="images/ml_as_subset_of_ai.png" alt="ML is a subset of AI" style="max-width:80%;"/>
+
+::: {style="font-size:0.8em; color: #555; margin-top:4px;"}
+```         
+Image Credit: Lecture slide (ML is a subset of AI)
+```
+:::
+::::
+:::::
+:::::::
+
+## Definition of machine learning
+
+> **Arthur Samuel (1959)**: (Machine learning is the) field of study that gives computers the ability to learn without being explicitly programmed.
+
+> **Tom Mitchell (1997)**: A computer program is said to learn from experience *E* with respect to some task *T* and some performance measure *P*, if its performance on *T*, as measured by *P*, improves with experience *E*.
+
+## What is Machine Learning?
+
+-   Extracting knowledge from data
+-   Relying on data and algorithms
+-   Closely related to statistics but distinct from linear models
+-   Focus on prediction rather than estimating relationships or interpretation
+
+
+## Examples: Facebook
+
+::: {style="text-align:center;"}
+<img src="images/fb1.png" alt="Facebook news feed" style="max-width:70%;"/>
+:::
+
+-   Machine learning in news feed ranking
+-   Content selection and targeting
+-   Ads and recommendations
+
+## Examples: Facebook (cont.)
+
+::: {style="text-align:center;"}
+<img src="images/facebook_gael.png" alt="Facebook face recognition" style="max-width:70%;"/>
+:::
+
+-   Face detection and recognition
+-   Photo organization
+
+## Examples: Facebook (cont.)
+
+::: {style="text-align:center;"}
+<img src="images/fb3.png" alt="Facebook photo mosaic" style="max-width:70%;"/>
+:::
+
+-   Photo selection and layout
+
+## Examples: Amazon
+
+::: {style="text-align:center;"}
+<img src="images/amazon1.png" alt="Amazon search" style="max-width:70%;"/>
+:::
+
+-   Product ranking
+-   Personalised recommendations
+-   Ads selection
+
+## Examples: Amazon (cont.)
+
+::: {style="text-align:center;"}
+<img src="images/amazon2.png" alt="Amazon product page" style="max-width:70%;"/>
+:::
+
+-   Seller selection
+-   Default choices
+-   Related products
+
+## Science Applications
+
+::: {style="text-align:center;"}
+<img src="images/exoplanet.png" alt="Exoplanet" style="max-width:70%;"/>
+:::
+
+-   Personalised cancer treatment
+-   Medical diagnosis
+-   Drug discovery
+-   Higgs boson discovery
+-   Exoplanet detection
+
+## Types of Machine Learning
+
+-   **Supervised Learning**: Learn from input-output pairs (with labelled data)
+-   **Unsupervised Learning**: Discover structure in data (without labelled data)
+-   **Reinforcement Learning**: Learn through interaction with environment (with an actual/simulated environment)
+
+
+
+## Supervised Learning
+
+$$
+\begin{aligned}
+(x_i, y_i) &\sim p(x, y) \text{ i.i.d.} \\
+x_i &\in \mathbb{R}^n \\
+y_i &\in \mathbb{R} \\
+f(x_i) &\approx y_i
+\end{aligned}
+$$
+
+Learn a function $f$ from input-output pairs to predict on new data.
+
+
+
+## Generalisation to unseen data
+
+-   Goal: $f(x_i) \approx y_i$ on training data
+-   More important: $f(x) \approx y$ on new data
+-   Core distinction: not just function approximation, but prediction on unseen data
+-   Avoiding overfitting to training data is key
+
+
+
+## Examples of Supervised Learning
+
+-   Spam detection
+-   Medical diagnosis
+-   Ad click prediction
+
+
+
+## Unsupervised Learning
+
+$$
+x_i \sim p(x) \text{ i.i.d.}
+$$
+
+Learn about the distribution $p$:
+
+-   Clustering
+-   Dimensionality reduction
+-   Topic modeling
+-   Outlier detection
+
+
+
+# Reinforcement Learning
+
+:::::: columns
+::: {.column width="50%"}
+-   Agent learns to interact with environment
+-   Goal-directed behavior
+-   Examples: Alpha Go, self-driving cars
+:::
+
+:::: {.column width="50%"}
+::: {style="text-align:center;"}
+<img src="images/alpha_go.png" alt="AlphaGo" style="max-width:80%;"/> <img src="images/nao.png" alt="NAO robot" style="max-width:80%;"/>
+:::
+::::
+::::::
+
+
+
+# Reinforcement Learning: Explore & Learn
+
+::: {style="text-align:center;"}
+<img src="images/reinforcement_cycle.png" alt="Reinforcement learning cycle" style="max-width:80%;"/>
+:::
+
+
+
+## Other Types of Learning
+
+-   Semi-supervised
+-   Active Learning
+-   Forecasting
+-   Transfer learning
+-   If you understand supervised/unsupervised/reinforcement learning, others are easier to grasp
+
+
+
+## Don't read a book by its name
+
+- *Classifications* of neighbourhoods (e.g. London output area classification) that are actually clustering
+- *Anomaly detection* methods can be unsupervised or supervised learning
+- *Forecasting* can be done with lagged features (via supervised learning), or with time series data (via time series analysis), or both
+
+
+
+## What does LLM belong to?
+
+<div style="text-align:center;">
+  <img src="images/LLM_training_pipeline.webp" alt="LLM_training_pipeline" style="max-width:60%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: medium.com
+  </div>
+</div>
+
+
+
+## Classification vs. Regression
+
+::::: columns
+::: {.column width="50%"}
+### Classification
+
+-   Target $y$ is discrete
+-   Example: Is this patient sick?
+:::
+
+::: {.column width="50%"}
+### Regression
+
+-   Target $y$ is continuous
+-   Example: How long to recover?
+:::
+:::::
+
+
+
+## Relationship to Statistics
+
+::::: columns
+::: {.column width="50%"}
+### Statistics
+
+-   Model first
+-   Estimation emphasis
+-   Yes/no questions
+-   With many assumptions, need to test
+-   Interpretation is key
+-   e.g. Does smoking lead to lung cancer?
+:::
+
+::: {.column width="50%"}
+### Machine Learning
+
+-   Data first
+-   Prediction emphasis
+-   Future predictions
+-   Few assumptions (but not assumption-free)
+-   Interpretation isn't primary
+-   e.g. Predict tomorrow’s weather
+:::
+:::::
+
+
+
+## Following statements are not recommended
+
+-   "Linear regression is not needed anymore because of machine learning."
+-   "Machine learning is just a fad; statistics is more important."
+-   "Machine learning models are black boxes; we can't interpret them at all."
+-   "Machine learning models are as interpretable as linear models."
+-   "Machine learning models have no assumptions."
+
+## Guiding Principles: Goal Considerations
+
+-   Define the goal clearly
+-   Define how to measure success
+-   Think about context and baseline
+-   Ask: what's the benefit?
+
+## Thinking in Context
+
+-   What do you want to achieve?
+-   What's the baseline and its performance?
+-   What improvement over baseline do you need?
+
+
+## Good and Bad Substitutes
+
+-   Choose metrics carefully
+-   Substitute metrics can be misleading
+-   Optimize for the right goal
+-   Understand side effects
+
+## Communicating Results
+
+-   Explain why your approach works
+-   Communicate **uncertainty**
+-   Show impact and limitations
+-   Convince stakeholders
+
+
+
+## Explainable Results
+
+::: {style="text-align:center;"}
+<img src="images/amazon_explanations.png" alt="Amazon explanations" style="max-width:60%;"/>
+:::
+
+-   Users want to know why recommendations are made
+-   Explainability improves engagement
+-   Important for trust and transparency
+
+
+
+## Ethical Considerations
+
+::: {style="text-align:center;"}
+<img src="images/propublica_compas.png" alt="ProPublica COMPAS" style="max-width:30%;"/>
+:::
+
+-   Bias in risk assessments
+-   Fairness in automated decisions
+-   Transparency and accountability
+
+
+
+## Ethics: It's in the Application!
+
+-   Understand biases in your system
+-   Consider the impact of predictions
+-   Use algorithms responsibly
+-   Same algorithm, different outcomes
+
+
+
+## Data and Data Collection
+
+-   Critical component of ML
+-   More data usually helps (if from right source)
+-   Consider marginal cost vs. marginal benefit
+
+
+
+## Free vs Expensive Data
+
+::::: columns
+::: {.column width="50%"}
+### Free Data
+
+-   Open data from gov and census, often aggregated (e.g. ONS, London Fire Brigade, NASA)
+-   Open data from companies (e.g. Google Street View) (Read the license first)
+-   Synthetic data
+-   Web scraping (be careful with legality and ethics)
+:::
+
+::: {.column width="50%"}
+### Expensive Data
+
+-   Individual data (e.g. health records)
+-   Mobile phone data (high cost)
+-   User survey
+-   High-resolution imagery (e.g. satellite, aerial, drone)
+:::
+:::::
+
+
+
+## Big Data Considerations
+
+-   More data can be more expensive to work with
+-   Subsample to RAM when possible (512GB available in cloud)
+-   Runtime and analyst time matter
+-   Always try with a small sample first
+
+
+
+## Theorem: Garbage in, garbage out (GIGO)
+
+-   **Great algorithms + bad data = bad results**
+
+::::::: columns
+::: {.column width="50%"}
+-   Model performance is constrained by data quality.
+-   Biased, noisy, or incomplete data leads to misleading predictions.
+:::
+
+::::: {.column width="50%"}
+:::: {style="text-align:center;"}
+<img src="images/garbage_in_garbage_out.png" alt="Garbage in, garbage out" style="max-width:80%;"/>
+
+::: {style="font-size:0.8em; color: #555; margin-top:4px;"}
+```         
+Image Credit: x.com/xschelling/status/954936528555429888
+```
+:::
+::::
+:::::
+:::::::
+
+## Good data = **large size + high quality**.
+
+::::::: columns
+::: {.column width="50%"}
+-   Sufficient sample size to capture variability in the problem\
+-   High-quality labels and accurate measurements.\
+-   Representative of the population and application context.
+:::
+
+::::: {.column width="50%"}
+:::: {style="text-align:center;"}
+<img src="images/benchmark_datasets_size.png" alt="Size of benchmark datasets" style="max-width:80%;"/>
+
+::: {style="font-size:0.8em; color: #555; margin-top:4px;"}
+```         
+Image Credit: Internet
+```
+:::
+::::
+:::::
+:::::::
+
+
+
+## Data size and performance
+
+::::::: columns
+::: {.column width="50%"}
+The performance of ML/DL increases rapidly with the size of the data:
+
+-   Large neural nets benefit the most from big data.\
+-   Medium and small neural nets also improve with more data.\
+-   Traditional ML algorithms (e.g. random forest, SVM) may saturate earlier.
+:::
+
+::::: {.column width="50%"}
+:::: {style="text-align:center;"}
+<img src="images/performance_vs_data_size.png" alt="Performance vs data size" style="max-width:80%;"/>
+
+::: {style="font-size:0.8em; color: #555; margin-top:4px;"}
+```         
+Performance vs data size for ML/DL models
+```
+:::
+::::
+:::::
+:::::::
+
+
+
+## Feature engineering & EDA (\~90% time)
+
+-   Mostly **manual** rather than automated (no automated methods for EDA)
+-   Domain knowledge from expertise is desirable
+-   Using **visualisation** to identify patterns & data relationship
+-   Removing noisy or erroneous data\
+-   Dealing with missing data\
+-   Generating new features by combining existing ones
+
+## Example: Representation of geospatial locations in ML models
+
+-   Raw coordinates (e.g. long/lat) may not be directly useful
+-   Need to engineer features that capture spatial relationships
+-   Long/lat
+-   Distance to POIs (train stations/schools).
+-   Using adjacency matrix between spatial units
+
+# Overview 
+We've covered: 
+
+- Introduction to machine learning
+- Types of machine learning (supervised, unsupervised, reinforcement) 
+- Data and algorithms are both crucial for machine learning success
+
+# Practical
+
+-   Practical will focus on using sklearn for supervised learning.
+-   Have questions prepared!

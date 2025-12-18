@@ -7,19 +7,20 @@ title: "Week 2"
 
 ## Introduction
 
-This week will introduce analysis workflow of supervised learning.
+This week will introduce framework and evaluation metrics of supervised learning.
 
 ## Learning Objectives
 
 By the end of this week, you will be able to:
 
-1. Understand different analysis workflow of supervised learning.
-2. Understand train-test split and train-validation-test split.
-3. Understand cross validation and its extensions as well as when to use them.
+1. Understand the framework of supervised learning.
+2. Understand the common metrics for regression and classification.
+3. Appreciate the accuracy paradox and its implications.
+4. Know how to pick the right metric for your problem.
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](week2_lecture.qmd)
+To access the lecture notes: [Lecture](supervised_learning_metrics/supervised_learning_metrics.qmd)
 
 ## Quiz
 
@@ -35,7 +36,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](week2_practical.html)
-2. [Download](week2_practical.ipynb)
+1. [Preview](supervised_learning_metrics/supervised_learning_metrics_practical.html)
+2. [Download](supervised_learning_metrics/supervised_learning_metrics_practicalipynb)
 
 ## Further resources

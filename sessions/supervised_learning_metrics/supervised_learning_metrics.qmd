@@ -1,0 +1,492 @@
+---
+title: "Supervised learning"
+subtitle: "Framework & evaluation metrics"
+author: 
+  - name: "Huanfa Chen"
+email: "huanfa.chen@ucl.ac.uk"
+date-as-string: "13 December 2025"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+---
+
+# Supervised learning
+
+## Framework
+
+$$
+\begin{aligned}
+(x_i, y_i) &\sim p(x, y) \text{ i.i.d.} \\
+x_i &\in \mathbb{R}^n \\
+y_i &\in 
+\begin{cases}
+\mathbb{R}, & \text{(regression)} \\
+\mathcal{Y} \text{ (finite set)}, & \text{(classification)}
+\end{cases} \\
+\text{learn } f(x_i) &\approx y_i \\
+\text{such that } f(x) &\approx y
+\end{aligned}
+$$
+
+## Regression vs. classification
+
+|                           | Regression                                          | Classification                                           |
+|---------------------------|-----------------------------------------------------|----------------------------------------------------------|
+| Target variable      | Continuous value \(y \in \mathbb{R}\)      | Discrete label \(y \in \mathcal{Y}\) (finite set)        |
+| Task                 | Predict “how much” / “how many”                    | Predict “which class” / “which category”                |
+| Intuition            | Find a 'line' close to all points      | Find a 'boundary' between classis     |
+| Example                   | Predicting house prices from features              | Predicting spam vs. not spam for an email               |
+
+## Example - linear regression
+
+```{python}
+#| echo: true
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
+data = fetch_california_housing()
+X = pd.DataFrame(data.data, columns=data.feature_names)
+y = data.target
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+for feature, coef in zip(X.columns, model.coef_):
+    print(f"{feature}: {coef:.2f}")
+print(f"Intercept: {model.intercept_:.2f}")
+```
+
+## Terms
+
+<table>
+  <thead>
+    <tr>
+      <th>Term</th>
+      <th>Definition</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>Algorithm</em></td>
+      <td>procedure that runs on data to create a <em>model</em></td>
+      <td style="color:blue">linear regression</td>
+    </tr>
+    <tr>
+      <td><em>Model</em></td>
+      <td>an output by algorithm and data</td>
+      <td style="color:blue">$\hat{y}_i = \sum_k \beta_k x_{ik} + \beta_0$</td>
+    </tr>
+    <tr>
+      <td><em>Metric</em></td>
+      <td>to evalute the model performace</td>
+      <td style="color:blue">Squared error</td>
+    </tr>
+    <tr>
+      <td><em>Hyperparameter</em></td>
+      <td>algorithm settings, predefined by user instead of learned from data</td>
+      <td style="color:blue">None</td>
+    </tr>
+    <tr>
+      <td><em>Parameter</em></td>
+      <td>model components learned from data</td>
+      <td style="color:blue">coefficients & intercept</td>
+    </tr>
+    <tr>
+      <td><em>Model training</em></td>
+      <td>process of estimating parameters from data</td>
+      <td style="color:blue">using maximum likelihood estimation</td>
+    </tr>
+  </tbody>
+</table>
+
+## Classification 
+
+- Most classification algorithms follow two steps:
+1. predict probabilities for each class 
+2. assign class with highest probability
+
+- We can talk about common challenges for supervised learning (despite their differences)
+
+## Common Challenges
+
+1. To select evaluation metrics (so that the model solves the right problem)
+2. To design workflow (so that the model generalises well and avoids overfitting)
+
+## Metrics for regression
+
+<div style="font-size: 20px;">
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>formula</th>
+      <th>unit</th>
+      <th>notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RMSE</td>
+      <td>$\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}$</td>
+      <td>Same unit as target $y$</td>
+      <td>Penalises large errors more; sensitive to outliers</td>
+    </tr>
+    <tr>
+      <td>R²</td>
+      <td>$1 - \dfrac{\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}$</td>
+      <td>Dimensionless (between 0 and 1 for most cases)</td>
+      <td>Measures proportion of variance explained by the model; can be negative if model is worse than $y_i=\bar{y}$</td>
+    </tr>
+    <tr>
+      <td>MAE</td>
+      <td>$\frac{1}{n}\sum_{i=1}^{n}\lvert y_i - \hat{y}_i\rvert$</td>
+      <td>Same unit as target $y$</td>
+      <td>More robust to outliers than RMSE; interpretable as average absolute error</td>
+    </tr>
+    <tr>
+      <td>MAPE</td>
+      <td>$\frac{100}{n}\sum_{i=1}^{n}\left\lvert \frac{y_i - \hat{y}_i}{y_i} \right\rvert$</td>
+      <td>Percent (%)</td>
+      <td>sensitive to very small $y_i$; relative error</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+## Metrics for regression
+
+- Using RMSE or squared error in most cases
+- By default, regressors in sklearn and XGBoost use *Squared Error* as loss function
+- Difference between R2 for OLS ([within [0,1]]{style="color:blue"}) vs. R2 for regression ([<=1, can be negative]{style="color:blue"})
+
+## Metrics for classification (binary)
+
+<div style="text-align:center;">
+  <img src="images/confusion_matrix.png" alt="ML is a subset of AI" style="max-width:60%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: COMS4995-s20
+  </div>
+</div>
+
+$Accuracy=\frac{TP+TN}{TP+TN+FP+FN}$
+
+- Selecting *Positive* label: often the minority class
+
+## Example using Breast Cancer dataset
+
+```{python}
+#| echo: false
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (
+    f1_score,
+    average_precision_score,
+)
+import numpy as np
+```
+
+```{python}
+#| echo: false
+# load data and split
+data = load_breast_cancer()
+
+X = data.data
+y = data.target
+
+# 1) Proportion of 0/1 classes in the full dataset
+unique, counts = np.unique(y, return_counts=True)
+proportions = counts / len(y)
+
+for cls, cnt, prop in zip((data.target_names), counts, proportions):
+    print(f"class {cls}: {cnt}, {prop*100:.3f}%")
+
+X_train, X_test, y_train, y_test = train_test_split(data.data, data.target, stratify=data.target, random_state=0)
+
+lr = LogisticRegression().fit(X_train, y_train)
+y_pred = lr.predict(X_test)
+
+ConfusionMatrixDisplay(confusion_matrix(y_test, y_pred), display_labels=['N', 'P']).plot(cmap='gray_r')
+print(f"Predictive accuracy: {lr.score(X_test, y_test):.3f}")
+```
+
+## Limitation of accuracy (*Accuracy paradox*)
+
+- **Scenario: Data with 90% negatives** (imbalanced data)
+- A majority strategy that predicts all as negative gets 90% accuracy, but this is useless.
+- Different models can have the same accuracy (0.9) but make very different types of errors.
+  - y_pred_1: Predicts all negative (90 TN, 0 TP)
+  - y_pred_2: Predicts some positives correctly but misses others
+  - y_pred_3: A mix of errors
+
+```{python}
+#| echo: false
+from sklearn.metrics import ConfusionMatrixDisplay
+from matplotlib.colors import Normalize
+import matplotlib.pyplot as plt
+
+y_true = np.zeros(100, dtype=int)
+y_true[:10] = 1
+y_pred_1 = np.zeros(100, dtype=int)
+y_pred_2 = y_true.copy()
+y_pred_2[10:20] = 1
+y_pred_3 = y_true.copy()
+y_pred_3[5:15] = 1 - y_pred_3[5:15]
+
+fig, axes = plt.subplots(1, 3)
+for i, (ax, y_pred) in enumerate(zip(axes, [y_pred_1, y_pred_2, y_pred_3])):
+    ConfusionMatrixDisplay(confusion_matrix(y_true, y_pred), display_labels=['N', 'P']).plot(ax=ax, cmap='gray_r')
+    ax.set_title("y_pred_{}".format(i + 1))
+    ax.images[-1].colorbar.remove()
+    ax.images[0].set_norm(Normalize(vmin=0, vmax=100))
+#plt.tight_layout()
+# plt.savefig("images/problems_with_accuracy.png")
+```
+
+## Precision, Recall, F1-score, AUC
+
+- **Precision** (Positive Predicted Value): $\frac{TP}{TP+FP}$. *Among predicted positives, how many are actually positive.*
+- **Recall** (Sensitivity, True Positive Rate): $\frac{TP}{TP+FN}$. *Among actual positives, how many are correctly predicted.*
+- **F1-score** (Harmonic mean of precision & recall): $F=2\frac{\text{precision}\cdot \text{recall}}{\text{precision}+\text{recall}}$
+
+```{python}
+#| echo: false
+from sklearn.metrics import precision_score, recall_score, f1_score
+
+# Display confusion matrix for y_pred_2
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+
+# Column 1: Confusion matrix
+ConfusionMatrixDisplay(confusion_matrix(y_true, y_pred_2), display_labels=['N', 'P']).plot(ax=ax1, cmap='gray_r')
+ax1.set_aspect('equal', adjustable='box')
+ax1.set_title("Confusion Matrix (y_pred_2)")
+ax1.images[-1].colorbar.remove()
+
+# Column 2: Metrics calculation
+ax2.axis('off')
+precision = precision_score(y_true, y_pred_2)
+recall = recall_score(y_true, y_pred_2)
+f1 = f1_score(y_true, y_pred_2)
+
+cm = confusion_matrix(y_true, y_pred_2)
+tp, fp, fn = cm[1, 1], cm[0, 1], cm[1, 0]
+
+metrics_text = f"""Precision = TP / (TP + FP)
+     = {tp} / ({tp} + {fp})
+     = {precision:.3f}
+
+Recall = TP / (TP + FN)
+     = {tp} / ({tp} + {fn})
+     = {recall:.3f}
+
+F1 = 2 × (Precision × Recall) / (Precision + Recall)
+   = 2 × ({precision:.3f} × {recall:.3f}) / ({precision:.3f} + {recall:.3f})
+   = {f1:.3f}"""
+
+ax2.text(0.1, 0.5, metrics_text, fontsize=11, family='monospace', 
+     verticalalignment='center', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.3))
+
+fig.tight_layout()
+plt.show()
+```
+
+## Addressing accuracy paradox
+```{python}
+#| echo: false
+fig = plt.figure(figsize=(12, 7), constrained_layout=True)
+
+# Row 1: Confusion matrices
+for i, y_pred in enumerate([y_pred_1, y_pred_2, y_pred_3]):
+  ax = plt.subplot(2, 3, i + 1)
+  ConfusionMatrixDisplay(confusion_matrix(y_true, y_pred), display_labels=['N', 'P']).plot(ax=ax, cmap='gray_r')
+  ax.set_title(f"y_pred_{i + 1}")
+  ax.images[-1].colorbar.remove()
+
+# Row 2: Metrics table
+ax_table = plt.subplot(2, 1, 2)
+ax_table.axis('off')
+
+metrics_data = []
+for i, y_pred in enumerate([y_pred_1, y_pred_2, y_pred_3]):
+  accuracy = (y_pred == y_true).sum() / len(y_true)
+  precision = precision_score(y_true, y_pred, zero_division=0)
+  recall = recall_score(y_true, y_pred, zero_division=0)
+  f1 = f1_score(y_true, y_pred, zero_division=0)
+  metrics_data.append([f"y_pred_{i+1}", f"{accuracy:.3f}", f"{precision:.3f}", f"{recall:.3f}", f"{f1:.3f}"])
+
+table = ax_table.table(cellText=metrics_data, colLabels=['Model', 'Accuracy', 'Precision', 'Recall', 'F1'],
+             cellLoc='center', loc='center', bbox=[0.1, 0.2, 0.8, 0.6])
+table.auto_set_font_size(False)
+table.set_fontsize(11)
+table.scale(1, 2)
+
+
+
+plt.tight_layout()
+plt.show()
+```
+
+## Trade-off between precision and recall
+
+- When precision increases, recall decreases. Vice versa.
+- By changing classification threshold (default=0.5, from 0 to 1), we can see the balance between precision and recall.
+
+```{python}
+#| echo: false
+#| fig-cap: "Precision–Recall curve for LR and Random Forest"
+from sklearn.metrics import RocCurveDisplay, PrecisionRecallDisplay
+
+# load data and split
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, stratify=data.target, random_state=0
+)
+
+# 1. Train Logistic Regression
+lr = LogisticRegression(max_iter=10000)  # larger max_iter for convergence
+lr.fit(X_train, y_train)
+
+# 2. Train Random Forest
+rf = RandomForestClassifier(
+    n_estimators=100,
+    random_state=0
+)
+rf.fit(X_train, y_train)
+
+# Plot PR curve for lr
+pr_lr = PrecisionRecallDisplay.from_estimator(lr, X_test, y_test, name='LR')
+
+# Plot PR curve for RandomForest on the same axes
+pr_rf = PrecisionRecallDisplay.from_estimator(rf, X_test, y_test, ax=plt.gca(),
+name='RandomForestClassifier')
+
+plt.title("Precision–Recall Curve")
+plt.show()
+```
+
+## ROC Curve
+
+- Receiver Operating Characteristic (ROC) curve plots *True Positive Rate* vs. *False Positive Rate*. Similar to precision-recall curve. 
+- The identity line *y=x* represents *random classifier* (e.g. tossing a coin). 
+```{python}
+#| echo: false
+from sklearn.metrics import RocCurveDisplay, PrecisionRecallDisplay
+ax = plt.gca()
+
+RocCurveDisplay.from_estimator(lr, X_test, y_test, ax=ax, name='LR')
+RocCurveDisplay.from_estimator(rf, X_test, y_test, ax=ax, name='rf')
+# Add identity line (random classifier)
+plt.plot([0, 1], [0, 1], linestyle='--', color='grey', label='Random')
+plt.title("ROC Curve: Logistic Regression vs Random Forest")
+plt.show()
+```
+
+## AUC (Area under ROC Curve)
+
+- The integral of the ROC curve (or the area size under the curve)
+- AUC is always 0.5 for random predictions
+- Maximum AUC is 1.0 for perfect predictions
+
+```{python}
+#| echo: false
+# Import packages
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import roc_curve, auc, classification_report
+import matplotlib.pyplot as plt
+
+# Load data and split
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, stratify=data.target, random_state=0
+)
+
+# Train Random Forest only
+rf = RandomForestClassifier(n_estimators=100, random_state=0)
+rf.fit(X_train, y_train)
+
+# Compute ROC for Random Forest
+y_score = rf.predict_proba(X_test)[:, 1]
+fpr, tpr, thresholds = roc_curve(y_test, y_score)
+roc_auc = auc(fpr, tpr)
+
+# Plot ROC curve for Random Forest and fill the area under the curve in red
+plt.plot(fpr, tpr, color='darkorange', lw=2,
+         label='Random Forest (AUC = %0.2f)' % roc_auc)
+plt.fill_between(fpr, tpr, 0, alpha=0.3, color='red')
+
+# Identity (random) line
+plt.plot([0, 1], [0, 1], linestyle='--', color='grey', label='Random')
+
+plt.title("ROC Curve: Random Forest")
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.legend()
+plt.show()
+```
+
+## Aggregating metrics across classes
+
+- **Macro average**: $\frac{1}{|L|}\sum_{l\in L}R(y_{l},\hat{y}_{l})$  
+  Unweighted mean of per-class scores. Each class contributes equally, regardless of sample size.
+
+- **Micro average**: $\frac{1}{n}\sum_{i=1}^{n}R(y_{i},\hat{y}_{i})$  
+  Sum individual TP, FP, FN, TN across all classes, then compute metric. Equivalent to accuracy for multiclass.
+
+- **Weighted average**: $\frac{1}{n}\sum_{l\in L}n_{l}R(y_{l},\hat{y}_{l})$  
+  Weighted by *support* (number of samples in each class). Balances class sizes in the final score.
+
+## Classification report
+```{python}
+#| echo: true
+
+print(classification_report(y_test, rf.predict(X_test), target_names=data.target_names))
+```
+
+## Picking a metric
+
+* Real-world problems are rarely balanced.
+* Accuracy is rarely what you want.
+* Find the right criterion for the specific task.
+* Decide between emphasis on recall or precision.
+* Identify which classes are important.
+
+## Metric for breast cancer detection
+
+* "1" indicates malignant/cancer, "0" indicates benign/no cancer.
+* Missing a cancer (FN) is much worse than a false alarm (FP)
+* So, we care more about **recall** than precision or accuracy.
+* A model with high recall is preferred, even if it has lower precision.
+
+## Next question: how can I optimise for a specific metric?
+
+* RandomForestClassifier (and other classifiers) in sklearn by default optimises for accuracy and have no direct way to optimise for *recall*.
+* We have workarounds (topics for next week)
+  - Use recall metric during hyperparameter tuning and cross-validation
+  - Adjust classification threshold after training
+  - Use class weights to penalise misclassifications of the positive class more heavily during training
+
+## Generalisation to multi-class
+
+- Most metrics can be generalised to multi-class using *macro*, *micro*, or *weighted* averaging.
+- ROC curve and AUC can be computed using *one-vs-rest* approach for each class and then averaged.
+
+# Overview 
+We've covered: 
+
+- Frameork of supervised learning
+- Evaluation metrics for regression (default: RMSE or squared error)
+- Evaluation metrics for classification (accuracy, precision, recall, F1-score, AUC)
+- Mind the accuracy paradox: accuracy is often not what you want for imbalanced data
+- How to pick the right metric for your problem
