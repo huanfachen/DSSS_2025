@@ -1,0 +1,585 @@
+---
+title: "Neural Networks"
+subtitle: "Feed-Forward Networks and Deep Learning"
+author: 
+  - name: "Huanfa Chen"
+email: "huanfa.chen@ucl.ac.uk"
+date-as-string: "13/12/2025"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+---
+
+## History
+
+- Nearly everything we talk about today existed ~1990
+- What changed?
+  - More data
+  - Faster computers (GPUs)
+  - Some improvements: relu, dropout, adam, batch-normalization, residual networks
+
+## Logistic Regression as Neural Net
+
+<div style="text-align:center;">
+  <img src="images/log_reg_nn.png" alt="Logistic regression as neural net" style="max-width:40%;">
+</div>
+
+## Basic Architecture
+
+<div style="text-align:center;">
+  <img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:50%;">
+</div>
+
+$h(x) = f(W_1x+b_1)$
+
+$o(x) = g(W_2h(x) + b_2)$
+
+## More Layers
+
+<div style="text-align:center;">
+  <img src="images/nn_manylayers.png" alt="Neural network with many layers" style="max-width:60%;">
+</div>
+
+- Hidden layers usually all have the same non-linear function
+- Many layers → "deep learning"
+- Multilayer perceptron, feed-forward neural network, vanilla feed-forward neural network
+- Regression: single output neuron with linear activation
+- Classification: one-hot-encoding of classes, n_classes output variables with softmax
+
+## Nonlinear Activation Functions
+
+<div style="text-align:center;">
+  <img src="images/nonlin_fn.png" alt="Nonlinear activation functions" style="max-width:65%;">
+</div>
+
+- Standard choices: tanh or rectified linear unit (relu)
+- Tanh squashes between -1 and 1; saturates towards infinities
+- ReLU is constant zero for negative numbers, then identity
+
+## Supervised Neural Networks
+
+- Non-linear models for classification and regression
+- Work well for very large datasets
+- Non-convex optimization
+- Notoriously slow to train – need for GPUs
+- Use dot products; require preprocessing similar to SVM or linear models, unlike trees
+- Many variants: Convolutional nets, GRUs, LSTMs, recursive networks, VAEs, GANs, deep RL
+
+## Training Objective
+
+$h(x) = f(W_1x+b_1)$
+
+$o(x) = g(W_2h(x)+b_2) = g(W_2f(W_1x + b_1) + b_2)$
+
+$\min_{W_1,W_2,b_1,b_2} \sum\limits_{i=1}^N l(y_i,o(x_i))$
+
+$= \min_{W_1,W_2,b_1,b_2} \sum\limits_{i=1}^N l(y_i,g(W_2f(W_1x+b_1)+b_2))$
+
+- $l$ = Squared loss for regression; Cross-entropy loss for classification
+
+## Backpropagation
+
+- Need $\frac{\partial l(y, o)}{\partial W_i}$ and $\frac{\partial l(y, o)}{\partial b_i}$
+
+$\text{net}(x) := W_1x + b_1$
+
+<div style="text-align:center;">
+  <img src="images/backprop_eqn.png" alt="Backpropagation equations" style="max-width:70%;">
+</div>
+
+## Gradient Computation
+
+- Backpropagation is clever application of chain rule for derivatives
+- Single backward pass from output to input computes derivatives
+- Not an optimization algorithm, just a way to compute gradients
+
+## ReLU Differentiability
+
+<div style="text-align:center;">
+  <img src="images/relu_differentiability.png" alt="ReLU differentiability" style="max-width:75%;">
+</div>
+
+- ReLU not differentiable at zero
+- Use subgradient descent; any gradient below function works
+- In practice, never hit zero with floating point numbers
+
+## Optimizing W, b
+
+Batch
+$W_i \leftarrow W_i - \eta\sum\limits_{j=1}^N \frac{\partial l(x_j,y_j)}{\partial W_i}$
+
+Online/Stochastic
+$W_i \leftarrow W_i - \eta\frac{\partial l(x_j,y_j)}{\partial W_i}$
+
+Minibatch
+$W_i \leftarrow W_i - \eta\sum\limits_{j=k}^{k+m} \frac{\partial l(x_j,y_j)}{\partial W_i}$
+
+## Learning Heuristics
+
+- Constant $\eta$ not good
+- Can decrease $\eta$ over time
+- Better: adaptive $\eta$ for each entry of $W_i$
+- State-of-the-art: adam (with magic numbers)
+
+## Picking Optimization Algorithms
+
+- Small dataset: off the shelf like l-bfgs
+- Big dataset: adam / rmsprop
+- Have time & nerve: tune the schedule
+
+## Neural Nets with sklearn
+
+<div style="text-align:center;">
+  <img src="images/nn_sklearn.png" alt="Neural nets with sklearn" style="max-width:45%;">
+</div>
+
+```python
+mlp = MLPClassifier(solver='lbfgs', random_state=0).fit(X_train, y_train)
+print(mlp.score(X_train, y_train))
+print(mlp.score(X_test, y_test))
+```
+
+- Don't use sklearn for anything but toy problems in neural nets
+
+## Random State
+
+<div style="text-align:center;">
+  <img src="images/random_state.png" alt="Effect of random state" style="max-width:75%;">
+</div>
+
+- Network is way over capacity and can overfit in many ways
+- Regularization might make it less dependent on initialization
+
+## Hidden Layer Size
+
+```python
+mlp = MLPClassifier(solver='lbfgs', hidden_layer_sizes=(5,), random_state=10)
+mlp.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/hidden_layer_size.png" alt="Hidden layer size effect" style="max-width:50%;">
+</div>
+
+- Single hidden layer with 5 units
+- Each unit corresponds to different part of decision boundary
+
+## Multiple Hidden Layers
+
+```python
+mlp = MLPClassifier(solver='lbfgs', hidden_layer_sizes=(10, 10, 10), random_state=0)
+mlp.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/hidden_layer_size_2.png" alt="Multiple hidden layers" style="max-width:48%;">
+</div>
+
+- 3 hidden layers each of size 10
+- Main way to control complexity
+
+## Activation Functions
+
+```python
+mlp = MLPClassifier(solver='lbfgs', hidden_layer_sizes=(10, 10, 10),
+                    activation='tanh', random_state=0)
+mlp.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/activation_functions_plot.png" alt="Activation functions" style="max-width:45%;">
+</div>
+
+- Using tanh gives smoother boundaries
+- ReLU doesn't work as well with l-bfgs on small networks
+- For large networks, relu is preferred
+
+## Regression
+
+<div style="text-align:center;">
+  <img src="images/regression_plot.png" alt="Neural network regression" style="max-width:55%;">
+</div>
+
+```python
+from sklearn.neural_network import MLPRegressor
+mlp_relu = MLPRegressor(solver=\"lbfgs\").fit(X, y)
+mlp_tanh = MLPRegressor(solver=\"lbfgs\", activation='tanh').fit(X, y)
+```
+
+## Complexity Control
+
+- Number of parameters
+- Regularization
+- Early Stopping
+- Dropout
+
+## Grid-Searching Neural Nets
+
+```python
+from sklearn.datasets import load_breast_cancer
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, stratify=data.target, random_state=0)
+
+from sklearn.model_selection import GridSearchCV
+pipe = make_pipeline(StandardScaler(), MLPClassifier(solver=\"lbfgs\", random_state=1))
+param_grid = {'mlpclassifier__alpha': np.logspace(-3, 3, 7)}
+grid = GridSearchCV(pipe, param_grid)
+```
+
+<div style="text-align:center;">
+  <img src="images/gridsearch_plot.png" alt="Grid search results" style="max-width:45%;">
+</div>
+
+## Searching Hidden Layer Sizes
+
+```python
+from sklearn.model_selection import GridSearchCV
+pipe = make_pipeline(StandardScaler(), MLPClassifier(solver=\"lbfgs\", random_state=1))
+param_grid = {'mlpclassifier__hidden_layer_sizes':
+              [(10,), (50,), (100,), (500,), (10, 10), (50, 50), (100, 100), (500, 500)]}
+grid = GridSearchCV(pipe, param_grid)
+grid.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/search_hidden_layers_plot.png" alt="Search hidden layer sizes" style="max-width:40%;">
+</div>
+
+## Write Your Own Neural Networks
+
+```python
+class NeuralNetwork(object):
+    def __init__(self):
+        # initialize coefficients and biases
+        pass
+    def forward(self, x):
+        activation = x
+        for coef, bias in zip(self.coef_, self.bias_):
+            activation = self.nonlinearity(np.dot(activation, coef) + bias)
+        return activation
+    def backward(self, x):
+        # compute gradient of stuff in forward pass
+        pass
+```
+
+## Autodiff
+
+```python
+class array(object) :
+    \"\"\"Simple Array object that support autodiff.\"\"\"
+    def __init__(self, value, name=None):
+        self.value = value
+        if name:
+            self.grad = lambda g : {name : g}
+    def __add__(self, other):
+        assert isinstance(other, int)
+        ret = array(self.value + other)
+        ret.grad = lambda g : self.grad(g)
+        return ret
+    def __mul__(self, other):
+        assert isinstance(other, array)
+        ret = array(self.value * other.value)
+        def grad(g):
+            x = self.grad(g * other.value)
+            x.update(other.grad(g * self.value))
+            return x
+        ret.grad = grad
+        return ret
+```
+
+## Autodiff Example
+
+```python
+a = array(np.array([1, 2]), 'a')
+b = array(np.array([3, 4]), 'b')
+c = b * a
+d = c + 1
+print(d.value)
+print(d.grad(1))
+```
+
+```
+[4 9]
+{'b': array([1, 2]), 'a': array([3, 4])}
+```
+
+- Automatic differentiation avoids writing gradients manually
+- Keep track of computation while executing forward pass
+- Hard-code derivative for each operation (no symbolic differentiation)
+- Build computation graph automatically
+
+## GPU Support
+
+<div style="text-align:center;">
+  <img src="images/gpu_support.png" alt="GPU performance" style="max-width:55%;">
+</div>
+
+- Important limitation: GPUs have much less memory than RAM
+- Memory copies between RAM and GPU are expensive
+
+## Computation Graph
+
+<div style="text-align:center;">
+  <img src="images/computation_graph.png" alt="Computation graph" style="max-width:35%;">
+</div>
+
+- Store different intermediate results depending on derivatives needed
+- Given limited GPU memory, important to know what to cache/discard
+- Helps with visual debugging and understanding network structure
+
+## Deep Learning Framework Requirements
+
+- Autodiff
+- GPU support
+- Optimization and inspection of computation graph
+- On-the-fly generation of computation graph (optional)
+- Distribution over multiple GPUs and/or cluster (optional)
+
+Current choices: TensorFlow, PyTorch / Torch, Chainer
+
+## Deep Learning Libraries
+
+- Keras (TensorFlow, CNTK, Theano)
+- PyTorch (torch)
+- Chainer (chainer)
+- MXNet (MXNet)
+
+## Quick Look at TensorFlow
+
+- \"Down to the metal\" - don't use for everyday tasks
+- Three steps for learning:
+  1. Build computation graph (using array operations and functions)
+  2. Create Optimizer (gradient descent, adam, etc.) attached to graph
+  3. Run actual computation
+- Eager mode (default in TensorFlow 2.0): write imperative code directly
+
+<div style="text-align:center;">
+  <img src="images/tensor_flow_basics.png" alt="TensorFlow basics" style="max-width:75%;">
+</div>
+
+## PyTorch Example
+
+```python
+dtype = torch.float
+device = torch.device("cpu")
+
+N = 100
+x = torch.randn(N, 1, device=device, dtype=dtype)
+y = torch.randn(N, 1, device=device, dtype=dtype)
+w = torch.randn(D_in, H, device=device, dtype=dtype)
+
+learning_rate = 1e-6
+for t in range(500):
+    y_pred = x.mm(w1)
+    loss = (y_pred - y).pow(2).sum().item()
+    loss.backward()
+    w1 -= learning_rate * w1.grad
+    w1.grad.zero_()
+```
+
+## Best Practices
+
+- Don't go down to the metal (i.e. write low-level code) unless you have to!
+- Don't write TensorFlow, write Keras!
+- Don't write PyTorch, write pytorch.nn or FastAI (or Skorch or ignite)
+
+## Convolutional Neural Networks
+
+## Idea Behind CNNs
+
+- Translation invariance
+- Weight sharing
+
+## Definition of Convolution
+
+$$(f*g)[n] = \sum\limits_{m=-\infty}^\infty f[m]g[n-m]$$
+
+$$= \sum\limits_{m=-\infty}^\infty f[n-m]g[m]$$
+
+<div style="text-align:center;">
+  <img src="images/convolution.png" alt="Convolution definition" style="max-width:80%;">
+</div>
+
+## 1D Example: Gaussian Smoothing
+
+<div style="text-align:center;">
+  <img src="images/Gaussian_Smoothing.png" alt="Gaussian smoothing" style="max-width:80%;">
+</div>
+
+## Convolutions in 2D
+
+<div style="text-align:center;">
+  <img src="images/2dconv_illustration.png" alt="2D convolution illustration" style="max-width:70%;">
+</div>
+
+[source: Arden Dertat](https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)
+
+## 2D Convolution Animation
+
+<div style="text-align:center;">
+  <img src="images/2dconv_animation.gif" alt="2D convolution animation" style="max-width:90%;">
+</div>
+
+[source: Arden Dertat](https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)
+
+## 2D Smoothing
+
+<div style="text-align:center;">
+  <img src="images/2dsmoothing.png" alt="2D smoothing" style="max-width:80%;">
+</div>
+
+## 2D Gradients
+
+<div style="text-align:center;">
+  <img src="images/2dgradient.png" alt="2D gradients" style="max-width:80%;">
+</div>
+
+## Max Pooling
+
+<div style="text-align:center;">
+  <img src="images/maxpool.png" alt="Max pooling" style="max-width:100%;">
+</div>
+
+- Need to remember position of maximum for back-propagation
+- Again not differentiable → subgradient descent
+
+## Convolutional Neural Networks
+
+<div style="text-align:center;">
+  <img src="images/CNET1.png" alt="Convolutional neural network" style="max-width:100%;">
+</div>
+
+> Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner: Gradient-based learning applied to document recognition
+
+## Other Architectures
+
+<div style="text-align:center;">
+  <img src="images/other_architectures.png" alt="Other architectures" style="max-width:80%;">
+</div>
+
+## Conv-nets with Keras
+
+## Preparing Data
+
+```python
+batch_size = 128
+num_classes = 10
+epochs = 12
+
+img_rows, img_cols = 28, 28
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+X_train_images = x_train.reshape(x_train.shape[0], img_rows, img_cols, 1)
+X_test_images = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
+input_shape = (img_rows, img_cols, 1)
+
+y_train = keras.utils.to_categorical(y_train, num_classes)
+y_test = keras.utils.to_categorical(y_test, num_classes)
+```
+
+## Create Tiny Network
+
+```python
+from keras.layers import Conv2D, MaxPooling2D, Flatten
+
+num_classes = 10
+cnn = Sequential()
+cnn.add(Conv2D(32, kernel_size=(3, 3),
+                 activation='relu',
+                 input_shape=input_shape))
+cnn.add(MaxPooling2D(pool_size=(2, 2)))
+cnn.add(Conv2D(32, (3, 3), activation='relu'))
+cnn.add(MaxPooling2D(pool_size=(2, 2)))
+cnn.add(Flatten())
+cnn.add(Dense(64, activation='relu'))
+cnn.add(Dense(num_classes, activation='softmax'))
+```
+
+## Number of Parameters
+
+:::: columns
+
+::: {.column width="50%"}
+Convolutional Network for MNIST
+
+<div style="text-align:center;">
+  <img src="images/cnn_params_mnist.png" alt="CNN parameters" style="max-width:100%;">
+</div>
+:::
+
+::: {.column width="50%"}
+Dense Network for MNIST
+
+<div style="text-align:center;">
+  <img src="images/dense_params_mnist.png" alt="Dense parameters" style="max-width:100%;">
+</div>
+:::
+::::
+
+## Train and Evaluate
+
+```python
+cnn.compile(\"adam\", \"categorical_crossentropy\", metrics=['accuracy'])
+history_cnn = cnn.fit(X_train_images, y_train,
+                      batch_size=128, epochs=20, verbose=1, validation_split=.1)
+cnn.evaluate(X_test_images, y_test)
+```
+
+```
+ 9952/10000 [============================>.] - ETA: 0s
+ [0.089020583277629253, 0.98429999999999995]
+```
+
+<div style="text-align:center;">
+  <img src="images/train_evaluate.png" alt="Train and evaluate" style="max-width:50%;">
+</div>
+
+## Visualize Filters
+
+```python
+weights, biases = cnn_small.layers[0].get_weights()
+weights2, biases2 = cnn_small.layers[2].get_weights()
+print(weights.shape)
+print(weights2.shape)
+```
+
+```
+(3,3,1,8)
+(3,3,8,8)
+```
+
+<div style="text-align:center;">
+  <img src="images/visualize_filters.png" alt="Visualize filters" style="max-width:40%;">
+</div>
+
+## Learned Features
+
+<div style="text-align:center;">
+  <img src="images/digits.png" alt="Learned features" style="max-width:80%;">
+</div>
+
+## Convnets vs Fully Connected Nets Illustrated
+
+## MNIST and Permuted MNIST
+
+<div style="text-align:center;">
+  <img src="images/mnist_org.png" alt="MNIST original" style="max-width:90%;">
+</div>
+
+```python
+rng = np.random.RandomState(42)
+perm = rng.permutation(784)
+X_train_perm = X_train.reshape(-1, 784)[:, perm].reshape(-1, 28, 28)
+X_test_perm = X_test.reshape(-1, 784)[:, perm].reshape(-1, 28, 28)
+```
+
+<div style="text-align:center;">
+  <img src="images/mnist_permuted.png" alt="MNIST permuted" style="max-width:90%;">
+</div>
+
+## Questions?

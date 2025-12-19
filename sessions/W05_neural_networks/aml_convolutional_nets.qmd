@@ -1,0 +1,360 @@
+---
+title: "Keras & Convolutional Neural Nets"
+subtitle: "Introduction to Deep Learning with Convolutional Networks"
+author: "Andreas C. Müller"
+date: "04/22/20"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+---
+
+## Introduction to Keras
+
+## Keras Sequential
+
+```python
+from keras.models import Sequential
+from keras.layers import Dense, Activation
+
+model = Sequential([
+    Dense(32, input_shape=(784,)),
+    Activation('relu'),
+    Dense(10),
+    Activation('softmax')])
+
+# or
+model = Sequential()
+model.add(Dense(32, input_dim=784))
+model.add(Activation('relu'))
+
+# or
+model = Sequential([
+    Dense(32, input_shape=(784,), activation='relu'),
+    Dense(10, activation='softmax')])
+```
+
+## Model Summary
+
+```python
+model.summary()
+```
+
+<div style="text-align:center;">
+  <img src="images/model_summary.png" alt="Model summary" style="max-width:100%;">
+</div>
+
+## Setting Optimizer
+
+<div style="text-align:center;">
+  <img src="images/optimizer.png" alt="Optimizer settings" style="max-width:90%;">
+</div>
+
+```python
+model.compile("adam", "categorical_crossentropy", metrics=['accuracy'])
+```
+
+## Training the Model
+
+<div style="text-align:center;">
+  <img src="images/training_model.png" alt="Training model" style="max-width:100%;">
+</div>
+
+## Preparing MNIST Data
+
+```python
+from keras.datasets import mnist
+import keras
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
+X_train = X_train.reshape(60000, 784)
+X_test = X_test.reshape(10000, 784)
+X_train = X_train.astype('float32')
+X_test = X_test.astype('float32')
+X_train /= 255
+X_test /= 255
+
+num_classes = 10
+y_train = keras.utils.to_categorical(y_train, num_classes)
+y_test = keras.utils.to_categorical(y_test, num_classes)
+```
+
+## Fit Model
+
+```python
+model.fit(X_train, y_train, batch_size=128, epochs=10, verbose=1)
+```
+
+<div style="text-align:center;">
+  <img src="images/model_fit.png" alt="Model fit" style="max-width:80%;">
+</div>
+
+## Fit with Validation
+
+```python
+model.fit(X_train, y_train, batch_size=128, epochs=10, verbose=1,
+          validation_split=.1)
+```
+
+<div style="text-align:center;">
+  <img src="images/validation_fit.png" alt="Validation fit" style="max-width:100%;">
+</div>
+
+## Evaluating on Test Set
+
+```python
+score = model.evaluate(X_test, y_test, verbose=0)
+print("Test loss: {:.3f}".format(score[0]))
+print("Test Accuracy: {:.3f}".format(score[1]))
+```
+
+```
+Test loss: 0.120
+Test Accuracy: 0.966
+```
+
+## Loggers and Callbacks
+
+```python
+history_callback = model.fit(X_train, y_train, batch_size=128,
+                             epochs=100, verbose=1, validation_split=.1)
+pd.DataFrame(history_callback.history).plot()
+```
+
+<div style="text-align:center;">
+  <img src="images/logger_callback_plot.png" alt="Logger callback plot" style="max-width:70%;">
+</div>
+
+## Wrappers for sklearn
+
+```python
+from keras.wrappers.scikit_learn import KerasClassifier, KerasRegressor
+from sklearn.model_selection import GridSearchCV
+
+def make_model(optimizer="adam", hidden_size=32):
+    model = Sequential([
+        Dense(hidden_size, input_shape=(784,)),
+        Activation('relu'),
+        Dense(10),
+        Activation('softmax'),
+    ])
+    model.compile(optimizer=optimizer,loss="categorical_crossentropy",
+                  metrics=['accuracy'])
+    return model
+
+clf = KerasClassifier(make_model)
+param_grid = {'epochs': [1, 5, 10],
+              'hidden_size': [32, 64, 256]}
+grid = GridSearchCV(clf, param_grid=param_grid)
+grid.fit(X_train, y_train)
+```
+
+## Grid Search Results
+
+```python
+res = pd.DataFrame(grid.cv_results_)
+res.pivot_table(index=["param_epochs", "param_hidden_size"],
+                values=['mean_train_score', "mean_test_score"])
+```
+
+<div style="text-align:center;">
+  <img src="images/keras_api_results.png" alt="Keras API results" style="max-width:70%;">
+</div>
+
+## Convolutional Neural Networks
+
+## Idea Behind CNNs
+
+- Translation invariance
+- Weight sharing
+
+## Definition of Convolution
+
+$$(f*g)[n] = \sum\limits_{m=-\infty}^\infty f[m]g[n-m]$$
+
+$$= \sum\limits_{m=-\infty}^\infty f[n-m]g[m]$$
+
+<div style="text-align:center;">
+  <img src="images/convolution.png" alt="Convolution definition" style="max-width:80%;">
+</div>
+
+## 1D Example: Gaussian Smoothing
+
+<div style="text-align:center;">
+  <img src="images/Gaussian_Smoothing.png" alt="Gaussian smoothing" style="max-width:80%;">
+</div>
+
+## Convolutions in 2D
+
+<div style="text-align:center;">
+  <img src="images/2dconv_illustration.png" alt="2D convolution illustration" style="max-width:70%;">
+</div>
+
+[source: Arden Dertat](https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)
+
+## 2D Convolution Animation
+
+<div style="text-align:center;">
+  <img src="images/2dconv_animation.gif" alt="2D convolution animation" style="max-width:90%;">
+</div>
+
+[source: Arden Dertat](https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)
+
+## 2D Smoothing
+
+<div style="text-align:center;">
+  <img src="images/2dsmoothing.png" alt="2D smoothing" style="max-width:80%;">
+</div>
+
+## 2D Gradients
+
+<div style="text-align:center;">
+  <img src="images/2dgradient.png" alt="2D gradients" style="max-width:80%;">
+</div>
+
+## Max Pooling
+
+<div style="text-align:center;">
+  <img src="images/maxpool.png" alt="Max pooling" style="max-width:100%;">
+</div>
+
+- Need to remember position of maximum for back-propagation
+- Again not differentiable → subgradient descent
+
+## Convolutional Neural Networks
+
+<div style="text-align:center;">
+  <img src="images/CNET1.png" alt="Convolutional neural network" style="max-width:100%;">
+</div>
+
+Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner: Gradient-based learning applied to document recognition
+
+## Other Architectures
+
+<div style="text-align:center;">
+  <img src="images/other_architectures.png" alt="Other architectures" style="max-width:80%;">
+</div>
+
+## Conv-nets with Keras
+
+## Preparing Data
+
+```python
+batch_size = 128
+num_classes = 10
+epochs = 12
+
+img_rows, img_cols = 28, 28
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+X_train_images = x_train.reshape(x_train.shape[0], img_rows, img_cols, 1)
+X_test_images = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
+input_shape = (img_rows, img_cols, 1)
+
+y_train = keras.utils.to_categorical(y_train, num_classes)
+y_test = keras.utils.to_categorical(y_test, num_classes)
+```
+
+## Create Tiny Network
+
+```python
+from keras.layers import Conv2D, MaxPooling2D, Flatten
+
+num_classes = 10
+cnn = Sequential()
+cnn.add(Conv2D(32, kernel_size=(3, 3),
+                 activation='relu',
+                 input_shape=input_shape))
+cnn.add(MaxPooling2D(pool_size=(2, 2)))
+cnn.add(Conv2D(32, (3, 3), activation='relu'))
+cnn.add(MaxPooling2D(pool_size=(2, 2)))
+cnn.add(Flatten())
+cnn.add(Dense(64, activation='relu'))
+cnn.add(Dense(num_classes, activation='softmax'))
+```
+
+## Number of Parameters
+
+:::: columns
+
+::: {.column width="50%"}
+Convolutional Network for MNIST
+
+<div style="text-align:center;">
+  <img src="images/cnn_params_mnist.png" alt="CNN parameters" style="max-width:100%;">
+</div>
+:::
+
+::: {.column width="50%"}
+Dense Network for MNIST
+
+<div style="text-align:center;">
+  <img src="images/dense_params_mnist.png" alt="Dense parameters" style="max-width:100%;">
+</div>
+:::
+::::
+
+## Train and Evaluate
+
+```python
+cnn.compile("adam", "categorical_crossentropy", metrics=['accuracy'])
+history_cnn = cnn.fit(X_train_images, y_train,
+                      batch_size=128, epochs=20, verbose=1, validation_split=.1)
+cnn.evaluate(X_test_images, y_test)
+```
+
+```
+ 9952/10000 [============================>.] - ETA: 0s
+ [0.089020583277629253, 0.98429999999999995]
+```
+
+<div style="text-align:center;">
+  <img src="images/train_evaluate.png" alt="Train and evaluate" style="max-width:50%;">
+</div>
+
+## Visualize Filters
+
+```python
+weights, biases = cnn_small.layers[0].get_weights()
+weights2, biases2 = cnn_small.layers[2].get_weights()
+print(weights.shape)
+print(weights2.shape)
+```
+
+```
+(3,3,1,8)
+(3,3,8,8)
+```
+
+<div style="text-align:center;">
+  <img src="images/visualize_filters.png" alt="Visualize filters" style="max-width:40%;">
+</div>
+
+## Learned Features
+
+<div style="text-align:center;">
+  <img src="images/digits.png" alt="Learned features" style="max-width:80%;">
+</div>
+
+## Convnets vs Fully Connected Nets Illustrated
+
+## MNIST and Permuted MNIST
+
+<div style="text-align:center;">
+  <img src="images/mnist_org.png" alt="MNIST original" style="max-width:90%;">
+</div>
+
+```python
+rng = np.random.RandomState(42)
+perm = rng.permutation(784)
+X_train_perm = X_train.reshape(-1, 784)[:, perm].reshape(-1, 28, 28)
+X_test_perm = X_test.reshape(-1, 784)[:, perm].reshape(-1, 28, 28)
+```
+
+<div style="text-align:center;">
+  <img src="images/mnist_permuted.png" alt="MNIST permuted" style="max-width:90%;">
+</div>
+
+## Questions?

@@ -1,0 +1,524 @@
+---
+title: "Trees, Forests & Ensembles"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: true
+    preview-links: auto
+---
+
+# Trees and Forests
+
+- W4995 Applied Machine Learning
+- Trees, Forests & Ensembles
+- 02/17/20 — Andreas C. Müller
+
+---
+
+# Why Trees?
+
+- Non-linear, strong models for classification and regression
+- Minimal preprocessing; scale and distributions matter little
+- Small trees can be explained; large trees power strong ensembles
+
+---
+
+# Decision Trees for Classification
+
+- Ask a sequence of binary questions on features
+- Axis-parallel splits; thresholds on single features
+- Leaves store class distributions
+
+<div style="text-align:center;">
+  <img src="images/tree_illustration.png" alt="Tree illustration" style="max-width:70%;">
+</div>
+
+---
+
+# Building Trees
+
+:::: columns
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/tree_building_iteration_1.png" alt="Tree building step 1" style="max-width:100%;">
+</div>
+
+- Search all features and thresholds
+- Choose split that most reduces impurity
+- Recurse on each child until stopping rule
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/tree_building_iteration_2.png" alt="Tree building step 2" style="max-width:100%;">
+</div>
+<div style="text-align:center;">
+  <img src="images/tree_building_iteration_9.png" alt="Tree building step 9" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+---
+
+# Criteria (Classification)
+
+- Gini: $H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})$
+- Cross-Entropy: $H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}$
+- $p_{mk}$ is class $k$ proportion in node $m$
+
+---
+
+# Prediction
+
+<div style="text-align:center;">
+  <img src="images/tree_prediction.png" alt="Tree prediction" style="max-width:80%;">
+</div>
+
+- Traverse splits; follow feature tests
+- Predict majority class in the reached leaf
+
+---
+
+# Regression Trees
+
+- Predict mean in leaf: $\bar{y}_m = \frac{1}{N_m}\sum_{i \in N_m} y_i$
+- MSE impurity: $H(X_m) = \frac{1}{N_m}\sum_{i \in N_m}(y_i-\bar{y}_m)^2$
+- MAE impurity: $\frac{1}{N_m}\sum_{i \in N_m}|y_i-\bar{y}_m|$
+- Deep trees risk pure leaves (one point) without pruning
+
+---
+
+# Visualizing Trees (sklearn)
+
+```python
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+
+cancer = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    cancer.data, cancer.target, stratify=cancer.target, random_state=0)
+
+tree = DecisionTreeClassifier(max_depth=2).fit(X_train, y_train)
+```
+
+---
+
+# Visualizing Trees (plot_tree)
+
+```python
+from sklearn.tree import plot_tree
+tree_dot = plot_tree(tree, feature_names=cancer.feature_names)
+```
+
+<div style="text-align:center;">
+  <img src="images/mpl_tree_plot.png" alt="Plot tree" style="max-width:80%;">
+</div>
+
+---
+
+# Parameter Tuning
+
+- Pre-pruning (limit growth): `max_depth`, `max_leaf_nodes`, `min_samples_split`, `min_impurity_decrease`
+- Post-pruning (cost-complexity) after full growth
+
+---
+
+# No Pruning
+
+<div style="text-align:center;">
+  <img src="images/no_pruning.png" alt="No pruning" style="max-width:100%;">
+</div>
+
+---
+
+# max_depth = 4
+
+<div style="text-align:center;">
+  <img src="images/max_depth_4.png" alt="Max depth 4" style="max-width:100%;">
+</div>
+
+---
+
+# max_leaf_nodes = 8
+
+<div style="text-align:center;">
+  <img src="images/max_leaf_nodes_8.png" alt="Max leaf nodes 8" style="max-width:50%;">
+</div>
+
+---
+
+# min_samples_split = 50
+
+<div style="text-align:center;">
+  <img src="images/min_samples_split_50.png" alt="Min samples split 50" style="max-width:70%;">
+</div>
+
+---
+
+# Grid Search: max_depth
+
+```python
+from sklearn.model_selection import GridSearchCV
+param_grid = {'max_depth': range(1, 7)}
+grid = GridSearchCV(DecisionTreeClassifier(random_state=0),
+                    param_grid=param_grid, cv=10)
+grid.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/grid_max_depth.png" alt="Grid max depth" style="max-width:70%;">
+</div>
+
+---
+
+# Grid Search: max_leaf_nodes
+
+```python
+param_grid = {'max_leaf_nodes': range(2, 20)}
+```
+
+<div style="text-align:center;">
+  <img src="images/grid_max_leaf_nodes.png" alt="Grid max leaf nodes" style="max-width:70%;">
+</div>
+
+---
+
+# Cost Complexity Pruning
+
+- Objective: $R_\alpha(T) = R(T) + \alpha |T|$
+- $R(T)$ = total leaf impurity; $|T|$ = number of leaves; tune $\alpha$
+
+<div style="text-align:center;">
+  <img src="images/grid_ccp_alpha.png" alt="Grid ccp alpha" style="max-width:70%;">
+</div>
+
+---
+
+# Efficient Pruning Path
+
+```python
+clf = DecisionTreeClassifier(random_state=0)
+path = clf.cost_complexity_pruning_path(X_train, y_train)
+ccp_alphas, impurities = path.ccp_alphas, path.impurities
+```
+
+<div style="text-align:center;">
+  <img src="images/pruning_alpha.png" alt="Pruning alphas" style="max-width:55%;">
+</div>
+
+---
+
+# Post- vs Pre-Pruning
+
+:::: columns
+
+::: {.column width="50%"}
+- Cost-complexity pruning result
+<div style="text-align:center;">
+  <img src="images/tree_pruned.png" alt="Pruned tree" style="max-width:70%;">
+</div>
+:::
+
+::: {.column width="50%"}
+- max_leaf_nodes search result
+<div style="text-align:center;">
+  <img src="images/max_leaf_nodes_8.png" alt="Max leaf nodes" style="max-width:80%;">
+</div>
+:::
+
+::::
+
+---
+
+# Extrapolation Limits
+
+<div style="text-align:center;">
+  <img src="images/ram_prices.png" alt="RAM prices" style="max-width:80%;">
+</div>
+
+- Trees behave like nearest neighbors; cannot extrapolate beyond observed range
+
+---
+
+# Extrapolation: Train
+
+<div style="text-align:center;">
+  <img src="images/ram_prices_train.png" alt="RAM prices train" style="max-width:80%;">
+</div>
+
+---
+
+# Extrapolation: Test
+
+<div style="text-align:center;">
+  <img src="images/ram_prices_test.png" alt="RAM prices test" style="max-width:80%;">
+</div>
+
+- Tree predictions flatten outside training support; linear models can extrapolate after transform
+
+---
+
+# Relation to Nearest Neighbors
+
+- Predict averages of nearby samples (by leaf vs by distance)
+- Trees predict fast; both cannot extrapolate
+
+---
+
+# Instability
+
+:::: columns
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/instability_1.png" alt="Tree instability 1" style="max-width:70%;">
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/instability_2.png" alt="Tree instability 2" style="max-width:70%;">
+</div>
+:::
+
+::::
+
+- Small data changes can alter splits; interpretability may vary
+
+---
+
+# Feature Importance
+
+```python
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    iris.data, iris.target, stratify=iris.target, random_state=0)
+tree = DecisionTreeClassifier(max_leaf_nodes=6).fit(X_train, y_train)
+tree.feature_importances_
+```
+
+<div style="text-align:center;">
+  <img src="images/tree_importances.png" alt="Tree importances" style="max-width:80%;">
+</div>
+
+- Sum of impurity decreases per feature; magnitude only (no sign)
+- Unstable with correlated features or different splits
+
+---
+
+# Categorical Data
+
+- Trees can split categories into subsets; many possible splits
+- Exact search costly; efficient for binary classification + Gini
+- In sklearn, one-hot encoding is needed today
+
+---
+
+# Predicting Probabilities
+
+- Leaf probability = class fraction in leaf
+- Deep, unpruned trees give overconfident (100%) probabilities
+- Pruning helps but calibration may still be poor
+
+---
+
+# Conditional Inference Trees
+
+- Choose splits with multiple-hypothesis correction
+- Fairer to categorical variables; available in R (party package)
+
+---
+
+# Flexible Split Functions
+
+<div style="text-align:center;">
+  <img src="images/splits_kinect.png" alt="Custom splits" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Source: Shotton et al., Real-Time Human Pose Recognition (Kinect v1)
+  </div>
+</div>
+
+- Can compare pixels, regions, or other engineered tests
+- Linear models inside nodes possible when extrapolation needed
+
+---
+
+# Ensemble Models
+
+- Combine multiple models to reduce variance / improve accuracy
+- Focus here on random forests (tree ensembles)
+
+---
+
+# Simple Ensembles
+
+- Train several models with different seeds; average predictions
+- Works across model families; needs calibrated probabilities for soft voting
+- sklearn: `VotingClassifier` (hard/soft)
+
+---
+
+# VotingClassifier Example
+
+```python
+from sklearn.ensemble import VotingClassifier
+voting = VotingClassifier(
+    [('logreg', LogisticRegression(C=100)),
+     ('tree', DecisionTreeClassifier(max_depth=3, random_state=0))],
+    voting='soft')
+voting.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/voting_classifier.png" alt="Voting classifier" style="max-width:80%;">
+</div>
+
+---
+
+# Bagging (Bootstrap Aggregation)
+
+:::: columns
+
+::: {.column width="50%"}
+- Sample with replacement (same size as dataset)
+- Train a model on each bootstrap sample
+- Average predictions to cut variance
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/bootstrap_sample.png" alt="Bootstrap sample" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+---
+
+# Bias and Variance
+
+<div style="text-align:center;">
+  <img src="images/bias_vs_variance.png" alt="Bias vs variance" style="max-width:40%;">
+</div>
+
+- Aim for low bias + low variance; averaging high-variance models can lower variance
+
+---
+
+# Ensembles: Bias vs Variance
+
+- Generalization improves with strong base learners and low correlation
+- Diversifying models (or data/features) helps more than sheer count
+
+---
+
+# Random Forests
+
+<div style="text-align:center;">
+  <img src="images/random_forest.png" alt="Random forest" style="max-width:90%;">
+</div>
+
+- Bagging + feature subsampling at each split
+
+---
+
+# Randomize in Two Ways
+
+:::: columns
+
+::: {.column width="50%"}
+- For each tree: bootstrap sample of rows
+- For each split: sample features without replacement
+- More trees → lower variance (diminishing returns)
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/bootstrap_sample.png" alt="Bootstrap rows" style="max-width:100%;">
+</div>
+<div style="text-align:center;">
+  <img src="images/feature_sample.png" alt="Feature sample" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+---
+
+# Tuning Random Forests
+
+- `max_features`: ~$\sqrt{p}$ for classification, ~$p$ for regression
+- `n_estimators`: use 100+; more reduces variance
+- Pre-pruning (`max_depth`, `max_leaf_nodes`, `min_samples_split`) can cut size/time
+
+---
+
+# Extremely Randomized Trees
+
+- Add randomness: draw split thresholds at random per feature
+- Often no bootstrap; faster (no threshold search)
+- Can yield smoother boundaries; less common than standard RF
+
+---
+
+# Warm-Starts
+
+```python
+rf = RandomForestClassifier(warm_start=True)
+for n in range(1, 100, 5):
+    rf.n_estimators = n
+    rf.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/warm_start_forest.png" alt="Warm start forest" style="max-width:39%;">
+</div>
+
+- Increase trees incrementally; stop when scores stabilize
+
+---
+
+# Out-of-Bag Estimates
+
+- Each tree trains on ~66% of data; predict remaining ~34%
+- Average OOB predictions as a free validation score
+
+```python
+rf = RandomForestClassifier(max_features=m, oob_score=True,
+                            n_estimators=200, random_state=0)
+rf.fit(X_train, y_train)
+oob_scores.append(rf.oob_score_)
+```
+
+<div style="text-align:center;">
+  <img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:90%;">
+</div>
+
+---
+
+# Variable Importance (RF)
+
+```python
+rf = RandomForestClassifier().fit(X_train, y_train)
+rf.feature_importances_
+```
+
+<div style="text-align:center;">
+  <img src="images/forest_importances.png" alt="Forest importances" style="max-width:40%;">
+</div>
+
+- More stable than single-tree importances; still magnitude-only
+
+---
+
+# Questions
+
+- How to tune trees and forests efficiently?
+- When to prefer ensembles over single trees?
+- How to calibrate probabilities from tree-based models?

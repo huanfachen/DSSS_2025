@@ -20,7 +20,7 @@ By the end of this week, you will be able to:
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](supervised_learning_workflow/supervised_learning_workflow.qmd)
+To access the lecture notes: [Lecture](W03_supervised_learning_workflow/supervised_learning_workflow.qmd)
 
 ## Quiz
 
@@ -36,7 +36,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](supervised_learning_workflow/supervised_learning_workflow_practical.html)
-2. [Download](supervised_learning_workflow/supervised_learning_workflow_practical.ipynb)
+1. [Preview](W03_supervised_learning_workflow/supervised_learning_workflow_practical.html)
+2. [Download](W03_supervised_learning_workflow/supervised_learning_workflow_practical.ipynb)
 
 ## Further resources

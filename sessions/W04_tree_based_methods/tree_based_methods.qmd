@@ -1,0 +1,769 @@
+---
+title: "Tree-Based Methods"
+subtitle: "Tree, Forest, and Gradient Boosting"
+author: 
+  - name: "Huanfa Chen"
+email: "huanfa.chen@ucl.ac.uk"
+date-as-string: "13/12/2025"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+---
+
+## Last week
+
+- Analysis workflow of supervised learning
+- Model evaluation methods: train-test split, cross validation (and extensions)
+
+## Objectives of this week
+1. Understand decision trees and tree-based ensemble methods (random forests, gradient boosting)
+2. Can apply tree-based methods to real-world problems
+
+# Decision Trees
+
+## Decision Trees (DT)
+
+- Many types of decision trees: **classification and regression trees (CART)**, C4.5, ID3, CHAID, etc.
+- Focus on CART: binary trees for classification and regression
+- Binary splits on features; leaves store predictions
+
+## Why DT?
+
+- Non-linear, strong models for classification and regression
+- Minimal preprocessing: scale and distributions matter little
+- Small trees can be explained; large trees power strong ensembles
+
+## Decision Trees for Classification
+
+- Ask a sequence of binary questions on features
+- Axis-parallel splits; thresholds on single features
+- Leaves store class distributions
+
+<div style="text-align:center;">
+  <img src="images/tree_illustration.png" alt="Tree illustration" style="max-width:60%;">
+</div>
+
+
+## Building Trees
+
+:::: columns
+
+::: {.column width="50%"}
+
+- Search all features and thresholds
+- Choose split that most reduces impurity of data on a node
+- Recurse on each child until stopping rule
+
+<div style="text-align:center;">
+  <img src="images/tree_building_iteration_1.png" alt="Tree building step 1" style="max-width:100%;">
+</div>
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/tree_building_iteration_2.png" alt="Tree building step 2" style="max-width:100%;">
+</div>
+<div style="text-align:center;">
+  <img src="images/tree_building_iteration_9.png" alt="Tree building step 9" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+
+## Criteria (Classification)
+
+- Gini: $H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})$
+- Cross-Entropy: $H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}$
+- Here, $p_{mk}$ is class $k$ proportion in node $m$
+---
+- Example: a dataset with 10 samples in three classes (0, 1, 2) with proportions (0.2, 0.5, 0.3).
+- Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66
+- Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296
+
+## Prediction
+
+<div style="text-align:center;">
+  <img src="images/tree_prediction.png" alt="Tree prediction" style="max-width:80%;">
+</div>
+
+- Given a new sample, start from the top
+- Traverse splits; follow feature tests
+- Predict majority class in the reached leaf
+
+
+## Regression Trees
+
+- Predict mean in leaf: $\bar{y}_m = \frac{1}{N_m}\sum_{i \in N_m} y_i$
+- Two impurity metrics
+    - MSE: $H(X_m) = \frac{1}{N_m}\sum_{i \in N_m}(y_i-\bar{y}_m)^2$
+    - MAE: $\frac{1}{N_m}\sum_{i \in N_m}|y_i-\bar{y}_m|$
+<!-- - Deep trees risk pure leaves (one point) without pruning -->
+
+
+## Visualizing Trees (sklearn)
+
+```python
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+
+cancer = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    cancer.data, cancer.target, stratify=cancer.target, random_state=0)
+
+tree = DecisionTreeClassifier(max_depth=2).fit(X_train, y_train)
+```
+
+
+## Visualizing Trees (plot_tree)
+
+```python
+from sklearn.tree import plot_tree
+tree_dot = plot_tree(tree, feature_names=cancer.feature_names)
+```
+
+<div style="text-align:center;">
+  <img src="images/mpl_tree_plot.png" alt="Plot tree" style="max-width:80%;">
+</div>
+
+
+## Parameter Tuning
+
+- Pre-pruning (limit growth)
+    - `max_depth`
+    - `max_leaf_nodes`
+    - `min_samples_split`
+    - `min_impurity_decrease`
+- Post-pruning (cost-complexity) after full growth
+
+
+## No Pruning
+
+<div style="text-align:center;">
+  <img src="images/no_pruning.png" alt="No pruning" style="max-width:100%;">
+</div>
+
+
+## max_depth = 4
+
+<div style="text-align:center;">
+  <img src="images/max_depth_4.png" alt="Max depth 4" style="max-width:100%;">
+</div>
+
+
+## max_leaf_nodes = 8
+
+<div style="text-align:center;">
+  <img src="images/max_leaf_nodes_8.png" alt="Max leaf nodes 8" style="max-width:50%;">
+</div>
+
+
+## min_samples_split = 50
+
+<div style="text-align:center;">
+  <img src="images/min_samples_split_50.png" alt="Min samples split 50" style="max-width:70%;">
+</div>
+
+
+## Grid Search: max_depth
+
+```python
+from sklearn.model_selection import GridSearchCV
+param_grid = {'max_depth': range(1, 7)}
+grid = GridSearchCV(DecisionTreeClassifier(random_state=0),
+                    param_grid=param_grid, cv=10)
+grid.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/grid_max_depth.png" alt="Grid max depth" style="max-width:70%;">
+</div>
+
+
+## Grid Search: max_leaf_nodes
+
+```python
+param_grid = {'max_leaf_nodes': range(2, 20)}
+```
+
+<div style="text-align:center;">
+  <img src="images/grid_max_leaf_nodes.png" alt="Grid max leaf nodes" style="max-width:70%;">
+</div>
+
+
+## Cost Complexity Pruning
+
+- Objective: $R_\alpha(T) = R(T) + \alpha |T|$
+- $R(T)$ = total leaf impurity; $|T|$ = number of leaves; tune $\alpha$
+
+<div style="text-align:center;">
+  <img src="images/grid_ccp_alpha.png" alt="Grid ccp alpha" style="max-width:70%;">
+</div>
+
+
+## Efficient Pruning Path
+
+```python
+clf = DecisionTreeClassifier(random_state=0)
+path = clf.cost_complexity_pruning_path(X_train, y_train)
+ccp_alphas, impurities = path.ccp_alphas, path.impurities
+```
+
+<div style="text-align:center;">
+  <img src="images/pruning_alpha.png" alt="Pruning alphas" style="max-width:55%;">
+</div>
+
+
+## Post- vs Pre-Pruning
+
+:::: columns
+
+::: {.column width="50%"}
+- Cost-complexity pruning result
+<div style="text-align:center;">
+  <img src="images/tree_pruned.png" alt="Pruned tree" style="max-width:70%;">
+</div>
+:::
+
+::: {.column width="50%"}
+- max_leaf_nodes search result
+<div style="text-align:center;">
+  <img src="images/max_leaf_nodes_8.png" alt="Max leaf nodes" style="max-width:80%;">
+</div>
+:::
+
+::::
+
+## Feature Importance
+
+```python
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    iris.data, iris.target, stratify=iris.target, random_state=0)
+tree = DecisionTreeClassifier(max_leaf_nodes=6).fit(X_train, y_train)
+tree.feature_importances_
+```
+
+<div style="text-align:center;">
+  <img src="images/tree_importances.png" alt="Tree importances" style="max-width:80%;">
+</div>
+
+- Sum of impurity decreases per feature; magnitude only (no sign)
+- Unstable with correlated features or different splits
+
+
+## Categorical Data
+
+- Trees can split categories into subsets; many possible splits
+- Exact search costly; efficient for binary classification + Gini
+- In sklearn, one-hot encoding is needed today
+
+
+## Predicting Probabilities
+
+- Leaf probability = class fraction in leaf
+- Deep, unpruned trees give overconfident (100%) probabilities
+- Pruning helps but calibration may still be poor
+
+## Flexible Split Functions
+
+<div style="text-align:center;">
+  <img src="images/splits_kinect.png" alt="Custom splits" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Source: Shotton et al., Real-Time Human Pose Recognition (Kinect v1)
+  </div>
+</div>
+
+- Can compare pixels, regions, or other engineered tests
+- Linear models inside nodes possible when extrapolation needed
+
+## Limitations of Trees
+
+- Cannot extrapolate beyond training data range
+- Instability/overfitting: small data changes can alter splits. (Emsembles help)
+
+## Extrapolation Limits
+
+<div style="text-align:center;">
+  <img src="images/ram_prices.png" alt="RAM prices" style="max-width:80%;">
+</div>
+
+- Trees behave like nearest neighbors; cannot extrapolate beyond observed range
+
+
+## Extrapolation: train on data before 2000
+
+<div style="text-align:center;">
+  <img src="images/ram_prices_train.png" alt="RAM prices train" style="max-width:80%;">
+</div>
+
+
+## Extrapolation: test on data after 2000
+
+- Tree predictions flatten outside training support; linear models can extrapolate
+
+<div style="text-align:center;">
+  <img src="images/ram_prices_test.png" alt="RAM prices test" style="max-width:80%;">
+</div>
+
+
+## Instability
+
+:::: columns
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/instability_1.png" alt="Tree instability 1" style="max-width:70%;">
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/instability_2.png" alt="Tree instability 2" style="max-width:70%;">
+</div>
+:::
+
+::::
+
+- Small data changes can alter splits
+
+# Emsemble Methods
+
+## Poor man's ensemble
+
+- Combine multiple models to reduce variance / improve accuracy
+- Train several models with different seeds; average predictions
+- Owen Zhang (long time kaggle 1st): build XGBoosting models with different random seeds.
+- Works across model families (e.g., tree + linear + RF + NN)
+- Key to success: `diversity among models`
+- sklearn: `VotingClassifier`
+    - `soft`: average the probabilities of all models and take the arg max (need models provide calibrated probabilities)
+    - `hard`: let each model make a prediction and take majority vote
+
+## VotingClassifier Example
+
+```python
+from sklearn.ensemble import VotingClassifier
+voting = VotingClassifier(
+    [('logreg', LogisticRegression(C=100)),
+     ('tree', DecisionTreeClassifier(max_depth=3, random_state=0))],
+    voting='soft')
+voting.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/voting_classifier.png" alt="Voting classifier" style="max-width:80%;">
+</div>
+
+
+## Tree ensembles: two types
+
+- Bagging (Bootstrap Aggregation): `random forests`
+- Boosting: gradient boosting machines (GBM), `XGBoost`, LightGBM, CatBoost, etc.
+
+## Bagging (Bootstrap Aggregation)
+
+:::: columns
+
+::: {.column width="50%"}
+- Sample with replacement (same size as dataset)
+- Train a model on each bootstrap sample
+- Average predictions to cut variance
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/bootstrap_sample.png" alt="Bootstrap sample" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+
+## Bias and Variance
+
+<div style="text-align:center;">
+  <img src="images/bias_vs_variance.png" alt="Bias vs variance" style="max-width:40%;">
+</div>
+
+- Aim for low bias + low variance; averaging high-variance models can lower variance
+
+
+## Ensembles: Bias vs Variance
+
+- Generalization improves with strong base learners and low correlation
+- Diversifying models (or data/features) helps more than sheer count
+
+
+## Random Forests
+
+<div style="text-align:center;">
+  <img src="images/random_forest.png" alt="Random forest" style="max-width:90%;">
+</div>
+
+- Bagging + feature subsampling at each split
+
+## Randomise in Two Ways
+
+:::: columns
+
+::: {.column width="50%"}
+- For each tree: bootstrap sample of rows
+- For each split: sample features without replacement
+- More trees → lower variance (diminishing returns)
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/bootstrap_sample.png" alt="Bootstrap rows" style="max-width:100%;">
+</div>
+<div style="text-align:center;">
+  <img src="images/feature_sample.png" alt="Feature sample" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+
+## Tuning Random Forests
+
+- `max_features`: ~$\sqrt{p}$ for classification, ~$p$ for regression
+- `n_estimators`: use 100+; more reduces variance
+- Pre-pruning (`max_depth`, `max_leaf_nodes`, `min_samples_split`) can cut size/time
+
+
+## Extremely Randomized Trees
+
+- Add randomness: draw split thresholds at random per feature
+- Often no bootstrap; faster (no threshold search)
+- Can yield smoother boundaries; less common than standard RF
+
+## Warm-Starts
+
+```python
+rf = RandomForestClassifier(warm_start=True)
+for n in range(1, 100, 5):
+    rf.n_estimators = n
+    rf.fit(X_train, y_train)
+```
+
+<div style="text-align:center;">
+  <img src="images/warm_start_forest.png" alt="Warm start forest" style="max-width:39%;">
+</div>
+
+- Increase trees incrementally; stop when scores stabilize
+
+
+## Out-of-Bag Estimates
+
+- Each tree trains on ~66% of data; predict remaining ~34%
+- Average OOB predictions as a free validation score
+
+```python
+rf = RandomForestClassifier(max_features=m, oob_score=True,
+                            n_estimators=200, random_state=0)
+rf.fit(X_train, y_train)
+oob_scores.append(rf.oob_score_)
+```
+
+<div style="text-align:center;">
+  <img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:90%;">
+</div>
+
+
+## Variable Importance (RF)
+
+```python
+rf = RandomForestClassifier().fit(X_train, y_train)
+rf.feature_importances_
+```
+
+<div style="text-align:center;">
+  <img src="images/forest_importances.png" alt="Forest importances" style="max-width:40%;">
+</div>
+
+- More stable than single-tree importances; still magnitude-only
+
+
+## Trees: Takeaways
+
+- Non-linear without heavy preprocessing
+- Single small trees interpretable; forests robust baselines
+- Beware extrapolation limits and instability
+
+
+# Gradient Boosting
+
+## Gradient Descent
+
+:::: columns
+
+::: {.column width="50%"}
+- Optimise $\arg\min_w F(w)$ by stepping along $-\nabla F(w)$
+- Update: $w_{i+1} = w_i - \eta_i \nabla F(w_i)$
+- Converges to a local minimum (global for convex losses)
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/gradient_3d.png" alt="Gradient 3D" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+
+<!-- ## Learning Rate
+
+<div style="text-align:center;">
+  <img src="images/gradient_learning_rates.png" alt="Learning rates" style="max-width:90%;">
+</div>
+
+- Too small: slow progress; too large: divergence/oscillation
+- Choose or schedule $\eta$ carefully -->
+
+
+## Stochastic Gradient Descent
+
+- Logistic regression objective: log-loss + regularizer
+- SGD uses one (or a mini-batch of) example(s) per step to approximate the gradient
+- Faster on large data; noisier updates
+
+```python
+from sklearn.linear_model import SGDClassifier
+sgd = SGDClassifier().fit(X_train, y_train)
+```
+
+
+<!-- ## SGD with partial_fit
+
+```python
+sgd = SGDClassifier()
+for X_batch, y_batch in batches:
+    sgd.partial_fit(X_batch, y_batch, classes=[0, 1, 2])
+```
+
+- Works on streaming / out-of-memory data
+- Provide full class list on first call for classifiers -->
+
+
+<!-- ## Boosting
+
+- Build strong model $f(x) = \sum_k g_k(x)$ from weak learners $g_k$
+- AdaBoost, Gradient Boosting, LogitBoost, etc.
+- Trees/stumps are common weak learners -->
+
+
+## Gradient Boosting Idea
+
+- Train a small tree to predict $y$
+- Train next tree on residuals of previous model (or on points poorly predicted)
+- Repeat; sum scaled predictions: $f(x)=\sum \gamma g_k(x)$ with learning rate $\gamma$
+
+
+## Gradient Boosting Algorithm
+
+$ f_{1}(x) \approx y $
+$ f_{2}(x) \approx y - \gamma f_{1}(x) $
+$ f_{3}(x) \approx y - \gamma f_{1}(x) - \gamma f_{2}(x) $
+
+- Each new tree fixes remaining error
+- Small $\gamma$ (e.g., 0.1) for smoother learning
+
+
+## Gradient Boosting as Gradient Descent
+
+:::: columns
+
+::: {.column width="50%"}
+- Linear regression minimizes $\sum (y - w^T x - b)^2$
+- Gradient descent updates weights
+:::
+
+::: {.column width="50%"}
+- Gradient boosting minimises same loss over predictions $\hat{y}$
+- Update $\hat{y}$ by adding trees along negative gradient
+:::
+
+::::
+
+
+## Regression Example
+
+<div style="text-align:center;">
+  <img src="images/grad_boost_regression_steps.png" alt="GBR steps" style="max-width:50%;">
+</div>
+
+- Shallow trees fit residuals sequentially until residuals shrink
+
+
+## Classification Example
+
+<div style="text-align:center;">
+  <img src="images/grad_boost_depth2.png" alt="GBC depth 2" style="max-width:70%;">
+</div>
+
+- Probability surfaces become sharper as trees accumulate
+- Multiclass: one regression tree per class per step
+
+
+## Early Stopping
+
+- More trees can overfit
+- Stop when validation metric stops improving
+- Either fix $n_{\text{estimators}}$ and tune $\gamma$, or fix $\gamma$ and stop early
+
+
+## Tuning Gradient Boosting
+
+- Use shallow trees (strong pruning via `max_depth`)
+- Tune learning rate, `n_estimators`, subsampling of rows/columns
+- Optional regularisation (`min_samples_split`, `min_impurity_decrease`)
+
+
+<!-- ## Faster Gradient Boosting
+
+- Binning features → fast split search
+- HistGradientBoostingClassifier/Regressor use binning + multicore
+
+<div style="text-align:center;">
+  <img src="images/hist_gradient_boosting.png" alt="Hist gradient boosting" style="max-width:100%;">
+</div>
+
+
+## Exact vs Binned Splits
+
+:::: columns
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/xgboost-exact.png" alt="Exact splits" style="max-width:100%;">
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/xgboost-binning.png" alt="Binned splits" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+
+## Binning Illustration
+
+:::: columns
+
+::: {.column width="50%"}
+```
+[[5. , 2. , 3.5, 1. ],
+ [4.9, 3. , 1.4, 0.2],
+ ...]
+```
+:::
+
+::: {.column width="50%"}
+```
+[[1, 0, 1, 1],
+ [0, 2, 0, 1],
+ ...]
+```
+:::
+
+::::
+
+- Quantile binning reduces thresholds to a small set per feature
+
+
+## Enhanced Split Criterion
+
+<div style="text-align:center;">
+  <img src="images/xgboost-criterion.png" alt="XGBoost criterion" style="max-width:100%;">
+</div>
+
+- Uses gradients + Hessians and regularization on leaves -->
+
+
+## Ensuring uncorrelated trees: Aggressive Subsampling
+
+- Row and column subsampling reduce correlation and overfitting
+- Common in XGBoost/LightGBM
+
+
+<!-- ## HistGradientBoosting vs GradientBoosting
+
+:::: columns
+
+::: {.column width="50%"}
+**GradientBoostingClassifier**
+- No binning
+- Single core
+- Sparse data supported
+:::
+
+::: {.column width="50%"}
+**HistGradientBoostingClassifier**
+- Binning + multicore
+- Missing value support
+- No sparse data support
+- (Incoming) monotonicity, categorical support
+:::
+
+:::: -->
+
+
+## XGBoost
+
+```python
+from xgboost import XGBClassifier
+xgb = XGBClassifier().fit(X_train, y_train)
+```
+
+- Fast, supports missing values, GPU/cluster training
+- L1/L2 on leaves; fast approximate splits; sparse data friendly
+
+
+## LightGBM
+
+```python
+from lightgbm.sklearn import LGBMClassifier
+lgbm = LGBMClassifier().fit(X_train, y_train)
+```
+
+- Native categorical handling; missing values; GPU/cluster support
+
+
+## CatBoost
+
+```python
+from catboost.sklearn import CatBoostClassifier
+catb = CatBoostClassifier().fit(X_train, y_train)
+```
+
+- Strong on categorical data; symmetric trees; target-encoding tricks; GPU
+
+
+## Advantages of Gradient Boosting
+
+- Often more accurate than random forests with tuning
+- Small models; fast prediction
+- Hist/XGB/LightGBM implementations are very fast
+
+
+## When to Use Tree Ensembles
+
+- For tabular data
+- Need non-linear relationships and minimal preprocessing
+- Single small tree for interpretability; 
+- Random forests very robust, good benchmark
+- Gradient boosting for best accuracy when tuned
+
+
+## Questions

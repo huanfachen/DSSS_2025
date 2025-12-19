@@ -1,0 +1,308 @@
+---
+title: "(Stochastic) Gradient Descent, Gradient Boosting"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: true
+    preview-links: auto
+---
+
+# Gradient Boosting
+
+- W4995 Applied Machine Learning
+- (Stochastic) Gradient Descent, Gradient Boosting
+- 02/19/20 — Andreas C. Müller
+
+---
+
+# Gradient Descent
+
+:::: columns
+
+::: {.column width="50%"}
+- Optimize $\arg\min_w F(w)$ by stepping along $-\nabla F(w)$
+- Update: $w_{i+1} = w_i - \eta_i \nabla F(w_i)$
+- Converges to a local minimum (global for convex losses)
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/gradient_3d.png" alt="Gradient 3D" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+---
+
+# Learning Rate
+
+<div style="text-align:center;">
+  <img src="images/gradient_learning_rates.png" alt="Learning rates" style="max-width:90%;">
+</div>
+
+- Too small: slow progress; too large: divergence/oscillation
+- Choose or schedule $\eta$ carefully
+
+---
+
+# Stochastic Gradient Descent
+
+- Logistic regression objective: log-loss + regularizer
+- SGD uses one (or a mini-batch of) example(s) per step to approximate the gradient
+- Faster on large data; noisier updates
+
+```python
+from sklearn.linear_model import SGDClassifier
+sgd = SGDClassifier().fit(X_train, y_train)
+```
+
+---
+
+# SGD with partial_fit
+
+```python
+sgd = SGDClassifier()
+for X_batch, y_batch in batches:
+    sgd.partial_fit(X_batch, y_batch, classes=[0, 1, 2])
+```
+
+- Works on streaming / out-of-memory data
+- Provide full class list on first call for classifiers
+
+---
+
+# Boosting
+
+- Build strong model $f(x) = \sum_k g_k(x)$ from weak learners $g_k$
+- AdaBoost, Gradient Boosting, LogitBoost, etc.
+- Trees/stumps are common weak learners
+
+---
+
+# Gradient Boosting Idea
+
+- Train a small tree to predict $y$
+- Train next tree on residuals of previous model
+- Repeat; sum scaled predictions: $f(x)=\sum \gamma g_k(x)$ with learning rate $\gamma$
+
+---
+
+# Gradient Boosting Algorithm
+
+`$$ f_{1}(x) \approx y $$`
+`$$ f_{2}(x) \approx y - \gamma f_{1}(x) $$`
+`$$ f_{3}(x) \approx y - \gamma f_{1}(x) - \gamma f_{2}(x) $$`
+
+- Each new tree fixes remaining error
+- Small $\gamma$ (e.g., 0.1) for smoother learning
+
+---
+
+# Gradient Boosting as Gradient Descent
+
+:::: columns
+
+::: {.column width="50%"}
+- Linear regression minimizes $\sum (y - w^T x - b)^2$
+- Gradient descent updates weights
+:::
+
+::: {.column width="50%"}
+- Gradient boosting minimizes same loss over predictions $\hat{y}$
+- Update $\hat{y}$ by adding trees along negative gradient
+:::
+
+::::
+
+---
+
+# Regression Example
+
+<div style="text-align:center;">
+  <img src="images/grad_boost_regression_steps.png" alt="GBR steps" style="max-width:50%;">
+</div>
+
+- Shallow trees fit residuals sequentially until residuals shrink
+
+---
+
+# Classification Example
+
+<div style="text-align:center;">
+  <img src="images/grad_boost_depth2.png" alt="GBC depth 2" style="max-width:70%;">
+</div>
+
+- Probability surfaces become sharper as trees accumulate
+- Multiclass: one regression tree per class per step
+
+---
+
+# Early Stopping
+
+- More trees can overfit
+- Stop when validation metric stops improving
+- Either fix $n\_\text{estimators}$ and tune $\gamma$, or fix $\gamma$ and stop early
+
+---
+
+# Tuning Gradient Boosting
+
+- Use shallow trees (strong pruning via `max_depth`)
+- Tune learning rate, `n_estimators`, subsampling of rows/columns
+- Optional regularization (`min_samples_split`, `min_impurity_decrease`)
+
+---
+
+# Faster Gradient Boosting
+
+- Binning features → fast split search
+- HistGradientBoostingClassifier/Regressor use binning + multicore
+
+<div style="text-align:center;">
+  <img src="images/hist_gradient_boosting.png" alt="Hist gradient boosting" style="max-width:100%;">
+</div>
+
+---
+
+# Exact vs Binned Splits
+
+:::: columns
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/xgboost-exact.png" alt="Exact splits" style="max-width:100%;">
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/xgboost-binning.png" alt="Binned splits" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+---
+
+# Binning Illustration
+
+:::: columns
+
+::: {.column width="50%"}
+```
+[[5. , 2. , 3.5, 1. ],
+ [4.9, 3. , 1.4, 0.2],
+ ...]
+```
+:::
+
+::: {.column width="50%"}
+```
+[[1, 0, 1, 1],
+ [0, 2, 0, 1],
+ ...]
+```
+:::
+
+::::
+
+- Quantile binning reduces thresholds to a small set per feature
+
+---
+
+# Enhanced Split Criterion
+
+<div style="text-align:center;">
+  <img src="images/xgboost-criterion.png" alt="XGBoost criterion" style="max-width:100%;">
+</div>
+
+- Uses gradients + Hessians and regularization on leaves
+
+---
+
+# Aggressive Subsampling
+
+- Row and column subsampling reduce correlation and overfitting
+- Common in XGBoost/LightGBM
+
+---
+
+# HistGradientBoosting vs GradientBoosting
+
+:::: columns
+
+::: {.column width="50%"}
+**GradientBoostingClassifier**
+- No binning
+- Single core
+- Sparse data supported
+:::
+
+::: {.column width="50%"}
+**HistGradientBoostingClassifier**
+- Binning + multicore
+- Missing value support
+- No sparse data support
+- (Incoming) monotonicity, categorical support
+:::
+
+::::
+
+---
+
+# XGBoost
+
+```python
+from xgboost import XGBClassifier
+xgb = XGBClassifier().fit(X_train, y_train)
+```
+
+- Fast, supports missing values, GPU/cluster training
+- L1/L2 on leaves; fast approximate splits; sparse data friendly
+
+---
+
+# LightGBM
+
+```python
+from lightgbm.sklearn import LGBMClassifier
+lgbm = LGBMClassifier().fit(X_train, y_train)
+```
+
+- Native categorical handling; missing values; GPU/cluster support
+
+---
+
+# CatBoost
+
+```python
+from catboost.sklearn import CatBoostClassifier
+catb = CatBoostClassifier().fit(X_train, y_train)
+```
+
+- Strong on categorical data; symmetric trees; target-encoding tricks; GPU
+
+---
+
+# Advantages of Gradient Boosting
+
+- Often more accurate than random forests with tuning
+- Small models; fast prediction
+- Hist/XGB/LightGBM implementations are very fast
+
+---
+
+# When to Use Tree Ensembles
+
+- Need non-linear relationships and minimal preprocessing
+- Single small tree for interpretability; random forests for robust baseline
+- Gradient boosting for best accuracy when tuned
+
+---
+
+# Questions
+
+- How to balance learning rate vs number of trees?
+- When to pick RF vs GB vs XGB/LightGBM/CatBoost?

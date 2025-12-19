@@ -2,7 +2,7 @@
 format: html
 date: last-modified
 author: "Huanfa Chen"
-title: "Week 3"
+title: "Week 4"
 ---
 
 ## Introduction
@@ -19,7 +19,7 @@ By the end of this week, you will be able to:
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](week3_lecture.qmd)
+To access the lecture notes: [Lecture](W04_tree_based_methods/tree_based_methods.qmd)
 
 ## Quiz
 
@@ -35,7 +35,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](week4_practical.html)
-2. [Download](week4_practical.ipynb)
+1. [Preview](W04_tree_based_methods/tree_based_methods_practical.html)
+2. [Download](W04_tree_based_methods/tree_based_methods_practical.ipynb)
 
 ## Further resources

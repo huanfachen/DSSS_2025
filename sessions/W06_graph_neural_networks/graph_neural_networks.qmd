@@ -1,0 +1,487 @@
+---
+title: "Graph Neural Networks"
+subtitle: "Graph Convolutional Networks (GCN)"
+author: 
+  - name: "Huanfa Chen"
+email: "huanfa.chen@ucl.ac.uk"
+date-as-string: "13/12/2025"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+---
+
+# Graph Neural Networks
+
+## Principles
+
+- A deep learning framework for graph-structured data
+- It generalises traditional neural networks to handle graph data by leveraging the relationships between nodes in a graph.
+- Message passing: nodes aggregate neighbor features over the graph
+- Spatial vs spectral views of convolution on graphs
+- Transductive vs inductive learning; sampling enables scalability
+- Learnable transformations per layer; nonlinearity and normalization matter
+- Variants differ in how neighbors are aggregated and weighted
+
+## Five Major GNN Architectures
+
+:::: columns
+
+::: {.column width="50%"}
+
+- **DeepWalk**: unsupervised node embeddings via random walks (word2vec-like)
+- **GCN**: shared filters; normalised neighborhood aggregation (spectral → spatial)
+- **GraphSAGE**: inductive sampling + learnable aggregators (mean/pool/LSTM)
+- **GAT**: attention over neighbors; learns edge weights; multi-head for capacity
+- **ChebNet**: spectral filtering via Chebyshev polynomials; localized convolutions
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/Graph_Representation_Learning.png" alt="Graph Representation Learning overview" style="max-width:90%;">
+</div>
+:::
+::::
+
+## Graph Convolutional Networks (GCN)
+
+<div style="text-align:center;">
+  <img src="images/gcn_architecture.png" alt="GCN Architecture" style="max-width:80%;">
+</div>
+
+## Introduction: Graphs
+
+:::: columns
+
+::: {.column width="50%"}
+
+- Graph = organized data representation
+- Consists of vertices (nodes) V and edges E
+- Edges can be weighted or binary
+- Directed or undirected graphs
+
+Example graph:
+
+$$V = \{A, B, C, D, E, F, G\}$$
+$$E = \{(A,B), (B,C), (C,E), ...\}$$
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/graph.png" alt="Example graph" style="max-width:90%;">
+</div>
+:::
+::::
+
+## Graph Terminology
+
+<div style="text-align:center;">
+  <img src="images/Adjacency_Matrix.jpg" alt="Adjacency Matrix" style="max-width:60%;">
+</div>
+
+- **Node**: An entity in the graph (represented by circles)
+- **Edge**: Line joining two nodes (represents relationships)
+- **Degree**: Number of edges incident with a vertex
+- **Adjacency Matrix**: N×N matrix representing graph structure
+
+## Why GCNs?
+
+- Most real-world datasets come as graphs or networks:
+  - Social networks
+  - Protein-interaction networks
+  - The World Wide Web
+- Learning on graphs enables domain-specific insights
+- Conventional CNNs assume compositional structure on Euclidean space
+
+## CNNs vs GCNs
+
+:::: columns
+
+::: {.column width="50%"}
+
+**CNN Key Properties:**
+
+- Locality
+- Stationarity (Translation Invariance)
+- Multi-scale hierarchies
+
+**Problem:** Not all data lies on Euclidean space!
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/CNN_to_GCN.jpg" alt="2D Conv vs Graph Conv" style="max-width:100%;">
+</div>
+:::
+::::
+
+## Applications of GCNs
+
+<div style="text-align:center;">
+  <img src="images/GCN_FB_Link_Prediction_Social_Nets.jpg" alt="Facebook Link Prediction" style="max-width:70%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Facebook Link Prediction for Suggesting Friends using Social Networks
+  </div>
+</div>
+
+- Friend prediction algorithms
+- Social network analysis
+- Protein interaction prediction
+- Knowledge graph completion
+
+## What are GCNs?
+
+- Neural networks operating on graphs
+- Capture neighbourhood information for non-euclidean spaces
+- Re-define convolution for graph domains
+
+**Two Styles:**
+
+- **Spectral GCNs**: Graph signal processing perspective
+- **Spatial GCNs**: Aggregate feature information from neighbours (more flexible)
+
+## How GCNs Work: Friend Prediction
+
+:::: columns
+
+::: {.column width="50%"}
+
+**Problem:** Predict future friendships
+
+- Graph where edges = friendships
+- Common friends → higher likelihood
+- $(1,3)$ have 2 common friends
+- $(1,5)$ have 0 common friends
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/friends_graph.png" alt="Friends graph example" style="max-width:100%;">
+</div>
+:::
+::::
+
+## GCN Mathematical Formulation
+
+Layer-wise propagation:
+
+$$H^{i} = f(H^{i-1}, A)$$
+
+Simple example:
+
+$$f(H^{i}, A) = σ(AH^{i}W^{i})$$
+
+where:
+
+- $A$ = N × N adjacency matrix
+- $X$ = input feature matrix (N × F)
+- $σ$ = ReLU activation function
+- $H^{0} = X$ (initial features)
+- Each layer aggregates neighborhood features
+
+## Problems with Simple Formulation
+
+:::: columns
+
+::: {.column width="50%"}
+
+**Problem 1: No self-representation**
+
+- New features don't include node's own features
+- Solution: Add self-loops
+
+**Problem 2: Degree scaling**
+
+- High-degree nodes get larger values
+- Low-degree nodes get smaller values
+- Solution: Normalize by degree
+
+:::
+
+::: {.column width="50%"}
+
+**Fixes:**
+
+- Add identity: $\hat{A} = A + I$
+- Symmetric normalization:
+
+$$\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$$
+
+where $\hat{D}$ is degree matrix of $\hat{A}$
+
+:::
+::::
+
+## Final GCN Propagation Rule
+
+$$f(H^{(l)}, A) = \sigma\left( \hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}H^{(l)}W^{(l)}\right)$$
+
+where:
+
+- $\hat{A} = A + I$ (adjacency + self-loops)
+- $I$ = identity matrix
+- $\hat{D}$ = diagonal degree matrix of $\hat{A}$
+- $W^{(l)}$ = learnable weight matrix for layer $l$
+- $\sigma$ = activation function
+
+# GraphSAGE
+
+## GraphSAGE (Sample and Aggregate)
+
+:::: columns
+
+::: {.column width="50%"}
+
+- Inductive learning: generalises to unseen nodes/graphs
+- Neighborhood sampling for scalability (mini-batches)
+- Aggregators: mean, pool (MLP+max), LSTM
+- Concatenate self-representation with aggregated neighbors
+- Normalise embeddings; learn weights per layer
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/GraphSAGE_cover.jpg" alt="GraphSAGE overview" style="max-width:90%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Inductive representation learning on large graphs
+  </div>
+</div>
+:::
+::::
+
+## GraphSAGE Aggregators
+
+:::: columns
+
+::: {.column width="50%"}
+- Mean aggregator: elementwise mean over neighbors
+- Pool aggregator: transform neighbor features, then max-pool
+- LSTM aggregator: sequence model over randomly ordered neighbors
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/ma.png" alt="Mean aggregator" style="max-width:80%;">
+</div>
+:::
+::::
+
+# Graph Attention Networks (GAT)
+
+## GAT
+
+:::: columns
+
+::: {.column width="50%"}
+
+- Learn attention weights over neighbors; masked self-attention
+- Replaces fixed normalization in GCN with learned coefficients
+- Multi-head attention: concatenate intermediate heads; average at output
+- Improves interpretability via attention visualization; handles heterophily better
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/GAT_Cover.jpg" alt="GAT overview" style="max-width:90%;">
+</div>
+:::
+::::
+
+## GCN vs GAT Aggregation
+
+<div style="text-align:center;">
+  <img src="images/GCN_vs_GAT.jpg" alt="GCN vs GAT" style="max-width:90%;">
+</div>
+
+## GAT: Multi-head Attention
+
+<div style="text-align:center;">
+  <img src="images/MultiHead_Attention.jpeg" alt="Multi-head attention in GAT" style="max-width:70%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Concatenate intermediate heads; average at final layer
+  </div>
+</div>
+
+## Implementation in PyTorch
+
+## GCN Convolutional Layer
+
+```python
+class GCNConv(nn.Module):
+    def __init__(self, A, in_channels, out_channels):
+        super(GCNConv, self).__init__()
+        self.A_hat = A + torch.eye(A.size(0))
+        self.D     = torch.diag(torch.sum(A,1))
+        self.D     = self.D.inverse().sqrt()
+        self.A_hat = torch.mm(torch.mm(self.D, self.A_hat), self.D)
+        self.W     = nn.Parameter(torch.rand(in_channels,out_channels))
+    
+    def forward(self, X):
+        out = torch.relu(torch.mm(torch.mm(self.A_hat, X), self.W))
+        return out
+```
+
+## GCN Network Architecture
+
+```python
+class Net(torch.nn.Module):
+    def __init__(self, A, nfeat, nhid, nout):
+        super(Net, self).__init__()
+        self.conv1 = GCNConv(A, nfeat, nhid)
+        self.conv2 = GCNConv(A, nhid, nout)
+        
+    def forward(self, X):
+        H  = self.conv1(X)
+        H2 = self.conv2(H)
+        return H2
+```
+
+- Stack multiple GCN layers
+- Learn hierarchical representations
+- Output layer for classification/regression
+
+## Case Study: Zachary's Karate Club
+
+:::: columns
+
+::: {.column width="50%"}
+
+**Historical Context (1970-1972):**
+
+- Observed local karate club
+- Conflict between administrator "John A" and instructor "Mr. Hi"
+- Club split into two groups
+- Predict which members join which group
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/karate_club.png" alt="Karate club network" style="max-width:100%;">
+</div>
+:::
+::::
+
+## Semi-Supervised Learning Setup
+
+- **Labels known** for only 2 nodes: John A (0) and Mr. Hi (1)
+- **Predict labels** for all other members based on graph structure
+- Use graph connectivity to propagate information
+
+```python
+# Only nodes 0 and 33 are labeled
+target = torch.tensor([0,-1,-1,-1,...,-1,-1,1])
+
+# Feature matrix (one-hot encoding)
+X = torch.eye(A.size(0))
+```
+
+## Training the Model
+
+```python
+# Initialize network
+model = Net(A, X.size(0), 10, 2)
+
+# Loss and optimizer
+criterion = torch.nn.CrossEntropyLoss(ignore_index=-1)
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+
+# Training loop
+for epoch in range(200):
+    optimizer.zero_grad()
+    loss = criterion(model(X), target)
+    loss.backward()
+    optimizer.step()
+```
+
+## Training Visualization
+
+<div style="text-align:center;">
+  <img src="images/train_karate_animation.gif" alt="Training animation" style="max-width:70%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Node embeddings learned during training
+  </div>
+</div>
+
+- Model successfully separates two groups
+- Close to actual predictions (except node 9)
+- Semi-supervised learning works!
+
+## PyTorch Geometric
+
+:::: columns
+
+::: {.column width="50%"}
+
+**PyTorch Geometric (PyG):**
+
+- Dedicated library for graph deep learning
+- Easy, fast, and simple implementation
+- Built for PyTorch users
+- Active development and community
+
+**Features:**
+
+- Pre-built GCN layers
+- Various graph datasets
+- Efficient sparse operations
+
+:::
+
+::: {.column width="50%"}
+
+```python
+from torch_geometric.nn import GCNConv
+
+class GCN(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.conv1 = GCNConv(num_features, 16)
+        self.conv2 = GCNConv(16, num_classes)
+        
+    def forward(self, x, edge_index):
+        x = self.conv1(x, edge_index)
+        x = F.relu(x)
+        x = self.conv2(x, edge_index)
+        return F.log_softmax(x, dim=1)
+```
+
+:::
+::::
+
+## Key Takeaways
+
+- GCNs extend neural networks to non-Euclidean graph data
+- Aggregate and transform neighbourhood information
+- Address self-representation and degree scaling issues
+- Semi-supervised learning on graphs is powerful
+- Applications: social networks, molecules, knowledge graphs
+
+**Critical Question:** How powerful are GCNs really?
+
+Read: [How powerful are Graph Convolutions?](https://www.inference.vc/how-powerful-are-graph-convolutions-review-of-kipf-welling-2016-2/)
+
+## Resources
+
+- [graphnet Github repo](https://github.com/dsgiitr/graph_nets)
+
+**Key Papers:**
+
+- [Semi-Supervised Classification with GCNs](https://arxiv.org/abs/1609.02907) - Kipf & Welling (2017)
+- [Thomas Kipf's Blog on GCNs](https://tkipf.github.io/graph-convolutional-networks/)
+
+**Libraries:**
+
+- [PyTorch Geometric](https://github.com/rusty1s/pytorch_geometric)
+- [Deep Graph Library (DGL)](https://www.dgl.ai/)
+
+## Questions?
