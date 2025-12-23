@@ -2,20 +2,20 @@
 format: html
 date: last-modified
 author: "Huanfa Chen"
-title: "Week 5"
+title: "Week 6"
 ---
 
 ## Introduction
 
-This week, we’ll explore how to *tell if several groups are truly different* and how to *measure the strength and direction of the relationship between two variables*.
+This week, we’ll explore how to generalise neural networks to graph-structured data and introduce the classic types of graph neural networks.
 
 ## Learning Objectives
 
 By the end of this week, you will be able to:
 
-1. Understand ANOVA.
-2. Understand correlation between two variables.
-3. Understand the difference of Pearson and Spearman correlation.
+1. Understand the design and training of graph neural networks.
+2. Understand the common types of graph neural networks.
+3. Can apply graph neural networks to real-world graph-structured data.
 
 ## Lecture 
 
@@ -23,7 +23,7 @@ To access the lecture notes: [Lecture](W06_graph_neural_networks/graph_neural_ne
 
 ## Quiz
 
-To access the quiz on Moodle, please check [Moodle page](https://moodle.ucl.ac.uk/course/view.php?id=53568).
+To access the quiz on Moodle, please check [Moodle page](https://moodle.ucl.ac.uk/course/view.php?id=53572).
 
 ## Practical
 
@@ -36,6 +36,6 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 To access the practical:
 
 1. [Preview](W06_graph_neural_networks/graph_neural_networks_practical.html)
-2. [Download](W05_neural_networks/neural_networks_pratical.ipynb)
+2. [Download](W06_graph_neural_networks/graph_neural_networks_practical.ipynb)
 
 ## Further resources

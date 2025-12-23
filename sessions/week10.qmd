@@ -7,23 +7,22 @@ title: "Week 10"
 
 ## Introduction
 
-This week will introduce how to group similar data points together to discover patterns and structures within a dataset.
+This week will introduce how to conduct various types of testing of code, data, and models in ML systems using Python tools of pytest and great expectations.
 
 ## Learning Objectives
 
 By the end of this week, you will be able to:
 
-1. Understand the principle and purpose of clustering analysis.
-2. Understand K-Means and apply K-Means to various datasets.
-3. Interpret the results of clustering analysis.
+1. Understand the principle and types of testing in ML systems.
+2. Can use ``pytest`` and ``great expectations`` to test ML code and data.
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](week10_lecture.qmd)
+To access the lecture notes: [Lecture](W10_testing_ML_systems/Testing_ML_systems.qmd)
 
 ## Quiz
 
-To access the quiz on Moodle, please check [Moodle page](https://moodle.ucl.ac.uk/course/view.php?id=53568).
+To access the quiz on Moodle, please check [Moodle page](https://moodle.ucl.ac.uk/course/view.php?id=53572).
 
 ## Practical
 
@@ -35,7 +34,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](week1_practical0.html)
-2. [Download](week1_practical0.ipynb)
+1. [Preview](W10_testing_ML_systems/Testing_ML_systems_practical.html)
+2. [Download](W10_testing_ML_systems/Testing_ML_systems_practical.ipynb)
 
 ## Further resources

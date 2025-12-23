@@ -7,15 +7,16 @@ title: "Week 4"
 
 ## Introduction
 
-This week will introduce neural networks.
+This week will introduce tree-based methods for supervised learning, including decision trees, random forests, and gradient boosting.
 
 ## Learning Objectives
 
 By the end of this week, you will be able to:
 
-1. Understand the principle of neural networks.
-2. Learn how to construct and train a neural network.
-3. Can apply neural networks to supervised learning tasks.
+1. Understand the design and training of decision trees.
+2. Understand the principle of ensemble methods, including bagging and boosting.
+3. Understand the design and strengths of random forests and gradient boosting machines.
+4. Can apply tree-based methods from proper libraries (random forest from `sklearn` and XGBoot from `XGBoost`).
 
 ## Lecture 
 

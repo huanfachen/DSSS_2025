@@ -1,0 +1,235 @@
+---
+title: "Imbalanced Data"
+# subtitle: ""
+author: 
+  - name: "Huanfa Chen"
+email: "huanfa.chen@ucl.ac.uk"
+date-as-string: "13/12/2025"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+---
+
+## Recap on Imbalanced Data
+- Classification often has asymmetric costs or data imbalance
+- Need metrics and models that respect imbalance
+
+## Two Sources of Imbalance
+- Asymmetric cost between errors
+- Asymmetric data prevalence
+
+## Why Do We Care?
+- Real-world costs rarely symmetric
+- Data often heavily imbalanced; rare event detection common
+
+## Methods
+- Adjust evaluation metrics (*What do you want to optimise?*)
+- Change decision thresholds
+- Change class-weights
+- Ressampling data
+
+## Adjust evaluation metrics
+
+- Accuracy paradox for imbalanced data
+- Use precision or recall
+- If a method does not optimise your metric directly, use the metric in cross-validation
+
+## Changing Thresholds
+```{notes}
+Don't think this example is good. Change it
+```
+
+- Adjust probability threshold to trade precision/recall
+```python
+y_pred = lr.predict_proba(X_test)[:, 1] > 0.85
+classification_report(y_test, y_pred)
+```
+- Choose threshold to minimise given cost; can tune threshold using cross-validation
+
+## ROC Curve
+<div style="text-align:center;">
+  <img src="images/roc_svc_rf_curve.png" style="max-width:85%;">
+</div>
+- Evaluates all thresholds via TPR vs FPR
+
+## Remedies for the Model
+- Beyond thresholding: modify data or training to address imbalance
+
+## Mammography Data
+:::: columns
+::: {.column width="50%"}
+```python
+data = fetch_openml("mammography", as_frame=True)
+X, y = data.data, data.target
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y == "1", random_state=0)
+```
+:::
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/mammography_data.png" style="max-width:100%;">
+</div>
+:::
+::::
+- Imbalanced dataset: 260 positive of 11183 samples
+
+## Mammography Baselines
+- LogisticRegression CV=10: ROC AUC 0.920, AP 0.630
+- RandomForest CV=10: ROC AUC 0.939, AP 0.722
+
+## Basic Approaches
+:::: columns
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/basic_approaches.png" style="max-width:100%;">
+</div>
+:::
+::: {.column width="50%"}
+- Change the training procedure
+- Modify data via sampling
+:::
+::::
+
+## Scikit-learn vs Resampling
+<div style="text-align:center;">
+  <img src="images/pipeline.png" style="max-width:55%;">
+</div>
+- Standard pipelines transform X only; cannot resample y without extensions
+
+## Imbalance-Learn
+- Library: http://imbalanced-learn.org
+- `pip install -U imbalanced-learn`
+- Extends sklearn API with samplers and pipelines
+
+## Sampler API
+- `data_resampled, targets_resampled = sampler.sample(X, y)`
+- `fit_sample` convenience to fit and sample
+- In pipelines, sampling only occurs during `fit`
+- Many samplers are binary-only; check multiclass support
+
+## Random Undersampling
+- Drop majority samples until balanced
+- Very fast; dataset shrinks to ~2x minority
+- Loses data but can still perform well
+```python
+rus = RandomUnderSampler(replacement=False)
+X_sub, y_sub = rus.fit_sample(X_train, y_train)
+```
+
+## Random Undersampling Results
+- LogisticRegression: ROC AUC 0.927, AP 0.527 (baseline 0.920, 0.630)
+- RandomForest: ROC AUC 0.951, AP 0.629 (baseline 0.939, 0.722)
+- Often as accurate with fraction of data; great for large datasets
+
+## Random Oversampling
+- Repeat minority samples until balanced
+- Dataset grows; slower training
+```python
+ros = RandomOverSampler()
+X_over, y_over = ros.fit_sample(X_train, y_train)
+```
+
+## Random Oversampling Results
+- LogisticRegression: ROC AUC 0.917, AP 0.585
+- RandomForest: ROC AUC 0.926, AP 0.715
+- Performance similar to baseline; heavier compute
+
+## Curves for LogReg
+<div style="text-align:center;">
+  <img src="images/curves_logreg.png" style="max-width:100%;">
+</div>
+
+## Curves for Random Forest
+<div style="text-align:center;">
+  <img src="images/curves_rf.png" style="max-width:100%;">
+</div>
+
+## Class-Weights
+- Reweight loss instead of resampling
+- Same effect as oversampling without data duplication
+- Supported by most models
+
+## Class-Weights in Linear Models
+- Modify loss with per-class weight $c_{y_i}$
+- Equivalent to repeating samples by class weight count
+
+## Class-Weights in Trees
+- Apply class weights in impurity (Gini or entropy)
+- Use weighted votes for prediction
+
+## Using Class-Weights
+- LogisticRegression(class_weight="balanced"): ROC AUC 0.918, AP 0.587
+- RandomForest(class_weight="balanced"): ROC AUC 0.917, AP 0.701
+
+# Resampling
+
+## Ensemble Resampling
+- Random resampling separately per estimator in ensemble
+- Example: Balanced bagging or balanced random forest
+- Easy with imblearn; not yet in sklearn core
+
+## Easy Ensemble with imblearn
+:::: columns
+::: {.column width="50%"}
+```python
+from imblearn.ensemble import BalancedBaggingClassifier
+base = DecisionTreeClassifier(max_features="auto")
+resampled_rf = BalancedBaggingClassifier(base_estimator=base, random_state=0)
+```
+:::
+::: {.column width="50%"}
+- Trains each tree on a different undersampled dataset
+- ROC AUC 0.957, AP 0.654 (baseline RF 0.939, 0.722)
+:::
+::::
+- As cheap as undersampling; strong results
+
+## ROC vs PR Comparison
+<div style="text-align:center;">
+  <img src="images/roc_vs_pr.png" style="max-width:100%;">
+</div>
+- Easy ensemble performs well at higher recall and precision regions
+
+## Synthetic Sample Generation
+- SMOTE: Synthetic Minority Oversampling Technique
+- Interview-friendly method; many variants exist
+
+## SMOTE
+- Add synthetic points for minority class
+- For each minority sample: pick random neighbor, interpolate on line segment
+- Leads to larger datasets; can combine with undersampling
+
+## SMOTE Illustration
+<div style="text-align:center;">
+  <img src="images/smote_mammography.png" style="max-width:100%;">
+</div>
+
+## SMOTE Results
+- LogisticRegression with SMOTE: ROC AUC 0.919, AP 0.585
+- RandomForest with SMOTE: ROC AUC 0.946, AP 0.688
+- Similar to baseline; tune k_neighbors for best AP
+
+## SMOTE Tuning
+<div style="text-align:center;">
+  <img src="images/param_smote_k_neighbors.png" style="max-width:60%;">
+</div>
+- GridSearch over `smote__k_neighbors`; moderate impact on metrics
+
+## SMOTE Curves
+<div style="text-align:center;">
+  <img src="images/smote_k_neighbors.png" style="max-width:100%;">
+</div>
+
+## ROC vs PR with SMOTE
+<div style="text-align:center;">
+  <img src="images/roc_vs_pr_smote.png" style="max-width:100%;">
+</div>
+
+## Summary
+- Inspect both ROC AUC and average precision; review curves
+- Undersampling is fast and can help
+- Undersampling plus ensembles is powerful
+- SMOTE adds synthetic samples; results vary by metric

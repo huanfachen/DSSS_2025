@@ -1,6 +1,6 @@
 ---
 title: "Graph Neural Networks"
-subtitle: "Graph Convolutional Networks (GCN)"
+subtitle: "Extending neural networks to graph-structured data"
 author: 
   - name: "Huanfa Chen"
 email: "huanfa.chen@ucl.ac.uk"
@@ -20,7 +20,7 @@ format:
 - A deep learning framework for graph-structured data
 - It generalises traditional neural networks to handle graph data by leveraging the relationships between nodes in a graph.
 - Message passing: nodes aggregate neighbor features over the graph
-- Spatial vs spectral views of convolution on graphs
+- *Spatial* vs *spectral* views of convolution on graphs
 - Transductive vs inductive learning; sampling enables scalability
 - Learnable transformations per layer; nonlinearity and normalization matter
 - Variants differ in how neighbors are aggregated and weighted

@@ -18,7 +18,8 @@ format:
 ## What we learnt in Term 1
 
 -   Python programming
--   Data types, visualisation
+-   Data types 
+-   Visualisation
 -   Regression (Ordinary Least Square; Linear Mixed Effects; multicollinearity)
 -   Dimensionality reduction
 -   Clustering
@@ -57,8 +58,6 @@ Image Credit: Lecture slide (ML is a subset of AI)
 ::::
 :::::
 :::::::
-
-
 
 ## Definition of machine learning
 
@@ -230,8 +229,6 @@ Learn about the distribution $p$:
 - *Anomaly detection* methods can be unsupervised or supervised learning
 - *Forecasting* can be done with lagged features (via supervised learning), or with time series data (via time series analysis), or both
 
-
-
 ## What does LLM belong to?
 
 <div style="text-align:center;">
@@ -240,8 +237,6 @@ Learn about the distribution $p$:
     Image Credit: medium.com
   </div>
 </div>
-
-
 
 ## Classification vs. Regression
 
@@ -299,8 +294,6 @@ Learn about the distribution $p$:
 -   "Machine learning models are as interpretable as linear models."
 -   "Machine learning models have no assumptions."
 
-
-
 ## Guiding Principles: Goal Considerations
 
 -   Define the goal clearly
@@ -308,14 +301,11 @@ Learn about the distribution $p$:
 -   Think about context and baseline
 -   Ask: what's the benefit?
 
-
-
 ## Thinking in Context
 
 -   What do you want to achieve?
--   What's the easiest way?
+-   What's the baseline and its performance?
 -   What improvement over baseline do you need?
-
 
 
 ## Good and Bad Substitutes
@@ -324,8 +314,6 @@ Learn about the distribution $p$:
 -   Substitute metrics can be misleading
 -   Optimize for the right goal
 -   Understand side effects
-
-
 
 ## Communicating Results
 
@@ -496,9 +484,16 @@ Performance vs data size for ML/DL models
 
 -   Raw coordinates (e.g. long/lat) may not be directly useful
 -   Need to engineer features that capture spatial relationships
--   Long/lat\
--   Distance to POIs (train stations/schools).\
+-   Long/lat
+-   Distance to POIs (train stations/schools).
 -   Using adjacency matrix between spatial units
+
+# Overview 
+We've covered: 
+
+- Introduction to machine learning
+- Types of machine learning (supervised, unsupervised, reinforcement) 
+- Data and algorithms are both crucial for machine learning success
 
 # Practical
 

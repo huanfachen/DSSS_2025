@@ -20,7 +20,7 @@ By the end of this week, you will be able to:
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](supervised_learning_metrics/supervised_learning_metrics.qmd)
+To access the lecture notes: [Lecture](W02_supervised_learning_metrics/supervised_learning_metrics.qmd)
 
 ## Quiz
 
@@ -36,7 +36,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](supervised_learning_metrics/supervised_learning_metrics_practical.html)
-2. [Download](supervised_learning_metrics/supervised_learning_metrics_practicalipynb)
+1. [Preview](W02_supervised_learning_metrics/supervised_learning_metrics_practical.html)
+2. [Download](W02_supervised_learning_metrics/supervised_learning_metrics_practical.ipynb)
 
 ## Further resources

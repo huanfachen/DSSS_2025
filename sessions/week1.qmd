@@ -18,7 +18,7 @@ By the end of this week, you will be able to:
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](intro_machine_learning/intro_machine_learning.qmd)
+To access the lecture notes: [Lecture](W01_intro_machine_learning/intro_machine_learning.qmd)
 
 ## Quiz
 
@@ -34,7 +34,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](intro_machine_learning/intro_machine_learning_practical.html)
+1. [Preview](W01_intro_machine_learning/intro_machine_learning_practical.html)
 2. [Download](intro_machine_learning/intro_machine_learning_practical.ipynb)
 
 ## Further resources

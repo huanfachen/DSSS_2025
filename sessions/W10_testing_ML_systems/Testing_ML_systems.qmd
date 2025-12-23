@@ -1,0 +1,299 @@
+---
+title: "Testing ML Systems"
+# subtitle: ""
+author: 
+  - name: "Huanfa Chen"
+email: "huanfa.chen@ucl.ac.uk"
+date-as-string: "13/12/2025"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+---
+
+## Intro to code testing
+
+- This is different from *model testing* in ML or in *train-test split*
+- Code testing aims to ensure code correctness, reliability, and maintainability
+- Catching code bugs early saves time and effort
+- Some bugs are nuanced and hard to spot without tests
+- Some systems can run to completion without throwing errors, but produce invalid results
+
+## Targest of code testing
+
+- Not polluting main codebase; tests are in separate files
+- Automated testing; can be integrated into CI/CD pipelines
+- 100% Coverage of different code and edge cases
+
+## Types of tests
+
+- **Unit tests**: test individual functions or classes in isolation (eg, function that filters a list)
+- **Integration tests**: tests on the combined functionality of individual components (eg, data processing).
+- **System tests**: tests on the design of a system for expected outputs given inputs (ex. training, inference, etc.).
+- **Acceptance tests**: tests to verify that requirements have been met, usually referred to as User Acceptance Testing (UAT).
+
+## Type of tests
+
+<div style="text-align:center;">
+  <img src="images/tests_types.png" alt="Tests types" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: https://madewithml.com/courses/mlops/testing/
+  </div>
+</div>
+
+## Other types (under the system testing umbrella)
+
+- **Regression tests**: ensure that new code changes do not break existing functionality.
+- **Smoke tests**: basic tests to check if the main functionalities of a program work.
+- **Performance tests**: tests to evaluate the speed, responsiveness, and stability of a program under load.
+- **Security tests**: tests to identify vulnerabilities and ensure data protection.
+
+## Testing tools in Python
+
+- Don't rely on `print()` statements for testing
+- Use testing tools like `unittest`, `pytest`, or `nose2`
+- These tools provide built-in functionality including parameterisation, filters, etc.
+- These tools can be integrated into CI/CD pipelines for automated testing
+- These tools don't *pollute* the main codebase; tests are in separate files
+
+## How should we test - Arrange Act Assert (AAA) Methodology
+
+- ``Arrange``: set up the test data and environment
+- ``Act``: execute the code being tested
+- ``Assert``: verify that the output is as expected
+
+## Using pytest
+
+- By default, pytest expects tests to be organised under a ``tests`` directory, with test files named ``test_*.py``
+- Each test function should be named ``test_*``
+
+```sh
+tests/
+├── code/
+│   ├── conftest.py
+│   ├── test_data.py
+│   ├── test_predict.py
+│   ├── test_train.py
+│   ├── test_tune.py
+│   ├── test_utils.py
+│   └── utils.py
+├── data/
+│   ├── conftest.py
+│   └── test_dataset.py
+└── models/
+│   ├── conftest.py
+│   └── test_behavioral.py
+```
+
+# Code Testing
+
+## example
+```python
+# predict.py
+def decode(indices: Iterable[Any], index_to_class: Dict) -> List:
+    return [index_to_class[index] for index in indices]
+```
+
+```python
+# tests/code/test_predict.py 
+# tests/code/test_predict.py
+def test_decode():
+decoded = predict.decode(
+    indices=[0, 1, 1], # arrange
+    index_to_class={0: "x", 1: "y"}) ## act
+assert decoded == ["x", "y", "y"] ## assert
+```
+
+## what is ``assert`` in Python?
+
+- ``assert`` is a keyword in Python used for debugging purposes
+- It tests if a condition is true; if not, it raises an ``AssertionError``
+
+## Three key features of pytest
+ 
+- Parameterize
+- Fixtures
+- Markers
+- *Why? Aim to reduce redundancy and to automate test setup*
+
+## Parameterize
+
+- Use ``@pytest.mark.parametrize`` to run the same test with different inputs
+- Helps reduce code redundancy; similar to loops but better reporting
+
+```python
+@pytest.mark.parametrize(
+    "text, sw, clean_text",
+    [
+        ("hi", [], "hi"),
+        ("hi you", ["you"], "hi"),
+        ("hi yous", ["you"], "hi yous"),
+    ],
+)
+def test_clean_text(text, sw, clean_text):
+    assert data.clean_text(text=text, stopwords=sw) == clean_text
+```
+
+## Fixtures
+
+- Use ``@pytest.fixture`` to set up reusable test data or state
+- Reduce redundancy across different test functions
+
+```python
+# tests/code/conftest.py
+import pytest
+from madewithml.data import CustomPreprocessor
+
+@pytest.fixture
+def dataset_loc():
+    return "https://raw.githubusercontent.com/GokuMohandas/Made-With-ML/main/datasets/dataset.csv"
+
+@pytest.fixture
+def preprocessor():
+    return CustomPreprocessor()
+```
+
+## Fixtures (cont)
+
+- So the fixtures of data_loc and preprocessor can be used in any test file under ``tests/code/``
+
+```python
+def test_fit_transform(dataset_loc, preprocessor):
+    ds = data.load_data(dataset_loc=dataset_loc)
+    preprocessor.fit_transform(ds)
+    assert len(preprocessor.class_to_index) == 4
+```
+
+## Markers
+
+- Sometimes we want to run only a subset of tests; pytest provides various levels of granularity
+```bash
+python3 -m pytest                                          # all tests
+python3 -m pytest tests/code                               # tests under a directory
+python3 -m pytest tests/code/test_predict.py               # tests for a single file
+python3 -m pytest tests/code/test_predict.py::test_decode  # tests for a single function
+```
+
+## Markers (cont)
+
+- More advacend: can use ``@pytest.mark.<name>`` to label tests and create groups
+
+```python
+@pytest.mark.training
+def test_train_model(dataset_loc):
+    pass
+```
+
+- Then run tests with specific markers
+```bash
+pytest -m "training"      #  runs all tests marked with `training`
+pytest -m "not training"  #  runs all tests besides those marked with `training`
+```
+
+# Data testing
+
+## Purpose
+
+- Data from various resources: local file systems, databases, APIs
+- Need to test data validity before using it for training/inference
+- ``Great expectations`` library allows to create expectations and to compare with data
+
+## Example
+
+- Create a fixture to load data
+```python
+# tests/data/conftest.py
+import great_expectations as ge
+import pandas as pd
+import pytest
+
+@pytest.fixture(scope="module")
+def df(request):
+    dataset_loc = request.config.getoption("--dataset-loc")
+    df = ge.dataset.PandasDataset(pd.read_csv(dataset_loc))
+    return df
+```
+
+## Create expectations
+
+```python
+# tests/data/test_dataset.py
+def test_dataset(df):
+    """Test dataset quality and integrity."""
+    column_list = ["id", "created_on", "title", "description", "tag"]
+    df.expect_table_columns_to_match_ordered_list(column_list=column_list)  # schema adherence
+    tags = ["computer-vision", "natural-language-processing", "mlops", "other"]
+    df.expect_column_values_to_be_in_set(column="tag", value_set=tags)  # expected labels
+    df.expect_compound_columns_to_be_unique(column_list=["title", "description"])  # data leaks
+    df.expect_column_values_to_not_be_null(column="tag")  # missing values
+    df.expect_column_values_to_be_unique(column="id")  # unique values
+    df.expect_column_values_to_be_of_type(column="title", type_="str")  # type adherence
+
+    # Expectation suite
+    expectation_suite = df.get_expectation_suite(discard_failed_expectations=False)
+    results = df.validate(expectation_suite=expectation_suite, only_return_failures=True).to_json_dict()
+    assert results["success"]
+```
+
+## Check expectations
+
+- Can run these data tests like a code test
+```bash
+export DATASET_LOC="https://raw.githubusercontent.com/GokuMohandas/Made-With-ML/main/datasets/dataset.csv"
+pytest --dataset-loc=$DATASET_LOC tests/data --verbose --disable-warnings
+```
+
+## Other expectations
+
+- This library provides many built-in expectations, e.g.,
+- ``expect_column_pair_values_a_to_be_greater_than_b``
+- ``expect_column_mean_to_be_between``
+
+# Model testing
+
+## Purpose
+
+- Want to write tests when we develop training pipelines so we can catch errors quickly
+- ML systems can run to completion without throwing errors, but produce invalid results
+- We want to catch errors quickly to save on time and compute
+
+## Example of testing a neural network
+
+- Check shapes and values of model output
+```python
+assert model(inputs).shape == torch.Size([len(inputs), num_classes])
+```
+
+- Check overfitting on a batch (the logic is - if the model cannot overfit on a small batch, there is likely a bug)
+```python
+accuracy = train(model, inputs=batches[0])
+assert accuracy == pytest.approx(0.95, abs=0.05) # 0.95 ± 0.05
+```
+
+## Example of testing a neural network (cont)
+
+- Train to completion (tests early stopping, saving, etc.)
+```python
+train(model)
+assert learning_rate >= min_learning_rate
+assert artifacts
+```
+
+- On different devices
+```python
+assert train(model, device=torch.device("cpu"))
+assert train(model, device=torch.device("cuda"))
+```
+
+## Key references
+
+- [Testing Machine Learning Systems: Code, Data and Models](https://madewithml.com/courses/mlops/testing/)
+
+
+## Summary
+- Code testing is essential for ensuring code correctness and reliability
+- using testing frameworks including pytest and great_expectations helps organise and automate tests
+- Keep testing in mind during development and all stages of the ML lifecycle
+

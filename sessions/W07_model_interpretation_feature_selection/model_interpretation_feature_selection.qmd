@@ -1,0 +1,742 @@
+---
+title: "Model Interpretation and Feature Selection"
+# subtitle: ""
+author: 
+  - name: "Huanfa Chen"
+email: "huanfa.chen@ucl.ac.uk"
+date-as-string: "13/12/2025"
+from: markdown+emoji
+format:
+  revealjs:
+    transition: none
+    slide-number: TRUE
+    preview-links: auto
+---
+
+```{notes}
+TODO: update feature selection part
+```
+
+# Model Interpretation (post-hoc)
+
+- This is not inference or estimating variable relationships
+- This is not causality
+- Still useful for feature selection and understanding model behaviour
+
+## Types of Explanations
+
+## Explain model globally
+- How does the output depend on the input?
+- Often: some form of marginals (e.g., `feature importance`)
+
+## Explain model locally
+- Why did it classify this point this way?
+- Explanation could look like a "global" one but be different for each point
+- *"What is the minimum change to classify it differently?"*
+
+## Methods
+
+:::: columns
+
+::: {.column width="50%"}
+**Global:**
+- Coefficients / feature importances
+- Drop-feature importance
+- [Permutation importance]{style="color: blue;"}
+- Partial dependence plots
+:::
+
+::: {.column width="50%"}
+**Local:**
+- LIME
+- SHAP values
+:::
+
+::::
+
+## Explaining the Model != Explaining the Data
+
+- Model inspection only tells you about the model
+- The model might not accurately reflect the data
+- Don't explain a model with low accuracy
+
+## "Features Important to the Model"?
+
+- Naive: `coef_` for linear models (abs value or norm for multi-class)
+- `feature_importances_` for tree-based models
+
+Use with care!
+
+## Linear Model Coefficients
+
+- Large absolute coef value != important feature
+- Relative importance only meaningful after scaling
+- Correlation among features might make coefficients completely uninterpretable
+- L1 regularization will pick one at random from a correlated group
+- Any penalty will invalidate usual interpretation of linear coefficients
+
+## Example: Correlated Features
+
+- Correlation among features might make coefficients completely uninterpretable
+
+```{python}
+#| echo: false
+## Example
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import make_regression
+
+# Generate data with 3 uncorrelated features and R2=0.8
+X, y = make_regression(n_samples=100, n_features=3, n_informative=3, 
+             noise=10, random_state=42)
+
+# Verify low correlation
+print("Correlations (should be < 0.1):")
+print(np.corrcoef(X.T))
+
+# Fit model and print formula
+model1 = LinearRegression().fit(X, y)
+formula1 = f"y = {model1.intercept_:.2f} + {model1.coef_[0]:.2f}*X1 + {model1.coef_[1]:.2f}*X2 + {model1.coef_[2]:.2f}*X3"
+print(f"\nModel 1 (3 features): {formula1}")
+print(f"R² = {model1.score(X, y):.3f}")
+
+# Add X4 correlated with X3 (cor=0.9)
+X4 = 0.9 * X[:, 2] + 0.1 * np.random.randn(X.shape[0])
+X_with_X4 = np.column_stack([X, X4])
+
+print(f"\nCorrelation X3-X4: {np.corrcoef(X[:, 2], X4)[0, 1]:.3f}")
+
+# Fit model with X4
+model2 = LinearRegression().fit(X_with_X4, y)
+formula2 = f"y = {model2.intercept_:.2f} + {model2.coef_[0]:.2f}*X1 + {model2.coef_[1]:.2f}*X2 + {model2.coef_[2]:.2f}*X3 + {model2.coef_[3]:.2f}*X4"
+print(f"\nModel 2 (4 features): {formula2}")
+print(f"R² = {model2.score(X_with_X4, y):.3f}")
+```
+
+## Example: linear regression with penalisation
+
+- Lasso regression performs feature selection by driving some coefficients to zero
+- $\text{Lasso Regression: } \min_{\beta} \left( \frac{1}{2n} \sum_{i=1}^{n} (y_i - X_i \beta)^2 + \lambda \|\beta\|_1 \right)$
+- On the same data, Lasso regression will pick one of the correlated features (X3 or X4)
+- but it doesn't mean the dropped feature is unimportant!
+
+```{python}
+#| echo: false
+from sklearn.linear_model import LassoCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
+
+# Scale the features
+X_scaled = StandardScaler().fit_transform(X)
+
+# Fit Lasso model with cross-validation to find the best alpha
+lasso = LassoCV(cv=10).fit(X_scaled, y)
+
+# # Print the coefficients and the best alpha
+# print("Best alpha:", lasso.alpha_)
+# print("Coefficients:", lasso.coef_)
+
+# # Print selected features
+# selected_features = np.where(lasso.coef_ != 0)[0]
+# print("Selected features:", selected_features)
+
+# Construct the formula
+formula = "Y = {:.2f}".format(lasso.intercept_)
+for idx in selected_features:
+  formula += " + {:.2f}*X{}".format(lasso.coef_[idx], idx + 1)
+print(formula)
+
+```
+
+## feature_importances_ in sklearn tree-based Models
+
+- For a tree: FI = total reduction of the criterion (e.g., Gini, MSE) brought by that feature
+- For a forest: average FI over all trees
+- Problems:
+  - Biased towards high-cardinality features (cardinality = number of unique values)
+  - Can be misleading when features are correlated
+
+## Drop Feature Importance (Not recommended)
+
+$$I_i^\text{drop} = \text{Acc}(f, X, y) - \text{Acc}(f', X_{-i}, y)$$
+
+<!-- ```python
+def drop_feature_importance(est, X, y):
+    base_score = np.mean(cross_val_score(est, X, y))
+    scores = []
+    for feature in range(X.shape[1]):
+        mask = np.ones(X.shape[1], 'bool')
+        mask[feature] = False
+        X_new = X[:, mask]
+        this_score = np.mean(cross_val_score(est, X_new, y))
+        scores.append(base_score - this_score)
+    return np.array(scores)
+``` -->
+
+- It refits a new model for each feature removal
+- Doesn't really explain model (refits for each feature)
+- Can't deal with correlated features well
+- Be cautious!
+
+## Permutation Importance
+
+Idea: measure marginal influence of one feature by permuting it
+
+$$I_i^\text{perm} = \text{Acc}(f, X, y) - \mathbb{E}_{x_i}\left[\text{Acc}(f(x_i, X_{-i}), y)\right]$$
+
+```python
+def permutation_importance(est, X, y, n_repeat=100):
+  baseline_score = estimator.score(X, y)
+  for f_idx in range(X.shape[1]):
+      for repeat in range(n_repeat):
+          X_new = X.copy()
+          X_new[:, f_idx] = np.random.shuffle(X[:, f_idx])
+          feature_score = estimator.score(X_new, y)
+          scores[f_idx, repeat] = baseline_score - feature_score
+```
+
+- Stay with the same trained model
+- Applied on validation set given trained estimator
+- Can deal with correlated features better
+- Can run slow (n_features * n_repeats model evaluations)
+
+## LIME
+
+- Build sparse linear local model around each data point
+- Explain prediction for each point locally
+- Paper: "Why Should I Trust You?" Explaining the Predictions of Any Classifier
+- Implementation: ELI5, https://github.com/marcotcr/lime
+
+<div style="text-align:center;">
+  <img src="images/lime_paper.png" style="max-width:60%;">
+</div>
+
+## SHAP
+
+- Build around idea of Shapley values (from game theory)
+- Very roughly: does drop-out importance for every subset of features
+- Intractable, sampling approximations exists
+- Fast implementation for linear and tree-based models
+- Also work for deep learning models (DeepSHAP)
+- Awesome vis and tools: https://github.com/slundberg/shap
+- Allows local / per sample explanations, and global explanations (by averaging)
+
+## Shapley value (game theory)
+
+- A fair way to distribute "payout" among players N={1, ..., p}
+- Define characteristic function v(S) giving payout for any subset of players S ⊆ N
+- Shapley value for player i:
+$$\phi_i(v) = \sum_{S \subseteq N \setminus \{i\}} \frac{|S|! (p - |S| - 1)!}{p!} [v(S \cup \{i\}) - v(S)]$$
+
+## Shapley value (game theory)
+
+- Assume 4 players, to compute Shapley value for player 1:
+  - Consider all subsets of players not including player 1: {}, {2}, {3}, {4}, {2,3}, {2,4}, {3,4}
+  - For each subset S, compute marginal contribution of player 1: v(S ∪ {1}) - v(S)
+  - Weight each marginal contribution by the number of ways to arrange players in S and N \ S \ {1}
+  - Sum weighted contributions to get φ₁(v)
+
+## Shapley value (game theory)
+
+- Shapley value is the only attribution method that satisfies following properties
+
+- *Efficiency*: sum of attributions = difference between actual output and average output
+- *Symmetry*: if two features contribute equally, they get same attribution
+- *Dummy*: if a feature does not affect the output, its attribution is zero
+- *Additivity*: for two models, attributions add up. (Think about a random forest with many trees, the Shapley values of the forest is the avereage of SHAP values of each tree)
+
+## SHAP (Shapley values applied to ML model explanations)
+
+- SHAP is an application of Shapley values to explain ML model predictions
+ - Treat features as players in a game
+ - model prediction over average as the payout
+ - Define v(S) that uses dataset mean for missing featuers
+- SHAP value for feature i:
+
+$f(x)-E[f(X)]=\sum_{j=1}^{p}\phi_j(x)$
+
+## Three methods for SHAP estimation
+
+- KernelSHAP: model-agnostic, uses sampling to estimate SHAP values
+- TreeSHAP: efficient exact computation for tree-based models
+- Permutation SHAP: approximate method using permutations, similar to permutation importance
+
+## Case Study
+
+## Toy Data
+
+```python
+X.shape
+```
+```
+(100000, 8)
+```
+
+:::: columns
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/toy_data_scatter.png" style="max-width:100%;">
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/covariance.png" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+## Models on Lots of Data
+
+```python
+lasso = LassoCV().fit(X_train, y_train)
+lasso.score(X_test, y_test)
+```
+0.545
+
+```python
+ridge = RidgeCV().fit(X_train, y_train)
+ridge.score(X_test, y_test)
+```
+0.545
+
+```python
+lr = LinearRegression().fit(X_train, y_train)
+lr.score(X_test, y_test)
+```
+0.545
+
+```python
+param_grid = {'max_leaf_nodes': range(5, 40, 5)}
+grid = GridSearchCV(DecisionTreeRegressor(), param_grid, cv=10, n_jobs=3)
+grid.fit(X_train, y_train)
+grid.score(X_test, y_test)
+```
+0.545
+
+```python
+rf = RandomForestRegressor(min_samples_leaf=5).fit(X_train, y_train)
+rf.score(X_test, y_test)
+```
+0.542
+
+## Coefficients and Default Feature Importance
+
+<div style="text-align:center;">
+  <img src="images/standard_importances.png" style="max-width:100%;">
+</div>
+
+## Permutation Importances
+
+:::: columns
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/standard_importances.png" style="max-width:100%;">
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/permutation_importance_big.png" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+## SHAP Values
+
+:::: columns
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/standard_importances.png" style="max-width:100%;">
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/shap_big.png" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+## More Model Inspection
+
+## Partial Dependence Plots
+
+- Marginal dependence of prediction on one (or two features)
+
+$$f_i^{\text{pdp}}(x_i) = \mathbb{E}_{X_{-i}}\left[f(x_i, x_{-i})\right]$$
+
+- Idea: Get marginal predictions given feature
+- How? "integrate out" other features using validation data
+- Fast methods available for tree-based models (doesn't require validation data)
+- Nonsensical for linear models
+
+## Partial Dependence
+
+```python
+from sklearn.inspection import plot_partial_dependence
+boston = load_boston()
+X_train, X_test, y_train, y_test = train_test_split(boston.data, boston.target,random_state=0)
+
+gbrt = GradientBoostingRegressor().fit(X_train, y_train)
+
+fig, axs = plot_partial_dependence(gbrt, X_train, np.argsort(gbrt.feature_importances_)[-6:], feature_names=boston.feature_names)
+```
+
+<div style="text-align:center;">
+  <img src="images/feat_impo_part_dep.png" style="max-width:60%;">
+</div>
+
+## Bivariate Partial Dependence Plots
+
+```python
+plot_partial_dependence(
+    gbrt, X_train, [np.argsort(gbrt.feature_importances_)[-2:]],
+    feature_names=boston.feature_names, n_jobs=3, grid_resolution=50)
+```
+
+<div style="text-align:center;">
+  <img src="images/feature_importance.png" style="max-width:80%;">
+</div>
+
+## Partial Dependence for Classification
+
+```python
+from sklearn.inspection import plot_partial_dependence
+for i in range(3):
+    fig, axs = plot_partial_dependence(gbrt, X_train, range(4), n_cols=4,
+                                       feature_names=iris.feature_names, grid_resolution=50, label=i)
+```
+
+<div style="text-align:center;">
+  <img src="images/feat_impo_part_dep_class.png" style="max-width:50%;">
+</div>
+
+## PDP Caveats
+
+:::: columns
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/pdp_failure.png" style="max-width:100%;">
+</div>
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/pdp_failure_data.png" style="max-width:100%;">
+</div>
+:::
+
+::::
+
+## Ice Box
+
+- Like partial dependence plots, without the `.mean(axis=0)`
+
+<div style="text-align:center;">
+  <img src="images/ice_cross.png" style="max-width:60%;">
+</div>
+
+- https://pdpbox.readthedocs.io/en/latest/
+- https://github.com/AustinRochford/PyCEbox
+- https://github.com/scikit-learn/scikit-learn/pull/16164
+
+# Feature Selection
+
+## Why Select Features?
+
+- Avoid overfitting
+- Faster prediction and training
+- Less storage cost for model and dataset
+- More interpretable model
+
+## Types of Feature Selection
+
+- Unsupervised vs Supervised
+- Univariate vs Multivariate
+- Model-based or not
+
+## Unsupervised Feature Selection
+
+- May discard important information
+- Variance-based: 0 variance or mostly constant
+- Covariance-based: remove correlated features
+- PCA: remove linear subspaces
+
+## Covariance
+
+```python
+from sklearn.preprocessing import scale
+
+boston = load_boston()
+X, y = boston.data, boston.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+X_train_scaled = scale(X_train)
+
+cov = np.cov(X_train_scaled, rowvar=False)
+```
+
+<div style="text-align:center;">
+  <img src="images/img_17.png" style="max-width:32%;">
+</div>
+
+<!-- ## Hierarchical Clustering of Covariance
+
+```python
+from scipy.cluster import hierarchy
+order = np.array(hierarchy.dendrogram(
+    hierarchy.ward(cov),no_plot=True)['ivl'], dtype="int")
+```
+
+<div style="text-align:center;">
+  <img src="images/img_19.png" style="max-width:90%;">
+</div> -->
+
+## Supervised Feature Selection
+
+## Univariate Statistics
+
+- Pick statistic, check p-values
+- f_regression, f_classsif, chi2 in scikit-learn
+
+```python
+from sklearn.feature_selection import f_regression
+f_values, p_values = f_regression(X, y)
+```
+
+<div style="text-align:center;">
+  <img src="images/img_20.png" style="max-width:60%;">
+</div>
+
+## SelectKBest Example
+
+```python
+from sklearn.feature_selection import SelectKBest, SelectPercentile, SelectFpr
+from sklearn.linear_model import RidgeCV
+
+select = SelectKBest(k=2, score_func=f_regression)
+select.fit(X_train, y_train)
+print(X_train.shape)
+print(select.transform(X_train).shape)
+```
+```
+(379, 13)
+(379, 2)
+```
+
+```python
+all_features = make_pipeline(StandardScaler(), RidgeCV())
+np.mean(cross_val_score(all_features, X_train, y_train, cv=10))
+```
+0.718
+
+```python
+select_2 = make_pipeline(StandardScaler(),
+                         SelectKBest(k=2, score_func=f_regression), RidgeCV())
+np.mean(cross_val_score(select_2, X_train, y_train, cv=10))
+```
+0.624
+
+## Mutual Information
+
+```python
+from sklearn.feature_selection import mutual_info_regression
+scores = mutual_info_regression(X_train, y_train,
+                                discrete_features=[3])
+```
+
+<div style="text-align:center;">
+  <img src="images/img_22.png" style="max-width:90%;">
+</div>
+
+## Model-Based Feature Selection
+
+- Get best fit for a particular model
+- Ideally: exhaustive search over all possible combinations
+- But, exhaustive is infeasible (and has multiple testing issues)
+- Use heuristics in practice
+
+## Model Based (Single Fit)
+
+- Build a model, select "features important to model"
+- Usually using Lasso or random forest
+- Multivariate - linear models assume linear relation
+
+```python
+from sklearn.linear_model import LassoCV
+X_train_scaled = scale(X_train)
+lasso = LassoCV().fit(X_train_scaled, y_train)
+print(lasso.coef_)
+```
+[-0.881  0.951 -0.082  0.59  -1.69   2.639 -0.146 -2.796  1.695 -1.614
+ -2.133  0.729 -3.615]
+
+<div style="text-align:center;">
+  <img src="images/img_23.png" style="max-width:55%;">
+</div>
+
+## Changing Lasso Alpha
+
+```python
+from sklearn.linear_model import Lasso
+X_train_scaled = scale(X_train)
+lasso = Lasso().fit(X_train_scaled, y_train)
+print(lasso.coef_)
+```
+[-0.     0.    -0.     0.    -0.     2.529 -0.    -0.    -0.    -0.228
+ -1.701  0.132 -3.606]
+
+<div style="text-align:center;">
+  <img src="images/img_24.png" style="max-width:80%;">
+</div>
+
+## SelectFromModel
+
+```python
+from sklearn.feature_selection import SelectFromModel
+select_lassocv = SelectFromModel(LassoCV(), threshold=1e-5)
+select_lassocv.fit(X_train, y_train)
+print(select_lassocv.transform(X_train).shape)
+```
+```
+(379,11)
+```
+
+```python
+pipe_lassocv = make_pipeline(StandardScaler(), select_lassocv, RidgeCV())
+np.mean(cross_val_score(pipe_lassocv, X_train, y_train, cv=10))
+np.mean(cross_val_score(all_features, X_train, y_train, cv=10))
+```
+```
+0.717
+0.718
+```
+
+```python
+# could grid-search alpha in lasso
+select_lasso = SelectFromModel(Lasso())
+pipe_lasso = make_pipeline(StandardScaler(), select_lasso, RidgeCV())
+np.mean(cross_val_score(pipe_lasso, X_train, y_train, cv=10))
+```
+```
+0.671
+```
+
+<!-- ## Iterative Model-Based Selection
+
+- Fit model, find least important feature, remove, iterate
+- Or: Start with single feature, find most important feature, add, iterate
+
+## Recursive Feature Elimination
+
+- Uses feature importances / coefficients, similar to "SelectFromModel"
+- Iteratively removes features (one by one or in groups)
+- Runtime: (n_features - n_feature_to_keep) / stepsize
+
+## RFE Example
+
+```python
+from sklearn.linear_model import LinearRegression
+from sklearn.feature_selection import RFE
+
+# create ranking among all features by selecting only one
+rfe = RFE(LinearRegression(), n_features_to_select=1)
+rfe.fit(X_train_scaled, y_train)
+rfe.ranking_
+```
+array([ 9,  8, 13, 11,  5,  2, 12,  4,  7,  6,  3, 10,  1])
+
+<div style="text-align:center;">
+  <img src="images/img_27.png" style="max-width:95%;">
+</div>
+
+## RFECV
+
+```python
+from sklearn.linear_model import LinearRegression
+from sklearn.feature_selection import RFECV
+rfe = RFECV(LinearRegression(), cv=10)
+rfe.fit(X_train_scaled, y_train)
+print(rfe.support_)
+print(boston.feature_names[rfe.support_])
+```
+```
+[ True  True False  True  True  True False  True  True  True  True  True
+  True]
+['CRIM' 'ZN' 'CHAS' 'NOX' 'RM' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT']
+```
+
+```python
+pipe_rfe_ridgecv = make_pipeline(StandardScaler(),
+                                 RFECV(LinearRegression(), cv=10), RidgeCV())
+np.mean(cross_val_score(pipe_rfe_ridgecv, X_train, y_train, cv=10))
+```
+```
+0.710
+```
+
+## RFECV with Polynomial Features
+
+```python
+pipe_rfe_ridgecv = make_pipeline(StandardScaler(),
+                                 RFECV(LinearRegression(), cv=10), RidgeCV())
+np.mean(cross_val_score(pipe_rfe_ridgecv, X_train, y_train, cv=10))
+```
+```
+0.710
+```
+
+```python
+from sklearn.preprocessing import PolynomialFeatures
+pipe_rfe_ridgecv = make_pipeline(StandardScaler(), PolynomialFeatures(),
+                                 RFECV(LinearRegression(), cv=10), RidgeCV())
+np.mean(cross_val_score(pipe_rfe_ridgecv, X_train, y_train, cv=10))
+```
+```
+0.820
+```
+
+## Wrapper Methods
+
+- Can be applied for ANY model
+- Shrink / grow feature set by greedy search
+- Called Forward or Backward selection
+- Run CV / train-val split per feature
+- Complexity: n_features * (n_features + 1) / 2
+- Implemented in mlxtend
+
+## SequentialFeatureSelector
+
+```python
+from mlxtend.feature_selection import SequentialFeatureSelector
+sfs = SequentialFeatureSelector(LinearRegression(), forward=False, k_features=7)
+sfs.fit(X_train_scaled, y_train)
+```
+```
+Features: 7/7
+```
+
+```python
+print(sfs.k_feature_idx_)
+print(boston.feature_names[np.array(sfs.k_feature_idx_)])
+```
+```
+(1, 4, 5, 7, 9, 10, 12)
+['ZN' 'NOX' 'RM' 'DIS' 'TAX' 'PTRATIO' 'LSTAT']
+```
+
+```python
+sfs.k_score_
+```
+```
+0.725
+``` -->
+
+## Questions?
