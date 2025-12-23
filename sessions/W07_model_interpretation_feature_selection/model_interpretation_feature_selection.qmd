@@ -137,7 +137,7 @@ lasso = LassoCV(cv=10).fit(X_scaled, y)
 # print("Coefficients:", lasso.coef_)
 
 # # Print selected features
-# selected_features = np.where(lasso.coef_ != 0)[0]
+selected_features = np.where(lasso.coef_ != 0)[0]
 # print("Selected features:", selected_features)
 
 # Construct the formula
