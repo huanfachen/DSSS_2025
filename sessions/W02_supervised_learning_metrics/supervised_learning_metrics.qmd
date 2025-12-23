@@ -65,6 +65,7 @@ print(f"Intercept: {model.intercept_:.2f}")
 
 ## Terms
 
+<div style="font-size: 18px;">
 <table>
   <thead>
     <tr>
@@ -106,6 +107,7 @@ print(f"Intercept: {model.intercept_:.2f}")
     </tr>
   </tbody>
 </table>
+</div>
 
 ## Classification 
 
@@ -249,7 +251,7 @@ for i, (ax, y_pred) in enumerate(zip(axes, [y_pred_1, y_pred_2, y_pred_3])):
     ax.set_title("y_pred_{}".format(i + 1))
     ax.images[-1].colorbar.remove()
     ax.images[0].set_norm(Normalize(vmin=0, vmax=100))
-#plt.tight_layout()
+plt.tight_layout()
 # plt.savefig("images/problems_with_accuracy.png")
 ```
 
