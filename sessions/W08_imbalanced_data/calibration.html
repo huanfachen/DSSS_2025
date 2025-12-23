@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../..//img/favicon.ico" rel="icon">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-68c8bffd90dad8f2b55c52d7b6410dc0.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="author" content="Huanfa Chen">
+  <title>Data Science for Spatial Systems – Calibration</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-708fdb05d86516b6f171cd9cf793ecac.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+<meta property="og:title" content="Calibration – Data Science for Spatial Systems">
+<meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/W08_imbalanced_data/img/logo/full_sm.png">
+<meta property="og:site_name" content="Foundations">
+<meta property="og:locale" content="en_GB">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+
+<section id="title-slide" data-background-color="#4e3c56" data-background-image="../../img/web/title-slide.png" data-background-opacity="0.08" data-background-size="stretch" style="height:100%" class="center">
+
+<br>
+<br>
+
+<h1 class="title">Calibration</h1>
+
+
+<p><span style="margin:0px; font-weight:700;" class="author">Huanfa Chen</span> - huanfa.chen@ucl.ac.uk </p>
+
+<p style="opacity: 0.8">13/12/2025</p>
+
+
+</section>
+<section id="calibration" class="slide level2">
+<h2>Calibration</h2>
+<ul>
+<li>Probabilities can be more informative than labels</li>
+<li>Example: “no cancer” vs “40% likely to have cancer”</li>
+<li>Goal: accurate probability estimates from any classifier</li>
+</ul>
+</section>
+<section id="calibration-curve-reliability-diagram" class="slide level2">
+<h2>Calibration Curve (Reliability Diagram)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="text-align:center;">
+<p><img src="images/prob_table.png" style="max-width:100%;"></p>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<p><img src="images/calib_curve.png" style="max-width:100%;"></p>
+</div>
+</div></div>
+<ul>
+<li>For binary classification</li>
+<li>A model can be calibrated yet inaccurate</li>
+<li>Bin predictions, plot fraction positive per bin</li>
+<li>Does not require ground-truth probabilities</li>
+</ul>
+</section>
+<section id="calibration_curve-with-sklearn" class="slide level2">
+<h2>calibration_curve with sklearn</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Using subsample of covertype dataset</li>
+<li>LogisticRegressionCV baseline</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>lr <span class="op">=</span> LogisticRegressionCV().fit(X_train, y_train)</span>
+<span id="cb1-2"><a></a>probs <span class="op">=</span> lr.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb1-3"><a></a>prob_true, prob_pred <span class="op">=</span> calibration_curve(y_test, probs, n_bins<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<p><img src="images/predprob_positive.png" style="max-width:70%;"></p>
+</div>
+</div></div>
+</section>
+<section id="influence-of-number-of-bins" class="slide level2">
+<h2>Influence of Number of Bins</h2>
+<div style="text-align:center;">
+<p><img src="images/influence_bins.png" style="max-width:100%;"></p>
+</div>
+<ul>
+<li>More bins give resolution but add noise</li>
+<li>Large datasets tolerate more bins; small datasets get noisy</li>
+</ul>
+</section>
+<section id="comparing-models" class="slide level2">
+<h2>Comparing Models</h2>
+<div style="text-align:center;">
+<p><img src="images/calib_curve_models.png" style="max-width:90%;"></p>
+</div>
+<ul>
+<li>Logistic regression well calibrated</li>
+<li>Trees often overconfident; forests underconfident</li>
+</ul>
+</section>
+<section id="brier-score-binary" class="slide level2">
+<h2>Brier Score (Binary)</h2>
+<ul>
+<li>Mean squared error of probability estimate <span class="math display">\[BS = \frac{\sum_{i=1}^{n} (\hat{p}(y_i)-y_i)^2}{n}\]</span>
+<div style="text-align:center;">
+<p><img src="images/models_bscore.png" style="max-width:70%;"></p>
+</div></li>
+<li>Smaller is better; mixes accuracy and calibration</li>
+</ul>
+</section>
+<section id="fixing-it-calibrating-a-classifier" class="slide level2">
+<h2>Fixing It: Calibrating a Classifier</h2>
+<ul>
+<li>Learn mapping from model scores to better probabilities</li>
+<li>Usually 1d model; works even without native probabilities</li>
+<li>Train calibration on hold-out or via cross-validation</li>
+</ul>
+</section>
+<section id="platt-scaling" class="slide level2">
+<h2>Platt Scaling</h2>
+<ul>
+<li>Use logistic sigmoid as calibration function</li>
+<li>Works well for SVMs <span class="math display">\[f_{platt} = \frac{1}{1 + \exp(-w s(x) - b)}\]</span></li>
+</ul>
+</section>
+<section id="isotonic-regression" class="slide level2">
+<h2>Isotonic Regression</h2>
+<ul>
+<li>Flexible monotone step-function calibrator</li>
+<li>Minimizes MSE under monotonicity
+<div style="text-align:center;">
+<p><img src="images/isotonic_regression.png" style="max-width:40%;"></p>
+</div></li>
+</ul>
+</section>
+<section id="building-the-model" class="slide level2">
+<h2>Building the Model</h2>
+<ul>
+<li>Using the training set for calibration overfits</li>
+<li>Use hold-out set or cross-validation for unbiased probabilities</li>
+</ul>
+</section>
+<section id="fitting-the-calibration-model" class="slide level2">
+<h2>Fitting the Calibration Model</h2>
+<div style="text-align:center;">
+<p><img src="images/calibration_val_scores.png" style="max-width:70%;"></p>
+</div>
+</section>
+<section id="fitting-the-calibration-model-fitted-curves" class="slide level2">
+<h2>Fitting the Calibration Model (Fitted Curves)</h2>
+<div style="text-align:center;">
+<p><img src="images/calibration_val_scores_fitted.png" style="max-width:70%;"></p>
+</div>
+</section>
+<section id="calibratedclassifiercv" class="slide level2">
+<h2>CalibratedClassifierCV</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Calibrate a pretrained model on validation data</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>rf <span class="op">=</span> RandomForestClassifier().fit(X_train_sub, y_train_sub)</span>
+<span id="cb2-2"><a></a>scores <span class="op">=</span> rf.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb2-3"><a></a>plot_calibration_curve(y_test, scores, n_bins<span class="op">=</span><span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<p><img src="images/random_forest.png" style="max-width:30%;"></p>
+</div>
+</div></div>
+</section>
+<section id="calibration-on-random-forest" class="slide level2">
+<h2>Calibration on Random Forest</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>cal_rf <span class="op">=</span> CalibratedClassifierCV(rf, cv<span class="op">=</span><span class="st">"prefit"</span>, method<span class="op">=</span><span class="st">"sigmoid"</span>)</span>
+<span id="cb3-2"><a></a>cal_rf.fit(X_val, y_val)</span>
+<span id="cb3-3"><a></a>scores_sigm <span class="op">=</span> cal_rf.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb3-4"><a></a></span>
+<span id="cb3-5"><a></a>cal_rf_iso <span class="op">=</span> CalibratedClassifierCV(rf, cv<span class="op">=</span><span class="st">"prefit"</span>, method<span class="op">=</span><span class="st">"isotonic"</span>)</span>
+<span id="cb3-6"><a></a>cal_rf_iso.fit(X_val, y_val)</span>
+<span id="cb3-7"><a></a>scores_iso <span class="op">=</span> cal_rf_iso.predict_proba(X_test)[:, <span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<p><img src="images/types_calib.png" style="max-width:90%;"></p>
+</div>
+</div></div>
+<ul>
+<li>Hold-out calibration with sigmoid or isotonic</li>
+</ul>
+</section>
+<section id="cross-validated-calibration" class="slide level2">
+<h2>Cross-Validated Calibration</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>cal_rf_iso_cv <span class="op">=</span> CalibratedClassifierCV(rf, method<span class="op">=</span><span class="st">"isotonic"</span>)</span>
+<span id="cb4-2"><a></a>cal_rf_iso_cv.fit(X_train, y_train)</span>
+<span id="cb4-3"><a></a>scores_iso_cv <span class="op">=</span> cal_rf_iso_cv.predict_proba(X_test)[:, <span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<p><img src="images/types_calib_cv.png" style="max-width:90%;"></p>
+</div>
+</div></div>
+<ul>
+<li>Uses CV folds; averages calibrated models; more trees, better calibration</li>
+</ul>
+</section>
+<section id="multi-class-calibration" class="slide level2">
+<h2>Multi-Class Calibration</h2>
+<div style="text-align:center;">
+<p><img src="images/multi_class_calibration.png" style="max-width:100%;"></p>
+</div>
+<ul>
+<li>Calibrate per class then renormalize</li>
+</ul>
+<!-- ## Recap on Imbalanced Data
+- Classification often has asymmetric costs or data imbalance
+- Need metrics and models that respect imbalance
+
+## Two Sources of Imbalance
+- Asymmetric cost between errors
+- Asymmetric data prevalence
+
+## Why Do We Care?
+- Real-world costs rarely symmetric
+- Data often heavily imbalanced; rare event detection common
+
+## Changing Thresholds
+- Adjust probability threshold to trade precision/recall
+```python
+y_pred = lr.predict_proba(X_test)[:, 1] > 0.85
+classification_report(y_test, y_pred)
+```
+- Choose threshold to minimize given cost
+
+## ROC Curve
+<div style="text-align:center;">
+  <img src="images/roc_svc_rf_curve.png" style="max-width:85%;">
+</div>
+- Evaluates all thresholds via TPR vs FPR
+
+## Remedies for the Model
+- Beyond thresholding: modify data or training to address imbalance
+
+## Mammography Data
+:::: columns
+::: {.column width="50%"}
+```python
+data = fetch_openml("mammography", as_frame=True)
+X, y = data.data, data.target
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y == "1", random_state=0)
+```
+:::
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/mammography_data.png" style="max-width:100%;">
+</div>
+:::
+::::
+- Imbalanced dataset: 260 positive of 11183 samples
+
+## Mammography Baselines
+- LogisticRegression CV=10: ROC AUC 0.920, AP 0.630
+- RandomForest CV=10: ROC AUC 0.939, AP 0.722
+
+## Basic Approaches
+:::: columns
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/basic_approaches.png" style="max-width:100%;">
+</div>
+:::
+::: {.column width="50%"}
+- Change the training procedure
+- Modify data via sampling
+:::
+::::
+
+## Scikit-learn vs Resampling
+<div style="text-align:center;">
+  <img src="images/pipeline.png" style="max-width:55%;">
+</div>
+- Standard pipelines transform X only; cannot resample y without extensions
+
+## Imbalance-Learn
+- Library: http://imbalanced-learn.org
+- `pip install -U imbalanced-learn`
+- Extends sklearn API with samplers and pipelines
+
+## Sampler API
+- `data_resampled, targets_resampled = sampler.sample(X, y)`
+- `fit_sample` convenience to fit and sample
+- In pipelines, sampling only occurs during `fit`
+- Many samplers are binary-only; check multiclass support
+
+## Random Undersampling
+- Drop majority samples until balanced
+- Very fast; dataset shrinks to ~2x minority
+- Loses data but can still perform well
+```python
+rus = RandomUnderSampler(replacement=False)
+X_sub, y_sub = rus.fit_sample(X_train, y_train)
+```
+
+## Random Undersampling Results
+- LogisticRegression: ROC AUC 0.927, AP 0.527 (baseline 0.920, 0.630)
+- RandomForest: ROC AUC 0.951, AP 0.629 (baseline 0.939, 0.722)
+- Often as accurate with fraction of data; great for large datasets
+
+## Random Oversampling
+- Repeat minority samples until balanced
+- Dataset grows; slower training
+```python
+ros = RandomOverSampler()
+X_over, y_over = ros.fit_sample(X_train, y_train)
+```
+
+## Random Oversampling Results
+- LogisticRegression: ROC AUC 0.917, AP 0.585
+- RandomForest: ROC AUC 0.926, AP 0.715
+- Performance similar to baseline; heavier compute
+
+## Curves for LogReg
+<div style="text-align:center;">
+  <img src="images/curves_logreg.png" style="max-width:100%;">
+</div>
+
+## Curves for Random Forest
+<div style="text-align:center;">
+  <img src="images/curves_rf.png" style="max-width:100%;">
+</div>
+
+## Class-Weights
+- Reweight loss instead of resampling
+- Same effect as oversampling without data duplication
+- Supported by most models
+
+## Class-Weights in Linear Models
+- Modify loss with per-class weight $c_{y_i}$
+- Equivalent to repeating samples by class weight count
+
+## Class-Weights in Trees
+- Apply class weights in impurity (Gini or entropy)
+- Use weighted votes for prediction
+
+## Using Class-Weights
+- LogisticRegression(class_weight="balanced"): ROC AUC 0.918, AP 0.587
+- RandomForest(class_weight="balanced"): ROC AUC 0.917, AP 0.701
+
+## Ensemble Resampling
+- Random resampling separately per estimator in ensemble
+- Example: Balanced bagging or balanced random forest
+- Easy with imblearn; not yet in sklearn core
+
+## Easy Ensemble with imblearn
+:::: columns
+::: {.column width="50%"}
+```python
+from imblearn.ensemble import BalancedBaggingClassifier
+base = DecisionTreeClassifier(max_features="auto")
+resampled_rf = BalancedBaggingClassifier(base_estimator=base, random_state=0)
+```
+:::
+::: {.column width="50%"}
+- Trains each tree on a different undersampled dataset
+- ROC AUC 0.957, AP 0.654 (baseline RF 0.939, 0.722)
+:::
+::::
+- As cheap as undersampling; strong results
+
+## ROC vs PR Comparison
+<div style="text-align:center;">
+  <img src="images/roc_vs_pr.png" style="max-width:100%;">
+</div>
+- Easy ensemble performs well at higher recall and precision regions
+
+## Synthetic Sample Generation
+- SMOTE: Synthetic Minority Oversampling Technique
+- Interview-friendly method; many variants exist
+
+## SMOTE
+- Add synthetic points for minority class
+- For each minority sample: pick random neighbor, interpolate on line segment
+- Leads to larger datasets; can combine with undersampling
+
+## SMOTE Illustration
+<div style="text-align:center;">
+  <img src="images/smote_mammography.png" style="max-width:100%;">
+</div>
+
+## SMOTE Results
+- LogisticRegression with SMOTE: ROC AUC 0.919, AP 0.585
+- RandomForest with SMOTE: ROC AUC 0.946, AP 0.688
+- Similar to baseline; tune k_neighbors for best AP
+
+## SMOTE Tuning
+<div style="text-align:center;">
+  <img src="images/param_smote_k_neighbors.png" style="max-width:60%;">
+</div>
+- GridSearch over `smote__k_neighbors`; moderate impact on metrics
+
+## SMOTE Curves
+<div style="text-align:center;">
+  <img src="images/smote_k_neighbors.png" style="max-width:100%;">
+</div>
+
+## ROC vs PR with SMOTE
+<div style="text-align:center;">
+  <img src="images/roc_vs_pr_smote.png" style="max-width:100%;">
+</div>
+
+## Summary
+- Inspect both ROC AUC and average precision; review curves
+- Undersampling is fast and can help
+- Undersampling plus ensembles is powerful
+- SMOTE adds synthetic samples; results vary by metric -->
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../../img/logo/full.svg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>© CASA &nbsp; | &nbsp; <a href="https://www.ucl.ac.uk/bartlett/casa">ucl.ac.uk/bartlett/casa</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/huanfachen\.github\.io\/DSSS_2025\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
