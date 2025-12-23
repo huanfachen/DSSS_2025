@@ -112,25 +112,39 @@ Image Credit: Lecture slide (ML is a subset of AI)
 
 ## Examples: Amazon (cont.)
 
-::: {style="text-align:center;"}
-<img src="images/amazon2.png" alt="Amazon product page" style="max-width:70%;"/>
-:::
-
+:::::: columns
+::: {.column width="50%"}
 -   Seller selection
 -   Default choices
 -   Related products
+:::
+
+:::: {.column width="50%"}
+::: {style="text-align:center;"}
+<img src="images/amazon2.png" alt="Amazon product page" style="max-width:60%;"/>
+:::
+::::
+::::::
+
 
 ## Science Applications
 
-::: {style="text-align:center;"}
-<img src="images/exoplanet.png" alt="Exoplanet" style="max-width:70%;"/>
-:::
-
+:::::: columns
+::: {.column width="50%"}
 -   Personalised cancer treatment
 -   Medical diagnosis
 -   Drug discovery
 -   Higgs boson discovery
 -   Exoplanet detection
+:::
+
+:::: {.column width="50%"}
+::: {style="text-align:center;"}
+<img src="images/exoplanet.png" alt="Exoplanet" style="max-width:50%;"/>
+:::
+::::
+::::::
+
 
 ## Types of Machine Learning
 
@@ -184,8 +198,6 @@ Learn about the distribution $p$:
 -   Dimensionality reduction
 -   Topic modeling
 -   Outlier detection
-
-
 
 # Reinforcement Learning
 
@@ -331,7 +343,7 @@ Learn about the distribution $p$:
 ## Explainable Results
 
 ::: {style="text-align:center;"}
-<img src="images/amazon_explanations.png" alt="Amazon explanations" style="max-width:60%;"/>
+<img src="images/amazon_explanations.png" alt="Amazon explanations" style="max-width:50%;"/>
 :::
 
 -   Users want to know why recommendations are made
