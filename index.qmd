@@ -1,27 +1,21 @@
 ---
 format: html
 title: "Welcome"
-author: "Huanfa Chen, TBC"
+author: "Huanfa Chen, Esra Suel"
 date: last-modified
 ---
 
-The *Data Science for Spatial Systems* (DSSS) module is a optional element of CASA's [MSc/MRes USS Course](https://www.ucl.ac.uk/bartlett/casa/study) and is intended provide an introduction to advanced computational techniques in spatial analysis, or advanced spatial data sicence.
+The *Data Science for Spatial Systems* (DSSS, CASA0006) module is a optional element of CASA's [MSc/MRes USS Course](https://www.ucl.ac.uk/bartlett/casa/study) and is intended provide an introduction to advanced computational techniques in spatial analysis, or advanced spatial data sicence.
 
-As with most computational analysis, spatial data science builds on two pillars: methods and data. In recent year, as AI (represented by deep learning and large-language models) has developed rapidly, numerous efficient techniques have been invented and open-sourced, which enables integration of heterougenous data. For example, we are now able to combine census data, remote sensing data, street-view imagery, and text data for understanding urban security or urban heat island effect on an ordnary laptop. Notably, (geospatial) foundation models, which are large, pre-trained AI models, are expected to become versatile bases for many specific tasks. It seems like we could model and predict almost everything in spatial analysis, even if we don't understand what foundation models are doing. However, this is not entirely true. So far, AI is not silver bullet and AI has halluciations. We need to understand the principle and limitations of various computational models; we need to be critical about methods and results; we need to ask critical questions for any task; and we need to link modelling with applications so as to inform policy and practice.
+As with most computational analysis, spatial data science builds on two pillars: methods and data. In recent year, as AI (represented by deep learning and large-language models) has developed rapidly, various computational techniques have been invented and deployed, which enables complicated analysis of large-scale and heterougenous data. For example, we are now able to combine census data, remote sensing data, street-view imagery, and text data for understanding *urban security* or *urban heat island effect* on a laptop. Notably, (geospatial) foundation models, which are large, pre-trained AI models, are expected to become versatile bases for many diffferent tasks. It seems like we could model and predict almost everything in spatial analysis, even if we don't understand what foundation models are doing. However, this is not entirely true. So far, AI is not yet silver bullet and AI produces halluciations. We need to understand the principle and limitations of various computational models; we need to be critical about methods and results; we need to ask critical questions for any task; and we need to link modelling with applications so as to inform policy and practice.
 
-The module is structured progressively across three core sections. The first section introduces supervised machine learning and their applications. We will firstly introduce the principle and workflow of supervised machine learning, and then talk about tree-based methods and neural networks....
+This module aims to provide students with a solid foundation in (geospatial) machine learning, focusing on supervised learning techniques and their applications to real-world problems. We acknowledge that this is not a full coverage of machine learning or data science, but we believe that mastering supervised learning is the natural foundation and crucial step for students to embark on their journey in (spatial) data science.
 
-**Following TBC**
-
-The second section builds upon this foundation to explore the core of statistical modelling: **understanding and quantifying relationships between variables**. Students will progress from *measuring correlations* to *building sophisticated regression models*. The curriculum covers the workhorse of social science, the Generalised Linear Model (GLM), before advancing to Multilevel Models, a critical technique for handling the nested and hierarchical data that is common in geographical and social research.
-
-The final section of the course introduces advanced techniques for **uncovering hidden structures within complex, high-dimensional datasets**. Students will learn methods for dimensionality reduction to simplify complexity without losing vital information, and clustering analysis to identify natural groupings and patterns in data.
-
-Therefore, this module guides students on a complete analytical journey, from foundational principles to the application of advanced modelling techniques. It serves as a vital prerequisite for more specialised analytical modules and is essential for students wishing to undertake quantitative geospatial research. Ultimately, this module will provide quantitative skills that are in high demand across public, private, and academic sectors.
+The module is structured progressively across three core parts. The first part (W1-3) introduces machinea learning (in general) and the metrics/workflow of supervised learning. The second part (W4-6) covers three two key types of supervised learning and their derivatives, including tree-based methods and neural networks. The third part (W7-10) focuses on advanced topics and applications, including model interpretation and feature selection, handling imbalanced data, machine learning operations (MLOps), and testing of machine learning systems.
 
 ## Acknowledgements
 
 We really appreciate the support from various people:
 
 1. [Jon](https://profiles.ucl.ac.uk/23068-jon-reades) for setting up this wonderful CASA-themed quarto template.
-1. [Ollie](https://profiles.ucl.ac.uk/86776-ollie-ballinger) and [Andy](https://www.ucl.ac.uk/bartlett/casa/people/dr-andrew-maclachlan) for inspiring us to pursue a Quarto-based module website.
+1. [Ollie](https://profiles.ucl.ac.uk/86776-ollie-ballinger) and [Andy](https://profiles.ucl.ac.uk/72290-andrew-maclachlan) for inspiring us to pursue a Quarto-based module website.
