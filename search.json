@@ -104,8 +104,8 @@
     "section": "",
     "text": "This week will introduce how to deal with imbalanced data in machine learning classifcation tasks.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "8. Multilevel Regression"
+      "Part 3: Advanced Topics",
+      "8. Imbalanced Data"
     ]
   },
   {
@@ -115,8 +115,8 @@
     "section": "",
     "text": "This week will introduce how to deal with imbalanced data in machine learning classifcation tasks.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "8. Multilevel Regression"
+      "Part 3: Advanced Topics",
+      "8. Imbalanced Data"
     ]
   },
   {
@@ -126,8 +126,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand the types and issue of imbalanced data.\nUnderstand the classic methods to handle imbalanced data.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "8. Multilevel Regression"
+      "Part 3: Advanced Topics",
+      "8. Imbalanced Data"
     ]
   },
   {
@@ -137,8 +137,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "8. Multilevel Regression"
+      "Part 3: Advanced Topics",
+      "8. Imbalanced Data"
     ]
   },
   {
@@ -148,8 +148,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "8. Multilevel Regression"
+      "Part 3: Advanced Topics",
+      "8. Imbalanced Data"
     ]
   },
   {
@@ -159,8 +159,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "8. Multilevel Regression"
+      "Part 3: Advanced Topics",
+      "8. Imbalanced Data"
     ]
   },
   {
@@ -170,8 +170,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "8. Multilevel Regression"
+      "Part 3: Advanced Topics",
+      "8. Imbalanced Data"
     ]
   },
   {
@@ -181,8 +181,8 @@
     "section": "",
     "text": "This week, we’ll explore how to generalise neural networks to graph-structured data and introduce the classic types of graph neural networks.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "6. Introduction to Regression"
+      "Part 2: Methods",
+      "6. Graph Neural Networks"
     ]
   },
   {
@@ -192,8 +192,8 @@
     "section": "",
     "text": "This week, we’ll explore how to generalise neural networks to graph-structured data and introduce the classic types of graph neural networks.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "6. Introduction to Regression"
+      "Part 2: Methods",
+      "6. Graph Neural Networks"
     ]
   },
   {
@@ -203,8 +203,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand the design and training of graph neural networks.\nUnderstand the common types of graph neural networks.\nCan apply graph neural networks to real-world graph-structured data.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "6. Introduction to Regression"
+      "Part 2: Methods",
+      "6. Graph Neural Networks"
     ]
   },
   {
@@ -214,8 +214,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "6. Introduction to Regression"
+      "Part 2: Methods",
+      "6. Graph Neural Networks"
     ]
   },
   {
@@ -225,8 +225,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "6. Introduction to Regression"
+      "Part 2: Methods",
+      "6. Graph Neural Networks"
     ]
   },
   {
@@ -236,8 +236,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "6. Introduction to Regression"
+      "Part 2: Methods",
+      "6. Graph Neural Networks"
     ]
   },
   {
@@ -247,8 +247,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "6. Introduction to Regression"
+      "Part 2: Methods",
+      "6. Graph Neural Networks"
     ]
   },
   {
@@ -258,8 +258,8 @@
     "section": "",
     "text": "This week will introduce tree-based methods for supervised learning, including decision trees, random forests, and gradient boosting.",
     "crumbs": [
-      "Part 1: Basics",
-      "4. Introduction to Linear Algebra"
+      "Part 2: Methods",
+      "4. Tree-based Methods"
     ]
   },
   {
@@ -269,8 +269,8 @@
     "section": "",
     "text": "This week will introduce tree-based methods for supervised learning, including decision trees, random forests, and gradient boosting.",
     "crumbs": [
-      "Part 1: Basics",
-      "4. Introduction to Linear Algebra"
+      "Part 2: Methods",
+      "4. Tree-based Methods"
     ]
   },
   {
@@ -280,8 +280,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand the design and training of decision trees.\nUnderstand the principle of ensemble methods, including bagging and boosting.\nUnderstand the design and strengths of random forests and gradient boosting machines.\nCan apply tree-based methods from proper libraries (random forest from sklearn and XGBoot from XGBoost).",
     "crumbs": [
-      "Part 1: Basics",
-      "4. Introduction to Linear Algebra"
+      "Part 2: Methods",
+      "4. Tree-based Methods"
     ]
   },
   {
@@ -291,8 +291,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 1: Basics",
-      "4. Introduction to Linear Algebra"
+      "Part 2: Methods",
+      "4. Tree-based Methods"
     ]
   },
   {
@@ -302,8 +302,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 1: Basics",
-      "4. Introduction to Linear Algebra"
+      "Part 2: Methods",
+      "4. Tree-based Methods"
     ]
   },
   {
@@ -313,8 +313,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 1: Basics",
-      "4. Introduction to Linear Algebra"
+      "Part 2: Methods",
+      "4. Tree-based Methods"
     ]
   },
   {
@@ -324,8 +324,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 1: Basics",
-      "4. Introduction to Linear Algebra"
+      "Part 2: Methods",
+      "4. Tree-based Methods"
     ]
   },
   {
@@ -335,8 +335,8 @@
     "section": "",
     "text": "This week will introduce framework and evaluation metrics of supervised learning.",
     "crumbs": [
-      "Part 1: Basics",
-      "2. Explanatory Data Analysis #2"
+      "Part 1: Supervised Learning",
+      "2. Supervised Learning Metrics"
     ]
   },
   {
@@ -346,8 +346,8 @@
     "section": "",
     "text": "This week will introduce framework and evaluation metrics of supervised learning.",
     "crumbs": [
-      "Part 1: Basics",
-      "2. Explanatory Data Analysis #2"
+      "Part 1: Supervised Learning",
+      "2. Supervised Learning Metrics"
     ]
   },
   {
@@ -357,8 +357,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand the framework of supervised learning.\nUnderstand the common metrics for regression and classification.\nAppreciate the accuracy paradox and its implications.\nKnow how to pick the right metric for your problem.",
     "crumbs": [
-      "Part 1: Basics",
-      "2. Explanatory Data Analysis #2"
+      "Part 1: Supervised Learning",
+      "2. Supervised Learning Metrics"
     ]
   },
   {
@@ -368,8 +368,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 1: Basics",
-      "2. Explanatory Data Analysis #2"
+      "Part 1: Supervised Learning",
+      "2. Supervised Learning Metrics"
     ]
   },
   {
@@ -379,8 +379,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 1: Basics",
-      "2. Explanatory Data Analysis #2"
+      "Part 1: Supervised Learning",
+      "2. Supervised Learning Metrics"
     ]
   },
   {
@@ -390,8 +390,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 1: Basics",
-      "2. Explanatory Data Analysis #2"
+      "Part 1: Supervised Learning",
+      "2. Supervised Learning Metrics"
     ]
   },
   {
@@ -401,8 +401,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 1: Basics",
-      "2. Explanatory Data Analysis #2"
+      "Part 1: Supervised Learning",
+      "2. Supervised Learning Metrics"
     ]
   },
   {
@@ -671,8 +671,8 @@
     "section": "",
     "text": "This week will introduce how to conduct various types of testing of code, data, and models in ML systems using Python tools of pytest and great expectations.",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "10. Clustering"
+      "Part 3: Advanced Topics",
+      "10. Testing Machine Learning Systems"
     ]
   },
   {
@@ -682,8 +682,8 @@
     "section": "",
     "text": "This week will introduce how to conduct various types of testing of code, data, and models in ML systems using Python tools of pytest and great expectations.",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "10. Clustering"
+      "Part 3: Advanced Topics",
+      "10. Testing Machine Learning Systems"
     ]
   },
   {
@@ -693,8 +693,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand the principle and types of testing in ML systems.\nCan use pytest and great expectations to test ML code and data.",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "10. Clustering"
+      "Part 3: Advanced Topics",
+      "10. Testing Machine Learning Systems"
     ]
   },
   {
@@ -704,8 +704,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "10. Clustering"
+      "Part 3: Advanced Topics",
+      "10. Testing Machine Learning Systems"
     ]
   },
   {
@@ -715,8 +715,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "10. Clustering"
+      "Part 3: Advanced Topics",
+      "10. Testing Machine Learning Systems"
     ]
   },
   {
@@ -726,8 +726,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "10. Clustering"
+      "Part 3: Advanced Topics",
+      "10. Testing Machine Learning Systems"
     ]
   },
   {
@@ -737,8 +737,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "10. Clustering"
+      "Part 3: Advanced Topics",
+      "10. Testing Machine Learning Systems"
     ]
   },
   {
@@ -1705,7 +1705,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.16 + 28.34*X1 + 73.98*X2 + 13.23*X3 + 6.27*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.995\n\nModel 2 (4 features): y = 1.29 + 28.32*X1 + 74.00*X2 + 24.53*X3 + -6.42*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",
@@ -4611,8 +4611,8 @@
     "section": "",
     "text": "This week will introduce definition and types of machine learning.",
     "crumbs": [
-      "Part 1: Basics",
-      "1. Explanatory Data Analysis #1"
+      "Part 1: Supervised Learning",
+      "1. Introduction to machine learning"
     ]
   },
   {
@@ -4622,8 +4622,8 @@
     "section": "",
     "text": "This week will introduce definition and types of machine learning.",
     "crumbs": [
-      "Part 1: Basics",
-      "1. Explanatory Data Analysis #1"
+      "Part 1: Supervised Learning",
+      "1. Introduction to machine learning"
     ]
   },
   {
@@ -4633,8 +4633,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand three primary types for machine learning.\nAppreciate Garbage in, Garbage out theorem.",
     "crumbs": [
-      "Part 1: Basics",
-      "1. Explanatory Data Analysis #1"
+      "Part 1: Supervised Learning",
+      "1. Introduction to machine learning"
     ]
   },
   {
@@ -4644,8 +4644,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 1: Basics",
-      "1. Explanatory Data Analysis #1"
+      "Part 1: Supervised Learning",
+      "1. Introduction to machine learning"
     ]
   },
   {
@@ -4655,8 +4655,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 1: Basics",
-      "1. Explanatory Data Analysis #1"
+      "Part 1: Supervised Learning",
+      "1. Introduction to machine learning"
     ]
   },
   {
@@ -4666,8 +4666,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 1: Basics",
-      "1. Explanatory Data Analysis #1"
+      "Part 1: Supervised Learning",
+      "1. Introduction to machine learning"
     ]
   },
   {
@@ -4677,8 +4677,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 1: Basics",
-      "1. Explanatory Data Analysis #1"
+      "Part 1: Supervised Learning",
+      "1. Introduction to machine learning"
     ]
   },
   {
@@ -4961,8 +4961,8 @@
     "section": "",
     "text": "This week will introduce analysis workflow of supervised learning.",
     "crumbs": [
-      "Part 1: Basics",
-      "3. Hypothesis Testing"
+      "Part 1: Supervised Learning",
+      "3. Supervised Learning Workflow"
     ]
   },
   {
@@ -4972,8 +4972,8 @@
     "section": "",
     "text": "This week will introduce analysis workflow of supervised learning.",
     "crumbs": [
-      "Part 1: Basics",
-      "3. Hypothesis Testing"
+      "Part 1: Supervised Learning",
+      "3. Supervised Learning Workflow"
     ]
   },
   {
@@ -4983,8 +4983,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand different workflow of supervised learning.\nUnderstand train-test split and train-validation-test split.\nUnderstand cross validation and its extensions\nKnow when to use different model evaluation methods.",
     "crumbs": [
-      "Part 1: Basics",
-      "3. Hypothesis Testing"
+      "Part 1: Supervised Learning",
+      "3. Supervised Learning Workflow"
     ]
   },
   {
@@ -4994,8 +4994,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 1: Basics",
-      "3. Hypothesis Testing"
+      "Part 1: Supervised Learning",
+      "3. Supervised Learning Workflow"
     ]
   },
   {
@@ -5005,8 +5005,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 1: Basics",
-      "3. Hypothesis Testing"
+      "Part 1: Supervised Learning",
+      "3. Supervised Learning Workflow"
     ]
   },
   {
@@ -5016,8 +5016,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 1: Basics",
-      "3. Hypothesis Testing"
+      "Part 1: Supervised Learning",
+      "3. Supervised Learning Workflow"
     ]
   },
   {
@@ -5027,8 +5027,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 1: Basics",
-      "3. Hypothesis Testing"
+      "Part 1: Supervised Learning",
+      "3. Supervised Learning Workflow"
     ]
   },
   {
@@ -5038,8 +5038,8 @@
     "section": "",
     "text": "This week, we’ll introduce the design and training of classic neural networks and convolutional neural networks.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "5. Measuring Relationship"
+      "Part 2: Methods",
+      "5. Neural Networks"
     ]
   },
   {
@@ -5049,8 +5049,8 @@
     "section": "",
     "text": "This week, we’ll introduce the design and training of classic neural networks and convolutional neural networks.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "5. Measuring Relationship"
+      "Part 2: Methods",
+      "5. Neural Networks"
     ]
   },
   {
@@ -5060,8 +5060,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand the design and principle of neural networks.\nUnderstand the structure of convolutional neural networks.\nCan apply neural networks to supervised learning on tabular data and image data.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "5. Measuring Relationship"
+      "Part 2: Methods",
+      "5. Neural Networks"
     ]
   },
   {
@@ -5071,8 +5071,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "5. Measuring Relationship"
+      "Part 2: Methods",
+      "5. Neural Networks"
     ]
   },
   {
@@ -5082,8 +5082,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "5. Measuring Relationship"
+      "Part 2: Methods",
+      "5. Neural Networks"
     ]
   },
   {
@@ -5093,8 +5093,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "5. Measuring Relationship"
+      "Part 2: Methods",
+      "5. Neural Networks"
     ]
   },
   {
@@ -5104,8 +5104,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "5. Measuring Relationship"
+      "Part 2: Methods",
+      "5. Neural Networks"
     ]
   },
   {
@@ -5115,8 +5115,8 @@
     "section": "",
     "text": "This week, we’ll explore how to interpret a trained machine learning models and how to select features for training a machine learning model.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "7. Generalised Linear Regression"
+      "Part 3: Advanced Topics",
+      "7. Model Interpretation & Feature Selection"
     ]
   },
   {
@@ -5126,8 +5126,8 @@
     "section": "",
     "text": "This week, we’ll explore how to interpret a trained machine learning models and how to select features for training a machine learning model.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "7. Generalised Linear Regression"
+      "Part 3: Advanced Topics",
+      "7. Model Interpretation & Feature Selection"
     ]
   },
   {
@@ -5137,8 +5137,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand different model interpretation techniques.\nUnderstand methods for selecting features in machine learning.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "7. Generalised Linear Regression"
+      "Part 3: Advanced Topics",
+      "7. Model Interpretation & Feature Selection"
     ]
   },
   {
@@ -5148,8 +5148,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "7. Generalised Linear Regression"
+      "Part 3: Advanced Topics",
+      "7. Model Interpretation & Feature Selection"
     ]
   },
   {
@@ -5159,8 +5159,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "7. Generalised Linear Regression"
+      "Part 3: Advanced Topics",
+      "7. Model Interpretation & Feature Selection"
     ]
   },
   {
@@ -5170,8 +5170,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "7. Generalised Linear Regression"
+      "Part 3: Advanced Topics",
+      "7. Model Interpretation & Feature Selection"
     ]
   },
   {
@@ -5181,8 +5181,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 2: Correlation and Regression",
-      "7. Generalised Linear Regression"
+      "Part 3: Advanced Topics",
+      "7. Model Interpretation & Feature Selection"
     ]
   },
   {
@@ -5192,8 +5192,8 @@
     "section": "",
     "text": "This week will introduce Machine Learning Operations (MLOps) and how to move from notebooks to scripts. It will also introduce best practices for coding in Python notebooks such as using sklearn pipelines.",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "9. Dimension Reduction"
+      "Part 3: Advanced Topics",
+      "9. Machine Learning Ops"
     ]
   },
   {
@@ -5203,8 +5203,8 @@
     "section": "",
     "text": "This week will introduce Machine Learning Operations (MLOps) and how to move from notebooks to scripts. It will also introduce best practices for coding in Python notebooks such as using sklearn pipelines.",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "9. Dimension Reduction"
+      "Part 3: Advanced Topics",
+      "9. Machine Learning Ops"
     ]
   },
   {
@@ -5214,8 +5214,8 @@
     "section": "Learning Objectives",
     "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand the procedure of Machine Learning Operations (MLOps).\nUnderstand the motivation of moving from notebooks to scripts.\nAppreciate best practices for coding in Python notebooks and using sklearn pipelines.",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "9. Dimension Reduction"
+      "Part 3: Advanced Topics",
+      "9. Machine Learning Ops"
     ]
   },
   {
@@ -5225,8 +5225,8 @@
     "section": "Lecture",
     "text": "Lecture\nTo access the lecture notes: Lecture",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "9. Dimension Reduction"
+      "Part 3: Advanced Topics",
+      "9. Machine Learning Ops"
     ]
   },
   {
@@ -5236,8 +5236,8 @@
     "section": "Quiz",
     "text": "Quiz\nTo access the quiz on Moodle, please check Moodle page.",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "9. Dimension Reduction"
+      "Part 3: Advanced Topics",
+      "9. Machine Learning Ops"
     ]
   },
   {
@@ -5247,8 +5247,8 @@
     "section": "Practical",
     "text": "Practical\n\n\n\n\n\n\nNote\n\n\n\nTo save a copy of notebook to your own GitHub Repo: follow the GitHub link, click on Raw and then Save File As... to save it to your own computer. Make sure to change the extension from .ipynb.txt (which will probably be the default) to .ipynbbefore adding the file to your GitHub repository.\n\n\nTo access the practical:\n\nPreview\nDownload",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "9. Dimension Reduction"
+      "Part 3: Advanced Topics",
+      "9. Machine Learning Ops"
     ]
   },
   {
@@ -5258,8 +5258,8 @@
     "section": "Further resources",
     "text": "Further resources",
     "crumbs": [
-      "Part 3: Dimension Reduction & Clustering",
-      "9. Dimension Reduction"
+      "Part 3: Advanced Topics",
+      "9. Machine Learning Ops"
     ]
   },
   {
