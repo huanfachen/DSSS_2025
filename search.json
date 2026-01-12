@@ -746,7 +746,7 @@
     "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
     "title": "Supervised learning",
     "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.923"
   },
   {
     "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
@@ -2087,7 +2087,7 @@
     "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
     "title": "Supervised learning",
     "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.923"
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
@@ -2190,9 +2190,99 @@
   {
     "objectID": "assessments/index.html",
     "href": "assessments/index.html",
-    "title": "CASA0006 Assessment",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
     "section": "",
-    "text": "This Assessment is worth 100% of the grade for this course.\nTBC.",
+    "text": "This individual assignment aims to test your ability to conduct in-depth spatial data analysis using methods from this module. You are required to submit a single Python Notebook which contains both the code required to conduct the data analysis and accompanying text which provides context and interpretation.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#overview",
+    "href": "assessments/index.html#overview",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
+    "section": "",
+    "text": "This individual assignment aims to test your ability to conduct in-depth spatial data analysis using methods from this module. You are required to submit a single Python Notebook which contains both the code required to conduct the data analysis and accompanying text which provides context and interpretation.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#assessment-steps",
+    "href": "assessments/index.html#assessment-steps",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
+    "section": "Assessment Steps",
+    "text": "Assessment Steps\n\n1. Select a Main Dataset\nYou are recommended to choose one of the following datasets and define a research question that relates to urban or spatial processes. Feel free to use a subset of the chosen dataset, such as focusing on a specific crime type or a type of traffic incidents.\nIf you wish to use a different dataset, you are welcome to do so, as long as the dataset is relevant to urban or spatial processes and is appropriate for the analysis.\n\n\n\nDataset\nLink\nDescription\n\n\n\n\nLondon Crime Records\ndata.london.gov.uk\nCrime data across London\n\n\nChildhood Obesity Prevalence\ndata.london.gov.uk\nObesity rates by borough, ward, and MSOA\n\n\nRoad Safety Data (UK)\ndata.gov.uk\nIncident location, severity, weather, road conditions, vehicle types, etc.\n\n\n\n\n\n2. Define Your Research Question\nYour research question should be specific and clear. Examples: - “What is the relationship between crime rates and local deprivation in London?” - “Is it possible to predict childhood obesity prevalence using socio-demographic variables?” - “How do road accident rates vary by location and weather conditions in the UK?”\n\n\n3. Augment Your Data (Optional)\nYou can enhance your main dataset with additional datasets from: - Demographic data - Social indicators - Economic factors - Environmental variables\n\n\n4. Structure Your Analysis\nYou need to use the notebook template for this assessment.\nThe analysis should be captured in a single Python notebook containing: - All code for data analysis - Full documentation of the analysis process - Interpretation of results - Narrative text (max 1500 words, code/comments not included)\n\n\n5. Choose Your Methods\nYou can use up to 4 methods appropriate for your research question.\n\n\n6. Include Required Notebook Sections\nYour notebook must include these sections:\n\nIntroduction\n\nInclude at least 3 relevant studies from credible sources (Google Scholar, CrossRef)\nSet the context for your research\n\nResearch Questions\n\nState explicitly, ending with a question mark\nExample: “What is the relationship between Covid-19 mortality rate and local deprivation in the UK?”\n\nData\n\nDescribe your datasets\nExplain any preprocessing or cleaning\n\nMethodology\n\nExplain the methods you chose and why\nConnect them to your research question\n\nResults and Discussion\n\nPresent findings clearly\nInterpret results in context\n\nConclusion\n\nSummarise key findings\nDiscuss implications\n\nReferences\n\nUse credible sources only",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#marking-scheme",
+    "href": "assessments/index.html#marking-scheme",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
+    "section": "Marking Scheme",
+    "text": "Marking Scheme\nYour work will be assessed across these categories:\n\n\n\nCategory\nWeight\n\n\n\n\nAnalysis context and research questions\n15%\n\n\nData collection, handling, and presentation\n15%\n\n\nCorrectness, depth, and scope of data analysis\n35%\n\n\nVisualisation\n10%\n\n\nQuality of writing\n15%\n\n\nCreativity of analytical work\n10%\n\n\n\nA more details marking scheme is below:\n\nimport pandas as pd\n\ndf = pd.read_csv(\"CASA0006_mark_scheme.csv\", encoding = \"ISO-8859-1\")\nfrom IPython.display import display, Markdown\ndisplay(Markdown(df.to_markdown()))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCriterion\nA+ (80-100%)\nA (70-79%)\nB (60-69%)\nC (50-59%)\nFail (near pass) (40-49%)\nFail (1-39%)\n\n\n\n\n0\nAnalysis context and research questions (15%)\nThe report focuses on an analysis and interpretation of the dataset chosen. Each component of analysis, visualisation, database structure is detailed in the context of the overall project. The report overall conveys, excellently, the rationale of the methodology undertaken and the visualisations created compliment the story behind the data analysis extremely well. The project’s background references are framed extensively to wider projects/academic literature, far beyond that on the prescribed reading list. The research question is very interesting and insightful.\nThe report focuses on an analysis and interpretation of the dataset chosen. The report conveys the story behind the analysis well and the dataset chosen compliments the story and analysis undertaken. The project’s background references are framed well to wider projects/academic literature, with few to no inaccurate bibliography or citations. The research question is well thought out.\nThe report focuses on the analysis. The wider context of the work is clearly defined and how the work places in the wider context of research. The report conveys the story behind the analysis but some flaws in execution of the analysis distract from the overall narrative of the submission. The project’s background references are framed broadly to wider projects/academic literature. There may be some inaccuracies bibliography or citations. The research question is adequate and reflects some critical thinking of the topic.\nThe report shows a basic understanding of analysis and the data set chosen is limited in analytical scope. The story of the analysis is broken and the work raises more questions of the data then the work answers. The work satisfies the techniques that were taught during lectures but the wrong analytical techniques have been applied to the dataset. The project’s background references are framed but may be limited to the prescribed reading list/datasets. There may be obvious inaccuracies bibliography or citations. A fair research question is proposed but is not interesting.\nThe report shows a basic understanding of an analysis, but the data set chosen is unsuitable for an analysis. The story of the analysis is broken and incoherent. The work raises more questions of the data then the work answers. The report details the wrong techniques to analyse the data and provides no insight to the data being analysed. Very little background research is evident beyond use of the datasets. Bibliography may be incomplete or inconsistent and citations poor. A research question is proposed but needs substantial improvements.\nA poor attempt at the problem using an unsuitable dataset. The story behind the analysis is not present and the report has been rushed and thrown together haphazardly. There is no evidence of wider background research at all. No research questions.\n\n\n1\nData collection handling, and presentation (15%)\nA detailed description of the data is present. Data has been extensively treated and justified in preparation for analysis. There is a table that describes the variables selected for analysis so that the readers can easily understand the variables used for analysis.\nA detailed description of the data is present. Data has been extensively treated and justified in preparation for analysis. There is a table that describes the variables selected for analysis.\nA detailed description of the data is present. Data has been treated and justified in preparation for analysis. There are no obvious errors in variable selection.\nA detailed description of the data is present, including data provider, country, and URL (if the URL exists). Data has been treated in preparation for analysis. There are obvious errors in variable selection, for example, including identification columns for analysis, or incorrectly treating categorical variable as numerical ones.\nThere is some description of the dataset but essential information is missing, such as provider, country, or URL (if the URL exists). Data is incomplete and is not compatible for data analysis. The data is unstructured and no obvious work has been carried out on the dataset.\nNo data source has been identified or collected, or data source incomplete and unavailable.\n\n\n2\nCorrectness, depth and scope of data analysis (35%)\nThe work shows extensive knowledge of the topic chosen and an in-depth understanding of the links between the problem, data and method(s) employed to solve it. Shows considerable insight into any shortcomings of the analysis and demonstrates critical reflection on the finished product.\nThe work shows good knowledge of the chosen topic and a clear appreciation of the links between the problem, data and method(s) employed to solve it. Critical appraisal of the finished product is thoughtful and relevant. No errors in the notebook.\nThe work shows good knowledge of the chosen topic although there may be some minor issues with the choice of data and/or methods at the lower end of the scale. At the upper end of the scale, matching data and/or method to the problem is sound. Some evidence of critical reflection is displayed. Some minor errors in the code.\nThe work shows a dequate knowledge of the chosen topic but choice of data and/or methods could have been better. Critical reflection may be poor, or lacking entirely at the lower end of the scale. There are a few errors in the code but they don’t impact the presentation of the work.\nThe work shows poor knowledge of the chosen topic and the choice of data and/or methods is ill logical. Critical reflection is an alien concept. There are existing errors in the code which prevent the code from executing, or the results of coding are largely different from the discussion in the text.\nThe work shows that methods taught were not understood at all.\n\n\n3\nVisualisation (10%)\nFigures used to convey the visualisation of data analysed are of publishable quality; they are clear, well labelled and convey the intended information expertly.\nFigures used to convey the visualisation of data analysed are excellent; they are clear, well labelled and wholly appropriate. Visuals complement the report and display an understanding of the methodology executed within the report.\nFigures used to convey the visualisation of data analysed are overall good and well chosen, but at the lower end of the scale may contain minor errors. Visuals are lacking in clarity.\nFigures used to convey the visualisation of data analysed are adequate but errors detract from their usefulness. Visuals are lacking in context. The graphics may not be referenced within the document.\nFigures used to convey the visualisation of data analysed are poor and do not aid understanding in any way. The graphics are not referenced within the document and are out of order/place.\nFigures used to convey the visualisation of data analysed are bad or missing entirely.\n\n\n4\nQuality of writing (15%)\nThe final piece of work is presented to a professional standard. Exceptionally well written; stylish with no errors in spelling, punctuation or grammar. The piece of work is clearly and logically structured and enjoyable to read.\nThe final piece of work is presented very well and would only require minor editing. Very well written with virtually no errors in spelling, punctuation or grammar. The piece of work is clearly and logically structured and flows well.\nA good, well written piece of work with few errors in spelling, punctuation or grammar. The work shows structure and is clearly presented. The work may require the odd edit.\nThe final piece of work may lack polish and would need attention. A more-or-less competent piece of work but may contain some errors in spelling, punctuation or grammar. The may lack structure and presentation could be improved.\nThe final piece is poorly presented and would need serious editing. A more-or-less weak piece of work containing a number of errors in spelling, punctuation or grammar. The piece may lack any kind of structure.\nThe final piece is very badly presented. Only a complete re-write would bring it up to standard. A poor piece of work. Written English is bad, with numerous errors in spelling, punctuation and grammar.\n\n\n5\nCreativity of analytical work (10%)\nThe work is outstandingly creative and approaches the problem within a clear and analytical mind set. The execution of the analysis is also excellent and shows meticulous planning and understanding to the problem being addressed. The execution of the analysis is sound and the student has demonstrated understanding to the analytical process. At each stage the narrative is inferred by the analysis of the previous stage and the analysis has been planned from the outset.\nThe work is creative in the execution and shows that the student has thoroughly about the problem being tackled. At each stage the narrative is inferred by the analysis of the previous stage and the analysis has been planned from the outset.\nThe work is creative in nature, both in the execution and the thought process is apparent within the narrative. The execution is sound and the student has demonstrated understanding to the analytical process.\nThe works shows some creativity which is satisfactory, but some flaws in the execution or assertions are made within the work.\nThe work shows little to no creativity but falls short in the execution and understanding.\nThe work shows no creativity or relevance in research questions or methods, and there are major problems in the execution.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#key-considerations",
+    "href": "assessments/index.html#key-considerations",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
+    "section": "Key Considerations",
+    "text": "Key Considerations\n\n1. Use Rate, Not Count\nIn most analysis, rate is more appropriate than count because it normalises data by accounting for population size or scale.\nExample: In road safety research, calculate the rate of traffic incidents by normalising the count of incidents by traffic volume or population size.\n\n\n2. Use Credible References\n\nReferences must be relevant and credible (Google Scholar, CrossRef)\nDo not use unverified references generated by LLM - this is BAD ACADEMIC PRACTICE and will be penalised\n\n\n\n3. Choose Methods Wisely\n\nEnsure all methods are directly relevant to your research question\nAvoid including irrelevant or excessive methods; this reduces submission quality",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#major-problems-to-avoid",
+    "href": "assessments/index.html#major-problems-to-avoid",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
+    "section": "Major Problems to Avoid",
+    "text": "Major Problems to Avoid\nA high-quality submission (distinction/merit level) should NOT contain these issues:\n\n❌ ID Columns - Including identification columns for analysis without justification\n❌ Categorical as Numerical - Treating categorical variables as numerical ones incorrectly\n❌ Code-Discussion Mismatch - Inconsistency between code results and discussion (e.g. model accuracy differs)\n❌ Code Errors - Code in the notebook is not run or contains errors\n❌ Notebook-PDF Mismatch - Python notebook and PDF file are largely different\n❌ Excess printing dataframe - Printing large dataframes frequently or after each step is not necessary",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#submission",
+    "href": "assessments/index.html#submission",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
+    "section": "Submission",
+    "text": "Submission\n\nWhat to Submit\nPart 1: Python notebook (or .zip file with notebook + dataset files)\nPart 2: PDF file exported from the notebook\nSubmit both parts separately in two tabs on Moodle. The submission timestamp is based on the later of the two parts.\n\n\nCritical Rules\nYou will receive a mark of 0 if: - You fail to submit either Part 1 or Part 2 - The content of Part 2 is largely different from Part 1\n\n\nDataset Requirements\n\nShare your dataset in a GitHub repository and remotely read it in the notebook (e.g. using read_csv)\nIf data size exceeds 100 MB (GitHub limit), submit a .zip file with the notebook and data\n\n\n\nLibrary Requirements\n\nIf possible, use only libraries from the recommended computing environment (Podman/Docker/Anaconda)\nIf you must use other libraries (including fastai):\n\nClearly state the library names and version numbers\n\n\n\n\nExecution Requirements\n\nNotebook must execute within 1 hour at submission; please remove unnecessary coding from the notebook\nUse Jupyter’s ‘Restart & Rerun all’ before submission to verify viability\nIf data preprocessing requires significant time, you may provide preprocessed data with a detailed description\n\n\n\n\n\n\n\nWarning\n\n\n\nPenalty will apply if the code is not run or results contain errors or are not clearly presented.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#exporting-to-pdf",
+    "href": "assessments/index.html#exporting-to-pdf",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
+    "section": "Exporting to PDF",
+    "text": "Exporting to PDF\n\nSteps to Export\n\nIn the web browser running your notebook, right-click\nSelect ‘Print’\nIn the printer dialog, select ‘Save as PDF’\nChoose your save location\n\nAlternative methods are acceptable as long as the PDF is text-selectable.\n\n\nMoodle Warning\nYou may see a warning about supported file types when uploading your notebook (see below). You can safely ignore this.\nYou must upload a supported file type for this assignment. Accepted file types are; .doc, .docx, .ppt, .pptx, .pps, .ppsx, .pdf, .txt, .htm, .html, .hwp, .odt, .wpd, .ps and .rtf",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#additional-datasets-for-augmentation",
+    "href": "assessments/index.html#additional-datasets-for-augmentation",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
+    "section": "Additional Datasets for Augmentation",
+    "text": "Additional Datasets for Augmentation\n\nUK Datasets\n\nUK Census Data - Wide range of demographic and social data\n\n\n\nCycling Datasets (London)\n\nLocation of London Cycle Hire Scheme\nTfL Cycling Data - Cycle parking, Santander bike hire trips, etc.\nCycle Flows on TfL Road Network - Indexes representing increases in cycle flows over time using automatic cycling counters\n\nYou can combine these datasets with various methods including predictions, data grouping, or causal analysis.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "assessments/index.html#final-checklist",
+    "href": "assessments/index.html#final-checklist",
+    "title": "CASA0006 Assessment Guidelines 2025-2026",
+    "section": "Final Checklist",
+    "text": "Final Checklist\nBefore submitting, ensure:\n\nYour notebook runs completely in under 1 hour. Don’t include lots of data pre-processing in the notebook.\nYou’ve run ‘Restart & Rerun all’ and all cells execute successfully\nYour research question is clearly stated\nAll methods are appropriate for your research question\nYour visualisations are clear and meaningful\nYour writing is clear and accessible\nYour PDF is exported and text-selectable\nYou’re submitting both notebook and PDF to Moodle\nYour notebook and PDF contain consistent content",
     "crumbs": [
       "Overview"
     ]
@@ -3350,7 +3440,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.22 + 28.21*X1 + 74.00*X2 + 27.09*X3 + -9.04*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.24 + 28.29*X1 + 73.96*X2 + 22.84*X3 + -4.46*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",

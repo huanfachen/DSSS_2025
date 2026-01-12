@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>CASA0006 Assessment – Data Science for Spatial Systems</title>
+<title>CASA0006 Assessment Guidelines 2025-2026 – Data Science for Spatial Systems</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -75,7 +110,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta property="og:title" content="CASA0006 Assessment – Data Science for Spatial Systems">
+<meta property="og:title" content="CASA0006 Assessment Guidelines 2025-2026 – Data Science for Spatial Systems">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/assessments/img/logo/full_sm.png">
 <meta property="og:site_name" content="Foundations">
@@ -200,7 +235,7 @@ ul.task-list li input[type="checkbox"] {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">CASA0006 Assessment</h1>
+          <h1 class="quarto-secondary-nav-title">CASA0006 Assessment Guidelines 2025-2026</h1>
         </a>     
     </div>
   </nav>
@@ -228,15 +263,57 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#assessment-steps" id="toc-assessment-steps" class="nav-link" data-scroll-target="#assessment-steps">Assessment Steps</a>
+  <ul class="collapse">
+  <li><a href="#select-a-main-dataset" id="toc-select-a-main-dataset" class="nav-link" data-scroll-target="#select-a-main-dataset">1. Select a Main Dataset</a></li>
+  <li><a href="#define-your-research-question" id="toc-define-your-research-question" class="nav-link" data-scroll-target="#define-your-research-question">2. Define Your Research Question</a></li>
+  <li><a href="#augment-your-data-optional" id="toc-augment-your-data-optional" class="nav-link" data-scroll-target="#augment-your-data-optional">3. Augment Your Data (Optional)</a></li>
+  <li><a href="#structure-your-analysis" id="toc-structure-your-analysis" class="nav-link" data-scroll-target="#structure-your-analysis">4. Structure Your Analysis</a></li>
+  <li><a href="#choose-your-methods" id="toc-choose-your-methods" class="nav-link" data-scroll-target="#choose-your-methods">5. Choose Your Methods</a></li>
+  <li><a href="#include-required-notebook-sections" id="toc-include-required-notebook-sections" class="nav-link" data-scroll-target="#include-required-notebook-sections">6. Include Required Notebook Sections</a></li>
+  </ul></li>
+  <li><a href="#marking-scheme" id="toc-marking-scheme" class="nav-link" data-scroll-target="#marking-scheme">Marking Scheme</a></li>
+  <li><a href="#key-considerations" id="toc-key-considerations" class="nav-link" data-scroll-target="#key-considerations">Key Considerations</a>
+  <ul class="collapse">
+  <li><a href="#use-rate-not-count" id="toc-use-rate-not-count" class="nav-link" data-scroll-target="#use-rate-not-count">1. Use Rate, Not Count</a></li>
+  <li><a href="#use-credible-references" id="toc-use-credible-references" class="nav-link" data-scroll-target="#use-credible-references">2. Use Credible References</a></li>
+  <li><a href="#choose-methods-wisely" id="toc-choose-methods-wisely" class="nav-link" data-scroll-target="#choose-methods-wisely">3. Choose Methods Wisely</a></li>
+  </ul></li>
+  <li><a href="#major-problems-to-avoid" id="toc-major-problems-to-avoid" class="nav-link" data-scroll-target="#major-problems-to-avoid">Major Problems to Avoid</a></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a>
+  <ul class="collapse">
+  <li><a href="#what-to-submit" id="toc-what-to-submit" class="nav-link" data-scroll-target="#what-to-submit">What to Submit</a></li>
+  <li><a href="#critical-rules" id="toc-critical-rules" class="nav-link" data-scroll-target="#critical-rules">Critical Rules</a></li>
+  <li><a href="#dataset-requirements" id="toc-dataset-requirements" class="nav-link" data-scroll-target="#dataset-requirements">Dataset Requirements</a></li>
+  <li><a href="#library-requirements" id="toc-library-requirements" class="nav-link" data-scroll-target="#library-requirements">Library Requirements</a></li>
+  <li><a href="#execution-requirements" id="toc-execution-requirements" class="nav-link" data-scroll-target="#execution-requirements">Execution Requirements</a></li>
+  </ul></li>
+  <li><a href="#exporting-to-pdf" id="toc-exporting-to-pdf" class="nav-link" data-scroll-target="#exporting-to-pdf">Exporting to PDF</a>
+  <ul class="collapse">
+  <li><a href="#steps-to-export" id="toc-steps-to-export" class="nav-link" data-scroll-target="#steps-to-export">Steps to Export</a></li>
+  <li><a href="#moodle-warning" id="toc-moodle-warning" class="nav-link" data-scroll-target="#moodle-warning">Moodle Warning</a></li>
+  </ul></li>
+  <li><a href="#additional-datasets-for-augmentation" id="toc-additional-datasets-for-augmentation" class="nav-link" data-scroll-target="#additional-datasets-for-augmentation">Additional Datasets for Augmentation</a>
+  <ul class="collapse">
+  <li><a href="#uk-datasets" id="toc-uk-datasets" class="nav-link" data-scroll-target="#uk-datasets">UK Datasets</a></li>
+  <li><a href="#cycling-datasets-london" id="toc-cycling-datasets-london" class="nav-link" data-scroll-target="#cycling-datasets-london">Cycling Datasets (London)</a></li>
+  </ul></li>
+  <li><a href="#final-checklist" id="toc-final-checklist" class="nav-link" data-scroll-target="#final-checklist">Final Checklist</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/huanfachen/DSSS_2025/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">CASA0006 Assessment</h1>
+<h1 class="title d-none d-lg-block">CASA0006 Assessment Guidelines 2025-2026</h1>
 </div>
 
 
@@ -253,141 +330,380 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This Assessment is worth 100% of the grade for this course.</p>
-<p>TBC.</p>
-<!-- ## Assessment Aims
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This individual assignment aims to test your ability to conduct in-depth spatial data analysis using methods from this module. You are required to submit a single Python Notebook which contains both the code required to conduct the data analysis and accompanying text which provides context and interpretation.</p>
+</section>
+<section id="assessment-steps" class="level2">
+<h2 class="anchored" data-anchor-id="assessment-steps">Assessment Steps</h2>
+<section id="select-a-main-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="select-a-main-dataset">1. Select a Main Dataset</h3>
+<p>You are recommended to choose one of the following datasets and define a research question that relates to <strong>urban or spatial processes</strong>. Feel free to use a subset of the chosen dataset, such as focusing on a specific crime type or a type of traffic incidents.</p>
+<p>If you wish to use a different dataset, you are welcome to do so, as long as the dataset is relevant to urban or spatial processes and is appropriate for the analysis.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Link</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>London Crime Records</strong></td>
+<td><a href="https://data.london.gov.uk/dataset/recorded_crime_summary">data.london.gov.uk</a></td>
+<td>Crime data across London</td>
+</tr>
+<tr class="even">
+<td><strong>Childhood Obesity Prevalence</strong></td>
+<td><a href="https://data.london.gov.uk/dataset/prevalence-childhood-obesity-borough">data.london.gov.uk</a></td>
+<td>Obesity rates by borough, ward, and MSOA</td>
+</tr>
+<tr class="odd">
+<td><strong>Road Safety Data (UK)</strong></td>
+<td><a href="https://www.data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-accidents-safety-data">data.gov.uk</a></td>
+<td>Incident location, severity, weather, road conditions, vehicle types, etc.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="define-your-research-question" class="level3">
+<h3 class="anchored" data-anchor-id="define-your-research-question">2. Define Your Research Question</h3>
+<p>Your research question should be specific and clear. Examples: - “What is the relationship between crime rates and local deprivation in London?” - “Is it possible to predict childhood obesity prevalence using socio-demographic variables?” - “How do road accident rates vary by location and weather conditions in the UK?”</p>
+</section>
+<section id="augment-your-data-optional" class="level3">
+<h3 class="anchored" data-anchor-id="augment-your-data-optional">3. Augment Your Data (Optional)</h3>
+<p>You can enhance your main dataset with additional datasets from: - Demographic data - Social indicators - Economic factors - Environmental variables</p>
+</section>
+<section id="structure-your-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="structure-your-analysis">4. Structure Your Analysis</h3>
+<p>You need to use the <a href="Template_submission_CASA0006.ipynb">notebook template</a> for this assessment.</p>
+<p>The analysis should be captured in a <strong>single Python notebook</strong> containing: - All code for data analysis - Full documentation of the analysis process - Interpretation of results - Narrative text (max 1500 words, code/comments not included)</p>
+</section>
+<section id="choose-your-methods" class="level3">
+<h3 class="anchored" data-anchor-id="choose-your-methods">5. Choose Your Methods</h3>
+<p><strong>You can use up to 4 methods</strong> appropriate for your research question.</p>
+</section>
+<section id="include-required-notebook-sections" class="level3">
+<h3 class="anchored" data-anchor-id="include-required-notebook-sections">6. Include Required Notebook Sections</h3>
+<p>Your notebook must include these sections:</p>
+<ol type="1">
+<li><strong>Introduction</strong>
+<ul>
+<li>Include at least 3 relevant studies from credible sources (Google Scholar, CrossRef)</li>
+<li>Set the context for your research</li>
+</ul></li>
+<li><strong>Research Questions</strong>
+<ul>
+<li>State explicitly, ending with a question mark</li>
+<li>Example: “What is the relationship between Covid-19 mortality rate and local deprivation in the UK?”</li>
+</ul></li>
+<li><strong>Data</strong>
+<ul>
+<li>Describe your datasets</li>
+<li>Explain any preprocessing or cleaning</li>
+</ul></li>
+<li><strong>Methodology</strong>
+<ul>
+<li>Explain the methods you chose and why</li>
+<li>Connect them to your research question</li>
+</ul></li>
+<li><strong>Results and Discussion</strong>
+<ul>
+<li>Present findings clearly</li>
+<li>Interpret results in context</li>
+</ul></li>
+<li><strong>Conclusion</strong>
+<ul>
+<li>Summarise key findings</li>
+<li>Discuss implications</li>
+</ul></li>
+<li><strong>References</strong>
+<ul>
+<li>Use credible sources only</li>
+</ul></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="marking-scheme" class="level2">
+<h2 class="anchored" data-anchor-id="marking-scheme">Marking Scheme</h2>
+<p>Your work will be assessed across these categories:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Analysis context and research questions</td>
+<td>15%</td>
+</tr>
+<tr class="even">
+<td>Data collection, handling, and presentation</td>
+<td>15%</td>
+</tr>
+<tr class="odd">
+<td>Correctness, depth, and scope of data analysis</td>
+<td>35%</td>
+</tr>
+<tr class="even">
+<td>Visualisation</td>
+<td>10%</td>
+</tr>
+<tr class="odd">
+<td>Quality of writing</td>
+<td>15%</td>
+</tr>
+<tr class="even">
+<td>Creativity of analytical work</td>
+<td>10%</td>
+</tr>
+</tbody>
+</table>
+<p>A more details marking scheme is below:</p>
+<div id="9fd5df3c" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"CASA0006_mark_scheme.csv"</span>, encoding <span class="op">=</span> <span class="st">"ISO-8859-1"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display, Markdown</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>display(Markdown(df.to_markdown()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 0%">
+<col style="width: 1%">
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 19%">
+<col style="width: 18%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: left;">Criterion</th>
+<th style="text-align: left;">A+ (80-100%)</th>
+<th style="text-align: left;">A (70-79%)</th>
+<th style="text-align: left;">B (60-69%)</th>
+<th style="text-align: left;">C (50-59%)</th>
+<th style="text-align: left;">Fail (near pass) (40-49%)</th>
+<th style="text-align: left;">Fail (1-39%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Analysis context and research questions (15%)</td>
+<td style="text-align: left;">The report focuses on an analysis and interpretation of the dataset chosen. Each component of analysis, visualisation, database structure is detailed in the context of the overall project. The report overall conveys, excellently, the rationale of the methodology undertaken and the visualisations created compliment the story behind the data analysis extremely well. The project’s background references are framed extensively to wider projects/academic literature, far beyond that on the prescribed reading list. The research question is very interesting and insightful.</td>
+<td style="text-align: left;">The report focuses on an analysis and interpretation of the dataset chosen. The report conveys the story behind the analysis well and the dataset chosen compliments the story and analysis undertaken. The project’s background references are framed well to wider projects/academic literature, with few to no inaccurate bibliography or citations. The research question is well thought out.</td>
+<td style="text-align: left;">The report focuses on the analysis. The wider context of the work is clearly defined and how the work places in the wider context of research. The report conveys the story behind the analysis but some flaws in execution of the analysis distract from the overall narrative of the submission. The project’s background references are framed broadly to wider projects/academic literature. There may be some inaccuracies bibliography or citations. The research question is adequate and reflects some critical thinking of the topic.</td>
+<td style="text-align: left;">The report shows a basic understanding of analysis and the data set chosen is limited in analytical scope. The story of the analysis is broken and the work raises more questions of the data then the work answers. The work satisfies the techniques that were taught during lectures but the wrong analytical techniques have been applied to the dataset. The project’s background references are framed but may be limited to the prescribed reading list/datasets. There may be obvious inaccuracies bibliography or citations. A fair research question is proposed but is not interesting.</td>
+<td style="text-align: left;">The report shows a basic understanding of an analysis, but the data set chosen is unsuitable for an analysis. The story of the analysis is broken and incoherent. The work raises more questions of the data then the work answers. The report details the wrong techniques to analyse the data and provides no insight to the data being analysed. Very little background research is evident beyond use of the datasets. Bibliography may be incomplete or inconsistent and citations poor. A research question is proposed but needs substantial improvements.</td>
+<td style="text-align: left;">A poor attempt at the problem using an unsuitable dataset. The story behind the analysis is not present and the report has been rushed and thrown together haphazardly. There is no evidence of wider background research at all. No research questions.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Data collection handling, and presentation (15%)</td>
+<td style="text-align: left;">A detailed description of the data is present. Data has been extensively treated and justified in preparation for analysis. There is a table that describes the variables selected for analysis so that the readers can easily understand the variables used for analysis.</td>
+<td style="text-align: left;">A detailed description of the data is present. Data has been extensively treated and justified in preparation for analysis. There is a table that describes the variables selected for analysis.</td>
+<td style="text-align: left;">A detailed description of the data is present. Data has been treated and justified in preparation for analysis. There are no obvious errors in variable selection.</td>
+<td style="text-align: left;">A detailed description of the data is present, including data provider, country, and URL (if the URL exists). Data has been treated in preparation for analysis. There are obvious errors in variable selection, for example, including identification columns for analysis, or incorrectly treating categorical variable as numerical ones.</td>
+<td style="text-align: left;">There is some description of the dataset but essential information is missing, such as provider, country, or URL (if the URL exists). Data is incomplete and is not compatible for data analysis. The data is unstructured and no obvious work has been carried out on the dataset.</td>
+<td style="text-align: left;">No data source has been identified or collected, or data source incomplete and unavailable.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Correctness, depth and scope of data analysis (35%)</td>
+<td style="text-align: left;">The work shows extensive knowledge of the topic chosen and an in-depth understanding of the links between the problem, data and method(s) employed to solve it. Shows considerable insight into any shortcomings of the analysis and demonstrates critical reflection on the finished product.</td>
+<td style="text-align: left;">The work shows good knowledge of the chosen topic and a clear appreciation of the links between the problem, data and method(s) employed to solve it. Critical appraisal of the finished product is thoughtful and relevant. No errors in the notebook.</td>
+<td style="text-align: left;">The work shows good knowledge of the chosen topic although there may be some minor issues with the choice of data and/or methods at the lower end of the scale. At the upper end of the scale, matching data and/or method to the problem is sound. Some evidence of critical reflection is displayed. Some minor errors in the code.</td>
+<td style="text-align: left;">The work shows a dequate knowledge of the chosen topic but choice of data and/or methods could have been better. Critical reflection may be poor, or lacking entirely at the lower end of the scale. There are a few errors in the code but they don’t impact the presentation of the work.</td>
+<td style="text-align: left;">The work shows poor knowledge of the chosen topic and the choice of data and/or methods is ill logical. Critical reflection is an alien concept. There are existing errors in the code which prevent the code from executing, or the results of coding are largely different from the discussion in the text.</td>
+<td style="text-align: left;">The work shows that methods taught were not understood at all.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Visualisation (10%)</td>
+<td style="text-align: left;">Figures used to convey the visualisation of data analysed are of publishable quality; they are clear, well labelled and convey the intended information expertly.</td>
+<td style="text-align: left;">Figures used to convey the visualisation of data analysed are excellent; they are clear, well labelled and wholly appropriate. Visuals complement the report and display an understanding of the methodology executed within the report.</td>
+<td style="text-align: left;">Figures used to convey the visualisation of data analysed are overall good and well chosen, but at the lower end of the scale may contain minor errors. Visuals are lacking in clarity.</td>
+<td style="text-align: left;">Figures used to convey the visualisation of data analysed are adequate but errors detract from their usefulness. Visuals are lacking in context. The graphics may not be referenced within the document.</td>
+<td style="text-align: left;">Figures used to convey the visualisation of data analysed are poor and do not aid understanding in any way. The graphics are not referenced within the document and are out of order/place.</td>
+<td style="text-align: left;">Figures used to convey the visualisation of data analysed are bad or missing entirely.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">Quality of writing (15%)</td>
+<td style="text-align: left;">The final piece of work is presented to a professional standard. Exceptionally well written; stylish with no errors in spelling, punctuation or grammar. The piece of work is clearly and logically structured and enjoyable to read.</td>
+<td style="text-align: left;">The final piece of work is presented very well and would only require minor editing. Very well written with virtually no errors in spelling, punctuation or grammar. The piece of work is clearly and logically structured and flows well.</td>
+<td style="text-align: left;">A good, well written piece of work with few errors in spelling, punctuation or grammar. The work shows structure and is clearly presented. The work may require the odd edit.</td>
+<td style="text-align: left;">The final piece of work may lack polish and would need attention. A more-or-less competent piece of work but may contain some errors in spelling, punctuation or grammar. The may lack structure and presentation could be improved.</td>
+<td style="text-align: left;">The final piece is poorly presented and would need serious editing. A more-or-less weak piece of work containing a number of errors in spelling, punctuation or grammar. The piece may lack any kind of structure.</td>
+<td style="text-align: left;">The final piece is very badly presented. Only a complete re-write would bring it up to standard. A poor piece of work. Written English is bad, with numerous errors in spelling, punctuation and grammar.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Creativity of analytical work (10%)</td>
+<td style="text-align: left;">The work is outstandingly creative and approaches the problem within a clear and analytical mind set. The execution of the analysis is also excellent and shows meticulous planning and understanding to the problem being addressed. The execution of the analysis is sound and the student has demonstrated understanding to the analytical process. At each stage the narrative is inferred by the analysis of the previous stage and the analysis has been planned from the outset.</td>
+<td style="text-align: left;">The work is creative in the execution and shows that the student has thoroughly about the problem being tackled. At each stage the narrative is inferred by the analysis of the previous stage and the analysis has been planned from the outset.</td>
+<td style="text-align: left;">The work is creative in nature, both in the execution and the thought process is apparent within the narrative. The execution is sound and the student has demonstrated understanding to the analytical process.</td>
+<td style="text-align: left;">The works shows some creativity which is satisfactory, but some flaws in the execution or assertions are made within the work.</td>
+<td style="text-align: left;">The work shows little to no creativity but falls short in the execution and understanding.</td>
+<td style="text-align: left;">The work shows no creativity or relevance in research questions or methods, and there are major problems in the execution.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr>
+</section>
+<section id="key-considerations" class="level2">
+<h2 class="anchored" data-anchor-id="key-considerations">Key Considerations</h2>
+<section id="use-rate-not-count" class="level3">
+<h3 class="anchored" data-anchor-id="use-rate-not-count">1. Use Rate, Not Count</h3>
+<p>In most analysis, <strong>rate is more appropriate than count</strong> because it normalises data by accounting for population size or scale.</p>
+<p><strong>Example:</strong> In road safety research, calculate the rate of traffic incidents by normalising the count of incidents by traffic volume or population size.</p>
+</section>
+<section id="use-credible-references" class="level3">
+<h3 class="anchored" data-anchor-id="use-credible-references">2. Use Credible References</h3>
+<ul>
+<li>References must be relevant and credible (Google Scholar, CrossRef)</li>
+<li><strong>Do not use</strong> unverified references generated by LLM - this is BAD ACADEMIC PRACTICE and will be penalised</li>
+</ul>
+</section>
+<section id="choose-methods-wisely" class="level3">
+<h3 class="anchored" data-anchor-id="choose-methods-wisely">3. Choose Methods Wisely</h3>
+<ul>
+<li>Ensure all methods are directly relevant to your research question</li>
+<li>Avoid including irrelevant or excessive methods; this reduces submission quality</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="major-problems-to-avoid" class="level2">
+<h2 class="anchored" data-anchor-id="major-problems-to-avoid">Major Problems to Avoid</h2>
+<p>A high-quality submission (distinction/merit level) should NOT contain these issues:</p>
+<ol type="1">
+<li>❌ <strong>ID Columns</strong> - Including identification columns for analysis without justification</li>
+<li>❌ <strong>Categorical as Numerical</strong> - Treating categorical variables as numerical ones incorrectly</li>
+<li>❌ <strong>Code-Discussion Mismatch</strong> - Inconsistency between code results and discussion (e.g.&nbsp;model accuracy differs)</li>
+<li>❌ <strong>Code Errors</strong> - Code in the notebook is not run or contains errors</li>
+<li>❌ <strong>Notebook-PDF Mismatch</strong> - Python notebook and PDF file are largely different</li>
+<li>❌ <strong>Excess printing dataframe</strong> - Printing large dataframes frequently or after each step is not necessary</li>
+</ol>
+<hr>
+</section>
+<section id="submission" class="level2">
+<h2 class="anchored" data-anchor-id="submission">Submission</h2>
+<section id="what-to-submit" class="level3">
+<h3 class="anchored" data-anchor-id="what-to-submit">What to Submit</h3>
+<p><strong>Part 1:</strong> Python notebook (or .zip file with notebook + dataset files)<br>
+<strong>Part 2:</strong> PDF file exported from the notebook</p>
+<p>Submit <strong>both parts separately</strong> in two tabs on Moodle. The submission timestamp is based on the later of the two parts.</p>
+</section>
+<section id="critical-rules" class="level3">
+<h3 class="anchored" data-anchor-id="critical-rules">Critical Rules</h3>
+<p><strong>You will receive a mark of 0 if:</strong> - You fail to submit either Part 1 or Part 2 - The content of Part 2 is largely different from Part 1</p>
+</section>
+<section id="dataset-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-requirements">Dataset Requirements</h3>
+<ul>
+<li>Share your dataset in a <strong>GitHub repository</strong> and remotely read it in the notebook (e.g.&nbsp;using <code>read_csv</code>)</li>
+<li>If data size exceeds 100 MB (GitHub limit), submit a .zip file with the notebook and data</li>
+</ul>
+</section>
+<section id="library-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="library-requirements">Library Requirements</h3>
+<ul>
+<li>If possible, use only libraries from the <strong>recommended computing environment</strong> (Podman/Docker/Anaconda)</li>
+<li>If you must use other libraries (including fastai):
+<ul>
+<li>Clearly state the library names and version numbers</li>
+</ul></li>
+</ul>
+</section>
+<section id="execution-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="execution-requirements">Execution Requirements</h3>
+<ul>
+<li><strong>Notebook must execute within 1 hour</strong> at submission; please remove unnecessary coding from the notebook</li>
+<li>Use Jupyter’s ‘Restart &amp; Rerun all’ before submission to verify viability</li>
+<li>If data preprocessing requires significant time, you may provide preprocessed data with a detailed description</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Penalty will apply if the code is not run or results contain errors or are not clearly presented.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="exporting-to-pdf" class="level2">
+<h2 class="anchored" data-anchor-id="exporting-to-pdf">Exporting to PDF</h2>
+<section id="steps-to-export" class="level3">
+<h3 class="anchored" data-anchor-id="steps-to-export">Steps to Export</h3>
+<ol type="1">
+<li>In the web browser running your notebook, right-click</li>
+<li>Select <strong>‘Print’</strong></li>
+<li>In the printer dialog, select <strong>‘Save as PDF’</strong></li>
+<li>Choose your save location</li>
+</ol>
+<p><strong>Alternative methods</strong> are acceptable as long as the PDF is <strong>text-selectable</strong>.</p>
+</section>
+<section id="moodle-warning" class="level3">
+<h3 class="anchored" data-anchor-id="moodle-warning">Moodle Warning</h3>
+<p>You may see a warning about supported file types when uploading your notebook (see below). You can <strong>safely ignore this</strong>.</p>
+<pre><code>You must upload a supported file type for this assignment. Accepted file types are; .doc, .docx, .ppt, .pptx, .pps, .ppsx, .pdf, .txt, .htm, .html, .hwp, .odt, .wpd, .ps and .rtf</code></pre>
+<hr>
+</section>
+</section>
+<section id="additional-datasets-for-augmentation" class="level2">
+<h2 class="anchored" data-anchor-id="additional-datasets-for-augmentation">Additional Datasets for Augmentation</h2>
+<section id="uk-datasets" class="level3">
+<h3 class="anchored" data-anchor-id="uk-datasets">UK Datasets</h3>
+<ul>
+<li><strong><a href="https://www.ons.gov.uk/census">UK Census Data</a></strong> - Wide range of demographic and social data</li>
+</ul>
+</section>
+<section id="cycling-datasets-london" class="level3">
+<h3 class="anchored" data-anchor-id="cycling-datasets-london">Cycling Datasets (London)</h3>
+<ul>
+<li><strong><a href="https://data.london.gov.uk/dataset/cycle-flows-tfl-road-network">Location of London Cycle Hire Scheme</a></strong></li>
+<li><strong><a href="https://cycling.data.tfl.gov.uk/">TfL Cycling Data</a></strong> - Cycle parking, Santander bike hire trips, etc.</li>
+<li><strong><a href="https://data.london.gov.uk/dataset/cycle-flows-tfl-road-network">Cycle Flows on TfL Road Network</a></strong> - Indexes representing increases in cycle flows over time using automatic cycling counters</li>
+</ul>
+<p>You can combine these datasets with various methods including predictions, data grouping, or causal analysis.</p>
+<hr>
+</section>
+</section>
+<section id="final-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="final-checklist">Final Checklist</h2>
+<p>Before submitting, ensure:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">Your notebook runs completely in under 1 hour. Don’t include lots of data pre-processing in the notebook.</label></li>
+<li><label><input type="checkbox">You’ve run ‘Restart &amp; Rerun all’ and all cells execute successfully</label></li>
+<li><label><input type="checkbox">Your research question is clearly stated</label></li>
+<li><label><input type="checkbox">All methods are appropriate for your research question</label></li>
+<li><label><input type="checkbox">Your visualisations are clear and meaningful</label></li>
+<li><label><input type="checkbox">Your writing is clear and accessible</label></li>
+<li><label><input type="checkbox">Your PDF is exported and text-selectable</label></li>
+<li><label><input type="checkbox">You’re submitting both notebook and PDF to Moodle</label></li>
+<li><label><input type="checkbox">Your notebook and PDF contain consistent content</label></li>
+</ul>
 
-This assessment is designed to test your understanding of the quantitative methods introduced in this course, but also, crucially, your ability to really understand how, if used correctly and applied to appropriate data, these methods can help you tell a powerful story and be the underpinning evidence-base for a relevant local, national or international issue.
 
-Using quantitative methods to contribute to public debates is vital if students, academics and universities are to demonstrate our value to the wider world. We don’t want you to just apply a method and regurgitate unintelligible coefficients. Quantitative methods can only have real value if they are used to support wider debates in ways that everyone should be able to understand.
-
-We are not testing your coding abilities – you may use either of the main coding languages taught this term (R or Python). We are not testing your ability to write a standard piece of academic writing. But we are testing your ability to use quantitative methods appropriately and with a clear connection between the data, methods and outputs, to help others understand a particular issue through a data lens.
-
-### Part 1 - Article
-
-Your task is to write a short 800-1000-word piece of ‘public-facing scholarly writing’ in the style of an article that that could appear in [The Conversation](https://theconversation.com/uk) or the [Financial Times](https://www.ft.com/ft-data) in their data section. This piece could relate to a local, national or international topic which could be either serious or frivolous but ***must*** employ appropriate quantitative methods learned in this course to derive novel insights from a particular dataset (or range of datasets) associated with a particular topic of your choosing. Data analysis and the use of quantitative methods should be central to your piece, but outputs must be appropriate for a general (non-academic) audience with your piece illuminated by appropriate visual outputs – maps, graphs or other data visualisations. Your piece should contain a range of graphical or tabular elements.
-
-### Part 2 - Technical Appendix
-
-Your 800-1000-word article should be accompanied by a max 1000-word technical appendix detailing the analysis you have carried out behind the scenes to allow you to make the observations you have in your article. Here you might want to include additional exploratory visualisations, tabular outputs, interpretations of those outputs, equations etc. and you could also include any observations about the dataset or the validity / statistical significance of any models you employ. The purpose of the appendix is to reassure anyone who wants to delve deeper, that the observations you made in your main article are valid and reliable and your interpretations valid.
-
-### Topic
-
-Your topic can be anything you like broadly related to human, urban or social issues, as long as you can find some suitable data to analyse. For inspiration on relevant topics, you might want to review some of the articles that John Burn-Murdoch has written for the Financial Times in recent years - <https://www.ft.com/john-burn-murdoch> (you can log-in via your UCL credentials) or some of the pieces in the Conversation - <https://theconversation.com/>.
-
-If you are struggling for inspiration, you are welcome to explore an educational topic using DfE schools data used in class, but you are encouraged to be creative in your data choices (as you are being partially marked on your originality), and you should not repeat analyses carried out on variables in any of the practical sessions. The only topic we will ***not*** permit in this assessment is anything related to AirBnB as this is the focus of CASA0013.
-
-### Article Content
-
-You will note that most of John Burn-Murdoch’s articles generally contain the sorts of analyses we would describe as exploratory. While your article should contain basic exploratory analysis in the form of visualisations, you should ***also*** use an appropriate method from the second half of the course (lectures 5-10) related to ***either*** more sophisticated exploratory analysis like multivariate statistical analysis (e.g. dimensionality reduction ***or*** cluster analysis) *or* some explanatory / predictive methods such as ANOVA, linear regression or some of the generalised linear models also introduced.
-
-### Style of Briefing
-
-You should write in plain English and avoid the use of jargon or technical language. For tips on how to write in this style, The Conversation has produced a guide: <https://socsci.web.ox.ac.uk/files/conversation-writing-public-why-and-how>
-
-### Types of Data Permissible and Sources
-
-Anything you like, but you should choose carefully so that you are able to demonstrate the appropriate skills. There are many potential sources of data – these could be linked from FT or Conversation articles, or you could try sites like:
-
-<https://data.gov/>
-
-<https://www.data.gov.uk/>
-
-<https://opendata.nhsbsa.net/>
-
-<https://tfl.gov.uk/info-for/open-data-users/>  
-
-<https://data.europa.eu/data/datasets?locale=en>
-
-<https://data.worldbank.org/>
-
-<https://data.london.gov.uk/>
-
-You can probably find many more!
-
-### Referencing
-
-We will not expect standard academic referencing in this piece, however, this doesn’t mean that you shouldn’t include references – you should. In this style of public facing scholarly writing, it is common to use hyperlinks and footnotes and you should make use of these to support your narrative.
-
-### Format of the Piece
-
-Examples – Here is just one example of the kind of article you might produce (minus the technical appendix), but read widely around the data journalism sites linked from publications like the Financial Times, New York Times, Guardian.
-
-<https://theconversation.com/constituency-level-data-reveals-which-parties-are-most-threatened-by-reform-264422>
-
-### Deadline and Handing In
-
-The Deadline for the assessment is Monday, 27 April 2026 \@ 10:00.
-
-Your report and technical appendix should be uploaded to Moodle as a single PDF document.
-
-## Mark Scheme
-
-This is how we will mark your work - take note of them
-
-::: {#5413178f .cell execution_count=1}
-``` {.python .cell-code}
-import pandas as pd
-
-df = pd.read_csv("../data/assessment.csv", encoding = "ISO-8859-1")
-from IPython.display import display, Markdown
-display(Markdown(df.to_markdown()))
-```
-
-::: {.cell-output .cell-output-display .cell-output-markdown}
-|    | Criterion                                                                          | 80-100%                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 70-79% (A)                                                                                                                                                                                                                                                                                                                                                                                                                                    | 60-69% (B)                                                                                                                                                                                                                                                                                                                                                                                            | 50-59% (C)                                                                                                                                                                                                                                                                                                                                  | 40-49% (D)                                                                                                                                                                                                                              | 1-39% (E)                                                                                                                                                                                  |
-|---:|:-----------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|  0 | Exploratory Analysis (25%)                                                         | Outstanding selection of exploratory statistics and/or sophisticated data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations in the data with absolute clarity. Graphics are labelled such that readers are in no doubt about what is being shown. Data may have been transformed, normalised or standardised in some way to reveal otherwise hidden patterns and justified impeccably. | Excellent selection of exploratory statistics and/or sophisticated data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations in the data. Graphics are labelled such that readers are in no doubt about what is being shown. Data may have been transformed, normalised or standardised in some way to reveal otherwise hidden patterns and justified.                      | Good selection of exploratory statistics and/or data visualisations which illuminate the underlying data, revealing distributions / trends / relationships and associations. Graphics are labelled such that readers are able to interpret the plots with ease.                                                                                                                                       | Adequate selection of exploratory statistics and/or data visualisations which illuminate some of the underlying data, revealing some distributions / trends / relationships and associations. Graphics are labelled, but may lack clarity. Data may not be transformed, normalised or standardised in a way to reveal patterns.             | Inadequate selection of statistics or visualisations. Graphics are poorly labelled or unclear, and do not illuminate the underlying data. Data transformations are incorrect or missing.                                                | Negligible use of statistics or visualisations. Any visualisations are irrelevant, inaccurate, or inaccessible. The analysis shows no grasp of the underlying data.                        |
-|  1 | Use of multivariate statistical analysis or explanatory / predictive methods (25%) | Exceptional selection of data / variables entirely appropriate for the chosen article topic. Masterful understanding of the nuances related to the careful pruning and selection of appropriate variables. Outstanding understanding of the methods employed and their interaction with the data to hand with masterful understanding of outputs produced                                                                                                   | Excellent selection of data / variables entirely appropriate for the chosen article topic. Highly competent understanding of the nuances related to the careful pruning and selection of appropriate variables. Highly competent understanding of the methods employed and their interaction with the data to hand.                                                                                                                           | Good selection of data / variables appropriate for the chosen article topic. Competent understanding of the methods employed and their interaction with the data.                                                                                                                                                                                                                                     | Adequate selection of data / variables for the chosen article topic. Basic understanding of the methods employed and their interaction with the data. May get some of the nuances in the outputs, but may also ignore some key features in the data                                                                                         | Inadequate selection of data / variables for the chosen article topic. Little to no understanding of the methods employed or how they interact with the data.                                                                           | Negligible or irrelevant selection of data / variables. No grasp of the methods or their application to the data.                                                                          |
-|  2 | Originality, article narrative and communication (25%)                             | Highly original topic selection, or of exceptional relevance to a contemporary debate in the society, the media or politics at a local, national or international level with broad interest. Article narrative shows flare or originality which draws the reader in and reveals something entirely new. Writing style is highly accessible - clear, concise and creative and the reader is left without query or misunderstanding.                          | Excellent topic selection, of high relevance to a contemporary debate. The narrative is engaging and written with excellent clarity, flowing well from one section to the next. The work is of a very high standard. Writing style clear and concise with few wasted words.                                                                                                                                                                   | Good topic selection, of relevance to a contemporary debate. The narrative is clear and well-structured. The work shows some evidence of originality. The narrative is good and the message emerging from the analysis is conveyed well.                                                                                                                                                              | Adequate topic selection, but may lack relevance or wider interest. The narrative is satisfactory but may lack clarity or logical flow  ideas appearing slightly disorganised. The reader can understand the piece but may have to work hard to derive meaning from it.                                                                                                                                                                                                                                                                                                                                             | Inadequate topic selection  perhaps dated or totally irrelevant to the degree programme (i.e. not even a human topic). The narrative is lacking in clarity and is difficult to follow. Deriving meaning from the work is a challenge.                                                                                                                                                                                                                                         | The work has no clear topic or narrative. The communication is confused, unclear, or inaccessible.                                                                                         |
-|  3 | Conceptual understanding and Critical Reflection (25%)                             | Both the Article and Technical Appendix show exemplary understanding of the topic / wider issues associated with it and of the methods employed to interrogate the data. A clear understanding of any data / methodological shortcomings / issues / challenges is presented with a highly sophisticated degree of critical reflection in relation to the substantive topic and / or methods employed is demonstrated.                                       | Article and Technical Appendix show excellent and highly competent conceptual understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a thorough understanding of the chosen example and recognises and reflects lucidly on any shortcomings and / or the wider significance of the findings in a way that is not contrived or formulaic but shows a sophisticated level of insight. | Article and Technical Appendix show good understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a sound understanding of the chosen example and recognises and reflects lucidly on any shortcomings and / or the wider significance of the findings in a way that is not contrived or formulaic but shows a sophisticated level of insight. | Article and Technical Appendix show basic understanding of key concepts and theories related to both the topic and methods employed. The work demonstrates a rudimentary understanding of the chosen example and recognises and may offer only some reflection on the shortcomings of the work or not at all / contrived at the bottom end. | Inadequate and insufficient conceptual understanding of key concepts and theories. The work demonstrates an invalid or lack of understanding of the concepts introduced. Any analysis attempted fails to support the observations made. | Negligible or no conceptual understanding of key concepts and theories. The work demonstrates an irrelevant, inaccurate, confused, unclear, or inaccessible understanding of the concepts. |
-:::
-:::
-
-
-The purpose of this assessment is to test your understanding of the various methods introduced in this course and your ability to apply them appropriately to a topic of your choice. One of the differentiators at Masters level is the ability to think both creatively and critically while showing an awareness or knowledge of contemporary issues either in relation to your specific discipline of study or more widely. Being able to demonstrate how established techniques of research and enquiry can be used to create and interpret knowledge is at the core of Masters level thinking and this assessment piece. The ability to demonstrate self-direction (in choosing an appropriate topic for this assessment) and to think autonomously in designing your own article.
-
-### Mark Scheme – Explained
-
-Level 7 Descriptors - [https://www.qaa.ac.uk/docs/qaa/quality-code/the-frameworks-for-higher-education-qualifications-of-uk-degree-awarding-bodies-2024.pdf - p26](https://www.qaa.ac.uk/docs/qaa/quality-code/the-frameworks-for-higher-education-qualifications-of-uk-degree-awarding-bodies-2024.pdf%20-%20p26)
-
-**Master's degree**
-
-The descriptor provided for this level of the Frameworks is for any master's degree which should meet the descriptor in full. This qualification descriptor should also be used as a reference point for other qualifications at Level 7 on the FHEQ/SCQF Level 11 on the FQHEIS, including postgraduate certificates and postgraduate diplomas.
-
-Master's degrees are awarded to students who have demonstrated:
-
-•         a systematic understanding of knowledge, and a critical awareness of current problems and/or new insights, much of which is at, or informed by, the forefront of their academic discipline, field of study or area of professional practice
-
-•         a comprehensive understanding of techniques applicable to their own research or advanced scholarship
-
-•         originality in the application of knowledge, together with a practical understanding of how established techniques of research and enquiry are used to create and interpret knowledge in the discipline
-
-•         conceptual understanding that enables the student:
-
-•         to evaluate critically current research and advanced scholarship in the discipline
-
-•         to evaluate methodologies and develop critiques of them and, where appropriate, to propose new hypotheses.
-
-Typically, holders of the qualification will be able to:
-
-•         deal with complex issues - both systematically and creatively, make sound judgements in the absence of complete data, and communicate their conclusions clearly to specialist and non-specialist audiences
-
-•         demonstrate self-direction and originality in tackling and solving problems, and act autonomously in planning and implementing tasks at a professional or equivalent level
-
-•         continue to advance their knowledge and understanding, and to develop new skills to a high level. 
-
-And holders will have:
-
-•         the qualities and transferable skills necessary for employment requiring:  
-
-•         the exercise of initiative and personal responsibility
-
-•         decision-making in complex and unpredictable situations
-
-•         the independent learning ability required for continuing professional development. -->
-
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -798,7 +1114,7 @@ And holders will have:
 </div>   
     <div class="nav-footer-center">
 <p><img src="../img/logo/logo_only_sm.png" height="25"> Data Science for Spatial Systems</p>
-<div class="toc-actions"><ul><li><a href="https://github.com/huanfachen/DSSS_2025/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/huanfachen/DSSS_2025/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
