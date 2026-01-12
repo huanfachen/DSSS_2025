@@ -628,7 +628,7 @@
     "href": "sessions/week1.html#learning-objectives",
     "title": "Week 1",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand three primary types for machine learning.\nAppreciate Garbage in, Garbage out theorem.",
+    "text": "Learning Objectives\nBy the end of this week, you will be able to:\n\nUnderstand three primary types for machine learning.\nUnderstand key factors for machine learning success, including data, algorithms, and metrics.",
     "crumbs": [
       "Part 1: Supervised Learning",
       "1. Introduction to machine learning"
@@ -2346,7 +2346,7 @@
     "href": "sessions/W01_intro_machine_learning/intro_machine_learning.html#guiding-principles-goal-considerations",
     "title": "Introduction to machine learning",
     "section": "Guiding Principles: Goal Considerations",
-    "text": "Guiding Principles: Goal Considerations\n\nDefine the goal clearly\nDefine how to measure success\nThink about context and baseline\nAsk: what’s the benefit?"
+    "text": "Guiding Principles: Goal Considerations\n\nDefine the goal clearly\nDefine how to measure success (metrics)\nThink about context and baseline\nAsk: what’s the benefit?"
   },
   {
     "objectID": "sessions/W01_intro_machine_learning/intro_machine_learning.html#thinking-in-context",
@@ -2354,13 +2354,6 @@
     "title": "Introduction to machine learning",
     "section": "Thinking in Context",
     "text": "Thinking in Context\n\nWhat do you want to achieve?\nWhat’s the baseline and its performance?\nWhat improvement over baseline do you need?"
-  },
-  {
-    "objectID": "sessions/W01_intro_machine_learning/intro_machine_learning.html#good-and-bad-substitutes",
-    "href": "sessions/W01_intro_machine_learning/intro_machine_learning.html#good-and-bad-substitutes",
-    "title": "Introduction to machine learning",
-    "section": "Good and Bad Substitutes",
-    "text": "Good and Bad Substitutes\n\nChoose metrics carefully\nSubstitute metrics can be misleading\nOptimize for the right goal\nUnderstand side effects"
   },
   {
     "objectID": "sessions/W01_intro_machine_learning/intro_machine_learning.html#communicating-results",
@@ -3524,7 +3517,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.994\n\nModel 2 (4 features): y = 0.99 + 28.28*X1 + 73.87*X2 + 35.28*X3 + -18.30*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.994\n\nModel 2 (4 features): y = 1.11 + 28.37*X1 + 74.15*X2 + 1.04*X3 + 19.58*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",
