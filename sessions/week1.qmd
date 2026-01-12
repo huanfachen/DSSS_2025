@@ -14,7 +14,7 @@ This week will introduce definition and types of machine learning.
 By the end of this week, you will be able to:
 
 1. Understand three primary types for machine learning.
-2. Appreciate *Garbage in, Garbage out* theorem.
+2. Understand key factors for machine learning success, including data, algorithms, and metrics.
 
 ## Lecture 
 

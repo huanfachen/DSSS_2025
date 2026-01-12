@@ -152,8 +152,6 @@ Image Credit: Lecture slide (ML is a subset of AI)
 -   **Unsupervised Learning**: Discover structure in data (without labelled data)
 -   **Reinforcement Learning**: Learn through interaction with environment (with an actual/simulated environment)
 
-
-
 ## Supervised Learning
 
 $$
@@ -315,7 +313,7 @@ Learn about the distribution $p$:
 
 
 
-## Be careful with the following statements -
+## Be careful with the following statements - 
 
 -   "Linear regression is not needed anymore because of machine learning."
 -   "Machine learning is just a fad; statistics is more important."
@@ -326,7 +324,7 @@ Learn about the distribution $p$:
 ## Guiding Principles: Goal Considerations
 
 -   Define the goal clearly
--   Define how to measure success
+-   Define how to measure success (metrics)
 -   Think about context and baseline
 -   Ask: what's the benefit?
 
@@ -335,14 +333,6 @@ Learn about the distribution $p$:
 -   What do you want to achieve?
 -   What's the baseline and its performance?
 -   What improvement over baseline do you need?
-
-
-## Good and Bad Substitutes
-
--   Choose metrics carefully
--   Substitute metrics can be misleading
--   Optimize for the right goal
--   Understand side effects
 
 ## Communicating Results
 
@@ -378,15 +368,11 @@ Learn about the distribution $p$:
 -   Use algorithms responsibly
 -   Same algorithm, different outcomes
 
-
-
 ## Data and Data Collection
 
 -   Critical component of ML
 -   More data usually helps (if from right source)
 -   Consider marginal cost vs. marginal benefit
-
-
 
 ## Free vs Expensive Data
 
@@ -410,16 +396,12 @@ Learn about the distribution $p$:
 :::
 :::::
 
-
-
 ## Big Data Considerations
 
 -   More data can be more expensive to work with
 -   Subsample to RAM when possible (512GB available in cloud)
 -   Runtime and analyst time matter
 -   Always try with a small sample first
-
-
 
 ## Theorem: Garbage in, garbage out (GIGO)
 
@@ -492,8 +474,6 @@ Performance vs data size for ML/DL models
 :::::
 :::::::
 
-
-
 ## Feature engineering & EDA (\~90% time)
 
 -   Mostly **manual** rather than automated (no automated methods for EDA)
@@ -516,7 +496,7 @@ We've covered:
 
 - Introduction to machine learning
 - Types of machine learning (supervised, unsupervised, reinforcement) 
-- Data and algorithms are both crucial for machine learning success
+- Various aspects (e.g. data, algorithm, evaluation) that are crucial for machine learning success
 
 # Practical
 
