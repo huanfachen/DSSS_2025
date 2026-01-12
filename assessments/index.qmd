@@ -31,7 +31,7 @@ Your research question should be specific and clear. Examples:
 ### 3. Augment Your Data (Optional)
 
 You can enhance your main dataset with additional datasets from:
-- Demographic data
+- Census and demographic data
 - Social indicators
 - Economic factors
 - Environmental variables
@@ -48,14 +48,14 @@ The analysis should be captured in a **single Python notebook** containing:
 
 ### 5. Choose Your Methods
 
-**You can use up to 4 methods** appropriate for your research question.
+You can use *up to 4 methods* that are appropriate for your research question.
 
 ### 6. Include Required Notebook Sections
 
 Your notebook must include these sections:
 
 1. **Introduction**
-   - Include at least 3 relevant studies from credible sources (Google Scholar, CrossRef)
+   - Include at least 3 relevant studies from credible sources (Google Scholar, CrossRef, etc.)
    - Set the context for your research
 
 2. **Research Questions**
@@ -99,6 +99,7 @@ Your work will be assessed across these categories:
 A more details marking scheme is below:
 
 ```{python}
+#| echo: false
 import pandas as pd
 
 df = pd.read_csv("CASA0006_mark_scheme.csv", encoding = "ISO-8859-1")
@@ -153,6 +154,7 @@ Submit **both parts separately** in two tabs on Moodle. The submission timestamp
 ### Critical Rules
 
 **You will receive a mark of 0 if:**
+
 - You fail to submit either Part 1 or Part 2
 - The content of Part 2 is largely different from Part 1
 
@@ -195,24 +197,10 @@ Penalty will apply if the code is not run or results contain errors or are not c
 You may see a warning about supported file types when uploading your notebook (see below). You can **safely ignore this**.
 
 ```
-You must upload a supported file type for this assignment. Accepted file types are; .doc, .docx, .ppt, .pptx, .pps, .ppsx, .pdf, .txt, .htm, .html, .hwp, .odt, .wpd, .ps and .rtf
+You must upload a supported file type for this assignment. 
+
+Accepted file types are; .doc, .docx, .ppt, .pptx, .pps, .ppsx, .pdf, .txt, .htm, .html, .hwp, .odt, .wpd, .ps and .rtf
 ```
-
----
-
-## Additional Datasets for Augmentation
-
-### UK Datasets
-
-- **[UK Census Data](https://www.ons.gov.uk/census)** - Wide range of demographic and social data
-
-### Cycling Datasets (London)
-
-- **[Location of London Cycle Hire Scheme](https://data.london.gov.uk/dataset/cycle-flows-tfl-road-network)**
-- **[TfL Cycling Data](https://cycling.data.tfl.gov.uk/)** - Cycle parking, Santander bike hire trips, etc.
-- **[Cycle Flows on TfL Road Network](https://data.london.gov.uk/dataset/cycle-flows-tfl-road-network)** - Indexes representing increases in cycle flows over time using automatic cycling counters
-
-You can combine these datasets with various methods including predictions, data grouping, or causal analysis.
 
 ---
 
