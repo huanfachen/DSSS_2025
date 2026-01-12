@@ -1,128 +1,231 @@
 ---
-title: "CASA0006 Assessment"
+title: "CASA0006 Assessment Guidelines 2025-2026"
 format: html
 ---
 
-This Assessment is worth 100% of the grade for this course.
+## Overview
 
-TBC.
+This individual assignment aims to test your ability to conduct in-depth spatial data analysis using methods from this module. You are required to submit a single Python Notebook which contains both the code required to conduct the data analysis and accompanying text which provides context and interpretation.
 
-<!-- ## Assessment Aims
+## Assessment Steps
 
-This assessment is designed to test your understanding of the quantitative methods introduced in this course, but also, crucially, your ability to really understand how, if used correctly and applied to appropriate data, these methods can help you tell a powerful story and be the underpinning evidence-base for a relevant local, national or international issue.
+### 1. Select a Main Dataset
 
-Using quantitative methods to contribute to public debates is vital if students, academics and universities are to demonstrate our value to the wider world. We don’t want you to just apply a method and regurgitate unintelligible coefficients. Quantitative methods can only have real value if they are used to support wider debates in ways that everyone should be able to understand.
+You are recommended to choose one of the following datasets and define a research question that relates to **urban or spatial processes**. Feel free to use a subset of the chosen dataset, such as focusing on a specific crime type or a type of traffic incidents.
 
-We are not testing your coding abilities – you may use either of the main coding languages taught this term (R or Python). We are not testing your ability to write a standard piece of academic writing. But we are testing your ability to use quantitative methods appropriately and with a clear connection between the data, methods and outputs, to help others understand a particular issue through a data lens.
+If you wish to use a different dataset, you are welcome to do so, as long as the dataset is relevant to urban or spatial processes and is appropriate for the analysis.
 
-### Part 1 - Article
+| Dataset | Link | Description |
+|---------|------|-------------|
+| **London Crime Records** | [data.london.gov.uk](https://data.london.gov.uk/dataset/recorded_crime_summary) | Crime data across London |
+| **Childhood Obesity Prevalence** | [data.london.gov.uk](https://data.london.gov.uk/dataset/prevalence-childhood-obesity-borough) | Obesity rates by borough, ward, and MSOA |
+| **Road Safety Data (UK)** | [data.gov.uk](https://www.data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-accidents-safety-data) | Incident location, severity, weather, road conditions, vehicle types, etc. |
 
-Your task is to write a short 800-1000-word piece of ‘public-facing scholarly writing’ in the style of an article that that could appear in [The Conversation](https://theconversation.com/uk) or the [Financial Times](https://www.ft.com/ft-data) in their data section. This piece could relate to a local, national or international topic which could be either serious or frivolous but ***must*** employ appropriate quantitative methods learned in this course to derive novel insights from a particular dataset (or range of datasets) associated with a particular topic of your choosing. Data analysis and the use of quantitative methods should be central to your piece, but outputs must be appropriate for a general (non-academic) audience with your piece illuminated by appropriate visual outputs – maps, graphs or other data visualisations. Your piece should contain a range of graphical or tabular elements.
+### 2. Define Your Research Question
 
-### Part 2 - Technical Appendix
+Your research question should be specific and clear. Examples:
+- "What is the relationship between crime rates and local deprivation in London?"
+- "Is it possible to predict childhood obesity prevalence using socio-demographic variables?"
+- "How do road accident rates vary by location and weather conditions in the UK?"
 
-Your 800-1000-word article should be accompanied by a max 1000-word technical appendix detailing the analysis you have carried out behind the scenes to allow you to make the observations you have in your article. Here you might want to include additional exploratory visualisations, tabular outputs, interpretations of those outputs, equations etc. and you could also include any observations about the dataset or the validity / statistical significance of any models you employ. The purpose of the appendix is to reassure anyone who wants to delve deeper, that the observations you made in your main article are valid and reliable and your interpretations valid.
+### 3. Augment Your Data (Optional)
 
-### Topic
+You can enhance your main dataset with additional datasets from:
+- Demographic data
+- Social indicators
+- Economic factors
+- Environmental variables
 
-Your topic can be anything you like broadly related to human, urban or social issues, as long as you can find some suitable data to analyse. For inspiration on relevant topics, you might want to review some of the articles that John Burn-Murdoch has written for the Financial Times in recent years - <https://www.ft.com/john-burn-murdoch> (you can log-in via your UCL credentials) or some of the pieces in the Conversation - <https://theconversation.com/>.
+### 4. Structure Your Analysis
 
-If you are struggling for inspiration, you are welcome to explore an educational topic using DfE schools data used in class, but you are encouraged to be creative in your data choices (as you are being partially marked on your originality), and you should not repeat analyses carried out on variables in any of the practical sessions. The only topic we will ***not*** permit in this assessment is anything related to AirBnB as this is the focus of CASA0013.
+You need to use the [notebook template](Template_submission_CASA0006.ipynb) for this assessment. 
 
-### Article Content
+The analysis should be captured in a **single Python notebook** containing:
+- All code for data analysis
+- Full documentation of the analysis process
+- Interpretation of results
+- Narrative text (max 1500 words, code/comments not included)
 
-You will note that most of John Burn-Murdoch’s articles generally contain the sorts of analyses we would describe as exploratory. While your article should contain basic exploratory analysis in the form of visualisations, you should ***also*** use an appropriate method from the second half of the course (lectures 5-10) related to ***either*** more sophisticated exploratory analysis like multivariate statistical analysis (e.g. dimensionality reduction ***or*** cluster analysis) *or* some explanatory / predictive methods such as ANOVA, linear regression or some of the generalised linear models also introduced.
+### 5. Choose Your Methods
 
-### Style of Briefing
+**You can use up to 4 methods** appropriate for your research question.
 
-You should write in plain English and avoid the use of jargon or technical language. For tips on how to write in this style, The Conversation has produced a guide: <https://socsci.web.ox.ac.uk/files/conversation-writing-public-why-and-how>
+### 6. Include Required Notebook Sections
 
-### Types of Data Permissible and Sources
+Your notebook must include these sections:
 
-Anything you like, but you should choose carefully so that you are able to demonstrate the appropriate skills. There are many potential sources of data – these could be linked from FT or Conversation articles, or you could try sites like:
+1. **Introduction**
+   - Include at least 3 relevant studies from credible sources (Google Scholar, CrossRef)
+   - Set the context for your research
 
-<https://data.gov/>
+2. **Research Questions**
+   - State explicitly, ending with a question mark
+   - Example: "What is the relationship between Covid-19 mortality rate and local deprivation in the UK?"
 
-<https://www.data.gov.uk/>
+3. **Data**
+   - Describe your datasets
+   - Explain any preprocessing or cleaning
 
-<https://opendata.nhsbsa.net/>
+4. **Methodology**
+   - Explain the methods you chose and why
+   - Connect them to your research question
 
-<https://tfl.gov.uk/info-for/open-data-users/>  
+5. **Results and Discussion**
+   - Present findings clearly
+   - Interpret results in context
 
-<https://data.europa.eu/data/datasets?locale=en>
+6. **Conclusion**
+   - Summarise key findings
+   - Discuss implications
 
-<https://data.worldbank.org/>
+7. **References**
+   - Use credible sources only
 
-<https://data.london.gov.uk/>
+---
 
-You can probably find many more!
+## Marking Scheme
 
-### Referencing
+Your work will be assessed across these categories:
 
-We will not expect standard academic referencing in this piece, however, this doesn’t mean that you shouldn’t include references – you should. In this style of public facing scholarly writing, it is common to use hyperlinks and footnotes and you should make use of these to support your narrative.
+| Category | Weight |
+|----------|--------|
+| Analysis context and research questions | 15% |
+| Data collection, handling, and presentation | 15% |
+| Correctness, depth, and scope of data analysis | 35% |
+| Visualisation | 10% |
+| Quality of writing | 15% |
+| Creativity of analytical work | 10% |
 
-### Format of the Piece
-
-Examples – Here is just one example of the kind of article you might produce (minus the technical appendix), but read widely around the data journalism sites linked from publications like the Financial Times, New York Times, Guardian.
-
-<https://theconversation.com/constituency-level-data-reveals-which-parties-are-most-threatened-by-reform-264422>
-
-### Deadline and Handing In
-
-The Deadline for the assessment is {{< var assess.deadline-date >}} \@ {{< var assess.deadline-time >}}.
-
-Your report and technical appendix should be uploaded to Moodle as a single PDF document.
-
-## Mark Scheme
-
-This is how we will mark your work - take note of them
+A more details marking scheme is below:
 
 ```{python}
 import pandas as pd
 
-df = pd.read_csv("../data/assessment.csv", encoding = "ISO-8859-1")
+df = pd.read_csv("CASA0006_mark_scheme.csv", encoding = "ISO-8859-1")
 from IPython.display import display, Markdown
 display(Markdown(df.to_markdown()))
 ```
 
-The purpose of this assessment is to test your understanding of the various methods introduced in this course and your ability to apply them appropriately to a topic of your choice. One of the differentiators at Masters level is the ability to think both creatively and critically while showing an awareness or knowledge of contemporary issues either in relation to your specific discipline of study or more widely. Being able to demonstrate how established techniques of research and enquiry can be used to create and interpret knowledge is at the core of Masters level thinking and this assessment piece. The ability to demonstrate self-direction (in choosing an appropriate topic for this assessment) and to think autonomously in designing your own article.
+---
 
-### Mark Scheme – Explained
+## Key Considerations
 
-Level 7 Descriptors - [https://www.qaa.ac.uk/docs/qaa/quality-code/the-frameworks-for-higher-education-qualifications-of-uk-degree-awarding-bodies-2024.pdf - p26](https://www.qaa.ac.uk/docs/qaa/quality-code/the-frameworks-for-higher-education-qualifications-of-uk-degree-awarding-bodies-2024.pdf%20-%20p26)
+### 1. Use Rate, Not Count
 
-**Master's degree**
+In most analysis, **rate is more appropriate than count** because it normalises data by accounting for population size or scale.
 
-The descriptor provided for this level of the Frameworks is for any master's degree which should meet the descriptor in full. This qualification descriptor should also be used as a reference point for other qualifications at Level 7 on the FHEQ/SCQF Level 11 on the FQHEIS, including postgraduate certificates and postgraduate diplomas.
+**Example:** In road safety research, calculate the rate of traffic incidents by normalising the count of incidents by traffic volume or population size.
 
-Master's degrees are awarded to students who have demonstrated:
+### 2. Use Credible References
 
-•         a systematic understanding of knowledge, and a critical awareness of current problems and/or new insights, much of which is at, or informed by, the forefront of their academic discipline, field of study or area of professional practice
+- References must be relevant and credible (Google Scholar, CrossRef)
+- **Do not use** unverified references generated by LLM - this is BAD ACADEMIC PRACTICE and will be penalised
 
-•         a comprehensive understanding of techniques applicable to their own research or advanced scholarship
+### 3. Choose Methods Wisely
 
-•         originality in the application of knowledge, together with a practical understanding of how established techniques of research and enquiry are used to create and interpret knowledge in the discipline
+- Ensure all methods are directly relevant to your research question
+- Avoid including irrelevant or excessive methods; this reduces submission quality
 
-•         conceptual understanding that enables the student:
+---
 
-•         to evaluate critically current research and advanced scholarship in the discipline
+## Major Problems to Avoid
 
-•         to evaluate methodologies and develop critiques of them and, where appropriate, to propose new hypotheses.
+A high-quality submission (distinction/merit level) should NOT contain these issues:
 
-Typically, holders of the qualification will be able to:
+1. ❌ **ID Columns** - Including identification columns for analysis without justification
+2. ❌ **Categorical as Numerical** - Treating categorical variables as numerical ones incorrectly
+3. ❌ **Code-Discussion Mismatch** - Inconsistency between code results and discussion (e.g. model accuracy differs)
+4. ❌ **Code Errors** - Code in the notebook is not run or contains errors
+5. ❌ **Notebook-PDF Mismatch** - Python notebook and PDF file are largely different
+6. ❌ **Excess printing dataframe** - Printing large dataframes frequently or after each step is not necessary
 
-•         deal with complex issues - both systematically and creatively, make sound judgements in the absence of complete data, and communicate their conclusions clearly to specialist and non-specialist audiences
+---
 
-•         demonstrate self-direction and originality in tackling and solving problems, and act autonomously in planning and implementing tasks at a professional or equivalent level
+## Submission
 
-•         continue to advance their knowledge and understanding, and to develop new skills to a high level. 
+### What to Submit
 
-And holders will have:
+**Part 1:** Python notebook (or .zip file with notebook + dataset files)  
+**Part 2:** PDF file exported from the notebook
 
-•         the qualities and transferable skills necessary for employment requiring:  
+Submit **both parts separately** in two tabs on Moodle. The submission timestamp is based on the later of the two parts.
 
-•         the exercise of initiative and personal responsibility
+### Critical Rules
 
-•         decision-making in complex and unpredictable situations
+**You will receive a mark of 0 if:**
+- You fail to submit either Part 1 or Part 2
+- The content of Part 2 is largely different from Part 1
 
-•         the independent learning ability required for continuing professional development. -->
+### Dataset Requirements
+
+- Share your dataset in a **GitHub repository** and remotely read it in the notebook (e.g. using `read_csv`)
+- If data size exceeds 100 MB (GitHub limit), submit a .zip file with the notebook and data
+
+### Library Requirements
+
+- If possible, use only libraries from the **recommended computing environment** (Podman/Docker/Anaconda)
+- If you must use other libraries (including fastai):
+  - Clearly state the library names and version numbers
+
+### Execution Requirements
+
+- **Notebook must execute within 1 hour** at submission; please remove unnecessary coding from the notebook
+- Use Jupyter's 'Restart & Rerun all' before submission to verify viability
+- If data preprocessing requires significant time, you may provide preprocessed data with a detailed description
+
+::: {.callout-warning}
+Penalty will apply if the code is not run or results contain errors or are not clearly presented.
+:::
+
+---
+
+## Exporting to PDF
+
+### Steps to Export
+
+1. In the web browser running your notebook, right-click
+2. Select **'Print'**
+3. In the printer dialog, select **'Save as PDF'**
+4. Choose your save location
+
+**Alternative methods** are acceptable as long as the PDF is **text-selectable**.
+
+### Moodle Warning
+
+You may see a warning about supported file types when uploading your notebook (see below). You can **safely ignore this**.
+
+```
+You must upload a supported file type for this assignment. Accepted file types are; .doc, .docx, .ppt, .pptx, .pps, .ppsx, .pdf, .txt, .htm, .html, .hwp, .odt, .wpd, .ps and .rtf
+```
+
+---
+
+## Additional Datasets for Augmentation
+
+### UK Datasets
+
+- **[UK Census Data](https://www.ons.gov.uk/census)** - Wide range of demographic and social data
+
+### Cycling Datasets (London)
+
+- **[Location of London Cycle Hire Scheme](https://data.london.gov.uk/dataset/cycle-flows-tfl-road-network)**
+- **[TfL Cycling Data](https://cycling.data.tfl.gov.uk/)** - Cycle parking, Santander bike hire trips, etc.
+- **[Cycle Flows on TfL Road Network](https://data.london.gov.uk/dataset/cycle-flows-tfl-road-network)** - Indexes representing increases in cycle flows over time using automatic cycling counters
+
+You can combine these datasets with various methods including predictions, data grouping, or causal analysis.
+
+---
+
+## Final Checklist
+
+Before submitting, ensure:
+
+- [ ] Your notebook runs completely in under 1 hour. Don't include lots of data pre-processing in the notebook.
+- [ ] You've run 'Restart & Rerun all' and all cells execute successfully
+- [ ] Your research question is clearly stated
+- [ ] All methods are appropriate for your research question
+- [ ] Your visualisations are clear and meaningful
+- [ ] Your writing is clear and accessible
+- [ ] Your PDF is exported and text-selectable
+- [ ] You're submitting both notebook and PDF to Moodle
+- [ ] Your notebook and PDF contain consistent content
