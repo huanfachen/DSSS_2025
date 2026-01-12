@@ -837,7 +837,7 @@
     "href": "sessions/index.html",
     "title": "Overview",
     "section": "",
-    "text": "Understand the structure and focus of the module.\nDevelop a method for tackling quantitative problems.\nFormulate a research question and structure quantitative writing.",
+    "text": "Get an overview of (geospatial) machine learning.\nUnderstand framework and key methods of supervised learning.\nCan apply supervised learning to real-world problems with various data types (tabular, image, network)",
     "crumbs": [
       "Overview"
     ]
@@ -847,27 +847,17 @@
     "href": "sessions/index.html#objectives",
     "title": "Overview",
     "section": "",
-    "text": "Understand the structure and focus of the module.\nDevelop a method for tackling quantitative problems.\nFormulate a research question and structure quantitative writing.",
+    "text": "Get an overview of (geospatial) machine learning.\nUnderstand framework and key methods of supervised learning.\nCan apply supervised learning to real-world problems with various data types (tabular, image, network)",
     "crumbs": [
       "Overview"
     ]
   },
   {
-    "objectID": "sessions/index.html#why-study-a-quantitative-methods-course",
-    "href": "sessions/index.html#why-study-a-quantitative-methods-course",
+    "objectID": "sessions/index.html#why-study-this-module",
+    "href": "sessions/index.html#why-study-this-module",
     "title": "Overview",
-    "section": "Why study a Quantitative Methods course?",
-    "text": "Why study a Quantitative Methods course?\n\nCoding alone is not enough.\nUnderstanding models aids in correct tool selection and bug handling.\nGoogle/ChatGPT can make mistakes; detecting them is crucial.\nMathematics understanding is not always required.",
-    "crumbs": [
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "sessions/index.html#course-objectives",
-    "href": "sessions/index.html#course-objectives",
-    "title": "Overview",
-    "section": "Course Objectives",
-    "text": "Course Objectives\n\nUnderstand a broad range of quantitative techniques.\nApply these skills in research.\nFormulate a coherent quantitative argument.",
+    "section": "Why study this module?",
+    "text": "Why study this module?\n\nAI can make mistakes; understanding how it works is crucial.\nAchieving a balance between predictive accuracy and interpretability is important.\nSpatial is special: spatial data have unique characteristics that require special treatment.",
     "crumbs": [
       "Overview"
     ]
@@ -877,7 +867,7 @@
     "href": "sessions/index.html#prerequisites",
     "title": "Overview",
     "section": "Prerequisites",
-    "text": "Prerequisites\n\nNo prerequisite of university-level maths/statistics.\nNo prerequisite programming, but this module doesn’t teach programming.\nCASA0013 is strongly recommneded if you don’t know Python before.\nPython is required for practicals and assessments.",
+    "text": "Prerequisites\n\nCan understand/follow Python code and run Jupyter notebooks.\nBasic knowledge of statistics (mean, variance, correlation, probability) and linear regression.",
     "crumbs": [
       "Overview"
     ]
@@ -907,7 +897,17 @@
     "href": "sessions/index.html#weekly-schedule",
     "title": "Overview",
     "section": "Weekly Schedule",
-    "text": "Weekly Schedule\n\n\n\nSession\nTopic\nLecturer\n\n\n\n\n1\nIntroduction to data\nHuanfa\n\n\n2\nProbability and distribution\nBea\n\n\n3\nHypothesis testing\nBea\n\n\n4\nIntroduction to linear algebra\nBea\n\n\n5\nCorrelation and regression\nHuanfa\n\n\n6\nMultiple regression\nAdam\n\n\n7\nGeneralised linear model\nAdam\n\n\n8\nMultilevel regression\nAdam\n\n\n9\nDimensionality reduction\nHuanfa\n\n\n10\nClustering Analysis\nHuanfa",
+    "text": "Weekly Schedule\n\n\n\nSession\nTopic\nSuggested reading\n\n\n\n\n1\nIntro machine learning\nIMLP Ch 1\n\n\n2\nSupervised learning metrics\nIMLP 5.3, APM Ch 16\n\n\n3\nSupervised learning workflow\nIMLP Ch2.1-2.3.2, APM Ch 4-4.3, IMLP Ch 5.1, 5.2, APM Ch 4.4-4.8\n\n\n4\nTree-based methods\nIMLP 2.3.5, 2.3.6, APM Ch 14.1-14.4\n\n\n5\nNeural networks\nIMLP Ch 2.3.8, DL Ch 6, Ch 7.8\n\n\n6\nGraph neural networks\ntkipf.github.io\n\n\n7\nModel interpretation & feature selection\nIML, LIML\n\n\n8\nImbalanced data\nAPM Ch16, SMOTE, Easy Ensembles\n\n\n9\nMachine learning operations\nMadewithml.com\n\n\n10\nTesting ML systems\nMadewithml.com",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "sessions/index.html#references",
+    "href": "sessions/index.html#references",
+    "title": "Overview",
+    "section": "References",
+    "text": "References\n\n(COMS) COMS W4995 Applied Machine Learning Spring 2020 link\n(IMLP) Mueller, Guido - Introduction to machine learning with python. link, free for UCL users\n(APM) Kuhn, Johnson - Applied predictive modeling link\n\nGoodfellow, Bengio, Courville - Deep Learning. link\n\n(PDSH) Python Data Science Handbook by Jake VanderPlas link\n(IML) Interpretable Machine Learning by Christoph Molnar link\n(LIML) Limitations of Interpretable Machine Learning link",
     "crumbs": [
       "Overview"
     ]
@@ -927,7 +927,7 @@
     "href": "sessions/index.html#assessment-1",
     "title": "Overview",
     "section": "Assessment",
-    "text": "Assessment\n\nWritten Investigation (summative): 100%\nWeekly quiz (formative)",
+    "text": "Assessment\n\nPython notebook (summative): 100%\nWeekly quiz (formative)",
     "crumbs": [
       "Overview"
     ]
@@ -937,7 +937,7 @@
     "href": "sessions/index.html#ucl-assessment-policy",
     "title": "Overview",
     "section": "UCL Assessment Policy",
-    "text": "UCL Assessment Policy\n\nAll submissions via Moodle, not emails.\nLate penalties: Up to 48h (-10 points); up to 7 days (capped at 50); over 7 days (scores 0).\nDAP or Extenuating circumstances: to submit on Portico.\nRespect word count limits\nAvoid plagiarism and fake references",
+    "text": "UCL Assessment Policy\n\nAll submissions via Moodle, not emails.\nLate penalties: Up to 48h (-10 points); up to 7 days (capped at 50); over 7 days (scores 0).\nDAP or Extenuating circumstances: to submit on Portico.\nAvoid plagiarism and unverified references",
     "crumbs": [
       "Overview"
     ]
@@ -3517,7 +3517,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.994\n\nModel 2 (4 features): y = 1.11 + 28.37*X1 + 74.15*X2 + 1.04*X3 + 19.58*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.994\n\nModel 2 (4 features): y = 1.28 + 28.27*X1 + 73.95*X2 + 16.44*X3 + 2.64*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",
