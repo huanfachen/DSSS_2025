@@ -1,0 +1,10 @@
+---
+format: html
+date: last-modified
+author: "Huanfa Chen"
+title: "Bibliography"
+---
+
+This page contains all articles/books from the weekly readings and some more that may be useful.
+
+Please check the reading list on [UCL Reading list](https://moodle.ucl.ac.uk/mod/lti/view.php?id=8352764) (UCL users only).
