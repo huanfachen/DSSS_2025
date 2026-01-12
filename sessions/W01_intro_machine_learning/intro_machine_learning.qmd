@@ -176,15 +176,11 @@ Learn a function $f$ from input-output pairs to predict on new data.
 -   Core distinction: not just function approximation, but prediction on unseen data
 -   Avoiding overfitting to training data is key
 
-
-
 ## Examples of Supervised Learning
 
 -   Spam detection
 -   Medical diagnosis
 -   Ad click prediction
-
-
 
 ## Unsupervised Learning
 
@@ -223,25 +219,42 @@ Learn about the distribution $p$:
 <img src="images/reinforcement_cycle.png" alt="Reinforcement learning cycle" style="max-width:80%;"/>
 :::
 
-
-
 ## Other Types of Learning
 
 -   Semi-supervised
 -   Active Learning
 -   Forecasting
 -   Transfer learning
--   If you understand supervised/unsupervised/reinforcement learning, others are easier to grasp
+-   *If you understand the basics of supervised, unsupervised, and reinforcement learning, others are easier to grasp*
 
-
-
-## Don't read a book by its name
+## Don't read a book by its name: classification of neighbourhoods
 
 - *Classifications* of neighbourhoods (e.g. London output area classification) that are actually clustering
-- *Anomaly detection* methods can be unsupervised or supervised learning
+::: {style="text-align:center;"}
+<img src="images/LOAC.jpg" alt="Reinforcement learning cycle" style="max-width:80%;"/>
+:::
+
+
+## Don't read a book by its name: anomaly detection
+- *Anomaly detection* methods can be unsupervised, semi-supervised, or supervised learning
+
+::: {style="text-align:center;"}
+<img src="images/Anomaly_detection_techniques.jpg" alt="Reinforcement learning cycle" style="max-width:80%;"/>
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: https://pub.towardsai.net/anomaly-detection-a-comprehensive-guide-9d4d7e320242
+  </div>
+:::
+
+
+## Don't read a book by its name: forecasting
 - *Forecasting* can be done with lagged features (via supervised learning), or with time series data (via time series analysis), or both
 
-
+::: {style="text-align:center;"}
+<img src="images/forecasting.png" alt="Reinforcement learning cycle" style="max-width:80%;"/>
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: gemini.com
+  </div>
+:::
 
 ## What does LLM belong to?
 
@@ -302,7 +315,7 @@ Learn about the distribution $p$:
 
 
 
-## Following statements are not recommended
+## Be careful with the following statements -
 
 -   "Linear regression is not needed anymore because of machine learning."
 -   "Machine learning is just a fad; statistics is more important."
@@ -338,8 +351,6 @@ Learn about the distribution $p$:
 -   Show impact and limitations
 -   Convince stakeholders
 
-
-
 ## Explainable Results
 
 ::: {style="text-align:center;"}
@@ -350,8 +361,6 @@ Learn about the distribution $p$:
 -   Explainability improves engagement
 -   Important for trust and transparency
 
-
-
 ## Ethical Considerations
 
 ::: {style="text-align:center;"}
@@ -361,8 +370,6 @@ Learn about the distribution $p$:
 -   Bias in risk assessments
 -   Fairness in automated decisions
 -   Transparency and accountability
-
-
 
 ## Ethics: It's in the Application!
 
