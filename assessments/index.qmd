@@ -144,6 +144,8 @@ A high-quality submission (distinction/merit level) should NOT contain these iss
 
 ## Submission
 
+The deadline for the assessment is {{< var assess.deadline-date >}} \@ {{< var assess.deadline-time >}}.
+
 ### What to Submit
 
 **Part 1:** Python notebook (or .zip file with notebook + dataset files)  
@@ -204,7 +206,7 @@ Accepted file types are; .doc, .docx, .ppt, .pptx, .pps, .ppsx, .pdf, .txt, .htm
 
 ---
 
-## Final Checklist
+## Checklist before submission
 
 Before submitting, ensure:
 
