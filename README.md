@@ -1,4 +1,4 @@
-# CASA0007 module repo
+# CASA0006 module repo 2025-26
 This repo contains lecture notes and practical notebooks for CASA0006 Data Science for Spatial Systems, which is part of **CASA MSc/MRes Urban Spatial Science** programme.
 
 The website is here: https://huanfachen.github.io/DSSS_2025/.
@@ -30,7 +30,6 @@ The website is here: https://huanfachen.github.io/DSSS_2025/.
    ```
 
 ## TODO
-1. Moodle: clean up
-1. Moodle: Ask PGTAs to prepare quiz questions
+1. Moodle: finalise asssessment index.qmd
 1. Moodle: Suggested reading
 1. Moodle: add link to lecture recording video
