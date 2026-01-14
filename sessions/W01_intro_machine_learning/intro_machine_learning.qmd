@@ -228,6 +228,7 @@ Learn about the distribution $p$:
 ## Don't read a book by its name: classification of neighbourhoods
 
 - *Classifications* of neighbourhoods (e.g. London output area classification) that are actually clustering
+
 ::: {style="text-align:center;"}
 <img src="images/LOAC.jpg" alt="Reinforcement learning cycle" style="max-width:80%;"/>
 :::
@@ -248,7 +249,7 @@ Learn about the distribution $p$:
 - *Forecasting* can be done with lagged features (via supervised learning), or with time series data (via time series analysis), or both
 
 ::: {style="text-align:center;"}
-<img src="images/forecasting.png" alt="Reinforcement learning cycle" style="max-width:80%;"/>
+<img src="images/time_series.png" alt="Forecasting" style="max-width:80%;"/>
   <div style="font-size:0.8em; color: #555; margin-top:4px;">
     Image Credit: gemini.com
   </div>
