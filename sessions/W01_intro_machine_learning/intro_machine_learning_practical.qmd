@@ -334,7 +334,7 @@ In Scikit-Learn, by convention all model parameters that were learned during the
 #| deletable: true
 #| editable: true
 print("Coef: {}".format(model.coef_))
-print("Slope: {}".format(model.intercept_))
+print("Intercept: {}".format(model.intercept_))
 print("Formula: petal_length = {} * sepal_length + {}".format(np.round(model.coef_[0],2), np.round(model.intercept_, 2)))
 ```
 
