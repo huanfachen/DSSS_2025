@@ -35,6 +35,6 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 To access the practical:
 
 1. [Preview](W01_intro_machine_learning/intro_machine_learning_practical.html)
-2. [Download](intro_machine_learning/intro_machine_learning_practical.ipynb)
+2. [Download](W01_intro_machine_learning/intro_machine_learning_practical.ipynb)
 
 ## Further resources
