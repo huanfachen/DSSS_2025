@@ -284,7 +284,7 @@
 <ul>
 <li>Correlation among features might make coefficients completely uninterpretable</li>
 </ul>
-<div id="b8f4b475" class="cell" data-execution_count="1">
+<div id="10b66f01" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stdout">
 <pre><code>Correlations (should be &lt; 0.1):
 [[ 1.         -0.12070741 -0.04863585]
@@ -296,8 +296,8 @@ R² = 0.985
 
 Correlation X3-X4: 0.995
 
-Model 2 (4 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 19.00*X3 + -0.22*X4
-R² = 0.985</code></pre>
+Model 2 (4 features): y = 1.20 + 28.28*X1 + 73.97*X2 + 26.69*X3 + -8.94*X4
+R² = 0.986</code></pre>
 </div>
 </div>
 </section>
@@ -309,7 +309,7 @@ R² = 0.985</code></pre>
 <li>On the same data, Lasso regression will pick one of the correlated features (X3 or X4)</li>
 <li>but it doesn’t mean the dropped feature is unimportant!</li>
 </ul>
-<div id="fbacba66" class="cell" data-execution_count="2">
+<div id="4d5618be" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>Y = 5.94 + 23.15*X1 + 81.83*X2 + 18.22*X3</code></pre>
 </div>
