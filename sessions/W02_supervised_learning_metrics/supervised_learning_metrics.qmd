@@ -37,7 +37,7 @@ $$
 |---------------------------|-----------------------------------------------------|----------------------------------------------------------|
 | Target variable      | Continuous value \(y \in \mathbb{R}\)      | Discrete label \(y \in \mathcal{Y}\) (finite set)        |
 | Task                 | Predict “how much” / “how many”                    | Predict “which class” / “which category”                |
-| Intuition            | Find a 'line' close to all points      | Find a 'boundary' between classis     |
+| Intuition            | Find a 'line' close to all points      | Find a 'boundary' between classes     |
 | Make predictions                   | Directly predict target variable               | Predict class probabilities and assign class with highest probability               |
 | Example                   | Predicting house prices from features              | Predicting spam vs. not spam for an email               |
 
@@ -182,6 +182,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 ```
 
 ```{python}
+#| echo: true
 # fit a neural network model using sklearn. Using similar workflow as previous cell
 from sklearn.neural_network import MLPRegressor
 nn = MLPRegressor(random_state=10, max_iter=1000)
@@ -294,16 +295,16 @@ plt.tight_layout()
 - **Recall** (Sensitivity, True Positive Rate): $\frac{TP}{TP+FN}$. *Among actual positives, how many are correctly predicted.*
 - **F1-score** (Harmonic mean of precision & recall): $F=2\frac{\text{precision}\cdot \text{recall}}{\text{precision}+\text{recall}}$
 
-# Another illustration
+## Another illustration
 
 <div style="text-align:center;">
-  <img src="images/precision_recall.webp" alt="precision vs recall" style="max-width:60%;">
+  <img src="images/precision_recall.png" alt="precision vs recall" style="max-width:60%;">
   <div style="font-size:0.8em; color: #555; margin-top:4px;">
     Image Credit: wikipedia.org
   </div>
 </div>
 
-# Example
+## Example
 ```{python}
 #| echo: false
 from sklearn.metrics import precision_score, recall_score, f1_score
@@ -347,7 +348,7 @@ plt.show()
 
 ## Addressing accuracy paradox
 
-- Model #2 has higher predictive power (including precision & recall) than #1 and #3.
+- To address this issue in imbalanced data, pick up precision or recall or F1 as the metric.
 
 ```{python}
 #| echo: false
@@ -357,7 +358,7 @@ fig = plt.figure(figsize=(12, 6), constrained_layout=True)
 for i, y_pred in enumerate([y_pred_1, y_pred_2, y_pred_3]):
   ax = plt.subplot(2, 3, i + 1)
   ConfusionMatrixDisplay(confusion_matrix(y_true, y_pred), display_labels=['N', 'P']).plot(ax=ax, cmap='gray_r')
-  ax.set_title(f"y_pred_{i + 1}")
+  # ax.set_title(f"y_pred_{i + 1}")
   ax.images[-1].colorbar.remove()
 
 # Row 2: Metrics table
@@ -375,7 +376,7 @@ for i, y_pred in enumerate([y_pred_1, y_pred_2, y_pred_3]):
 table = ax_table.table(cellText=metrics_data, colLabels=['Model', 'Accuracy', 'Precision', 'Recall', 'F1'],
              cellLoc='center', loc='center', bbox=[0.1, 0.2, 0.8, 0.6])
 table.auto_set_font_size(False)
-table.set_fontsize(11)
+table.set_fontsize(10)
 table.scale(1, 2)
 
 plt.tight_layout()
