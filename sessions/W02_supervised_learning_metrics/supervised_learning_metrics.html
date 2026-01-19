@@ -7,11 +7,11 @@
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-68c8bffd90dad8f2b55c52d7b6410dc0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-1d5e050edb13250d4f64432100cad504.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Huanfa Chen">
   <title>Data Science for Spatial Systems – Supervised learning</title>
@@ -269,6 +269,11 @@ y_i &amp;\in
 <td>Find a ‘boundary’ between classis</td>
 </tr>
 <tr class="even">
+<td>Make predictions</td>
+<td>Directly predict target variable</td>
+<td>Predict class probabilities and assign class with highest probability</td>
+</tr>
+<tr class="odd">
 <td>Example</td>
 <td>Predicting house prices from features</td>
 <td>Predicting spam vs.&nbsp;not spam for an email</td>
@@ -278,7 +283,7 @@ y_i &amp;\in
 </section>
 <section id="example---linear-regression" class="slide level2">
 <h2>Example - linear regression</h2>
-<div id="9fa82d7e" class="cell" data-execution_count="1">
+<div id="49dc9cc1" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
 <span id="cb1-2"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-3"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -397,21 +402,8 @@ using maximum likelihood estimation
 </table>
 </div>
 </section>
-<section id="classification" class="slide level2">
-<h2>Classification</h2>
-<ul>
-<li>Most classification algorithms follow two steps:</li>
-</ul>
-<ol type="1">
-<li>predict probabilities for each class</li>
-<li>assign class with highest probability</li>
-</ol>
-<ul>
-<li>We can talk about common challenges for supervised learning (despite their differences)</li>
-</ul>
-</section>
-<section id="common-challenges" class="slide level2">
-<h2>Common Challenges</h2>
+<section id="common-challenges-of-regressionclassification" class="slide level2">
+<h2>Common Challenges of regression/classification</h2>
 <ol type="1">
 <li>To select evaluation metrics (so that the model solves the right problem)</li>
 <li>To design workflow (so that the model generalises well and avoids overfitting)</li>
@@ -500,9 +492,33 @@ sensitive to very small <span class="math inline">\(y_i\)</span>; relative error
 <section id="metrics-for-regression-1" class="slide level2">
 <h2>Metrics for regression</h2>
 <ul>
-<li>Using RMSE or squared error in most cases</li>
+<li>Using <strong>RMSE</strong> or <strong>squared error</strong> in most cases</li>
 <li>By default, regressors in sklearn and XGBoost use <em>Squared Error</em> as loss function</li>
-<li>Difference between R2 for OLS (<span style="color:blue">within [0,1]</span>) vs.&nbsp;R2 for regression (<span style="color:blue">&lt;=1, can be negative</span>)</li>
+<li>Generally, R2 for regression can be negative. A negative R2 means the model is worse than simply predicting the mean of y.</li>
+<li>A special case is that when using OLS regression with an intercept term and evaluating on the training data, R2 will always be between 0 and 1.</li>
+</ul>
+</section>
+<section id="misuse-of-r2-metric" class="slide level2">
+<h2>Misuse of R2 metric</h2>
+<ul>
+<li>Question: which R2 is correct?</li>
+</ul>
+<div id="22e0392a" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-stdout">
+<pre><code>R2 (sklearn): -2.616
+R2 (linear regression between y_test and y_pred): 0.156</code></pre>
+</div>
+</div>
+</section>
+<section id="misuse-of-r2-metric-1" class="slide level2">
+<h2>Misuse of R2 metric</h2>
+<ul>
+<li>R2 (sklearn) is correct, as it compares predictions from NN model against true values.</li>
+<li>R2 (linear regression between y_test and y_pred) is incorrect.
+<ul>
+<li>Takes the NN outputs and fits a linear regression between NN outputs and true values</li>
+<li>Computes <strong>the R2 of this linear regression</strong>, which is not the same as evaluating the NN model.</li>
+</ul></li>
 </ul>
 </section>
 <section id="metrics-for-classification-binary" class="slide level2">
@@ -520,16 +536,16 @@ sensitive to very small <span class="math inline">\(y_i\)</span>; relative error
 </section>
 <section id="example-using-breast-cancer-dataset" class="slide level2">
 <h2>Example using Breast Cancer dataset</h2>
-<div id="4917f6b8" class="cell" data-execution_count="3">
+<div id="165c65be" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>class malignant: 212, 37.258%
 class benign: 357, 62.742%
-Predictive accuracy: 0.923</code></pre>
+Predictive accuracy: 0.930</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-4-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-4-output-2.png" width="508" height="429"></a></p>
+<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-6-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-6-output-2.png" width="508" height="429"></a></p>
 </figure>
 </div>
 </div>
@@ -540,18 +556,15 @@ Predictive accuracy: 0.923</code></pre>
 <ul>
 <li><strong>Scenario: Data with 90% negatives</strong> (imbalanced data)</li>
 <li>A majority strategy that predicts all as negative gets 90% accuracy, but this is useless.</li>
-<li>Different models can have the same accuracy (0.9) but make very different types of errors.
-<ul>
-<li>y_pred_1: Predicts all negative (90 TN, 0 TP)</li>
-<li>y_pred_2: Predicts some positives correctly but misses others</li>
-<li>y_pred_3: A mix of errors</li>
-</ul></li>
+<li>Different models can have the same accuracy (0.9) but make very different types of errors. <!-- - y_pred_1: Predicts all negative (90 TN, 0 TP)
+  - y_pred_2: Predicts some positives correctly but misses others
+  - y_pred_3: A mix of errors --></li>
 </ul>
-<div id="c0195b74" class="cell" data-execution_count="4">
+<div id="5027f736" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-5-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-5-output-1.png" width="950" height="343"></a></p>
+<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-7-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-7-output-1.png" width="950" height="343"></a></p>
 </figure>
 </div>
 </div>
@@ -564,11 +577,11 @@ Predictive accuracy: 0.923</code></pre>
 <li><strong>Recall</strong> (Sensitivity, True Positive Rate): <span class="math inline">\(\frac{TP}{TP+FN}\)</span>. <em>Among actual positives, how many are correctly predicted.</em></li>
 <li><strong>F1-score</strong> (Harmonic mean of precision &amp; recall): <span class="math inline">\(F=2\frac{\text{precision}\cdot \text{recall}}{\text{precision}+\text{recall}}\)</span></li>
 </ul>
-<div id="b5387bff" class="cell" data-execution_count="5">
+<div id="0e09e222" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-6-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-6-output-1.png" width="875" height="374"></a></p>
+<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-8-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-8-output-1.png" width="827" height="326"></a></p>
 </figure>
 </div>
 </div>
@@ -576,11 +589,11 @@ Predictive accuracy: 0.923</code></pre>
 </section>
 <section id="addressing-accuracy-paradox" class="slide level2">
 <h2>Addressing accuracy paradox</h2>
-<div id="8906c907" class="cell" data-execution_count="6">
+<div id="b53c1a7b" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-7-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-7-output-1.png" width="1105" height="675"></a></p>
+<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-9-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-9-output-1.png" width="1105" height="675"></a></p>
 </figure>
 </div>
 </div>
@@ -592,11 +605,11 @@ Predictive accuracy: 0.923</code></pre>
 <li>When precision increases, recall decreases. Vice versa.</li>
 <li>By changing classification threshold (default=0.5, from 0 to 1), we can see the balance between precision and recall.</li>
 </ul>
-<div id="9028c3bd" class="cell" data-execution_count="7">
+<div id="9828c1d8" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-8-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Precision–Recall curve for LR and Random Forest"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-8-output-1.png" width="445" height="449" alt="Precision–Recall curve for LR and Random Forest"></a></p>
+<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-10-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Precision–Recall curve for LR and Random Forest"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-10-output-1.png" width="445" height="449" alt="Precision–Recall curve for LR and Random Forest"></a></p>
 <figcaption>Precision–Recall curve for LR and Random Forest</figcaption>
 </figure>
 </div>
@@ -609,11 +622,11 @@ Predictive accuracy: 0.923</code></pre>
 <li>Receiver Operating Characteristic (ROC) curve plots <em>True Positive Rate</em> vs.&nbsp;<em>False Positive Rate</em>. Similar to precision-recall curve.</li>
 <li>The identity line <em>y=x</em> represents <em>random classifier</em> (e.g.&nbsp;tossing a coin).</li>
 </ul>
-<div id="468937dc" class="cell" data-execution_count="8">
+<div id="3bc61e00" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-9-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-9-output-1.png" width="453" height="449"></a></p>
+<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-11-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-11-output-1.png" width="453" height="449"></a></p>
 </figure>
 </div>
 </div>
@@ -626,11 +639,11 @@ Predictive accuracy: 0.923</code></pre>
 <li>AUC is always 0.5 for random predictions</li>
 <li>Maximum AUC is 1.0 for perfect predictions</li>
 </ul>
-<div id="b236f623" class="cell" data-execution_count="9">
+<div id="674d8fe4" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-10-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-10-output-1.png" width="812" height="449"></a></p>
+<p><a href="supervised_learning_metrics_files/figure-revealjs/cell-12-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img data-src="supervised_learning_metrics_files/figure-revealjs/cell-12-output-1.png" width="812" height="449"></a></p>
 </figure>
 </div>
 </div>
@@ -649,8 +662,8 @@ Weighted by <em>support</em> (number of samples in each class). Balances class s
 </section>
 <section id="classification-report" class="slide level2">
 <h2>Classification report</h2>
-<div id="3016a828" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="bu">print</span>(classification_report(y_test, rf.predict(X_test), target_names<span class="op">=</span>data.target_names))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2ee19eb3" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="bu">print</span>(classification_report(y_test, rf.predict(X_test), target_names<span class="op">=</span>data.target_names))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              precision    recall  f1-score   support
 
@@ -683,23 +696,34 @@ weighted avg       0.94      0.94      0.94       143
 <li>A model with high recall is preferred, even if it has lower precision.</li>
 </ul>
 </section>
-<section id="next-question-how-can-i-optimise-for-a-specific-metric" class="slide level2">
-<h2>Next question: how can I optimise for a specific metric?</h2>
-<ul>
-<li>RandomForestClassifier (and other classifiers) in sklearn by default optimises for accuracy and have no direct way to optimise for <em>recall</em>.</li>
-<li>We have workarounds (topics for next week)
-<ul>
-<li>Use recall metric during hyperparameter tuning and cross-validation</li>
-<li>Adjust classification threshold after training</li>
-<li>Use class weights to penalise misclassifications of the positive class more heavily during training</li>
-</ul></li>
-</ul>
-</section>
 <section id="generalisation-to-multi-class" class="slide level2">
 <h2>Generalisation to multi-class</h2>
 <ul>
 <li>Most metrics can be generalised to multi-class using <em>macro</em>, <em>micro</em>, or <em>weighted</em> averaging.</li>
 <li>ROC curve and AUC can be computed using <em>one-vs-rest</em> approach for each class and then averaged.</li>
+</ul>
+</section>
+<section id="aggregating-metrics-across-classes-1" class="slide level2">
+<h2>Aggregating metrics across classes</h2>
+<ul>
+<li><p><strong>Macro average</strong>: <span class="math inline">\(\frac{1}{|L|}\sum_{l\in L}R(y_{l},\hat{y}_{l})\)</span><br>
+Unweighted mean of per-class scores. Each class contributes equally, regardless of sample size.</p></li>
+<li><p><strong>Micro average</strong>: <span class="math inline">\(\frac{1}{n}\sum_{i=1}^{n}R(y_{i},\hat{y}_{i})\)</span><br>
+Sum individual TP, FP, FN, TN across all classes, then compute metric. Equivalent to accuracy for multiclass.</p></li>
+<li><p><strong>Weighted average</strong>: <span class="math inline">\(\frac{1}{n}\sum_{l\in L}n_{l}R(y_{l},\hat{y}_{l})\)</span><br>
+Weighted by <em>support</em> (number of samples in each class). Balances class sizes in the final score.</p></li>
+</ul>
+</section>
+<section id="next-question-what-if-the-algorithm-doesnt-directly-optimise-for-the-metric-we-want" class="slide level2">
+<h2>Next question: what if the algorithm doesn’t directly optimise for the metric we want?</h2>
+<ul>
+<li>RandomForestClassifier (and other classifiers) in sklearn by default optimises for accuracy and have no direct way to optimise for <em>recall</em>.</li>
+<li>We have several workarounds (topics for later weeks)
+<ol type="1">
+<li>Use recall metric during hyperparameter tuning and cross-validation</li>
+<li>Adjust classification threshold after training</li>
+<li>Use class weights to penalise misclassifications of the positive class more heavily during training</li>
+</ol></li>
 </ul>
 </section></section>
 <section id="overview" class="title-slide slide level1 center">
