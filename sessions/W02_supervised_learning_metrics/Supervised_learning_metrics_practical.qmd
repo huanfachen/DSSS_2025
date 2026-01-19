@@ -8,13 +8,12 @@ filters:
   - quarto
 ---
 
-This week will introduce the supervised learning framework and key metrics for evaluating supervised learning models using the London Fire Brigade dataset.
+This week will introduce the supervised learning workflow using the use case of predicting daily callouts in London.
 
 ## Learning Outcomes
 
--   You have familiarised yourself with how to access and process the dataset from London Fire Brigade.
--   You have familiarised yourself with how to formulate geospatial supervised learning problems using LFB datasets.
--   You have familiarised yourself with picking up the metrics for the geospatial supervised learning problems.
+-   You have familiarised yourself with the key steps in supervised machine learning workflow, including train-test split, cross validation, and hyperparameter tuning.
+-   You are able to explain the differences between different workflows, including their pros and cons.
 
 # Starting the Practical
 
@@ -51,7 +50,7 @@ It is worthwhile reading the [metadata](https://data.london.gov.uk/download/em8x
 
 It is important to consider the potential stakeholders who might benefit from the insights derived from (geospatial) research of fire services. As far as I know, potential stakeholders include:
 
-1. Local fire services including London Fire Brigade. Each fire service department has their data analyst and GIS team. They would be interested in understanding the patterns and trends of fire incidents to improve resource allocation, response times, and overall effectiveness of fire services. The UK fire services don't have lots of collaborations with academic researchers yet. If they need GIS expertise, they always outsource to private companies, such as [Cadcorp](https://www.cadcorp.com/) and [ORH](https://www.orhltd.com/).
+1. Local fire services including London Fire Brigade. Each fire service department has their data analyst and GIS team. They would be interested in understanding the patterns and trends of fire incidents to improve resource allocation, response times, and overall effectiveness of fire services. So far, the UK fire services don't have lots of collaborations with academic researchers. If they need GIS expertise, they always outsource to private companies, such as [Cadcorp](https://www.cadcorp.com/) and [ORH](https://www.orhltd.com/).
 
 2. National Fire Chiefs Council (NFCC, [link](https://nfcc.org.uk/)). NFCC is a non-charity body representing Fire & Rescue Services at a national level and, as the professional voice of the fire and rescue service and aim for maximum impact. They strive to harness knowledge and expertise from across the country, bringing it together for the benefit of all.
 
@@ -295,4 +294,4 @@ Meanwhile, for the above fire service research, we can include more features (e.
 
 ## References and recommendations:
 
-1. There is not much (geospatial) machine learning research on London Fire Brigade datasets in academia. The [blog by GTH Consulting](https://www.gthconsulting.co.uk/blog-list) has some interesting articles on fire service data analysis in the UK, which receive lots of comments on LinkedIn (e.g. [this](https://www.linkedin.com/posts/gth-consulting_fire-risk-assessment-activity-7049279279279279360-7v5A)).
+1. There is not much (geospatial) machine learning research on London Fire Brigade datasets in academia. The [blog by GTH Consulting](https://www.gthconsulting.co.uk/blog-list) provides some interesting articles on fire service data analysis in the UK, which receive lots of comments on LinkedIn (e.g. [this](https://www.linkedin.com/posts/gth-consulting_fire-risk-assessment-activity-7049279279279279360-7v5A)).
