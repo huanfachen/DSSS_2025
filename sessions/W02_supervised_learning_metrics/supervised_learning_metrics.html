@@ -266,7 +266,7 @@ y_i &amp;\in
 <tr class="odd">
 <td>Intuition</td>
 <td>Find a ‘line’ close to all points</td>
-<td>Find a ‘boundary’ between classis</td>
+<td>Find a ‘boundary’ between classes</td>
 </tr>
 <tr class="even">
 <td>Make predictions</td>
@@ -283,7 +283,7 @@ y_i &amp;\in
 </section>
 <section id="example---linear-regression" class="slide level2">
 <h2>Example - linear regression</h2>
-<div id="9cd0d209" class="cell" data-execution_count="1">
+<div id="24bab052" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
 <span id="cb1-2"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb1-3"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
@@ -503,7 +503,16 @@ sensitive to very small <span class="math inline">\(y_i\)</span>; relative error
 <ul>
 <li>Question: which R2 is correct?</li>
 </ul>
-<div id="b6403d3b" class="cell" data-execution_count="3">
+<div id="1c8fd061" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="co"># fit a neural network model using sklearn. Using similar workflow as previous cell</span></span>
+<span id="cb3-2"><a></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPRegressor</span>
+<span id="cb3-3"><a></a>nn <span class="op">=</span> MLPRegressor(random_state<span class="op">=</span><span class="dv">10</span>, max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb3-4"><a></a>nn.fit(X_train, y_train)</span>
+<span id="cb3-5"><a></a>y_pred_nn <span class="op">=</span> nn.predict(X_test)</span>
+<span id="cb3-6"><a></a><span class="bu">print</span>(<span class="ss">f"R2 (sklearn): </span><span class="sc">{</span>r2_score(y_test, y_pred_nn)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb3-7"><a></a>lr_nn <span class="op">=</span> LinearRegression()</span>
+<span id="cb3-8"><a></a>lr_nn.fit(y_test.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), y_pred_nn)</span>
+<span id="cb3-9"><a></a><span class="bu">print</span>(<span class="ss">f"R2 (linear regression between y_test and y_pred): </span><span class="sc">{</span>lr_nn<span class="sc">.</span>score(y_test.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), y_pred_nn)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R2 (sklearn): -2.616
 R2 (linear regression between y_test and y_pred): 0.156</code></pre>
@@ -536,11 +545,11 @@ R2 (linear regression between y_test and y_pred): 0.156</code></pre>
 </section>
 <section id="example-using-breast-cancer-dataset" class="slide level2">
 <h2>Example using Breast Cancer dataset</h2>
-<div id="3598f953" class="cell" data-execution_count="5">
+<div id="94b375c2" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>class malignant: 212, 37.258%
 class benign: 357, 62.742%
-Predictive accuracy: 0.930</code></pre>
+Predictive accuracy: 0.923</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -560,7 +569,7 @@ Predictive accuracy: 0.930</code></pre>
   - y_pred_2: Predicts some positives correctly but misses others
   - y_pred_3: A mix of errors --></li>
 </ul>
-<div id="319fdcad" class="cell" data-execution_count="6">
+<div id="e7c54b4d" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -577,21 +586,19 @@ Predictive accuracy: 0.930</code></pre>
 <li><strong>Recall</strong> (Sensitivity, True Positive Rate): <span class="math inline">\(\frac{TP}{TP+FN}\)</span>. <em>Among actual positives, how many are correctly predicted.</em></li>
 <li><strong>F1-score</strong> (Harmonic mean of precision &amp; recall): <span class="math inline">\(F=2\frac{\text{precision}\cdot \text{recall}}{\text{precision}+\text{recall}}\)</span></li>
 </ul>
-</section></section>
-<section id="another-illustration" class="title-slide slide level1 center">
-<h1>Another illustration</h1>
+</section>
+<section id="another-illustration" class="slide level2">
+<h2>Another illustration</h2>
 <div style="text-align:center;">
-<img src="images/precision_recall.webp" alt="precision vs recall" style="max-width:60%;">
+<img src="images/precision_recall.png" alt="precision vs recall" style="max-width:60%;">
 <div style="font-size:0.8em; color: #555; margin-top:4px;">
 <pre><code>Image Credit: wikipedia.org</code></pre>
 </div>
 </div>
 </section>
-
-<section>
-<section id="example" class="title-slide slide level1 center">
-<h1>Example</h1>
-<div id="cb26cde5" class="cell" data-execution_count="7">
+<section id="example" class="slide level2">
+<h2>Example</h2>
+<div id="e70e38ba" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -604,9 +611,9 @@ Predictive accuracy: 0.930</code></pre>
 <section id="addressing-accuracy-paradox" class="slide level2">
 <h2>Addressing accuracy paradox</h2>
 <ul>
-<li>Model #2 has higher predictive power (including precision &amp; recall) than #1 and #3.</li>
+<li>To address this issue in imbalanced data, pick up precision or recall or F1 as the metric.</li>
 </ul>
-<div id="293e0ddd" class="cell" data-execution_count="8">
+<div id="ef911c51" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -622,7 +629,7 @@ Predictive accuracy: 0.930</code></pre>
 <li>When precision increases, recall decreases. Vice versa.</li>
 <li>By changing classification threshold (default=0.5, from 0 to 1), we can see the balance between precision and recall.</li>
 </ul>
-<div id="bad1a1b3" class="cell" data-execution_count="9">
+<div id="6c417607" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -639,7 +646,7 @@ Predictive accuracy: 0.930</code></pre>
 <li>Receiver Operating Characteristic (ROC) curve plots <em>True Positive Rate</em> vs.&nbsp;<em>False Positive Rate</em>. Similar to precision-recall curve.</li>
 <li>The identity line <em>y=x</em> represents <em>random classifier</em> (e.g.&nbsp;tossing a coin).</li>
 </ul>
-<div id="88b270d2" class="cell" data-execution_count="10">
+<div id="b8d44406" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -656,7 +663,7 @@ Predictive accuracy: 0.930</code></pre>
 <li>AUC is always 0.5 for random predictions</li>
 <li>Maximum AUC is 1.0 for perfect predictions</li>
 </ul>
-<div id="cdb20716" class="cell" data-execution_count="11">
+<div id="1419648c" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -679,8 +686,8 @@ Weighted by <em>support</em> (number of samples in each class). Balances class s
 </section>
 <section id="classification-report" class="slide level2">
 <h2>Classification report</h2>
-<div id="3d33939d" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="bu">print</span>(classification_report(y_test, rf.predict(X_test), target_names<span class="op">=</span>data.target_names))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2953f729" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="bu">print</span>(classification_report(y_test, rf.predict(X_test), target_names<span class="op">=</span>data.target_names))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              precision    recall  f1-score   support
 

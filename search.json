@@ -746,7 +746,7 @@
     "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
     "title": "Supervised learning",
     "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.923"
   },
   {
     "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
@@ -2031,7 +2031,7 @@
     "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#regression-vs.-classification",
     "title": "Supervised learning",
     "section": "Regression vs. classification",
-    "text": "Regression vs. classification\n\n\n\n\n\n\n\n\n\nRegression\nClassification\n\n\n\n\nTarget variable\nContinuous value (y )\nDiscrete label (y ) (finite set)\n\n\nTask\nPredict “how much” / “how many”\nPredict “which class” / “which category”\n\n\nIntuition\nFind a ‘line’ close to all points\nFind a ‘boundary’ between classis\n\n\nMake predictions\nDirectly predict target variable\nPredict class probabilities and assign class with highest probability\n\n\nExample\nPredicting house prices from features\nPredicting spam vs. not spam for an email"
+    "text": "Regression vs. classification\n\n\n\n\n\n\n\n\n\nRegression\nClassification\n\n\n\n\nTarget variable\nContinuous value (y )\nDiscrete label (y ) (finite set)\n\n\nTask\nPredict “how much” / “how many”\nPredict “which class” / “which category”\n\n\nIntuition\nFind a ‘line’ close to all points\nFind a ‘boundary’ between classes\n\n\nMake predictions\nDirectly predict target variable\nPredict class probabilities and assign class with highest probability\n\n\nExample\nPredicting house prices from features\nPredicting spam vs. not spam for an email"
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#example---linear-regression",
@@ -2073,7 +2073,7 @@
     "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#misuse-of-r2-metric",
     "title": "Supervised learning",
     "section": "Misuse of R2 metric",
-    "text": "Misuse of R2 metric\n\nQuestion: which R2 is correct?\n\n\n\nR2 (sklearn): -2.616\nR2 (linear regression between y_test and y_pred): 0.156"
+    "text": "Misuse of R2 metric\n\nQuestion: which R2 is correct?\n\n\n# fit a neural network model using sklearn. Using similar workflow as previous cell\nfrom sklearn.neural_network import MLPRegressor\nnn = MLPRegressor(random_state=10, max_iter=1000)\nnn.fit(X_train, y_train)\ny_pred_nn = nn.predict(X_test)\nprint(f\"R2 (sklearn): {r2_score(y_test, y_pred_nn):.3f}\")\nlr_nn = LinearRegression()\nlr_nn.fit(y_test.reshape(-1, 1), y_pred_nn)\nprint(f\"R2 (linear regression between y_test and y_pred): {lr_nn.score(y_test.reshape(-1, 1), y_pred_nn):.3f}\")\n\nR2 (sklearn): -2.616\nR2 (linear regression between y_test and y_pred): 0.156"
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#misuse-of-r2-metric-1",
@@ -2094,7 +2094,7 @@
     "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
     "title": "Supervised learning",
     "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.923"
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
@@ -2111,11 +2111,25 @@
     "text": "Precision, Recall, F1-score, AUC\n\nPrecision (Positive Predicted Value): \\(\\frac{TP}{TP+FP}\\). Among predicted positives, how many are actually positive.\nRecall (Sensitivity, True Positive Rate): \\(\\frac{TP}{TP+FN}\\). Among actual positives, how many are correctly predicted.\nF1-score (Harmonic mean of precision & recall): \\(F=2\\frac{\\text{precision}\\cdot \\text{recall}}{\\text{precision}+\\text{recall}}\\)"
   },
   {
+    "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#another-illustration",
+    "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#another-illustration",
+    "title": "Supervised learning",
+    "section": "Another illustration",
+    "text": "Another illustration\n\n\n\nImage Credit: wikipedia.org"
+  },
+  {
+    "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#example",
+    "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#example",
+    "title": "Supervised learning",
+    "section": "Example",
+    "text": "Example"
+  },
+  {
     "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#addressing-accuracy-paradox",
     "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#addressing-accuracy-paradox",
     "title": "Supervised learning",
     "section": "Addressing accuracy paradox",
-    "text": "Addressing accuracy paradox\n\nModel #2 has higher predictive power (including precision & recall) than #1 and #3."
+    "text": "Addressing accuracy paradox\n\nTo address this issue in imbalanced data, pick up precision or recall or F1 as the metric."
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#trade-off-between-precision-and-recall",
@@ -3531,7 +3545,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.994\n\nModel 2 (4 features): y = 1.22 + 28.30*X1 + 73.99*X2 + 20.94*X3 + -2.39*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.995\n\nModel 2 (4 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 19.00*X3 + -0.22*X4\nR² = 0.985"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",
