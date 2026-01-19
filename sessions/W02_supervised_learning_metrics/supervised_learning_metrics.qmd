@@ -294,6 +294,16 @@ plt.tight_layout()
 - **Recall** (Sensitivity, True Positive Rate): $\frac{TP}{TP+FN}$. *Among actual positives, how many are correctly predicted.*
 - **F1-score** (Harmonic mean of precision & recall): $F=2\frac{\text{precision}\cdot \text{recall}}{\text{precision}+\text{recall}}$
 
+# Another illustration
+
+<div style="text-align:center;">
+  <img src="images/precision_recall.webp" alt="precision vs recall" style="max-width:60%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: wikipedia.org
+  </div>
+</div>
+
+# Example
 ```{python}
 #| echo: false
 from sklearn.metrics import precision_score, recall_score, f1_score
@@ -336,9 +346,12 @@ plt.show()
 ```
 
 ## Addressing accuracy paradox
+
+- Model #2 has higher predictive power (including precision & recall) than #1 and #3.
+
 ```{python}
 #| echo: false
-fig = plt.figure(figsize=(12, 7), constrained_layout=True)
+fig = plt.figure(figsize=(12, 6), constrained_layout=True)
 
 # Row 1: Confusion matrices
 for i, y_pred in enumerate([y_pred_1, y_pred_2, y_pred_3]):
@@ -364,8 +377,6 @@ table = ax_table.table(cellText=metrics_data, colLabels=['Model', 'Accuracy', 'P
 table.auto_set_font_size(False)
 table.set_fontsize(11)
 table.scale(1, 2)
-
-
 
 plt.tight_layout()
 plt.show()
