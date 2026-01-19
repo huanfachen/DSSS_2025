@@ -2670,14 +2670,14 @@
     "href": "sessions/W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html",
     "title": "Practical 2: Supervised learning framework and metrics",
     "section": "",
-    "text": "This week will introduce the supervised learning framework and key metrics for evaluating supervised learning models using the London Fire Brigade dataset."
+    "text": "This week will introduce the supervised learning workflow using the use case of predicting daily callouts in London."
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html#learning-outcomes",
     "href": "sessions/W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html#learning-outcomes",
     "title": "Practical 2: Supervised learning framework and metrics",
     "section": "Learning Outcomes",
-    "text": "Learning Outcomes\n\nYou have familiarised yourself with how to access and process the dataset from London Fire Brigade.\nYou have familiarised yourself with how to formulate geospatial supervised learning problems using LFB datasets.\nYou have familiarised yourself with picking up the metrics for the geospatial supervised learning problems."
+    "text": "Learning Outcomes\n\nYou have familiarised yourself with the key steps in supervised machine learning workflow, including train-test split, cross validation, and hyperparameter tuning.\nYou are able to explain the differences between different workflows, including their pros and cons."
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html#key-considerations",
@@ -2691,7 +2691,7 @@
     "href": "sessions/W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html#stakeholders-of-fire-service-research",
     "title": "Practical 2: Supervised learning framework and metrics",
     "section": "Stakeholders of fire service research",
-    "text": "Stakeholders of fire service research\nIt is important to consider the potential stakeholders who might benefit from the insights derived from (geospatial) research of fire services. As far as I know, potential stakeholders include:\n\nLocal fire services including London Fire Brigade. Each fire service department has their data analyst and GIS team. They would be interested in understanding the patterns and trends of fire incidents to improve resource allocation, response times, and overall effectiveness of fire services. The UK fire services don’t have lots of collaborations with academic researchers yet. If they need GIS expertise, they always outsource to private companies, such as Cadcorp and ORH.\nNational Fire Chiefs Council (NFCC, link). NFCC is a non-charity body representing Fire & Rescue Services at a national level and, as the professional voice of the fire and rescue service and aim for maximum impact. They strive to harness knowledge and expertise from across the country, bringing it together for the benefit of all."
+    "text": "Stakeholders of fire service research\nIt is important to consider the potential stakeholders who might benefit from the insights derived from (geospatial) research of fire services. As far as I know, potential stakeholders include:\n\nLocal fire services including London Fire Brigade. Each fire service department has their data analyst and GIS team. They would be interested in understanding the patterns and trends of fire incidents to improve resource allocation, response times, and overall effectiveness of fire services. So far, the UK fire services don’t have lots of collaborations with academic researchers. If they need GIS expertise, they always outsource to private companies, such as Cadcorp and ORH.\nNational Fire Chiefs Council (NFCC, link). NFCC is a non-charity body representing Fire & Rescue Services at a national level and, as the professional voice of the fire and rescue service and aim for maximum impact. They strive to harness knowledge and expertise from across the country, bringing it together for the benefit of all."
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html#potential-use-cases",
@@ -2719,7 +2719,7 @@
     "href": "sessions/W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html#references-and-recommendations",
     "title": "Practical 2: Supervised learning framework and metrics",
     "section": "References and recommendations:",
-    "text": "References and recommendations:\n\nThere is not much (geospatial) machine learning research on London Fire Brigade datasets in academia. The blog by GTH Consulting has some interesting articles on fire service data analysis in the UK, which receive lots of comments on LinkedIn (e.g. this)."
+    "text": "References and recommendations:\n\nThere is not much (geospatial) machine learning research on London Fire Brigade datasets in academia. The blog by GTH Consulting provides some interesting articles on fire service data analysis in the UK, which receive lots of comments on LinkedIn (e.g. this)."
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#last-week",
@@ -3601,7 +3601,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.995\n\nModel 2 (4 features): y = 1.20 + 28.28*X1 + 73.97*X2 + 26.69*X3 + -8.94*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.19 + 28.38*X1 + 73.98*X2 + 11.67*X3 + 7.74*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",
