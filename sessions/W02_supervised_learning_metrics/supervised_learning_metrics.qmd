@@ -386,7 +386,10 @@ plt.show()
 ## Trade-off between precision and recall
 
 - When precision increases, recall decreases. Vice versa.
-- By changing classification threshold (default=0.5, from 0 to 1), we can see the balance between precision and recall.
+- To generate this plot: 
+  1. Predict p(label=1) for each record. 
+  2. With a given classification **threshold**, predict label=1 if p(label=1) > threshold; else predict label=0, then compute precision & recall.
+  3. Vary the threshold from 0 to 1, compute precision and recall at each threshold. Link the dots to get the curve.
 
 ```{python}
 #| echo: false
@@ -423,7 +426,7 @@ plt.show()
 
 ## ROC Curve
 
-- Receiver Operating Characteristic (ROC) curve plots *True Positive Rate* vs. *False Positive Rate*. Similar to precision-recall curve. 
+- Receiver Operating Characteristic (ROC) curve plots *True Positive Rate*=TP/(TP+FN) vs. *False Positive Rate*=FP/(FP+TN).
 - The identity line *y=x* represents *random classifier* (e.g. tossing a coin). 
 ```{python}
 #| echo: false
