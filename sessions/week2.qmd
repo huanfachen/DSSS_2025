@@ -36,7 +36,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](W02_supervised_learning_metrics/supervised_learning_metrics_practical.html)
-2. [Download](W02_supervised_learning_metrics/supervised_learning_metrics_practical.ipynb)
+1. [Preview](W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html)
+2. [Download](W02_supervised_learning_metrics/Supervised_learning_metrics_practical.ipynb)
 
 ## Further resources
