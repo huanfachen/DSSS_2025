@@ -385,11 +385,16 @@ plt.show()
 
 ## Trade-off between precision and recall
 
-- When precision increases, recall decreases. Vice versa.
-- To generate this plot: 
+- Generally, when precision increases, recall decreases. Vice versa.
+- To generate this plot, using varying threshold T.
   1. Predict p(label=1) for each record. 
-  2. With a given classification **threshold**, predict label=1 if p(label=1) > threshold; else predict label=0, then compute precision & recall.
-  3. Vary the threshold from 0 to 1, compute precision and recall at each threshold. Link the dots to get the curve.
+  2. With a given T, predict label=1 if p(label=1) > T; else predict label=0, then compute precision & recall.
+  3. Vary T from 0 to 1, compute precision and recall at each threshold. Link the dots to get the curve.
+
+## Example: trade-off between precision and recall
+
+- Edge case: when threshold>=1, all are predicted as negative. 
+- recall=0, precision is undefined and set to 1.
 
 ```{python}
 #| echo: false
@@ -414,6 +419,50 @@ rf = RandomForestClassifier(
 rf.fit(X_train, y_train)
 
 # Plot PR curve for lr
+plt.figure(figsize=(7, 5))
+pr_lr = PrecisionRecallDisplay.from_estimator(lr, X_test, y_test, name='LR')
+
+# Plot PR curve for RandomForest on the same axes
+pr_rf = PrecisionRecallDisplay.from_estimator(rf, X_test, y_test, ax=plt.gca(),
+name='RandomForestClassifier')
+
+plt.title("Precision–Recall Curve")
+plt.show()
+```
+
+## Usage of Precision-Recall curve
+
+- To visualise the precision-recall trade-off
+- To select the optimal threshold
+  - Need high precision? Choose a point in high-precision, low-recall region.
+  - Need high recall? Choose a point in high-recall, low-precision region.
+  - Need a balance? Look for the "elbow" of the curve.
+- To compare different models
+
+```{python}
+#| echo: false
+#| fig-cap: "Precision–Recall curve for LR and Random Forest"
+from sklearn.metrics import RocCurveDisplay, PrecisionRecallDisplay
+
+# load data and split
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, stratify=data.target, random_state=0
+)
+
+# 1. Train Logistic Regression
+lr = LogisticRegression(max_iter=10000)  # larger max_iter for convergence
+lr.fit(X_train, y_train)
+
+# 2. Train Random Forest
+rf = RandomForestClassifier(
+    n_estimators=100,
+    random_state=0
+)
+rf.fit(X_train, y_train)
+
+# Plot PR curve for lr
+plt.figure(figsize=(7, 5))
 pr_lr = PrecisionRecallDisplay.from_estimator(lr, X_test, y_test, name='LR')
 
 # Plot PR curve for RandomForest on the same axes
