@@ -2136,7 +2136,21 @@
     "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#trade-off-between-precision-and-recall",
     "title": "Supervised learning",
     "section": "Trade-off between precision and recall",
-    "text": "Trade-off between precision and recall\n\nWhen precision increases, recall decreases. Vice versa.\nTo generate this plot:\n\nPredict p(label=1) for each record.\nWith a given classification threshold, predict label=1 if p(label=1) &gt; threshold; else predict label=0, then compute precision & recall.\nVary the threshold from 0 to 1, compute precision and recall at each threshold. Link the dots to get the curve.\n\n\n\n\n\n\n\nPrecision–Recall curve for LR and Random Forest"
+    "text": "Trade-off between precision and recall\n\nGenerally, when precision increases, recall decreases. Vice versa.\nTo generate this plot, using varying threshold T.\n\nPredict p(label=1) for each record.\nWith a given T, predict label=1 if p(label=1) &gt; T; else predict label=0, then compute precision & recall.\nVary T from 0 to 1, compute precision and recall at each threshold. Link the dots to get the curve."
+  },
+  {
+    "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#example-trade-off-between-precision-and-recall",
+    "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#example-trade-off-between-precision-and-recall",
+    "title": "Supervised learning",
+    "section": "Example: trade-off between precision and recall",
+    "text": "Example: trade-off between precision and recall\n\nEdge case: when threshold&gt;=1, all are predicted as negative.\nrecall=0, precision is undefined and set to 1.\n\n\n\n&lt;Figure size 672x480 with 0 Axes&gt;\nPrecision–Recall curve for LR and Random Forest"
+  },
+  {
+    "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#usage-of-precision-recall-curve",
+    "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#usage-of-precision-recall-curve",
+    "title": "Supervised learning",
+    "section": "Usage of Precision-Recall curve",
+    "text": "Usage of Precision-Recall curve\n\nTo visualise the precision-recall trade-off\nTo select the optimal threshold\n\nNeed high precision? Choose a point in high-precision, low-recall region.\nNeed high recall? Choose a point in high-recall, low-precision region.\nNeed a balance? Look for the “elbow” of the curve.\n\nTo compare different models\n\n\n\n&lt;Figure size 672x480 with 0 Axes&gt;\nPrecision–Recall curve for LR and Random Forest"
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#roc-curve",
@@ -3601,7 +3615,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.15 + 28.04*X1 + 74.05*X2 + 11.43*X3 + 8.21*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.994\n\nModel 2 (4 features): y = 1.24 + 28.29*X1 + 74.01*X2 + 20.49*X3 + -1.87*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",
