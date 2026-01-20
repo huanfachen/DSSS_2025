@@ -393,7 +393,7 @@ plt.show()
 
 ## Example: trade-off between precision and recall
 
-- Edge case: when threshold>=1, all are predicted as negative. 
+- Edge case: when T >= 1, all are predicted as negative. 
 - recall=0, precision is undefined and set to 1.
 
 ```{python}
@@ -419,7 +419,8 @@ rf = RandomForestClassifier(
 rf.fit(X_train, y_train)
 
 # Plot PR curve for lr
-plt.figure(figsize=(7, 5))
+fig = plt.figure(figsize=(7, 5), constrained_layout=True)
+# plt.figure(figsize=(7, 5))
 pr_lr = PrecisionRecallDisplay.from_estimator(lr, X_test, y_test, name='LR')
 
 # Plot PR curve for RandomForest on the same axes
@@ -438,40 +439,6 @@ plt.show()
   - Need high recall? Choose a point in high-recall, low-precision region.
   - Need a balance? Look for the "elbow" of the curve.
 - To compare different models
-
-```{python}
-#| echo: false
-#| fig-cap: "Precision–Recall curve for LR and Random Forest"
-from sklearn.metrics import RocCurveDisplay, PrecisionRecallDisplay
-
-# load data and split
-data = load_breast_cancer()
-X_train, X_test, y_train, y_test = train_test_split(
-    data.data, data.target, stratify=data.target, random_state=0
-)
-
-# 1. Train Logistic Regression
-lr = LogisticRegression(max_iter=10000)  # larger max_iter for convergence
-lr.fit(X_train, y_train)
-
-# 2. Train Random Forest
-rf = RandomForestClassifier(
-    n_estimators=100,
-    random_state=0
-)
-rf.fit(X_train, y_train)
-
-# Plot PR curve for lr
-plt.figure(figsize=(7, 5))
-pr_lr = PrecisionRecallDisplay.from_estimator(lr, X_test, y_test, name='LR')
-
-# Plot PR curve for RandomForest on the same axes
-pr_rf = PrecisionRecallDisplay.from_estimator(rf, X_test, y_test, ax=plt.gca(),
-name='RandomForestClassifier')
-
-plt.title("Precision–Recall Curve")
-plt.show()
-```
 
 ## ROC Curve
 
