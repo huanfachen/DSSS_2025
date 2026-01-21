@@ -419,7 +419,7 @@ rf = RandomForestClassifier(
 rf.fit(X_train, y_train)
 
 # Plot PR curve for lr
-fig = plt.figure(figsize=(7, 5), constrained_layout=True)
+# fig = plt.figure(figsize=(7, 5), constrained_layout=True)
 # plt.figure(figsize=(7, 5))
 pr_lr = PrecisionRecallDisplay.from_estimator(lr, X_test, y_test, name='LR')
 
@@ -562,7 +562,7 @@ print(classification_report(y_test, rf.predict(X_test), target_names=data.target
 # Overview 
 We've covered: 
 
-- Frameork of supervised learning
+- Framework of supervised learning
 - Evaluation metrics for regression (default: RMSE or squared error)
 - Evaluation metrics for classification (accuracy, precision, recall, F1-score, AUC)
 - Mind the accuracy paradox: accuracy is often not what you want for imbalanced data
