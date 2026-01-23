@@ -2761,14 +2761,21 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#challenges-of-training-supervised-models",
     "title": "Supervised learning workflow",
     "section": "Challenges of training supervised models",
-    "text": "Challenges of training supervised models\n\nGeneralise to new data\nAvoid overfitting/underfitting\nModel selection (hyperparameter tuning)"
+    "text": "Challenges of training supervised models\n\nTo select evaluation metrics (so that the model solves the right problem)\nTo design workflow (so that the model generalises well and avoids overfitting)\n\n\nA robust workflow leads to an unbiased evaluation of the model’s generalisation performance\nIt will select effective model hyperparameters (to avoid overfitting)"
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-7525",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-7525",
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#various-workflows",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#various-workflows",
     "title": "Supervised learning workflow",
-    "section": "Train-Test Split (75/25)",
-    "text": "Train-Test Split (75/25)"
+    "section": "Various workflows",
+    "text": "Various workflows\n\nTrain-test split\nThreefold split (train-validation-test)\nCross-validation + test set"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-usually-7525",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-usually-7525",
+    "title": "Supervised learning workflow",
+    "section": "Train-Test Split (usually 75/25)",
+    "text": "Train-Test Split (usually 75/25)"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-train-test-split",
@@ -2776,6 +2783,20 @@
     "title": "Supervised learning workflow",
     "section": "Why Train-Test Split?",
     "text": "Why Train-Test Split?\n\n\nStatistics\n\nNo train-test split\nTrain and evaluate on whole data\nEstimation is key\nLow model complexity\n\n\nMachine Learning\n\nTrain-test split\nTrain on part, evaluate on held-out part\nPrediction (Generalisation) is key\nHigh model complexity; overfitting risk"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#example---k-nearest-neighbors-knn",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#example---k-nearest-neighbors-knn",
+    "title": "Supervised learning workflow",
+    "section": "Example - K Nearest Neighbors (KNN)",
+    "text": "Example - K Nearest Neighbors (KNN)\n\n\n\n\nPredict label of closest training sample\n\\(f(x) = y_i,\\; i = \\operatorname*{argmin}_j \\lVert x_j - x \\rVert\\)"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#nearest-neighbors-k1",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#nearest-neighbors-k1",
+    "title": "Supervised learning workflow",
+    "section": "Nearest Neighbors (k=1)",
+    "text": "Nearest Neighbors (k=1)\n\n\n\n\nMemorises training samples\nSensitive/Complex decision boundary"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#influence-of-n_neighbors-k3",
@@ -2789,21 +2810,35 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting",
     "title": "Supervised learning workflow",
     "section": "Overfitting vs Underfitting",
-    "text": "Overfitting vs Underfitting"
+    "text": "Overfitting vs Underfitting\n\nPerformance on training data generally increases with model complexity"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-1",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-1",
+    "title": "Supervised learning workflow",
+    "section": "Overfitting vs Underfitting",
+    "text": "Overfitting vs Underfitting\n\nPerformance on testing data firstly increases with model complexity, and then decreases due to overfitting"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-2",
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-2",
     "title": "Supervised learning workflow",
     "section": "Overfitting vs Underfitting",
-    "text": "Overfitting vs Underfitting"
+    "text": "Overfitting vs Underfitting\n\nThe optimal hyperparameter achieves balance between underfitting and overfitting"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#so-far-happy-ending",
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#so-far-happy-ending",
     "title": "Supervised learning workflow",
     "section": "So far: Happy ending?",
-    "text": "So far: Happy ending?\n\nReport: best k=19, test accuracy=0.77\nGood for choosing k\nBut: overly optimistic for generalisation\nProblem: test set used for both choosing k and final evaluation"
+    "text": "So far: Happy ending?\n\nReport: best k=19, test accuracy=0.77\nGood for choosing k\nBut, overly optimistic for generalisation\nProblem: test set used twice, for both choosing k and final evaluation"
+  },
+  {
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#summary-of-train-test-split",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#summary-of-train-test-split",
+    "title": "Supervised learning workflow",
+    "section": "Summary of train-test split",
+    "text": "Summary of train-test split\n\nThe idea is to train the model on the training set, and evaluate it on the test set.\nBut, problematic to use the test set for both hyperparameter tuning and final evaluation.\nIf we need to choose model hyperparameters, we need a separate validation set (or cross-validation)."
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-overfitting-the-validation-set",
@@ -3615,7 +3650,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.23 + 28.26*X1 + 74.03*X2 + 22.24*X3 + -3.84*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.23 + 28.34*X1 + 74.00*X2 + 23.89*X3 + -5.62*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",

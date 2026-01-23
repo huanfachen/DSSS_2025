@@ -188,7 +188,7 @@
     }
   </style>
 <meta property="og:title" content="Supervised learning workflow – Data Science for Spatial Systems">
-<meta property="og:description" content="Model selection">
+<meta property="og:description" content="Model training and selection">
 <meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/W03_supervised_learning_workflow/img/logo/full_sm.png">
 <meta property="og:site_name" content="Foundations">
 <meta property="og:locale" content="en_GB">
@@ -205,7 +205,7 @@
 
 <h1 class="title">Supervised learning workflow</h1>
 
-  <h3 style="opacity:0.8;" class="subtitle">Model selection</h3>
+  <h3 style="opacity:0.8;" class="subtitle">Model training and selection</h3>
 
 <p><span style="margin:0px; font-weight:700;" class="author">Huanfa Chen</span> - huanfa.chen@ucl.ac.uk </p>
 
@@ -247,14 +247,30 @@ y_i &amp;\in
 </section>
 <section id="challenges-of-training-supervised-models" class="slide level2">
 <h2>Challenges of training supervised models</h2>
+<ol type="1">
+<li>To select evaluation metrics (so that the model solves the right problem)</li>
+<li><span style="color:blue">To design workflow (so that the model generalises well and avoids overfitting)</span></li>
+</ol>
 <ul>
-<li>Generalise to new data</li>
-<li>Avoid overfitting/underfitting</li>
-<li>Model selection (hyperparameter tuning)</li>
+<li>A robust workflow leads to an unbiased evaluation of the model’s generalisation performance</li>
+<li>It will select effective model hyperparameters (to avoid overfitting)</li>
 </ul>
 </section>
-<section id="train-test-split-7525" class="slide level2">
-<h2>Train-Test Split (75/25)</h2>
+<section id="various-workflows" class="slide level2">
+<h2>Various workflows</h2>
+<ol type="1">
+<li>Train-test split</li>
+<li>Threefold split (train-validation-test)</li>
+<li>Cross-validation + test set</li>
+</ol>
+</section>
+<section>
+<section id="train-test-split" class="title-slide slide level1 center">
+<h1>Train-Test split</h1>
+
+</section>
+<section id="train-test-split-usually-7525" class="slide level2">
+<h2>Train-Test Split (usually 75/25)</h2>
 <div style="text-align:center;">
 <p><img src="images/train_test_split_new.png" alt="Train-test split" style="max-width:100%;"></p>
 </div>
@@ -280,8 +296,8 @@ y_i &amp;\in
 </ul>
 </div></div>
 </section>
-<section id="examople---k-nearest-neighbors-knn" class="title-slide slide level1 center">
-<h1>Examople - K Nearest Neighbors (KNN)</h1>
+<section id="example---k-nearest-neighbors-knn" class="slide level2">
+<h2>Example - K Nearest Neighbors (KNN)</h2>
 <div style="text-align:center;">
 <p><img src="images/knn_boundary_test_points.png" alt="KNN boundary with test points" style="max-width:40%;"></p>
 </div>
@@ -290,9 +306,8 @@ y_i &amp;\in
 <li><span class="math inline">\(f(x) = y_i,\; i = \operatorname*{argmin}_j \lVert x_j - x \rVert\)</span></li>
 </ul>
 </section>
-
-<section id="nearest-neighbors-k1" class="title-slide slide level1 center">
-<h1>Nearest Neighbors (k=1)</h1>
+<section id="nearest-neighbors-k1" class="slide level2">
+<h2>Nearest Neighbors (k=1)</h2>
 <div style="text-align:center;">
 <p><img src="images/knn_boundary_k1.png" alt="KNN boundary k=1" style="max-width:40%;"></p>
 </div>
@@ -300,14 +315,13 @@ y_i &amp;\in
 <li>Memorises training samples</li>
 <li>Sensitive/Complex decision boundary</li>
 </ul>
-</section>
-
+</section></section>
 <section>
 <section id="knn-with-scikit-learn" class="title-slide slide level1 center">
 <h1>KNN with scikit-learn</h1>
-<div id="a86cd965" class="cell" data-execution_count="2">
+<div id="9081ce24" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
-<pre><code>accuracy: 0.46153846153846156</code></pre>
+<pre><code>accuracy: 0.6923076923076923</code></pre>
 </div>
 </div>
 </section>
@@ -345,30 +359,46 @@ y_i &amp;\in
 </section>
 <section id="overfitting-vs-underfitting" class="slide level2">
 <h2>Overfitting vs Underfitting</h2>
+<ul>
+<li>Performance on training data generally increases with model complexity
 <div style="text-align:center;">
 <p><img src="images/overfitting_underfitting_cartoon_train.png" alt="Overfitting vs Underfitting (train)" style="max-width:80%;"></p>
-</div>
-</section></section>
-<section>
-<section id="overfitting-vs-underfitting-1" class="title-slide slide level1 center">
-<h1>Overfitting vs Underfitting</h1>
+</div></li>
+</ul>
+</section>
+<section id="overfitting-vs-underfitting-1" class="slide level2">
+<h2>Overfitting vs Underfitting</h2>
+<ul>
+<li>Performance on testing data firstly increases with model complexity, and then decreases <em>due to overfitting</em>
 <div style="text-align:center;">
 <p><img src="images/overfitting_underfitting_cartoon_generalization.png" alt="Overfitting vs Underfitting (generalization)" style="max-width:80%;"></p>
-</div>
+</div></li>
+</ul>
 </section>
 <section id="overfitting-vs-underfitting-2" class="slide level2">
 <h2>Overfitting vs Underfitting</h2>
-<div style="text-align:center;">
-<p><img src="images/overfitting_underfitting_cartoon_full.png" alt="Overfitting vs Underfitting (full)" style="max-width:80%;"></p>
-</div>
+<ul>
+<li>The optimal hyperparameter achieves balance between underfitting and overfitting</li>
+</ul>
+<p><img data-src="images/overfitting_underfitting_cartoon_full.png" class="r-stretch"> <!-- <div style="text-align:center;">
+  <img src="images/overfitting_underfitting_cartoon_full.png" alt="Overfitting vs Underfitting (full)" style="max-width:80%;">
+</div> --></p>
 </section>
 <section id="so-far-happy-ending" class="slide level2">
 <h2>So far: Happy ending?</h2>
 <ul>
 <li>Report: best k=19, test accuracy=0.77</li>
 <li>Good for choosing k</li>
-<li><span style="color:blue">But: overly optimistic for generalisation</span></li>
-<li>Problem: test set used for both choosing k and final evaluation</li>
+<li><span style="color:blue">But, overly optimistic for generalisation</span></li>
+<li>Problem: test set used twice, for both choosing k and final evaluation</li>
+</ul>
+</section>
+<section id="summary-of-train-test-split" class="slide level2">
+<h2>Summary of train-test split</h2>
+<ul>
+<li>The idea is to train the model on the training set, and evaluate it on the test set.</li>
+<li>But, problematic to use the test set for both hyperparameter tuning and final evaluation.</li>
+<li>If we need to choose model hyperparameters, we need a separate validation set (or cross-validation).</li>
 </ul>
 <div style="text-align:center;">
 <p><img src="images/knn_model_complexity_marked.png" alt="Train-test split" style="max-width:60%;"></p>
@@ -453,7 +483,7 @@ y_i &amp;\in
 <li>Fixed train/val/test split → results depend on split</li>
 <li>High variance in best k and test score, not robust</li>
 </ul>
-<div id="fef60aea" class="cell" data-execution_count="3">
+<div id="e015c0b3" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>   random_seed  best_validation_score  best_k  test_set_score
 0            0                    0.7       5        0.846154
@@ -481,9 +511,9 @@ y_i &amp;\in
 </section></section>
 <section id="grid-search-with-cv-code" class="title-slide slide level1 center">
 <h1>Grid-Search with CV (Code)</h1>
-<div id="8791aa35" class="cell" data-execution_count="4">
+<div id="5a5e3765" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
-<pre><code>test-set score: 0.846</code></pre>
+<pre><code>test-set score: 0.538</code></pre>
 </div>
 </div>
 </section>
@@ -497,10 +527,10 @@ y_i &amp;\in
 
 <section id="gridsearchcv-code" class="title-slide slide level1 center">
 <h1>GridSearchCV (Code)</h1>
-<div id="fbdfb2ce" class="cell" data-execution_count="5">
+<div id="4372d6f6" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
-<pre><code>best parameters: {'n_neighbors': np.int64(1)}
-test-set score: 0.692</code></pre>
+<pre><code>best parameters: {'n_neighbors': np.int64(21)}
+test-set score: 0.769</code></pre>
 </div>
 </div>
 </section>
@@ -508,7 +538,7 @@ test-set score: 0.692</code></pre>
 <section>
 <section id="gridsearchcv-results" class="title-slide slide level1 center">
 <h1>GridSearchCV Results</h1>
-<div id="a06a5206" class="cell" data-execution_count="6">
+<div id="31347843" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>0    {'n_neighbors': 1}
 1    {'n_neighbors': 3}
