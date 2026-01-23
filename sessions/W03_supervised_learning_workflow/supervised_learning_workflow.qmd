@@ -1,6 +1,6 @@
 ---
 title: "Supervised learning workflow"
-subtitle: "Model selection"
+subtitle: "Model training and selection"
 author: 
   - name: "Huanfa Chen"
 email: "huanfa.chen@ucl.ac.uk"
@@ -40,11 +40,20 @@ $$
 
 ## Challenges of training supervised models
 
-- Generalise to new data
-- Avoid overfitting/underfitting
-- Model selection (hyperparameter tuning)
+1. To select evaluation metrics (so that the model solves the right problem)
+2. [To design workflow (so that the model generalises well and avoids overfitting)]{style="color:blue"}
+- A robust workflow leads to an unbiased evaluation of the model's generalisation performance
+- It will select effective model hyperparameters (to avoid overfitting)
 
-## Train-Test Split (75/25)
+## Various workflows
+
+1. Train-test split
+2. Threefold split (train-validation-test)
+3. Cross-validation + test set
+
+# Train-Test split
+
+## Train-Test Split (usually 75/25)
 
 <div style="text-align:center;">
   <img src="images/train_test_split_new.png" alt="Train-test split" style="max-width:100%;">
@@ -72,7 +81,7 @@ $$
 :::
 :::::
 
-# Examople - K Nearest Neighbors (KNN)
+## Example - K Nearest Neighbors (KNN)
 
 <div style="text-align:center;">
   <img src="images/knn_boundary_test_points.png" alt="KNN boundary with test points" style="max-width:40%;">
@@ -81,7 +90,7 @@ $$
 - Predict label of closest training sample
 - $f(x) = y_i,\; i = \operatorname*{argmin}_j \lVert x_j - x \rVert$
 
-# Nearest Neighbors (k=1)
+## Nearest Neighbors (k=1)
 
 <div style="text-align:center;">
   <img src="images/knn_boundary_k1.png" alt="KNN boundary k=1" style="max-width:40%;">
@@ -148,28 +157,39 @@ y_pred = knn.predict(X_test)
 
 ## Overfitting vs Underfitting
 
+- Performance on training data generally increases with model complexity
 <div style="text-align:center;">
   <img src="images/overfitting_underfitting_cartoon_train.png" alt="Overfitting vs Underfitting (train)" style="max-width:80%;">
 </div>
 
-# Overfitting vs Underfitting
+## Overfitting vs Underfitting
 
+- Performance on testing data firstly increases with model complexity, and then decreases *due to overfitting*
 <div style="text-align:center;">
   <img src="images/overfitting_underfitting_cartoon_generalization.png" alt="Overfitting vs Underfitting (generalization)" style="max-width:80%;">
 </div>
 
 ## Overfitting vs Underfitting
 
-<div style="text-align:center;">
+- The optimal hyperparameter achieves balance between underfitting and overfitting
+
+![](images/overfitting_underfitting_cartoon_full.png){.r-stretch}
+<!-- <div style="text-align:center;">
   <img src="images/overfitting_underfitting_cartoon_full.png" alt="Overfitting vs Underfitting (full)" style="max-width:80%;">
-</div>
+</div> -->
 
 ## So far: Happy ending?
 
 - Report: best k=19, test accuracy=0.77
 - Good for choosing k
-- [But: overly optimistic for generalisation]{style="color:blue"}
-- Problem: test set used for both choosing k and final evaluation
+- [But, overly optimistic for generalisation]{style="color:blue"}
+- Problem: test set used twice, for both choosing k and final evaluation
+
+## Summary of train-test split
+
+- The idea is to train the model on the training set, and evaluate it on the test set.
+- But, problematic to use the test set for both hyperparameter tuning and final evaluation.
+- If we need to choose model hyperparameters, we need a separate validation set (or cross-validation).
 
 <div style="text-align:center;">
   <img src="images/knn_model_complexity_marked.png" alt="Train-test split" style="max-width:60%;">
