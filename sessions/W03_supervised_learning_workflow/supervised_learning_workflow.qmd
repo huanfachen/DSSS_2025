@@ -48,7 +48,7 @@ $$
 ## Various workflows
 
 1. Train-test split
-2. Threefold split (train-validation-test)
+2. Train-validation-test split
 3. Cross-validation + test set
 
 # Train-Test split
@@ -173,16 +173,16 @@ y_pred = knn.predict(X_test)
 
 - The optimal hyperparameter achieves balance between underfitting and overfitting
 
-![](images/overfitting_underfitting_cartoon_full.png){.r-stretch}
-<!-- <div style="text-align:center;">
+<!-- ![](images/overfitting_underfitting_cartoon_full.png){.r-stretch} -->
+<div style="text-align:center;">
   <img src="images/overfitting_underfitting_cartoon_full.png" alt="Overfitting vs Underfitting (full)" style="max-width:80%;">
-</div> -->
+</div>
 
 ## So far: Happy ending?
 
 - Report: best k=19, test accuracy=0.77
 - Good for choosing k
-- [But, overly optimistic for generalisation]{style="color:blue"}
+- [But the test accuray is overly optimistic and biased]{style="color:blue"}
 - Problem: test set used twice, for both choosing k and final evaluation
 
 ## Summary of train-test split
@@ -191,25 +191,27 @@ y_pred = knn.predict(X_test)
 - But, problematic to use the test set for both hyperparameter tuning and final evaluation.
 - If we need to choose model hyperparameters, we need a separate validation set (or cross-validation).
 
-<div style="text-align:center;">
-  <img src="images/knn_model_complexity_marked.png" alt="Train-test split" style="max-width:60%;">
-</div>
+# Train-validation-test split
 
-# Threefold Split
+# Idea
+
+- Training → Validation (hyperparams tuning) → Test (final eval)
 
 <div style="text-align:center;">
   <img src="images/train_test_validation_split.png" alt="Train/validation/test split" style="max-width:100%;">
 </div>
 
-- Train → Validation (tune hyperparams) → Test (final eval)
+## Why using three-hold split?
 
-## Why? overfitting the Validation Set
+- It separates hyperparameter tuning (using validation set) and final evaluation (using test set)
+- Ensures test set is only used for final evaluation
+- Interesting reading [Preventing Overfitting in cross-validation - Ng 1997](http://robotics.stanford.edu/~ang/papers/cv-final.pdf)
 
 <div style="text-align:center;">
   <img src="images/overfitting_validation_set_1.png" alt="Overfitting validation 1" style="max-width:80%;">
 </div>
 
-- Interesting reading [Preventing Overfitting in cross-validation - Ng 1997](http://robotics.stanford.edu/~ang/papers/cv-final.pdf)
+
 
 ## Overfitting the Validation Set
 
@@ -250,9 +252,9 @@ knn.fit(X_trainval, y_trainval)
 print(f"test-set score: {knn.score(X_test, y_test):.3f}")
 ```
 
-best validation score: 0.991
-best n_neighbors: 11
-test-set score: 0.951
+- best validation score: 0.991
+- best n_neighbors: 11
+- test-set score: 0.951
 
 ::: {.notes}
 Here is an implementation of the three-fold split for selecting the
@@ -271,7 +273,7 @@ So how can we make this more robust?
 
 ## New problem with threefold split
 
-- Fixed train/val/test split → results depend on split
+- Fixed train-val-test split: results depend on split
 - High variance in best k and test score, not robust
 
 ```{python}
@@ -319,7 +321,9 @@ print(results_df)
 | 5           | 0.8                   | 11     | 0.77           | -->
 
 
-## Cross-Validation (CV) + Test Set
+# Cross-Validation + Test Set
+
+## Idea
 
 <div style="text-align:center;">
   <img src="images/grid_search_cross_validation_new.png" alt="Grid search with CV and test set" style="max-width:105%;">
@@ -328,6 +332,7 @@ print(results_df)
 # Grid-Search with CV (Code)
 
 ```{python}
+#| echo: true
 from sklearn.model_selection import cross_val_score
 
 X_train, X_test, y_train, y_test = train_test_split(X, y)
@@ -353,6 +358,7 @@ print(f"test-set score: {knn.score(X_test, y_test):.3f}")
 # GridSearchCV (Code)
 
 ```{python}
+#| echo: true
 from sklearn.model_selection import GridSearchCV
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y)
@@ -369,6 +375,7 @@ print(f"test-set score: {grid.score(X_test, y_test):.3f}")
 # GridSearchCV Results
 
 ```{python}
+#| echo: true
 import pandas as pd
 results = pd.DataFrame(grid.cv_results_)
 results.params.head()
@@ -380,31 +387,30 @@ results.params.head()
   <img src="images/grid_search_n_neighbors.png" alt="Grid search n_neighbors" style="max-width:70%;">
 </div>
 
-## Cross-Validation Strategies
+## How many folds in CV?
 
-<div style="text-align:center;">
-  <img src="images/kfold_cv.png" alt="KFold CV" style="max-width:90%;">
-</div>
+- Recommend to run 5-fold (*default in sklearn*) or 10-fold CV
+- #folds represents a trade-off between computing time and performance estimate quality
+- More folds → more training data per fold → better generlisation performance estimate, but longer computing time
+- Computing time is key for large datasets and complex models.
+- Advice: start with train model without CV, get computing time T, then estimate CV time as approximately ```T × #folds```.
 
-## How many CV folds?
+# Should data be shuffled in CV?
 
-- Recommend to run 5-fold or 10-fold CV multiple times, while shuffling the dataset
-- More folds → more training data per fold → better generlisation performance estimate, but slower
-- Extreme: LeaveOneOut CV (one fold per sample)
-
-## Repeated KFold and LeaveOneOut
-
-- LeaveOneOut: high variance, slow
-- ShuffleSplit: repeated random splits
-- [RepeatedKFold]{style="color:blue;"}: multiple shuffled KFold runs
-
-## Shuffle Split
+- In sklearn, ```KFold``` does not shuffle data and is subject to data ordering
+- Recommend to set ```shuffle=True``` in ```KFold```, or using ```ShuffleSplit``` function
 
 <div style="text-align:center;">
   <img src="images/shuffle_split_cv.png" alt="Shuffle split" style="max-width:100%;">
 </div>
 
-## Standard CV not preserving class distribution
+# CV extensions
+
+- **StratifiedKFold**: for multiclass classification or imbalanced data
+- **GroupKFold**: for grouped data
+- **TimeSeriesSplit**: for time series data
+
+## Stratified CV
 
 - Standard CV leads to folds with different class distributions
 
@@ -420,16 +426,11 @@ results.params.head()
   <img src="images/stratified_cv.png" alt="Stratified CV" style="max-width:70%;">
 </div>
 
-## CV in scikit-learn
-
-- 5-fold CV (default)
-- Classification CV is stratified by default
-- `train_test_split(..., stratify=y)` to stratify
-- No shuffle by default (repeatable results)
 
 # Stratified CV (Code)
 
 ```python
+#| echo: true
 dc = DummyClassifier('most_frequent')
 skf = StratifiedKFold(n_splits=5, shuffle=True)
 np.mean(cross_val_score(dc, X, y, cv=skf))
@@ -442,7 +443,7 @@ np.mean(cross_val_score(dc, X, y, cv=skf))
 - e.g. The task is to if a patient has a disease based on medical records from 9 cities 
 - How CV should be done depends on the application scenario
 
-## Scenario 1: To predict new data from existing cities (i.i.d.)
+## Scenario 1: To predict new data from any existing cities (same distribution as training data)
 
 - Standard CV (e.g. KFold, RepeatedKFold) can be used
 - Group information can be ignored
@@ -519,9 +520,10 @@ res_df.head()
 
 We've covered:
 
-- Train-test split, threefold split
-- Cross-validation and its extensions, especially RepeatedKFold
+- Train-test split, threefold split (not recommended)
+- **Cross-validation and test set** is recommended
+- In cross-validation, recommended to use 5-fold or 10-fold CV with shuffling
 - Stratified CV (StratifiedKFold) for multiple classes and imbalanced data
 - CV for grouped data and time series data
 
-## Questions
+## Questions?
