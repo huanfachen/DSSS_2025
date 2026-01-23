@@ -260,7 +260,7 @@ y_i &amp;\in
 <h2>Various workflows</h2>
 <ol type="1">
 <li>Train-test split</li>
-<li>Threefold split (train-validation-test)</li>
+<li>Train-validation-test split</li>
 <li>Cross-validation + test set</li>
 </ol>
 </section>
@@ -319,7 +319,7 @@ y_i &amp;\in
 <section>
 <section id="knn-with-scikit-learn" class="title-slide slide level1 center">
 <h1>KNN with scikit-learn</h1>
-<div id="9081ce24" class="cell" data-execution_count="2">
+<div id="dbb3da3d" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>accuracy: 0.6923076923076923</code></pre>
 </div>
@@ -380,16 +380,17 @@ y_i &amp;\in
 <ul>
 <li>The optimal hyperparameter achieves balance between underfitting and overfitting</li>
 </ul>
-<p><img data-src="images/overfitting_underfitting_cartoon_full.png" class="r-stretch"> <!-- <div style="text-align:center;">
-  <img src="images/overfitting_underfitting_cartoon_full.png" alt="Overfitting vs Underfitting (full)" style="max-width:80%;">
-</div> --></p>
+<!-- ![](images/overfitting_underfitting_cartoon_full.png){.r-stretch} -->
+<div style="text-align:center;">
+<p><img src="images/overfitting_underfitting_cartoon_full.png" alt="Overfitting vs Underfitting (full)" style="max-width:80%;"></p>
+</div>
 </section>
 <section id="so-far-happy-ending" class="slide level2">
 <h2>So far: Happy ending?</h2>
 <ul>
 <li>Report: best k=19, test accuracy=0.77</li>
 <li>Good for choosing k</li>
-<li><span style="color:blue">But, overly optimistic for generalisation</span></li>
+<li><span style="color:blue">But the test accuray is overly optimistic and biased</span></li>
 <li>Problem: test set used twice, for both choosing k and final evaluation</li>
 </ul>
 </section>
@@ -400,28 +401,32 @@ y_i &amp;\in
 <li>But, problematic to use the test set for both hyperparameter tuning and final evaluation.</li>
 <li>If we need to choose model hyperparameters, we need a separate validation set (or cross-validation).</li>
 </ul>
-<div style="text-align:center;">
-<p><img src="images/knn_model_complexity_marked.png" alt="Train-test split" style="max-width:60%;"></p>
-</div>
 </section></section>
+<section id="train-validation-test-split" class="title-slide slide level1 center">
+<h1>Train-validation-test split</h1>
+
+</section>
+
 <section>
-<section id="threefold-split" class="title-slide slide level1 center">
-<h1>Threefold Split</h1>
+<section id="idea" class="title-slide slide level1 center">
+<h1>Idea</h1>
+<ul>
+<li>Training → Validation (hyperparams tuning) → Test (final eval)</li>
+</ul>
 <div style="text-align:center;">
 <p><img src="images/train_test_validation_split.png" alt="Train/validation/test split" style="max-width:100%;"></p>
 </div>
-<ul>
-<li>Train → Validation (tune hyperparams) → Test (final eval)</li>
-</ul>
 </section>
-<section id="why-overfitting-the-validation-set" class="slide level2">
-<h2>Why? overfitting the Validation Set</h2>
+<section id="why-using-three-hold-split" class="slide level2">
+<h2>Why using three-hold split?</h2>
+<ul>
+<li>It separates hyperparameter tuning (using validation set) and final evaluation (using test set)</li>
+<li>Ensures test set is only used for final evaluation</li>
+<li>Interesting reading <a href="http://robotics.stanford.edu/~ang/papers/cv-final.pdf">Preventing Overfitting in cross-validation - Ng 1997</a></li>
+</ul>
 <div style="text-align:center;">
 <p><img src="images/overfitting_validation_set_1.png" alt="Overfitting validation 1" style="max-width:80%;"></p>
 </div>
-<ul>
-<li>Interesting reading <a href="http://robotics.stanford.edu/~ang/papers/cv-final.pdf">Preventing Overfitting in cross-validation - Ng 1997</a></li>
-</ul>
 </section>
 <section id="overfitting-the-validation-set" class="slide level2">
 <h2>Overfitting the Validation Set</h2>
@@ -461,7 +466,11 @@ y_i &amp;\in
 <span id="cb2-14"><a></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>best_n_neighbors)</span>
 <span id="cb2-15"><a></a>knn.fit(X_trainval, y_trainval)</span>
 <span id="cb2-16"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>knn<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>best validation score: 0.991 best n_neighbors: 11 test-set score: 0.951</p>
+<ul>
+<li>best validation score: 0.991</li>
+<li>best n_neighbors: 11</li>
+<li>test-set score: 0.951</li>
+</ul>
 <aside class="notes">
 <p>Here is an implementation of the three-fold split for selecting the number of neighbors. For each number of neighbors that we want to try, we build a model on the training set, and evaluate it on the validation set. We then pick the best validation set score, here that’s 99.1%, achieved when using 11 neighbors. We then retrain the model with this parameter, and evaluate on the test set. The retraining step is somewhat optional. We could also just use the best model. But retraining allows us to make better use of all the data.</p>
 <p>Still, our results depend on how exactly we split the datasets. So how can we make this more robust?</p>
@@ -480,10 +489,10 @@ y_i &amp;\in
 <section id="new-problem-with-threefold-split" class="slide level2">
 <h2>New problem with threefold split</h2>
 <ul>
-<li>Fixed train/val/test split → results depend on split</li>
+<li>Fixed train-val-test split: results depend on split</li>
 <li>High variance in best k and test score, not robust</li>
 </ul>
-<div id="e015c0b3" class="cell" data-execution_count="3">
+<div id="4e095be0" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>   random_seed  best_validation_score  best_k  test_set_score
 0            0                    0.7       5        0.846154
@@ -502,18 +511,37 @@ y_i &amp;\in
 | 3           | 0.7                   | 1      | 0.85           |
 | 4           | 0.9                   | 5      | 0.77           |
 | 5           | 0.8                   | 11     | 0.77           | -->
+</section></section>
+<section>
+<section id="cross-validation-test-set" class="title-slide slide level1 center">
+<h1>Cross-Validation + Test Set</h1>
+
 </section>
-<section id="cross-validation-cv-test-set" class="slide level2">
-<h2>Cross-Validation (CV) + Test Set</h2>
+<section id="idea-1" class="slide level2">
+<h2>Idea</h2>
 <div style="text-align:center;">
 <p><img src="images/grid_search_cross_validation_new.png" alt="Grid search with CV and test set" style="max-width:105%;"></p>
 </div>
 </section></section>
 <section id="grid-search-with-cv-code" class="title-slide slide level1 center">
 <h1>Grid-Search with CV (Code)</h1>
-<div id="5a5e3765" class="cell" data-execution_count="4">
+<div id="162d7dc3" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
+<span id="cb4-2"><a></a></span>
+<span id="cb4-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y)</span>
+<span id="cb4-4"><a></a></span>
+<span id="cb4-5"><a></a>cross_val_scores <span class="op">=</span> []</span>
+<span id="cb4-6"><a></a><span class="cf">for</span> i <span class="kw">in</span> neighbors:</span>
+<span id="cb4-7"><a></a>    knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>i)</span>
+<span id="cb4-8"><a></a>    scores <span class="op">=</span> cross_val_score(knn, X_train, y_train, cv<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-9"><a></a>    cross_val_scores.append(np.mean(scores))</span>
+<span id="cb4-10"><a></a></span>
+<span id="cb4-11"><a></a>best_n <span class="op">=</span> neighbors[np.argmax(cross_val_scores)]</span>
+<span id="cb4-12"><a></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>best_n)</span>
+<span id="cb4-13"><a></a>knn.fit(X_train, y_train)</span>
+<span id="cb4-14"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>knn<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>test-set score: 0.538</code></pre>
+<pre><code>test-set score: 0.692</code></pre>
 </div>
 </div>
 </section>
@@ -527,10 +555,21 @@ y_i &amp;\in
 
 <section id="gridsearchcv-code" class="title-slide slide level1 center">
 <h1>GridSearchCV (Code)</h1>
-<div id="4372d6f6" class="cell" data-execution_count="5">
+<div id="573daaec" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb6-2"><a></a></span>
+<span id="cb6-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, stratify<span class="op">=</span>y)</span>
+<span id="cb6-4"><a></a>param_grid <span class="op">=</span> {<span class="st">'n_neighbors'</span>:  np.arange(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)}</span>
+<span id="cb6-5"><a></a></span>
+<span id="cb6-6"><a></a>grid <span class="op">=</span> GridSearchCV(KNeighborsClassifier(), param_grid<span class="op">=</span>param_grid, cv<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb6-7"><a></a>                    return_train_score<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-8"><a></a></span>
+<span id="cb6-9"><a></a>grid.fit(X_train, y_train)</span>
+<span id="cb6-10"><a></a><span class="bu">print</span>(<span class="st">"best parameters:"</span>, grid.best_params_)</span>
+<span id="cb6-11"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>grid<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>best parameters: {'n_neighbors': np.int64(21)}
-test-set score: 0.769</code></pre>
+<pre><code>best parameters: {'n_neighbors': np.int64(19)}
+test-set score: 0.692</code></pre>
 </div>
 </div>
 </section>
@@ -538,7 +577,10 @@ test-set score: 0.769</code></pre>
 <section>
 <section id="gridsearchcv-results" class="title-slide slide level1 center">
 <h1>GridSearchCV Results</h1>
-<div id="31347843" class="cell" data-execution_count="6">
+<div id="b49f0e26" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-2"><a></a>results <span class="op">=</span> pd.DataFrame(grid.cv_results_)</span>
+<span id="cb8-3"><a></a>results.params.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>0    {'n_neighbors': 1}
 1    {'n_neighbors': 3}
@@ -555,36 +597,38 @@ Name: params, dtype: object</code></pre>
 <p><img src="images/grid_search_n_neighbors.png" alt="Grid search n_neighbors" style="max-width:70%;"></p>
 </div>
 </section>
-<section id="cross-validation-strategies" class="slide level2">
-<h2>Cross-Validation Strategies</h2>
-<div style="text-align:center;">
-<p><img src="images/kfold_cv.png" alt="KFold CV" style="max-width:90%;"></p>
-</div>
-</section>
-<section id="how-many-cv-folds" class="slide level2">
-<h2>How many CV folds?</h2>
+<section id="how-many-folds-in-cv" class="slide level2">
+<h2>How many folds in CV?</h2>
 <ul>
-<li>Recommend to run 5-fold or 10-fold CV multiple times, while shuffling the dataset</li>
-<li>More folds → more training data per fold → better generlisation performance estimate, but slower</li>
-<li>Extreme: LeaveOneOut CV (one fold per sample)</li>
+<li>Recommend to run 5-fold (<em>default in sklearn</em>) or 10-fold CV</li>
+<li>#folds represents a trade-off between computing time and performance estimate quality</li>
+<li>More folds → more training data per fold → better generlisation performance estimate, but longer computing time</li>
+<li>Computing time is key for large datasets and complex models.</li>
+<li>Advice: start with train model without CV, get computing time T, then estimate CV time as approximately <code>T × #folds</code>.</li>
 </ul>
-</section>
-<section id="repeated-kfold-and-leaveoneout" class="slide level2">
-<h2>Repeated KFold and LeaveOneOut</h2>
+</section></section>
+<section id="should-data-be-shuffled-in-cv" class="title-slide slide level1 center">
+<h1>Should data be shuffled in CV?</h1>
 <ul>
-<li>LeaveOneOut: high variance, slow</li>
-<li>ShuffleSplit: repeated random splits</li>
-<li><span style="color:blue;">RepeatedKFold</span>: multiple shuffled KFold runs</li>
+<li>In sklearn, <code>KFold</code> does not shuffle data and is subject to data ordering</li>
+<li>Recommend to set <code>shuffle=True</code> in <code>KFold</code>, or using <code>ShuffleSplit</code> function</li>
 </ul>
-</section>
-<section id="shuffle-split" class="slide level2">
-<h2>Shuffle Split</h2>
 <div style="text-align:center;">
 <p><img src="images/shuffle_split_cv.png" alt="Shuffle split" style="max-width:100%;"></p>
 </div>
 </section>
-<section id="standard-cv-not-preserving-class-distribution" class="slide level2">
-<h2>Standard CV not preserving class distribution</h2>
+
+<section>
+<section id="cv-extensions" class="title-slide slide level1 center">
+<h1>CV extensions</h1>
+<ul>
+<li><strong>StratifiedKFold</strong>: for multiclass classification or imbalanced data</li>
+<li><strong>GroupKFold</strong>: for grouped data</li>
+<li><strong>TimeSeriesSplit</strong>: for time series data</li>
+</ul>
+</section>
+<section id="stratified-cv" class="slide level2">
+<h2>Stratified CV</h2>
 <ul>
 <li>Standard CV leads to folds with different class distributions</li>
 </ul>
@@ -600,22 +644,14 @@ Name: params, dtype: object</code></pre>
 <div style="text-align:center;">
 <p><img src="images/stratified_cv.png" alt="Stratified CV" style="max-width:70%;"></p>
 </div>
-</section>
-<section id="cv-in-scikit-learn" class="slide level2">
-<h2>CV in scikit-learn</h2>
-<ul>
-<li>5-fold CV (default)</li>
-<li>Classification CV is stratified by default</li>
-<li><code>train_test_split(..., stratify=y)</code> to stratify</li>
-<li>No shuffle by default (repeatable results)</li>
-</ul>
 </section></section>
 <section>
 <section id="stratified-cv-code" class="title-slide slide level1 center">
 <h1>Stratified CV (Code)</h1>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>dc <span class="op">=</span> DummyClassifier(<span class="st">'most_frequent'</span>)</span>
-<span id="cb7-2"><a></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb7-3"><a></a>np.mean(cross_val_score(dc, X, y, cv<span class="op">=</span>skf))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="co">#| echo: true</span></span>
+<span id="cb10-2"><a></a>dc <span class="op">=</span> DummyClassifier(<span class="st">'most_frequent'</span>)</span>
+<span id="cb10-3"><a></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-4"><a></a>np.mean(cross_val_score(dc, X, y, cv<span class="op">=</span>skf))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="cv-for-grouped-data" class="slide level2">
 <h2>CV for grouped data?</h2>
@@ -626,8 +662,8 @@ Name: params, dtype: object</code></pre>
 <li>How CV should be done depends on the application scenario</li>
 </ul>
 </section>
-<section id="scenario-1-to-predict-new-data-from-existing-cities-i.i.d." class="slide level2">
-<h2>Scenario 1: To predict new data from existing cities (i.i.d.)</h2>
+<section id="scenario-1-to-predict-new-data-from-any-existing-cities-same-distribution-as-training-data" class="slide level2">
+<h2>Scenario 1: To predict new data from any existing cities (same distribution as training data)</h2>
 <ul>
 <li>Standard CV (e.g.&nbsp;KFold, RepeatedKFold) can be used</li>
 <li>Group information can be ignored</li>
@@ -708,14 +744,15 @@ res_df.head()
 <h2>Overview</h2>
 <p>We’ve covered:</p>
 <ul>
-<li>Train-test split, threefold split</li>
-<li>Cross-validation and its extensions, especially RepeatedKFold</li>
+<li>Train-test split, threefold split (not recommended)</li>
+<li><strong>Cross-validation and test set</strong> is recommended</li>
+<li>In cross-validation, recommended to use 5-fold or 10-fold CV with shuffling</li>
 <li>Stratified CV (StratifiedKFold) for multiple classes and imbalanced data</li>
 <li>CV for grouped data and time series data</li>
 </ul>
 </section>
 <section id="questions" class="slide level2">
-<h2>Questions</h2>
+<h2>Questions?</h2>
 
 
 </section></section>

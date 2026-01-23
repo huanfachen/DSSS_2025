@@ -746,7 +746,7 @@
     "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
     "title": "Supervised learning",
     "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.923"
   },
   {
     "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
@@ -2094,7 +2094,7 @@
     "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
     "title": "Supervised learning",
     "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.923"
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
@@ -2768,7 +2768,7 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#various-workflows",
     "title": "Supervised learning workflow",
     "section": "Various workflows",
-    "text": "Various workflows\n\nTrain-test split\nThreefold split (train-validation-test)\nCross-validation + test set"
+    "text": "Various workflows\n\nTrain-test split\nTrain-validation-test split\nCross-validation + test set"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#train-test-split-usually-7525",
@@ -2831,7 +2831,7 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#so-far-happy-ending",
     "title": "Supervised learning workflow",
     "section": "So far: Happy ending?",
-    "text": "So far: Happy ending?\n\nReport: best k=19, test accuracy=0.77\nGood for choosing k\nBut, overly optimistic for generalisation\nProblem: test set used twice, for both choosing k and final evaluation"
+    "text": "So far: Happy ending?\n\nReport: best k=19, test accuracy=0.77\nGood for choosing k\nBut the test accuray is overly optimistic and biased\nProblem: test set used twice, for both choosing k and final evaluation"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#summary-of-train-test-split",
@@ -2841,11 +2841,11 @@
     "text": "Summary of train-test split\n\nThe idea is to train the model on the training set, and evaluate it on the test set.\nBut, problematic to use the test set for both hyperparameter tuning and final evaluation.\nIf we need to choose model hyperparameters, we need a separate validation set (or cross-validation)."
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-overfitting-the-validation-set",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-overfitting-the-validation-set",
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-using-three-hold-split",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#why-using-three-hold-split",
     "title": "Supervised learning workflow",
-    "section": "Why? overfitting the Validation Set",
-    "text": "Why? overfitting the Validation Set\n\n\n\n\nInteresting reading Preventing Overfitting in cross-validation - Ng 1997"
+    "section": "Why using three-hold split?",
+    "text": "Why using three-hold split?\n\nIt separates hyperparameter tuning (using validation set) and final evaluation (using test set)\nEnsures test set is only used for final evaluation\nInteresting reading Preventing Overfitting in cross-validation - Ng 1997"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-the-validation-set",
@@ -2859,21 +2859,21 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#threefold-split-code",
     "title": "Supervised learning workflow",
     "section": "Threefold Split (Code)",
-    "text": "Threefold Split (Code)\nX_trainval, X_test, y_trainval, y_test = train_test_split(X, y, random_state=0)\nX_train, X_val, y_train, y_val = train_test_split(X_trainval, y_trainval, random_state=0)\n\nval_scores = []\nneighbors = np.arange(1, 15, 2)\nfor i in neighbors:\n    knn = KNeighborsClassifier(n_neighbors=i)\n    knn.fit(X_train, y_train)\n    val_scores.append(knn.score(X_val, y_val))\nprint(f\"best validation score: {np.max(val_scores):.3}\\n\")\nbest_n_neighbors = neighbors[np.argmax(val_scores)]\nprint(f\"best n_neighbors:{best_n_neighbors}\\n\")\n\nknn = KNeighborsClassifier(n_neighbors=best_n_neighbors)\nknn.fit(X_trainval, y_trainval)\nprint(f\"test-set score: {knn.score(X_test, y_test):.3f}\")\nbest validation score: 0.991 best n_neighbors: 11 test-set score: 0.951\n\nHere is an implementation of the three-fold split for selecting the number of neighbors. For each number of neighbors that we want to try, we build a model on the training set, and evaluate it on the validation set. We then pick the best validation set score, here that’s 99.1%, achieved when using 11 neighbors. We then retrain the model with this parameter, and evaluate on the test set. The retraining step is somewhat optional. We could also just use the best model. But retraining allows us to make better use of all the data.\nStill, our results depend on how exactly we split the datasets. So how can we make this more robust?"
+    "text": "Threefold Split (Code)\nX_trainval, X_test, y_trainval, y_test = train_test_split(X, y, random_state=0)\nX_train, X_val, y_train, y_val = train_test_split(X_trainval, y_trainval, random_state=0)\n\nval_scores = []\nneighbors = np.arange(1, 15, 2)\nfor i in neighbors:\n    knn = KNeighborsClassifier(n_neighbors=i)\n    knn.fit(X_train, y_train)\n    val_scores.append(knn.score(X_val, y_val))\nprint(f\"best validation score: {np.max(val_scores):.3}\\n\")\nbest_n_neighbors = neighbors[np.argmax(val_scores)]\nprint(f\"best n_neighbors:{best_n_neighbors}\\n\")\n\nknn = KNeighborsClassifier(n_neighbors=best_n_neighbors)\nknn.fit(X_trainval, y_trainval)\nprint(f\"test-set score: {knn.score(X_test, y_test):.3f}\")\n\nbest validation score: 0.991\nbest n_neighbors: 11\ntest-set score: 0.951\n\n\nHere is an implementation of the three-fold split for selecting the number of neighbors. For each number of neighbors that we want to try, we build a model on the training set, and evaluate it on the validation set. We then pick the best validation set score, here that’s 99.1%, achieved when using 11 neighbors. We then retrain the model with this parameter, and evaluate on the test set. The retraining step is somewhat optional. We could also just use the best model. But retraining allows us to make better use of all the data.\nStill, our results depend on how exactly we split the datasets. So how can we make this more robust?"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#new-problem-with-threefold-split",
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#new-problem-with-threefold-split",
     "title": "Supervised learning workflow",
     "section": "New problem with threefold split",
-    "text": "New problem with threefold split\n\nFixed train/val/test split → results depend on split\nHigh variance in best k and test score, not robust\n\n\n\n   random_seed  best_validation_score  best_k  test_set_score\n0            0                    0.7       5        0.846154\n1            1                    0.7       1        0.538462\n2            2                    1.0      13        0.692308\n3            3                    0.7       1        0.846154\n4            4                    0.9       5        0.769231\n5            5                    0.8      11        0.769231"
+    "text": "New problem with threefold split\n\nFixed train-val-test split: results depend on split\nHigh variance in best k and test score, not robust\n\n\n\n   random_seed  best_validation_score  best_k  test_set_score\n0            0                    0.7       5        0.846154\n1            1                    0.7       1        0.538462\n2            2                    1.0      13        0.692308\n3            3                    0.7       1        0.846154\n4            4                    0.9       5        0.769231\n5            5                    0.8      11        0.769231"
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-cv-test-set",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-cv-test-set",
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#idea-1",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#idea-1",
     "title": "Supervised learning workflow",
-    "section": "Cross-Validation (CV) + Test Set",
-    "text": "Cross-Validation (CV) + Test Set"
+    "section": "Idea",
+    "text": "Idea"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#n_neighbors-search-results",
@@ -2883,39 +2883,18 @@
     "text": "n_neighbors Search Results"
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-strategies",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cross-validation-strategies",
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#how-many-folds-in-cv",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#how-many-folds-in-cv",
     "title": "Supervised learning workflow",
-    "section": "Cross-Validation Strategies",
-    "text": "Cross-Validation Strategies"
+    "section": "How many folds in CV?",
+    "text": "How many folds in CV?\n\nRecommend to run 5-fold (default in sklearn) or 10-fold CV\n#folds represents a trade-off between computing time and performance estimate quality\nMore folds → more training data per fold → better generlisation performance estimate, but longer computing time\nComputing time is key for large datasets and complex models.\nAdvice: start with train model without CV, get computing time T, then estimate CV time as approximately T × #folds."
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#how-many-cv-folds",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#how-many-cv-folds",
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#stratified-cv",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#stratified-cv",
     "title": "Supervised learning workflow",
-    "section": "How many CV folds?",
-    "text": "How many CV folds?\n\nRecommend to run 5-fold or 10-fold CV multiple times, while shuffling the dataset\nMore folds → more training data per fold → better generlisation performance estimate, but slower\nExtreme: LeaveOneOut CV (one fold per sample)"
-  },
-  {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#repeated-kfold-and-leaveoneout",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#repeated-kfold-and-leaveoneout",
-    "title": "Supervised learning workflow",
-    "section": "Repeated KFold and LeaveOneOut",
-    "text": "Repeated KFold and LeaveOneOut\n\nLeaveOneOut: high variance, slow\nShuffleSplit: repeated random splits\nRepeatedKFold: multiple shuffled KFold runs"
-  },
-  {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#shuffle-split",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#shuffle-split",
-    "title": "Supervised learning workflow",
-    "section": "Shuffle Split",
-    "text": "Shuffle Split"
-  },
-  {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#standard-cv-not-preserving-class-distribution",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#standard-cv-not-preserving-class-distribution",
-    "title": "Supervised learning workflow",
-    "section": "Standard CV not preserving class distribution",
-    "text": "Standard CV not preserving class distribution\n\nStandard CV leads to folds with different class distributions"
+    "section": "Stratified CV",
+    "text": "Stratified CV\n\nStandard CV leads to folds with different class distributions"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#stratified-cv-for-multiclass-classification-or-imbalanced-data",
@@ -2925,13 +2904,6 @@
     "text": "Stratified CV: for multiclass classification or imbalanced data\n\nPreserve class distribution in each fold"
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cv-in-scikit-learn",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cv-in-scikit-learn",
-    "title": "Supervised learning workflow",
-    "section": "CV in scikit-learn",
-    "text": "CV in scikit-learn\n\n5-fold CV (default)\nClassification CV is stratified by default\ntrain_test_split(..., stratify=y) to stratify\nNo shuffle by default (repeatable results)"
-  },
-  {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cv-for-grouped-data",
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#cv-for-grouped-data",
     "title": "Supervised learning workflow",
@@ -2939,11 +2911,11 @@
     "text": "CV for grouped data?\n\nCV is more complicated when data are grouped\nData points within a group are correlated (e.g., city, patient, user)\ne.g. The task is to if a patient has a disease based on medical records from 9 cities\nHow CV should be done depends on the application scenario"
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#scenario-1-to-predict-new-data-from-existing-cities-i.i.d.",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#scenario-1-to-predict-new-data-from-existing-cities-i.i.d.",
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#scenario-1-to-predict-new-data-from-any-existing-cities-same-distribution-as-training-data",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#scenario-1-to-predict-new-data-from-any-existing-cities-same-distribution-as-training-data",
     "title": "Supervised learning workflow",
-    "section": "Scenario 1: To predict new data from existing cities (i.i.d.)",
-    "text": "Scenario 1: To predict new data from existing cities (i.i.d.)\n\nStandard CV (e.g. KFold, RepeatedKFold) can be used\nGroup information can be ignored"
+    "section": "Scenario 1: To predict new data from any existing cities (same distribution as training data)",
+    "text": "Scenario 1: To predict new data from any existing cities (same distribution as training data)\n\nStandard CV (e.g. KFold, RepeatedKFold) can be used\nGroup information can be ignored"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#scenario-2-to-predict-new-data-from-unknown-cities-not-i.i.d.",
@@ -2985,14 +2957,14 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overview",
     "title": "Supervised learning workflow",
     "section": "Overview",
-    "text": "Overview\nWe’ve covered:\n\nTrain-test split, threefold split\nCross-validation and its extensions, especially RepeatedKFold\nStratified CV (StratifiedKFold) for multiple classes and imbalanced data\nCV for grouped data and time series data"
+    "text": "Overview\nWe’ve covered:\n\nTrain-test split, threefold split (not recommended)\nCross-validation and test set is recommended\nIn cross-validation, recommended to use 5-fold or 10-fold CV with shuffling\nStratified CV (StratifiedKFold) for multiple classes and imbalanced data\nCV for grouped data and time series data"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#questions",
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#questions",
     "title": "Supervised learning workflow",
-    "section": "Questions",
-    "text": "Questions"
+    "section": "Questions?",
+    "text": "Questions?"
   },
   {
     "objectID": "sessions/W05_neural_networks/aml_convolutional_nets.html#introduction-to-keras",
@@ -3650,7 +3622,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.23 + 28.34*X1 + 74.00*X2 + 23.89*X3 + -5.62*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.12 + 28.37*X1 + 73.86*X2 + 3.00*X3 + 17.55*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",
