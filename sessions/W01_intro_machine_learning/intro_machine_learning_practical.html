@@ -378,7 +378,7 @@ Note
 </section>
 <section id="load-libraries" class="level2">
 <h2 class="anchored" data-anchor-id="load-libraries">Load libraries</h2>
-<div id="be3e533c" class="cell" data-execution_count="1">
+<div id="eee2fe2f" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn.datasets</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn.metrics</span>
@@ -391,7 +391,7 @@ Note
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>It is important to check the version of sklearn and use this version when you search on the online documentation or ask sklearn questions. When reading the sklearn documentation online, please ensure that you choose the correct version in the dropdown box on the top-right corner.</p>
-<div id="fad68ea3" class="cell" data-execution_count="2">
+<div id="d4942f4d" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sklearn.__version__)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1.7.2</code></pre>
@@ -408,7 +408,7 @@ Note
 <p><a href="https://cdn1.byjus.com/wp-content/uploads/2020/10/structure-of-a-flower.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="https://cdn1.byjus.com/wp-content/uploads/2020/10/structure-of-a-flower.png" class="img-fluid"></a></p>
 <p>The <strong>sklearn.datasets</strong> module includes utilities to load datasets, including methods to load and fetch popular reference datasets. It provides a list of classic datasets, including <em>iris</em>.</p>
 <p>There are a few parameters in the funciton of load_iris. If <em>return_X_y</em> is set as False (by default), then it returns a Bunch object consisting of x and y variables. Otherwise, it returns <em>(data, target)</em> (aka, x and y objects) separately. If <em>as_frame</em> is True, the returned data is a pandas DataFrame.</p>
-<div id="556ecd11" class="cell" data-execution_count="3">
+<div id="4c48b327" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> sklearn.datasets.load_iris(return_X_y<span class="op">=</span><span class="va">True</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iris.<span class="va">__class__</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -417,7 +417,7 @@ Note
 </div>
 <p>The <em>iris</em> object is a tuple that consists of two DataFrames, namely features (or X_iris) and target (or y_iris).</p>
 <p>We will separate these two DataFrames and rename the columns.</p>
-<div id="79f3f01e" class="cell" data-execution_count="4">
+<div id="635b4014" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># features DataFrame called X_iris</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>X_iris <span class="op">=</span> iris[<span class="dv">0</span>]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X_iris <span class="op">=</span> X_iris.rename(columns<span class="op">=</span>{<span class="st">"sepal length (cm)"</span>: <span class="st">"sepal_length"</span>, </span>
@@ -430,7 +430,7 @@ Note
 </div>
 <p>Explore the <em>features</em> DataFrame.</p>
 <p>Here, each row of the data refers to a single observed flower, and the number of rows is the total number of flowers in the dataset. In general, we will refer to the rows of the matrix as samples, and the number of rows as <strong>n_samples</strong>. Each column of the data refers to a particular quantitative piece of information that describes each sample. In general, we will refer to the columns of the matrix as features, and the number of columns as <strong>n_features</strong>.</p>
-<div id="e2bb71e0" class="cell" data-execution_count="5">
+<div id="6e1cba0e" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_iris.<span class="va">__class__</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of samples:</span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(X_iris.shape[<span class="dv">0</span>]))</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of features:</span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(X_iris.shape[<span class="dv">1</span>]))</span>
@@ -448,7 +448,7 @@ Number of features:4
 </div>
 </div>
 <p>Explore the <em>target</em> DataFrame.</p>
-<div id="e5136d4d" class="cell" data-execution_count="6">
+<div id="01a42487" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_iris.<span class="va">__class__</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_iris.head())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -473,7 +473,7 @@ Name: target, dtype: int64</code></pre>
 <p>In addition to the feature matrix <code>X</code>, we also generally work with a <em>label</em> or <em>target</em> array, which by convention we will usually call <code>y</code>. The target array is usually one dimensional, with length <code>n_samples</code>, and is generally contained in a NumPy array or Pandas <code>Series</code>. The target array may have continuous numerical values, or discrete classes/labels. While some Scikit-Learn estimators do handle multiple target values in the form of a two-dimensional, <code>[n_samples, n_targets]</code> target array, we will primarily be working with the common case of a one-dimensional target array.</p>
 <p>Often one point of confusion is how the target array differs from the other features columns. The distinguishing feature of the target array is that it is usually the quantity we want to <em>predict from the data</em>: in statistical terms, it is the dependent variable. For example, in the preceding data we may wish to construct a model that can predict the species of flower based on the other measurements; in this case, the <code>species</code> column would be considered the target array.</p>
 <p>We can use Seaborn to conveniently visualise the data:</p>
-<div id="de29076b" class="cell" data-editable="true" data-execution_count="7">
+<div id="02f17351" class="cell" data-editable="true" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># will combine X and y into a DataFrame before plotting</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>iris_Xy <span class="op">=</span> X_iris.assign(species <span class="op">=</span> y_iris)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iris_Xy.columns)</span>
@@ -499,14 +499,14 @@ Name: target, dtype: int64</code></pre>
 <section id="extra-data-manipulation" class="level4">
 <h4 class="anchored" data-anchor-id="extra-data-manipulation">Extra data manipulation</h4>
 <p>In some projects, you might be given a single DataFrame that combines X and y instead of two separate DataFrame. Then you can use <em>pandas</em> operations to separate X and y. For example:</p>
-<div id="3d9d3e62" class="cell" data-editable="true" data-execution_count="8">
+<div id="539de36e" class="cell" data-editable="true" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>X_iris <span class="op">=</span> iris_Xy.drop(<span class="st">'species'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>X_iris.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>(150, 4)</code></pre>
 </div>
 </div>
-<div id="a495d650" class="cell" data-editable="true" data-execution_count="9">
+<div id="7f8ede99" class="cell" data-editable="true" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>y_iris <span class="op">=</span> iris_Xy[<span class="st">'species'</span>]</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>y_iris.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
@@ -555,7 +555,7 @@ Name: target, dtype: int64</code></pre>
 <h3 class="anchored" data-anchor-id="supervised-learning-example-simple-linear-regression">Supervised learning example: Simple linear regression</h3>
 <p>As an example of this process, let’s consider a simple linear regression—that is, the common case of fitting a line to <span class="math inline">\((x, y)\)</span> data.</p>
 <p>We want to explore the relationship between Sepal length and Petal length.</p>
-<div id="5f7925f6" class="cell" data-execution_count="10">
+<div id="634a0572" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>X_iris.plot.scatter(x<span class="op">=</span><span class="st">'sepal_length'</span>,y<span class="op">=</span><span class="st">'petal_length'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -566,7 +566,7 @@ Name: target, dtype: int64</code></pre>
 </div>
 </div>
 <p>For convenience, we will use <em>x</em> and <em>y</em> to store these two variables.</p>
-<div id="8b705583" class="cell" data-execution_count="11">
+<div id="8c4a02e3" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> X_iris.sepal_length</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> X_iris.petal_length</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -590,7 +590,7 @@ Name: target, dtype: int64</code></pre>
 </ul>
 <p>These are examples of the important choices that must be made <em>once the model class is selected</em>. These choices are often represented as <em>hyperparameters</em>, or parameters that must be set before the model is fit to data. In Scikit-Learn, hyperparameters are chosen by passing values at model instantiation. We will explore how you can motivate and justify the choice of hyperparameters in the later weeks.</p>
 <p>For our linear regression example, we can instantiate the <code>LinearRegression</code> class and specify that we would like to fit the intercept using the <code>fit_intercept</code> hyperparameter:</p>
-<div id="885f9371" class="cell" data-editable="true" data-execution_count="12">
+<div id="eea9c894" class="cell" data-editable="true" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression()</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>model</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
@@ -1158,7 +1158,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <section id="arrange-data-into-a-features-matrix-and-target-vector" class="level4">
 <h4 class="anchored" data-anchor-id="arrange-data-into-a-features-matrix-and-target-vector">3. Arrange data into a features matrix and target vector</h4>
 <p>Previously we detailed the Scikit-Learn data representation, which requires a two-dimensional features matrix and a one-dimensional target array. Here our target variable <code>y</code> is already in the correct form (a length-<code>n_samples</code> array), but we need to massage the data <code>x</code> to make it a matrix of size <code>[n_samples, n_features]</code>. In this case, this amounts to a simple reshaping of the one-dimensional array:</p>
-<div id="dbdf720d" class="cell" data-editable="true" data-execution_count="13">
+<div id="d125d955" class="cell" data-editable="true" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shape of the original x object: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(x.shape))</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> x.to_numpy()[:, np.newaxis]</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Shape of the X object: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(X.shape))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1174,7 +1174,7 @@ Shape of the X object: (150, 1)</code></pre>
 <section id="fit-the-model-to-your-data" class="level4">
 <h4 class="anchored" data-anchor-id="fit-the-model-to-your-data">4. Fit the model to your data</h4>
 <p>Now it is time to apply our model to data. This can be done with the <code>fit()</code> method of the model:</p>
-<div id="388325e6" class="cell" data-editable="true" data-execution_count="14">
+<div id="5ad7fc3c" class="cell" data-editable="true" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model.fit(X, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <style>#sk-container-id-2 {
@@ -1738,7 +1738,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </div>
 <p>This <code>fit()</code> command causes a number of model-dependent internal computations to take place, and the results of these computations are stored in model-specific attributes that the user can explore.</p>
 <p>In Scikit-Learn, by convention all model parameters that were learned during the <code>fit()</code> process have trailing underscores; for example in this linear model, we have the following:</p>
-<div id="2415280d" class="cell" data-editable="true" data-execution_count="15">
+<div id="e5b52504" class="cell" data-editable="true" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Coef: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(model.coef_))</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Intercept: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(model.intercept_))</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Formula: petal_length = </span><span class="sc">{}</span><span class="st"> * sepal_length + </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(np.<span class="bu">round</span>(model.coef_[<span class="dv">0</span>],<span class="dv">2</span>), np.<span class="bu">round</span>(model.intercept_, <span class="dv">2</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1749,7 +1749,7 @@ Formula: petal_length = 1.86 * sepal_length + -7.1</code></pre>
 </div>
 </div>
 <p>To get the goodness-of-fit or R square of this model, use the <em>sklearn.metrics</em> module.</p>
-<div id="fe499839" class="cell" data-execution_count="16">
+<div id="9f0d53ce" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"The R^2 of this model is: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(sklearn.metrics.r2_score(y, y_pred)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1764,17 +1764,17 @@ Formula: petal_length = 1.86 * sepal_length + -7.1</code></pre>
 <h4 class="anchored" data-anchor-id="predict-labels-for-unknown-data">5. Predict labels for unknown data</h4>
 <p>Once the model is trained, the main task of supervised machine learning is to evaluate it based on what it says about new data that was not part of the training set.</p>
 <p>In Scikit-Learn, this can be done using the <code>predict()</code> method. For the sake of this example, our “new data” will be a grid of <em>x</em> values, and we will ask what <em>y</em> values the model predicts:</p>
-<div id="1257d183" class="cell" data-editable="true" data-execution_count="17">
+<div id="ff9b8c08" class="cell" data-editable="true" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the xfit is a list of x values between 4.5 and 8.0, with step length of 0.5</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>xfit <span class="op">=</span> np.arange(<span class="fl">4.5</span>, <span class="dv">8</span>, <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>As before, we need to coerce these <em>x</em> values into a <code>[n_samples, n_features]</code> features matrix, after which we can feed it to the model:</p>
-<div id="9b791ea6" class="cell" data-editable="true" data-execution_count="18">
+<div id="2c835998" class="cell" data-editable="true" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Xfit <span class="op">=</span> xfit[:, np.newaxis]</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>yfit <span class="op">=</span> model.predict(Xfit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Finally, let’s visualize the results by plotting first the raw data, and then this model fit:</p>
-<div id="62e96e19" class="cell" data-editable="true" data-execution_count="19">
+<div id="feca5772" class="cell" data-editable="true" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>plt.plot(xfit, yfit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">

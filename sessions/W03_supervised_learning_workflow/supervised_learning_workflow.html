@@ -298,51 +298,57 @@ y_i &amp;\in
 </section>
 <section id="example---k-nearest-neighbors-knn" class="slide level2">
 <h2>Example - K Nearest Neighbors (KNN)</h2>
+<ul>
+<li>With a trained KNN, a new data point is classified by the majority label of its k nearest neighbours in the training set</li>
+</ul>
 <div style="text-align:center;">
 <p><img src="images/knn_boundary_test_points.png" alt="KNN boundary with test points" style="max-width:40%;"></p>
 </div>
-<ul>
-<li>Predict label of closest training sample</li>
-<li><span class="math inline">\(f(x) = y_i,\; i = \operatorname*{argmin}_j \lVert x_j - x \rVert\)</span></li>
-</ul>
 </section>
-<section id="nearest-neighbors-k1" class="slide level2">
-<h2>Nearest Neighbors (k=1)</h2>
+<section id="knn-k1" class="slide level2">
+<h2>KNN (k=1)</h2>
+<ul>
+<li>When k=1, a new data point is labelled by its nearest neighbour</li>
+<li>Sensitive/Complex decision boundary</li>
+</ul>
 <div style="text-align:center;">
 <p><img src="images/knn_boundary_k1.png" alt="KNN boundary k=1" style="max-width:40%;"></p>
 </div>
-<ul>
-<li>Memorises training samples</li>
-<li>Sensitive/Complex decision boundary</li>
-</ul>
-</section></section>
-<section>
-<section id="knn-with-scikit-learn" class="title-slide slide level1 center">
-<h1>KNN with scikit-learn</h1>
-<div id="dbb3da3d" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-stdout">
-<pre><code>accuracy: 0.6923076923076923</code></pre>
-</div>
-</div>
+<!-- 
+# KNN with scikit-learn
+
+
+
+::: {#002e9f6f .cell execution_count=2}
+
+::: {.cell-output .cell-output-stdout}
+```
+accuracy: 0.5384615384615384
+```
+:::
+:::
+
+
+-->
 </section>
-<section id="influence-of-n_neighbors-k3" class="slide level2">
-<h2>Influence of n_neighbors (k=3)</h2>
+<section id="knn-k3" class="slide level2">
+<h2>KNN (k=3)</h2>
 <ul>
-<li>Larger k → smoother boundary</li>
-<li>Smaller k → complex boundary</li>
+<li>The label of a new data point is the majority vote of its 3 nearest neighbours</li>
+<li>The decision boundary is less complex and less sensitive to training data</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/knn_boundary_k3.png" alt="KNN boundary k=3" style="max-width:50%;"></p>
+<p><img src="images/knn_boundary_k3.png" alt="KNN boundary k=3" style="max-width:40%;"></p>
 </div>
 </section></section>
 <section id="influence-of-n_neighbors" class="title-slide slide level1 center">
 <h1>Influence of n_neighbors</h1>
 <ul>
 <li>Trade-off between complexity and generalisation</li>
-<li>Smaller k → higher model complexity</li>
+<li>Smaller k → complex boundary, higher model complexity, lower generalisation</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/knn_boundary_varying_k.png" alt="KNN boundary varying k" style="max-width:45%;"></p>
+<p><img src="images/knn_boundary_varying_k.png" alt="KNN boundary varying k" style="max-width:40%;"></p>
 </div>
 </section>
 
@@ -369,7 +375,7 @@ y_i &amp;\in
 <section id="overfitting-vs-underfitting-1" class="slide level2">
 <h2>Overfitting vs Underfitting</h2>
 <ul>
-<li>Performance on testing data firstly increases with model complexity, and then decreases <em>due to overfitting</em>
+<li>Performance on testing data firstly increases with model complexity, and then decreases <em>due to overfitting on training data</em>
 <div style="text-align:center;">
 <p><img src="images/overfitting_underfitting_cartoon_generalization.png" alt="Overfitting vs Underfitting (generalization)" style="max-width:80%;"></p>
 </div></li>
@@ -385,13 +391,13 @@ y_i &amp;\in
 <p><img src="images/overfitting_underfitting_cartoon_full.png" alt="Overfitting vs Underfitting (full)" style="max-width:80%;"></p>
 </div>
 </section>
-<section id="so-far-happy-ending" class="slide level2">
-<h2>So far: Happy ending?</h2>
+<section id="using-test-set-to-select-k-and-evaluate-performance.-happy-ending" class="slide level2">
+<h2>Using test set to select k and evaluate performance. Happy ending?</h2>
 <ul>
 <li>Report: best k=19, test accuracy=0.77</li>
 <li>Good for choosing k</li>
-<li><span style="color:blue">But the test accuray is overly optimistic and biased</span></li>
-<li>Problem: test set used twice, for both choosing k and final evaluation</li>
+<li><span style="color:blue">But the testing accuray is overly optimistic and biased</span></li>
+<li>Problem: test set is used twice, for both choosing k and final evaluation</li>
 </ul>
 </section>
 <section id="summary-of-train-test-split" class="slide level2">
@@ -450,22 +456,22 @@ y_i &amp;\in
 </section>
 <section id="threefold-split-code" class="slide level2">
 <h2>Threefold Split (Code)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>X_trainval, X_test, y_trainval, y_test <span class="op">=</span> train_test_split(X, y, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb2-2"><a></a>X_train, X_val, y_train, y_val <span class="op">=</span> train_test_split(X_trainval, y_trainval, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb2-3"><a></a></span>
-<span id="cb2-4"><a></a>val_scores <span class="op">=</span> []</span>
-<span id="cb2-5"><a></a>neighbors <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">15</span>, <span class="dv">2</span>)</span>
-<span id="cb2-6"><a></a><span class="cf">for</span> i <span class="kw">in</span> neighbors:</span>
-<span id="cb2-7"><a></a>    knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>i)</span>
-<span id="cb2-8"><a></a>    knn.fit(X_train, y_train)</span>
-<span id="cb2-9"><a></a>    val_scores.append(knn.score(X_val, y_val))</span>
-<span id="cb2-10"><a></a><span class="bu">print</span>(<span class="ss">f"best validation score: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(val_scores)<span class="sc">:.3}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
-<span id="cb2-11"><a></a>best_n_neighbors <span class="op">=</span> neighbors[np.argmax(val_scores)]</span>
-<span id="cb2-12"><a></a><span class="bu">print</span>(<span class="ss">f"best n_neighbors:</span><span class="sc">{</span>best_n_neighbors<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
-<span id="cb2-13"><a></a></span>
-<span id="cb2-14"><a></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>best_n_neighbors)</span>
-<span id="cb2-15"><a></a>knn.fit(X_trainval, y_trainval)</span>
-<span id="cb2-16"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>knn<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>X_trainval, X_test, y_trainval, y_test <span class="op">=</span> train_test_split(X, y, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-2"><a></a>X_train, X_val, y_train, y_val <span class="op">=</span> train_test_split(X_trainval, y_trainval, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-3"><a></a></span>
+<span id="cb1-4"><a></a>val_scores <span class="op">=</span> []</span>
+<span id="cb1-5"><a></a>neighbors <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">15</span>, <span class="dv">2</span>)</span>
+<span id="cb1-6"><a></a><span class="cf">for</span> i <span class="kw">in</span> neighbors:</span>
+<span id="cb1-7"><a></a>    knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>i)</span>
+<span id="cb1-8"><a></a>    knn.fit(X_train, y_train)</span>
+<span id="cb1-9"><a></a>    val_scores.append(knn.score(X_val, y_val))</span>
+<span id="cb1-10"><a></a><span class="bu">print</span>(<span class="ss">f"best validation score: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(val_scores)<span class="sc">:.3}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb1-11"><a></a>best_n_neighbors <span class="op">=</span> neighbors[np.argmax(val_scores)]</span>
+<span id="cb1-12"><a></a><span class="bu">print</span>(<span class="ss">f"best n_neighbors:</span><span class="sc">{</span>best_n_neighbors<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb1-13"><a></a></span>
+<span id="cb1-14"><a></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>best_n_neighbors)</span>
+<span id="cb1-15"><a></a>knn.fit(X_trainval, y_trainval)</span>
+<span id="cb1-16"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>knn<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>best validation score: 0.991</li>
 <li>best n_neighbors: 11</li>
@@ -492,7 +498,7 @@ y_i &amp;\in
 <li>Fixed train-val-test split: results depend on split</li>
 <li>High variance in best k and test score, not robust</li>
 </ul>
-<div id="4e095be0" class="cell" data-execution_count="3">
+<div id="e719ced1" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>   random_seed  best_validation_score  best_k  test_set_score
 0            0                    0.7       5        0.846154
@@ -525,21 +531,21 @@ y_i &amp;\in
 </section></section>
 <section id="grid-search-with-cv-code" class="title-slide slide level1 center">
 <h1>Grid-Search with CV (Code)</h1>
-<div id="162d7dc3" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
-<span id="cb4-2"><a></a></span>
-<span id="cb4-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y)</span>
-<span id="cb4-4"><a></a></span>
-<span id="cb4-5"><a></a>cross_val_scores <span class="op">=</span> []</span>
-<span id="cb4-6"><a></a><span class="cf">for</span> i <span class="kw">in</span> neighbors:</span>
-<span id="cb4-7"><a></a>    knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>i)</span>
-<span id="cb4-8"><a></a>    scores <span class="op">=</span> cross_val_score(knn, X_train, y_train, cv<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb4-9"><a></a>    cross_val_scores.append(np.mean(scores))</span>
-<span id="cb4-10"><a></a></span>
-<span id="cb4-11"><a></a>best_n <span class="op">=</span> neighbors[np.argmax(cross_val_scores)]</span>
-<span id="cb4-12"><a></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>best_n)</span>
-<span id="cb4-13"><a></a>knn.fit(X_train, y_train)</span>
-<span id="cb4-14"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>knn<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="6a0b6cbd" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
+<span id="cb3-2"><a></a></span>
+<span id="cb3-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y)</span>
+<span id="cb3-4"><a></a></span>
+<span id="cb3-5"><a></a>cross_val_scores <span class="op">=</span> []</span>
+<span id="cb3-6"><a></a><span class="cf">for</span> i <span class="kw">in</span> neighbors:</span>
+<span id="cb3-7"><a></a>    knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>i)</span>
+<span id="cb3-8"><a></a>    scores <span class="op">=</span> cross_val_score(knn, X_train, y_train, cv<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-9"><a></a>    cross_val_scores.append(np.mean(scores))</span>
+<span id="cb3-10"><a></a></span>
+<span id="cb3-11"><a></a>best_n <span class="op">=</span> neighbors[np.argmax(cross_val_scores)]</span>
+<span id="cb3-12"><a></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>best_n)</span>
+<span id="cb3-13"><a></a>knn.fit(X_train, y_train)</span>
+<span id="cb3-14"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>knn<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>test-set score: 0.692</code></pre>
 </div>
@@ -555,21 +561,21 @@ y_i &amp;\in
 
 <section id="gridsearchcv-code" class="title-slide slide level1 center">
 <h1>GridSearchCV (Code)</h1>
-<div id="573daaec" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
-<span id="cb6-2"><a></a></span>
-<span id="cb6-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, stratify<span class="op">=</span>y)</span>
-<span id="cb6-4"><a></a>param_grid <span class="op">=</span> {<span class="st">'n_neighbors'</span>:  np.arange(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)}</span>
-<span id="cb6-5"><a></a></span>
-<span id="cb6-6"><a></a>grid <span class="op">=</span> GridSearchCV(KNeighborsClassifier(), param_grid<span class="op">=</span>param_grid, cv<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb6-7"><a></a>                    return_train_score<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-8"><a></a></span>
-<span id="cb6-9"><a></a>grid.fit(X_train, y_train)</span>
-<span id="cb6-10"><a></a><span class="bu">print</span>(<span class="st">"best parameters:"</span>, grid.best_params_)</span>
-<span id="cb6-11"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>grid<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2cbd122e" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb5-2"><a></a></span>
+<span id="cb5-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, stratify<span class="op">=</span>y)</span>
+<span id="cb5-4"><a></a>param_grid <span class="op">=</span> {<span class="st">'n_neighbors'</span>:  np.arange(<span class="dv">1</span>, <span class="dv">30</span>, <span class="dv">2</span>)}</span>
+<span id="cb5-5"><a></a></span>
+<span id="cb5-6"><a></a>grid <span class="op">=</span> GridSearchCV(KNeighborsClassifier(), param_grid<span class="op">=</span>param_grid, cv<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb5-7"><a></a>                    return_train_score<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-8"><a></a></span>
+<span id="cb5-9"><a></a>grid.fit(X_train, y_train)</span>
+<span id="cb5-10"><a></a><span class="bu">print</span>(<span class="st">"best parameters:"</span>, grid.best_params_)</span>
+<span id="cb5-11"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>grid<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>best parameters: {'n_neighbors': np.int64(19)}
-test-set score: 0.692</code></pre>
+<pre><code>best parameters: {'n_neighbors': np.int64(27)}
+test-set score: 0.846</code></pre>
 </div>
 </div>
 </section>
@@ -577,10 +583,10 @@ test-set score: 0.692</code></pre>
 <section>
 <section id="gridsearchcv-results" class="title-slide slide level1 center">
 <h1>GridSearchCV Results</h1>
-<div id="b49f0e26" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb8-2"><a></a>results <span class="op">=</span> pd.DataFrame(grid.cv_results_)</span>
-<span id="cb8-3"><a></a>results.params.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="c5f95912" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-2"><a></a>results <span class="op">=</span> pd.DataFrame(grid.cv_results_)</span>
+<span id="cb7-3"><a></a>results.params.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>0    {'n_neighbors': 1}
 1    {'n_neighbors': 3}
@@ -648,10 +654,10 @@ Name: params, dtype: object</code></pre>
 <section>
 <section id="stratified-cv-code" class="title-slide slide level1 center">
 <h1>Stratified CV (Code)</h1>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="co">#| echo: true</span></span>
-<span id="cb10-2"><a></a>dc <span class="op">=</span> DummyClassifier(<span class="st">'most_frequent'</span>)</span>
-<span id="cb10-3"><a></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb10-4"><a></a>np.mean(cross_val_score(dc, X, y, cv<span class="op">=</span>skf))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="co">#| echo: true</span></span>
+<span id="cb9-2"><a></a>dc <span class="op">=</span> DummyClassifier(<span class="st">'most_frequent'</span>)</span>
+<span id="cb9-3"><a></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-4"><a></a>np.mean(cross_val_score(dc, X, y, cv<span class="op">=</span>skf))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="cv-for-grouped-data" class="slide level2">
 <h2>CV for grouped data?</h2>

@@ -746,7 +746,7 @@
     "href": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
     "title": "Supervised learning",
     "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.923"
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
   },
   {
     "objectID": "sessions/supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
@@ -2094,7 +2094,7 @@
     "href": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#example-using-breast-cancer-dataset",
     "title": "Supervised learning",
     "section": "Example using Breast Cancer dataset",
-    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.923"
+    "text": "Example using Breast Cancer dataset\n\n\nclass malignant: 212, 37.258%\nclass benign: 357, 62.742%\nPredictive accuracy: 0.930"
   },
   {
     "objectID": "sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html#limitation-of-accuracy-accuracy-paradox",
@@ -2789,21 +2789,21 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#example---k-nearest-neighbors-knn",
     "title": "Supervised learning workflow",
     "section": "Example - K Nearest Neighbors (KNN)",
-    "text": "Example - K Nearest Neighbors (KNN)\n\n\n\n\nPredict label of closest training sample\n\\(f(x) = y_i,\\; i = \\operatorname*{argmin}_j \\lVert x_j - x \\rVert\\)"
+    "text": "Example - K Nearest Neighbors (KNN)\n\nWith a trained KNN, a new data point is classified by the majority label of its k nearest neighbours in the training set"
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#nearest-neighbors-k1",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#nearest-neighbors-k1",
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#knn-k1",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#knn-k1",
     "title": "Supervised learning workflow",
-    "section": "Nearest Neighbors (k=1)",
-    "text": "Nearest Neighbors (k=1)\n\n\n\n\nMemorises training samples\nSensitive/Complex decision boundary"
+    "section": "KNN (k=1)",
+    "text": "KNN (k=1)\n\nWhen k=1, a new data point is labelled by its nearest neighbour\nSensitive/Complex decision boundary"
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#influence-of-n_neighbors-k3",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#influence-of-n_neighbors-k3",
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#knn-k3",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#knn-k3",
     "title": "Supervised learning workflow",
-    "section": "Influence of n_neighbors (k=3)",
-    "text": "Influence of n_neighbors (k=3)\n\nLarger k → smoother boundary\nSmaller k → complex boundary"
+    "section": "KNN (k=3)",
+    "text": "KNN (k=3)\n\nThe label of a new data point is the majority vote of its 3 nearest neighbours\nThe decision boundary is less complex and less sensitive to training data"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting",
@@ -2817,7 +2817,7 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-1",
     "title": "Supervised learning workflow",
     "section": "Overfitting vs Underfitting",
-    "text": "Overfitting vs Underfitting\n\nPerformance on testing data firstly increases with model complexity, and then decreases due to overfitting"
+    "text": "Overfitting vs Underfitting\n\nPerformance on testing data firstly increases with model complexity, and then decreases due to overfitting on training data"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#overfitting-vs-underfitting-2",
@@ -2827,11 +2827,11 @@
     "text": "Overfitting vs Underfitting\n\nThe optimal hyperparameter achieves balance between underfitting and overfitting"
   },
   {
-    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#so-far-happy-ending",
-    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#so-far-happy-ending",
+    "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#using-test-set-to-select-k-and-evaluate-performance.-happy-ending",
+    "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#using-test-set-to-select-k-and-evaluate-performance.-happy-ending",
     "title": "Supervised learning workflow",
-    "section": "So far: Happy ending?",
-    "text": "So far: Happy ending?\n\nReport: best k=19, test accuracy=0.77\nGood for choosing k\nBut the test accuray is overly optimistic and biased\nProblem: test set used twice, for both choosing k and final evaluation"
+    "section": "Using test set to select k and evaluate performance. Happy ending?",
+    "text": "Using test set to select k and evaluate performance. Happy ending?\n\nReport: best k=19, test accuracy=0.77\nGood for choosing k\nBut the testing accuray is overly optimistic and biased\nProblem: test set is used twice, for both choosing k and final evaluation"
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html#summary-of-train-test-split",
@@ -3622,7 +3622,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.12 + 28.37*X1 + 73.86*X2 + 3.00*X3 + 17.55*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.994\n\nModel 2 (4 features): y = 1.23 + 28.26*X1 + 74.07*X2 + 9.01*X3 + 11.12*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",
