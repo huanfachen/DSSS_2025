@@ -83,23 +83,22 @@ $$
 
 ## Example - K Nearest Neighbors (KNN)
 
+- With a trained KNN, a new data point is classified by the majority label of its k nearest neighbours in the training set
+
 <div style="text-align:center;">
   <img src="images/knn_boundary_test_points.png" alt="KNN boundary with test points" style="max-width:40%;">
 </div>
 
-- Predict label of closest training sample
-- $f(x) = y_i,\; i = \operatorname*{argmin}_j \lVert x_j - x \rVert$
+## KNN (k=1)
 
-## Nearest Neighbors (k=1)
+- When k=1, a new data point is labelled by its nearest neighbour
+- Sensitive/Complex decision boundary
 
 <div style="text-align:center;">
   <img src="images/knn_boundary_k1.png" alt="KNN boundary k=1" style="max-width:40%;">
 </div>
 
-- Memorises training samples
-- Sensitive/Complex decision boundary
-
-# KNN with scikit-learn
+<!-- # KNN with scikit-learn
 
 ```{python}
 #| echo: false
@@ -126,24 +125,24 @@ knn = KNeighborsClassifier(n_neighbors=1)
 knn.fit(X_train, y_train)
 print("accuracy:", knn.score(X_test, y_test))
 y_pred = knn.predict(X_test)
-```
+``` -->
 
-## Influence of n_neighbors (k=3)
+## KNN (k=3)
 
-- Larger k → smoother boundary
-- Smaller k → complex boundary
+- The label of a new data point is the majority vote of its 3 nearest neighbours
+- The decision boundary is less complex and less sensitive to training data
 
 <div style="text-align:center;">
-  <img src="images/knn_boundary_k3.png" alt="KNN boundary k=3" style="max-width:50%;">
+  <img src="images/knn_boundary_k3.png" alt="KNN boundary k=3" style="max-width:40%;">
 </div>
 
 # Influence of n_neighbors
 
 - Trade-off between complexity and generalisation
-- Smaller k → higher model complexity
+- Smaller k → complex boundary, higher model complexity, lower generalisation
 
 <div style="text-align:center;">
-  <img src="images/knn_boundary_varying_k.png" alt="KNN boundary varying k" style="max-width:45%;">
+  <img src="images/knn_boundary_varying_k.png" alt="KNN boundary varying k" style="max-width:40%;">
 </div>
 
 # Model Complexity
@@ -164,7 +163,7 @@ y_pred = knn.predict(X_test)
 
 ## Overfitting vs Underfitting
 
-- Performance on testing data firstly increases with model complexity, and then decreases *due to overfitting*
+- Performance on testing data firstly increases with model complexity, and then decreases *due to overfitting on training data*
 <div style="text-align:center;">
   <img src="images/overfitting_underfitting_cartoon_generalization.png" alt="Overfitting vs Underfitting (generalization)" style="max-width:80%;">
 </div>
@@ -178,12 +177,12 @@ y_pred = knn.predict(X_test)
   <img src="images/overfitting_underfitting_cartoon_full.png" alt="Overfitting vs Underfitting (full)" style="max-width:80%;">
 </div>
 
-## So far: Happy ending?
+## Using test set to select k and evaluate performance. Happy ending?
 
 - Report: best k=19, test accuracy=0.77
 - Good for choosing k
-- [But the test accuray is overly optimistic and biased]{style="color:blue"}
-- Problem: test set used twice, for both choosing k and final evaluation
+- [But the testing accuray is overly optimistic and biased]{style="color:blue"}
+- Problem: test set is used twice, for both choosing k and final evaluation
 
 ## Summary of train-test split
 
