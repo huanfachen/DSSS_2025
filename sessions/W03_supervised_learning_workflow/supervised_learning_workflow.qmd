@@ -98,7 +98,8 @@ $$
   <img src="images/knn_boundary_k1.png" alt="KNN boundary k=1" style="max-width:40%;">
 </div>
 
-<!-- # KNN with scikit-learn
+<!-- 
+# KNN with scikit-learn
 
 ```{python}
 #| echo: false
@@ -125,7 +126,8 @@ knn = KNeighborsClassifier(n_neighbors=1)
 knn.fit(X_train, y_train)
 print("accuracy:", knn.score(X_test, y_test))
 y_pred = knn.predict(X_test)
-``` -->
+``` 
+-->
 
 ## KNN (k=3)
 
