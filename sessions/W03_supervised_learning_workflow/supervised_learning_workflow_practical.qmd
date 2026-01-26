@@ -80,13 +80,13 @@ print(f'Train R-squared: {r2_train:.3f}')
 print(f'Test R-squared: {r2_test:.3f}')
 ```
 
-It is obvious that the model trained is **overfitting** the training data, as the $R^2$ on the training and testing data is around 0.92 and only 0.18, respectively. This model is not useful in practice, as it does not generalise well to unseen data.
+It is obvious that the model trained is **overfitting** the training data, as the $R^2$ on the training and testing data is around 0.92 and only 0.18, respectively. Therefore, this model is not useful in practice, as it doesn't generalise well to unseen data.
 
 To mitigate this issue, we can use **cross-validation** to tune the hyperparameters of the random forest model to reduce overfitting. The hyperparameters to tune include the following (see [link](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html) for details):
 
--   `max_depth`: maximum depth of the tree
--   `min_samples_leaf`: minimum number of samples required to be at a leaf node
--   `max_features`: number of features to consider when looking for the best split
+-   `max_depth`: maximum depth of the tree (default at None, meaning nodes are expanded until all leaves are pure or until all leaves contain less tha nmin_samples_split samples)
+-   `min_samples_leaf`: minimum number of samples required to be at a leaf node (default at 1)
+-   `max_features`: number of features to consider when looking for the best split (default to 1.0, meaning all features are considered)
 
 We haven't introduced random forest algorithm yet, which is the content of Week 4. For now, please assume that these hyperparameters can control the complexity of the random forest model, and tuning them can help reduce overfitting.
 
@@ -114,7 +114,7 @@ print(f'Training time: {training_time:.3f} seconds')
 
 This training took around 0.28 seconds on my desktop, so the total time for cross-validation with grid search would be approximately $180 \times 0.28 = 50.4$ seconds, less than 1 minute.
 
-We will start with defining the hyperparameters to tune and their possible values. The first value of each parameter is the default value in `RandomForestRegressor`, see [link](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
+We will start with defining the hyperparameters to tune and their possible values. The first value of `max_depth` and `min_samples_leaf` is their default value in `RandomForestRegressor`, respectively. See [link](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
 
 ```{python}
 # 5-fold CV to tune RandomForestRegressor
@@ -189,6 +189,7 @@ The best hyperparameters found are as follows:
 - `min_samples_leaf`: 1
 
 And the $R^2$ on the training, testing, and cross-validated data are as follows:
+
 - Training data: 0.860
 - Testing data: 0.200
 - CV: 0.368
@@ -287,6 +288,7 @@ print(f"Temporal split — Test R-squared with tuned params: {test_r2_temporal:.
 ```
 
 The $R^2$ on the training, testing, and cross-validated data are as follows:
+
 - Training data: 0.928
 - Testing data: -2.687
 - CV: -0.269
@@ -297,7 +299,7 @@ Can you give it a try?
 
 # Future directions
 
-That's mostly for this practical. We have demonstrated how to predict LFB daily callouts withcross validation and hyperparameter tuning using grid search in both random and temporal data splits. The similar workflow can be applied to the classification task of predicting false alarms in fire incidents.
+That's mostly for this practical. We have demonstrated how to predict LFB daily callouts withcross validation and hyperparameter tuning using grid search in both random and temporal data splits. The similar workflow can be applied to the classification task of predicting false alarms in fire incidents, and we will demonstrate this in later practicals.
 
 ## References and recommendations:
 
