@@ -319,11 +319,11 @@ y_i &amp;\in
 
 
 
-::: {#7b9a89df .cell execution_count=2}
+::: {#74ab3b36 .cell execution_count=2}
 
 ::: {.cell-output .cell-output-stdout}
 ```
-accuracy: 0.6923076923076923
+accuracy: 0.7692307692307693
 ```
 :::
 :::
@@ -340,9 +340,9 @@ accuracy: 0.6923076923076923
 <div style="text-align:center;">
 <p><img src="images/knn_boundary_k3.png" alt="KNN boundary k=3" style="max-width:40%;"></p>
 </div>
-</section></section>
-<section id="influence-of-n_neighbors" class="title-slide slide level1 center">
-<h1>Influence of n_neighbors</h1>
+</section>
+<section id="influence-of-n_neighbors" class="slide level2">
+<h2>Influence of n_neighbors</h2>
 <ul>
 <li>Trade-off between complexity and generalisation</li>
 <li>Smaller k → complex boundary, higher model complexity, lower generalisation</li>
@@ -351,12 +351,10 @@ accuracy: 0.6923076923076923
 <p><img src="images/knn_boundary_varying_k.png" alt="KNN boundary varying k" style="max-width:40%;"></p>
 </div>
 </section>
-
-<section>
-<section id="model-complexity" class="title-slide slide level1 center">
-<h1>Model Complexity</h1>
+<section id="model-complexity" class="slide level2">
+<h2>Model Complexity</h2>
 <div style="text-align:center;">
-<p><img src="images/knn_model_complexity.png" alt="KNN model complexity" style="max-width:75%;"></p>
+<p><img src="images/knn_model_complexity.png" alt="KNN model complexity" style="max-width:60%;"></p>
 </div>
 <ul>
 <li>Train score ↓ as k increases</li>
@@ -428,10 +426,10 @@ accuracy: 0.6923076923076923
 <ul>
 <li>It separates hyperparameter tuning (using validation set) and final evaluation (using test set)</li>
 <li>Ensures test set is only used for final evaluation</li>
-<li>Interesting reading <a href="http://robotics.stanford.edu/~ang/papers/cv-final.pdf">Preventing Overfitting in cross-validation - Ng 1997</a></li>
+<li>Interesting reading: <a href="http://robotics.stanford.edu/~ang/papers/cv-final.pdf">Preventing Overfitting in cross-validation - Ng 1997</a></li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/overfitting_validation_set_1.png" alt="Overfitting validation 1" style="max-width:80%;"></p>
+<p><img src="images/overfitting_validation_set_1.png" alt="Overfitting validation 1" style="max-width:65%;"></p>
 </div>
 </section>
 <section id="overfitting-the-validation-set" class="slide level2">
@@ -439,17 +437,15 @@ accuracy: 0.6923076923076923
 <div style="text-align:center;">
 <p><img src="images/overfitting_validation_set_2.png" alt="Overfitting validation 2" style="max-width:80%;"></p>
 </div>
-</section></section>
-<section id="overfitting-the-validation-set-1" class="title-slide slide level1 center">
-<h1>Overfitting the Validation Set</h1>
+</section>
+<section id="overfitting-the-validation-set-1" class="slide level2">
+<h2>Overfitting the Validation Set</h2>
 <div style="text-align:center;">
 <p><img src="images/overfitting_validation_set_3.png" alt="Overfitting validation 3" style="max-width:80%;"></p>
 </div>
 </section>
-
-<section>
-<section id="overfitting-the-validation-set-2" class="title-slide slide level1 center">
-<h1>Overfitting the Validation Set</h1>
+<section id="overfitting-the-validation-set-2" class="slide level2">
+<h2>Overfitting the Validation Set</h2>
 <div style="text-align:center;">
 <p><img src="images/overfitting_validation_set_4.png" alt="Overfitting validation 4" style="max-width:80%;"></p>
 </div>
@@ -498,7 +494,7 @@ accuracy: 0.6923076923076923
 <li>Fixed train-val-test split: results depend on split</li>
 <li>High variance in best k and test score, not robust</li>
 </ul>
-<div id="9a8098e5" class="cell" data-execution_count="3">
+<div id="2a1771a0" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>   random_seed  best_validation_score  best_k  test_set_score
 0            0                    0.7       5        0.846154
@@ -531,7 +527,7 @@ accuracy: 0.6923076923076923
 </section></section>
 <section id="grid-search-with-cv-code" class="title-slide slide level1 center">
 <h1>Grid-Search with CV (Code)</h1>
-<div id="0adcf261" class="cell" data-execution_count="4">
+<div id="c3237052" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
 <span id="cb3-2"><a></a></span>
 <span id="cb3-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y)</span>
@@ -561,7 +557,7 @@ accuracy: 0.6923076923076923
 
 <section id="gridsearchcv-code" class="title-slide slide level1 center">
 <h1>GridSearchCV (Code)</h1>
-<div id="54078bb8" class="cell" data-execution_count="5">
+<div id="8b04681b" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
 <span id="cb5-2"><a></a></span>
 <span id="cb5-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, stratify<span class="op">=</span>y)</span>
@@ -574,8 +570,8 @@ accuracy: 0.6923076923076923
 <span id="cb5-10"><a></a><span class="bu">print</span>(<span class="st">"best parameters:"</span>, grid.best_params_)</span>
 <span id="cb5-11"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>grid<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>best parameters: {'n_neighbors': np.int64(5)}
-test-set score: 0.846</code></pre>
+<pre><code>best parameters: {'n_neighbors': np.int64(3)}
+test-set score: 0.923</code></pre>
 </div>
 </div>
 </section>
@@ -583,7 +579,7 @@ test-set score: 0.846</code></pre>
 <section>
 <section id="gridsearchcv-results" class="title-slide slide level1 center">
 <h1>GridSearchCV Results</h1>
-<div id="0eb2fea9" class="cell" data-execution_count="6">
+<div id="94ecafca" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb7-2"><a></a>results <span class="op">=</span> pd.DataFrame(grid.cv_results_)</span>
 <span id="cb7-3"><a></a>results.params.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
