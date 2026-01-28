@@ -138,7 +138,7 @@ y_pred = knn.predict(X_test)
   <img src="images/knn_boundary_k3.png" alt="KNN boundary k=3" style="max-width:40%;">
 </div>
 
-# Influence of n_neighbors
+## Influence of n_neighbors
 
 - Trade-off between complexity and generalisation
 - Smaller k → complex boundary, higher model complexity, lower generalisation
@@ -147,10 +147,10 @@ y_pred = knn.predict(X_test)
   <img src="images/knn_boundary_varying_k.png" alt="KNN boundary varying k" style="max-width:40%;">
 </div>
 
-# Model Complexity
+## Model Complexity
 
 <div style="text-align:center;">
-  <img src="images/knn_model_complexity.png" alt="KNN model complexity" style="max-width:75%;">
+  <img src="images/knn_model_complexity.png" alt="KNN model complexity" style="max-width:60%;">
 </div>
 
 - Train score ↓ as k increases
@@ -206,13 +206,11 @@ y_pred = knn.predict(X_test)
 
 - It separates hyperparameter tuning (using validation set) and final evaluation (using test set)
 - Ensures test set is only used for final evaluation
-- Interesting reading [Preventing Overfitting in cross-validation - Ng 1997](http://robotics.stanford.edu/~ang/papers/cv-final.pdf)
+- Interesting reading: [Preventing Overfitting in cross-validation - Ng 1997](http://robotics.stanford.edu/~ang/papers/cv-final.pdf)
 
 <div style="text-align:center;">
-  <img src="images/overfitting_validation_set_1.png" alt="Overfitting validation 1" style="max-width:80%;">
+  <img src="images/overfitting_validation_set_1.png" alt="Overfitting validation 1" style="max-width:65%;">
 </div>
-
-
 
 ## Overfitting the Validation Set
 
@@ -220,13 +218,13 @@ y_pred = knn.predict(X_test)
   <img src="images/overfitting_validation_set_2.png" alt="Overfitting validation 2" style="max-width:80%;">
 </div>
 
-# Overfitting the Validation Set
+## Overfitting the Validation Set
 
 <div style="text-align:center;">
   <img src="images/overfitting_validation_set_3.png" alt="Overfitting validation 3" style="max-width:80%;">
 </div>
 
-# Overfitting the Validation Set
+## Overfitting the Validation Set
 
 <div style="text-align:center;">
   <img src="images/overfitting_validation_set_4.png" alt="Overfitting validation 4" style="max-width:80%;">
