@@ -39,8 +39,8 @@ format:
 ## Decision Trees for Classification
 
 - Ask a sequence of binary questions on features
-- Axis-parallel splits; thresholds on single features
-- Leaves store class distributions
+- **A split** with a threshold on a single feature divides data into two parts
+- **Leaves** store class distributions
 
 <div style="text-align:center;">
   <img src="images/tree_illustration.png" alt="Tree illustration" style="max-width:60%;">
@@ -80,8 +80,9 @@ format:
 - Gini: $H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})$
 - Cross-Entropy: $H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}$
 - Here, $p_{mk}$ is class $k$ proportion in node $m$
----
-- Example: a dataset with 10 samples in three classes (0, 1, 2) with proportions (0.2, 0.5, 0.3).
+
+
+- Example: a dataset with 10 samples in three classes (A, B, C) with proportions (0.2, 0.5, 0.3).
 - Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66
 - Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296
 
@@ -105,7 +106,7 @@ format:
 <!-- - Deep trees risk pure leaves (one point) without pruning -->
 
 
-## Visualizing Trees (sklearn)
+## Visualising Trees (sklearn)
 
 ```python
 from sklearn.datasets import load_breast_cancer
@@ -120,7 +121,7 @@ tree = DecisionTreeClassifier(max_depth=2).fit(X_train, y_train)
 ```
 
 
-## Visualizing Trees (plot_tree)
+## Visualising Trees (plot_tree)
 
 ```python
 from sklearn.tree import plot_tree
@@ -258,21 +259,21 @@ tree.feature_importances_
 - Sum of impurity decreases per feature; magnitude only (no sign)
 - Unstable with correlated features or different splits
 
-
 ## Categorical Data
 
 - Trees can split categories into subsets; many possible splits
 - Exact search costly; efficient for binary classification + Gini
-- In sklearn, one-hot encoding is needed today
+- In sklearn, one-hot encoding is needed today as sklearn can't handle categorical features natively
 
 
 ## Predicting Probabilities
 
 - Leaf probability = class fraction in leaf
+- e.g. for three-class leaf with samples of (AA BBB CCCCC): $P(A)=0.2$, $P(B)=0.3$, $P(C)=0.5$
 - Deep, unpruned trees give overconfident (100%) probabilities
 - Pruning helps but calibration may still be poor
 
-## Flexible Split Functions
+<!-- ## Flexible Split Functions
 
 <div style="text-align:center;">
   <img src="images/splits_kinect.png" alt="Custom splits" style="max-width:80%;">
@@ -282,12 +283,13 @@ tree.feature_importances_
 </div>
 
 - Can compare pixels, regions, or other engineered tests
-- Linear models inside nodes possible when extrapolation needed
+- Linear models inside nodes possible when extrapolation needed -->
 
 ## Limitations of Trees
 
 - Cannot extrapolate beyond training data range
-- Instability/overfitting: small data changes can alter splits. (Emsembles help)
+- Instability & overfitting: small data changes can alter splits. 
+- (Emsembles help)
 
 ## Extrapolation Limits
 
@@ -340,7 +342,7 @@ tree.feature_importances_
 
 - Combine multiple models to reduce variance / improve accuracy
 - Train several models with different seeds; average predictions
-- Owen Zhang (long time kaggle 1st): build XGBoosting models with different random seeds.
+- Owen Zhang (long time *Kaggle* 1st): build XGBoosting models with different random seeds.
 - Works across model families (e.g., tree + linear + RF + NN)
 - Key to success: `diversity among models`
 - sklearn: `VotingClassifier`
@@ -393,7 +395,8 @@ voting.fit(X_train, y_train)
   <img src="images/bias_vs_variance.png" alt="Bias vs variance" style="max-width:40%;">
 </div>
 
-- Aim for low bias + low variance; averaging high-variance models can lower variance
+- Aim for low bias + low variance
+- Averaging high-variance models can lower variance
 
 
 ## Ensembles: Bias vs Variance
@@ -458,10 +461,10 @@ for n in range(1, 100, 5):
   <img src="images/warm_start_forest.png" alt="Warm start forest" style="max-width:39%;">
 </div>
 
-- Increase trees incrementally; stop when scores stabilize
+- Increase trees incrementally; stop when scores stabilise
 
 
-## Out-of-Bag Estimates
+## Out-of-Bag Estimates (optional)
 
 - Each tree trains on ~66% of data; predict remaining ~34%
 - Average OOB predictions as a free validation score
@@ -474,7 +477,7 @@ oob_scores.append(rf.oob_score_)
 ```
 
 <div style="text-align:center;">
-  <img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:90%;">
+  <img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:70%;">
 </div>
 
 
@@ -570,9 +573,13 @@ for X_batch, y_batch in batches:
 
 ## Gradient Boosting Algorithm
 
-$ f_{1}(x) \approx y $
-$ f_{2}(x) \approx y - \gamma f_{1}(x) $
-$ f_{3}(x) \approx y - \gamma f_{1}(x) - \gamma f_{2}(x) $
+$$
+\begin{aligned}
+f_{1}(x) &\approx y \\
+f_{2}(x) &\approx y - \gamma f_{1}(x) \\
+f_{3}(x) &\approx y - \gamma f_{1}(x) - \gamma f_{2}(x)
+\end{aligned}
+$$
 
 - Each new tree fixes remaining error
 - Small $\gamma$ (e.g., 0.1) for smoother learning
@@ -757,13 +764,12 @@ catb = CatBoostClassifier().fit(X_train, y_train)
 - Hist/XGB/LightGBM implementations are very fast
 
 
-## When to Use Tree Ensembles
+## Summary: when to use a tree or tree ensembles
 
 - For tabular data
-- Need non-linear relationships and minimal preprocessing
-- Single small tree for interpretability; 
-- Random forests very robust, good benchmark
-- Gradient boosting for best accuracy when tuned
-
+- Can model non-linear relationships and require minimal preprocessing
+- Single small tree for interpretability, but a single tree often underfits and doesn't generalise well
+- Random forests are very robust and good benchmark
+- Gradient boosting generate best accuracy when tuned
 
 ## Questions
