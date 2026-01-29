@@ -255,8 +255,8 @@
 <h2>Decision Trees for Classification</h2>
 <ul>
 <li>Ask a sequence of binary questions on features</li>
-<li>Axis-parallel splits; thresholds on single features</li>
-<li>Leaves store class distributions</li>
+<li><strong>A split</strong> with a threshold on a single feature divides data into two parts</li>
+<li><strong>Leaves</strong> store class distributions</li>
 </ul>
 <div style="text-align:center;">
 <p><img src="images/tree_illustration.png" alt="Tree illustration" style="max-width:60%;"></p>
@@ -286,12 +286,12 @@
 <section id="criteria-classification" class="slide level2">
 <h2>Criteria (Classification)</h2>
 <ul>
-<li>Gini: <span class="math inline">\(H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})\)</span></li>
-<li>Cross-Entropy: <span class="math inline">\(H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}\)</span></li>
-<li><h2 id="here-p_mk-is-class-k-proportion-in-node-m">Here, <span class="math inline">\(p_{mk}\)</span> is class <span class="math inline">\(k\)</span> proportion in node <span class="math inline">\(m\)</span></h2></li>
-<li>Example: a dataset with 10 samples in three classes (0, 1, 2) with proportions (0.2, 0.5, 0.3).</li>
-<li>Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66</li>
-<li>Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296</li>
+<li><p>Gini: <span class="math inline">\(H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})\)</span></p></li>
+<li><p>Cross-Entropy: <span class="math inline">\(H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}\)</span></p></li>
+<li><p>Here, <span class="math inline">\(p_{mk}\)</span> is class <span class="math inline">\(k\)</span> proportion in node <span class="math inline">\(m\)</span></p></li>
+<li><p>Example: a dataset with 10 samples in three classes (A, B, C) with proportions (0.2, 0.5, 0.3).</p></li>
+<li><p>Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66</p></li>
+<li><p>Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296</p></li>
 </ul>
 </section>
 <section id="prediction" class="slide level2">
@@ -316,8 +316,8 @@
 </ul></li>
 </ul>
 </section>
-<section id="visualizing-trees-sklearn" class="slide level2">
-<h2>Visualizing Trees (sklearn)</h2>
+<section id="visualising-trees-sklearn" class="slide level2">
+<h2>Visualising Trees (sklearn)</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
 <span id="cb1-2"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb1-3"><a></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
@@ -328,8 +328,8 @@
 <span id="cb1-8"><a></a></span>
 <span id="cb1-9"><a></a>tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">2</span>).fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="visualizing-trees-plot_tree" class="slide level2">
-<h2>Visualizing Trees (plot_tree)</h2>
+<section id="visualising-trees-plot_tree" class="slide level2">
+<h2>Visualising Trees (plot_tree)</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">from</span> sklearn.tree <span class="im">import</span> plot_tree</span>
 <span id="cb2-2"><a></a>tree_dot <span class="op">=</span> plot_tree(tree, feature_names<span class="op">=</span>cancer.feature_names)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
@@ -451,35 +451,35 @@
 <ul>
 <li>Trees can split categories into subsets; many possible splits</li>
 <li>Exact search costly; efficient for binary classification + Gini</li>
-<li>In sklearn, one-hot encoding is needed today</li>
+<li>In sklearn, one-hot encoding is needed today as sklearn can’t handle categorical features natively</li>
 </ul>
 </section>
 <section id="predicting-probabilities" class="slide level2">
 <h2>Predicting Probabilities</h2>
 <ul>
 <li>Leaf probability = class fraction in leaf</li>
+<li>e.g.&nbsp;for three-class leaf with samples of (AA BBB CCCCC): <span class="math inline">\(P(A)=0.2\)</span>, <span class="math inline">\(P(B)=0.3\)</span>, <span class="math inline">\(P(C)=0.5\)</span></li>
 <li>Deep, unpruned trees give overconfident (100%) probabilities</li>
 <li>Pruning helps but calibration may still be poor</li>
 </ul>
-</section>
-<section id="flexible-split-functions" class="slide level2">
-<h2>Flexible Split Functions</h2>
+<!-- ## Flexible Split Functions
+
 <div style="text-align:center;">
-<img src="images/splits_kinect.png" alt="Custom splits" style="max-width:80%;">
-<div style="font-size:0.8em; color: #555; margin-top:4px;">
-<pre><code>Source: Shotton et al., Real-Time Human Pose Recognition (Kinect v1)</code></pre>
+  <img src="images/splits_kinect.png" alt="Custom splits" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Source: Shotton et al., Real-Time Human Pose Recognition (Kinect v1)
+  </div>
 </div>
-</div>
-<ul>
-<li>Can compare pixels, regions, or other engineered tests</li>
-<li>Linear models inside nodes possible when extrapolation needed</li>
-</ul>
+
+- Can compare pixels, regions, or other engineered tests
+- Linear models inside nodes possible when extrapolation needed -->
 </section>
 <section id="limitations-of-trees" class="slide level2">
 <h2>Limitations of Trees</h2>
 <ul>
 <li>Cannot extrapolate beyond training data range</li>
-<li>Instability/overfitting: small data changes can alter splits. (Emsembles help)</li>
+<li>Instability &amp; overfitting: small data changes can alter splits.</li>
+<li>(Emsembles help)</li>
 </ul>
 </section>
 <section id="extrapolation-limits" class="slide level2">
@@ -532,7 +532,7 @@
 <ul>
 <li>Combine multiple models to reduce variance / improve accuracy</li>
 <li>Train several models with different seeds; average predictions</li>
-<li>Owen Zhang (long time kaggle 1st): build XGBoosting models with different random seeds.</li>
+<li>Owen Zhang (long time <em>Kaggle</em> 1st): build XGBoosting models with different random seeds.</li>
 <li>Works across model families (e.g., tree + linear + RF + NN)</li>
 <li>Key to success: <code>diversity among models</code></li>
 <li>sklearn: <code>VotingClassifier</code>
@@ -544,12 +544,12 @@
 </section>
 <section id="votingclassifier-example" class="slide level2">
 <h2>VotingClassifier Example</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> VotingClassifier</span>
-<span id="cb8-2"><a></a>voting <span class="op">=</span> VotingClassifier(</span>
-<span id="cb8-3"><a></a>    [(<span class="st">'logreg'</span>, LogisticRegression(C<span class="op">=</span><span class="dv">100</span>)),</span>
-<span id="cb8-4"><a></a>     (<span class="st">'tree'</span>, DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">0</span>))],</span>
-<span id="cb8-5"><a></a>    voting<span class="op">=</span><span class="st">'soft'</span>)</span>
-<span id="cb8-6"><a></a>voting.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> VotingClassifier</span>
+<span id="cb7-2"><a></a>voting <span class="op">=</span> VotingClassifier(</span>
+<span id="cb7-3"><a></a>    [(<span class="st">'logreg'</span>, LogisticRegression(C<span class="op">=</span><span class="dv">100</span>)),</span>
+<span id="cb7-4"><a></a>     (<span class="st">'tree'</span>, DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">0</span>))],</span>
+<span id="cb7-5"><a></a>    voting<span class="op">=</span><span class="st">'soft'</span>)</span>
+<span id="cb7-6"><a></a>voting.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/voting_classifier.png" alt="Voting classifier" style="max-width:80%;"></p>
 </div>
@@ -582,7 +582,8 @@
 <p><img src="images/bias_vs_variance.png" alt="Bias vs variance" style="max-width:40%;"></p>
 </div>
 <ul>
-<li>Aim for low bias + low variance; averaging high-variance models can lower variance</li>
+<li>Aim for low bias + low variance</li>
+<li>Averaging high-variance models can lower variance</li>
 </ul>
 </section>
 <section id="ensembles-bias-vs-variance" class="slide level2">
@@ -637,35 +638,35 @@
 </section>
 <section id="warm-starts" class="slide level2">
 <h2>Warm-Starts</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>rf <span class="op">=</span> RandomForestClassifier(warm_start<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb9-2"><a></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">5</span>):</span>
-<span id="cb9-3"><a></a>    rf.n_estimators <span class="op">=</span> n</span>
-<span id="cb9-4"><a></a>    rf.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>rf <span class="op">=</span> RandomForestClassifier(warm_start<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-2"><a></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">5</span>):</span>
+<span id="cb8-3"><a></a>    rf.n_estimators <span class="op">=</span> n</span>
+<span id="cb8-4"><a></a>    rf.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/warm_start_forest.png" alt="Warm start forest" style="max-width:39%;"></p>
 </div>
 <ul>
-<li>Increase trees incrementally; stop when scores stabilize</li>
+<li>Increase trees incrementally; stop when scores stabilise</li>
 </ul>
 </section>
-<section id="out-of-bag-estimates" class="slide level2">
-<h2>Out-of-Bag Estimates</h2>
+<section id="out-of-bag-estimates-optional" class="slide level2">
+<h2>Out-of-Bag Estimates (optional)</h2>
 <ul>
 <li>Each tree trains on ~66% of data; predict remaining ~34%</li>
 <li>Average OOB predictions as a free validation score</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>rf <span class="op">=</span> RandomForestClassifier(max_features<span class="op">=</span>m, oob_score<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb10-2"><a></a>                            n_estimators<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb10-3"><a></a>rf.fit(X_train, y_train)</span>
-<span id="cb10-4"><a></a>oob_scores.append(rf.oob_score_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>rf <span class="op">=</span> RandomForestClassifier(max_features<span class="op">=</span>m, oob_score<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-2"><a></a>                            n_estimators<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb9-3"><a></a>rf.fit(X_train, y_train)</span>
+<span id="cb9-4"><a></a>oob_scores.append(rf.oob_score_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
-<p><img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:90%;"></p>
+<p><img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:70%;"></p>
 </div>
 </section>
 <section id="variable-importance-rf" class="slide level2">
 <h2>Variable Importance (RF)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>rf <span class="op">=</span> RandomForestClassifier().fit(X_train, y_train)</span>
-<span id="cb11-2"><a></a>rf.feature_importances_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>rf <span class="op">=</span> RandomForestClassifier().fit(X_train, y_train)</span>
+<span id="cb10-2"><a></a>rf.feature_importances_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/forest_importances.png" alt="Forest importances" style="max-width:40%;"></p>
 </div>
@@ -716,8 +717,8 @@
 <li>SGD uses one (or a mini-batch of) example(s) per step to approximate the gradient</li>
 <li>Faster on large data; noisier updates</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> SGDClassifier</span>
-<span id="cb12-2"><a></a>sgd <span class="op">=</span> SGDClassifier().fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> SGDClassifier</span>
+<span id="cb11-2"><a></a>sgd <span class="op">=</span> SGDClassifier().fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <!-- ## SGD with partial_fit
 
 ```python
@@ -744,7 +745,13 @@ for X_batch, y_batch in batches:
 </section>
 <section id="gradient-boosting-algorithm" class="slide level2">
 <h2>Gradient Boosting Algorithm</h2>
-<p>$ f_{1}(x) y $ $ f_{2}(x) y - f_{1}(x) $ $ f_{3}(x) y - f_{1}(x) - f_{2}(x) $</p>
+<p><span class="math display">\[
+\begin{aligned}
+f_{1}(x) &amp;\approx y \\
+f_{2}(x) &amp;\approx y - \gamma f_{1}(x) \\
+f_{3}(x) &amp;\approx y - \gamma f_{1}(x) - \gamma f_{2}(x)
+\end{aligned}
+\]</span></p>
 <ul>
 <li>Each new tree fixes remaining error</li>
 <li>Small <span class="math inline">\(\gamma\)</span> (e.g., 0.1) for smoother learning</li>
@@ -890,8 +897,8 @@ for X_batch, y_batch in batches:
 </section>
 <section id="xgboost" class="slide level2">
 <h2>XGBoost</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="im">from</span> xgboost <span class="im">import</span> XGBClassifier</span>
-<span id="cb13-2"><a></a>xgb <span class="op">=</span> XGBClassifier().fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">from</span> xgboost <span class="im">import</span> XGBClassifier</span>
+<span id="cb12-2"><a></a>xgb <span class="op">=</span> XGBClassifier().fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Fast, supports missing values, GPU/cluster training</li>
 <li>L1/L2 on leaves; fast approximate splits; sparse data friendly</li>
@@ -899,16 +906,16 @@ for X_batch, y_batch in batches:
 </section>
 <section id="lightgbm" class="slide level2">
 <h2>LightGBM</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="im">from</span> lightgbm.sklearn <span class="im">import</span> LGBMClassifier</span>
-<span id="cb14-2"><a></a>lgbm <span class="op">=</span> LGBMClassifier().fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="im">from</span> lightgbm.sklearn <span class="im">import</span> LGBMClassifier</span>
+<span id="cb13-2"><a></a>lgbm <span class="op">=</span> LGBMClassifier().fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Native categorical handling; missing values; GPU/cluster support</li>
 </ul>
 </section>
 <section id="catboost" class="slide level2">
 <h2>CatBoost</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="im">from</span> catboost.sklearn <span class="im">import</span> CatBoostClassifier</span>
-<span id="cb15-2"><a></a>catb <span class="op">=</span> CatBoostClassifier().fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="im">from</span> catboost.sklearn <span class="im">import</span> CatBoostClassifier</span>
+<span id="cb14-2"><a></a>catb <span class="op">=</span> CatBoostClassifier().fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Strong on categorical data; symmetric trees; target-encoding tricks; GPU</li>
 </ul>
@@ -921,14 +928,14 @@ for X_batch, y_batch in batches:
 <li>Hist/XGB/LightGBM implementations are very fast</li>
 </ul>
 </section>
-<section id="when-to-use-tree-ensembles" class="slide level2">
-<h2>When to Use Tree Ensembles</h2>
+<section id="summary-when-to-use-a-tree-or-tree-ensembles" class="slide level2">
+<h2>Summary: when to use a tree or tree ensembles</h2>
 <ul>
 <li>For tabular data</li>
-<li>Need non-linear relationships and minimal preprocessing</li>
-<li>Single small tree for interpretability;</li>
-<li>Random forests very robust, good benchmark</li>
-<li>Gradient boosting for best accuracy when tuned</li>
+<li>Can model non-linear relationships and require minimal preprocessing</li>
+<li>Single small tree for interpretability, but a single tree often underfits and doesn’t generalise well</li>
+<li>Random forests are very robust and good benchmark</li>
+<li>Gradient boosting generate best accuracy when tuned</li>
 </ul>
 </section>
 <section id="questions" class="slide level2">
