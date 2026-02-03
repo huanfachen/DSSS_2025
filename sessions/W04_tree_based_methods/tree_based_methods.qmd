@@ -81,7 +81,6 @@ format:
 - Cross-Entropy: $H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}$
 - Here, $p_{mk}$ is class $k$ proportion in node $m$
 
-
 - Example: a dataset with 10 samples in three classes (A, B, C) with proportions (0.2, 0.5, 0.3).
 - Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66
 - Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296
@@ -287,11 +286,11 @@ tree.feature_importances_
 
 ## Limitations of Trees
 
-- Cannot extrapolate beyond training data range
+<!-- - Cannot extrapolate beyond training data range -->
 - Instability & overfitting: small data changes can alter splits. 
 - (Emsembles help)
 
-## Extrapolation Limits
+<!-- ## Extrapolation Limits
 
 <div style="text-align:center;">
   <img src="images/ram_prices.png" alt="RAM prices" style="max-width:80%;">
@@ -313,7 +312,7 @@ tree.feature_importances_
 
 <div style="text-align:center;">
   <img src="images/ram_prices_test.png" alt="RAM prices test" style="max-width:80%;">
-</div>
+</div> -->
 
 
 ## Instability
@@ -346,7 +345,7 @@ tree.feature_importances_
 - Works across model families (e.g., tree + linear + RF + NN)
 - Key to success: `diversity among models`
 - sklearn: `VotingClassifier`
-    - `soft`: average the probabilities of all models and take the arg max (need models provide calibrated probabilities)
+    - `soft`: average the probabilities of all models and take the class with largest average probability
     - `hard`: let each model make a prediction and take majority vote
 
 ## VotingClassifier Example
@@ -477,7 +476,7 @@ oob_scores.append(rf.oob_score_)
 ```
 
 <div style="text-align:center;">
-  <img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:70%;">
+  <img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:50%;">
 </div>
 
 
