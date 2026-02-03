@@ -34,7 +34,7 @@ format:
 
 - Non-linear, strong models for classification and regression
 - Minimal preprocessing: scale and distributions matter little
-- Small trees can be explained; large trees power strong ensembles
+- Small trees can be explained; large trees power strong ensemble
 
 ## Decision Trees for Classification
 
@@ -364,7 +364,7 @@ voting.fit(X_train, y_train)
 </div>
 
 
-## Tree ensembles: two types
+## Tree ensemble: two types
 
 - Bagging (Bootstrap Aggregation): `random forests`
 - Boosting: gradient boosting machines (GBM), `XGBoost`, LightGBM, CatBoost, etc.
@@ -398,9 +398,9 @@ voting.fit(X_train, y_train)
 - Averaging high-variance models can lower variance
 
 
-## Ensembles: Bias vs Variance
+## Ensemble: Bias vs Variance
 
-- Generalization improves with strong base learners and low correlation
+- Generalisation improves with strong base learners and low correlation
 - Diversifying models (or data/features) helps more than sheer count
 
 
@@ -763,7 +763,7 @@ catb = CatBoostClassifier().fit(X_train, y_train)
 - Hist/XGB/LightGBM implementations are very fast
 
 
-## Summary: when to use a tree or tree ensembles
+## Summary: when to use a tree or tree ensemble
 
 - For tabular data
 - Can model non-linear relationships and require minimal preprocessing
