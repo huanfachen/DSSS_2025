@@ -6,3 +6,4 @@ matplotlib
 tabulate
 scikit-learn
 seaborn
+xgboost
