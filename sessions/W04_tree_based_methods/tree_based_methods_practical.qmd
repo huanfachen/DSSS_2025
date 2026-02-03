@@ -415,7 +415,6 @@ dt_clf_results = {
 ```
 :::
 
-
 ## Random forest
 ```{python}
 # use cross validation to tune RandomForestClassifier. No need to impoort data or split data again, as it is the same as above.
