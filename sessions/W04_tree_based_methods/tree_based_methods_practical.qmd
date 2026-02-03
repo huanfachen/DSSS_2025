@@ -1,0 +1,530 @@
+---
+title: 'Practical 4: Tree-based Methods'
+format:
+  html: default
+  ipynb: default
+filters:
+  - qna
+  - quarto
+---
+
+This week will introduce the supervised learning framework and key metrics for evaluating supervised learning models using the London Fire Brigade dataset.
+
+## Learning Outcomes
+
+- Understand the design and training of decision trees.
+- Understand the principle of ensemble methods, including bagging and boosting.
+- Understand the design and strengths of random forests and gradient boosting machines.
+- Can apply tree-based methods from proper libraries (random forest from sklearn and XGBoot from XGBoost).
+
+# Starting the Practical
+
+The process for every week will be the same: download the notebook to your `DSSS` folder (or wherever you keep your course materials), switch over to `JupyterLab` (which will be running in Podman/Docker) and get to work. 
+
+If you want to save the completed notebook to your Github repo, you can `add`, `commit`, and `push` the notebook in Git after you download it. When you're done for the day, save your changes to the file (this is very important!), then `add`, `commit`, and `push` your work to save the completed notebook.
+
+:::{.callout-note}
+
+Suggestions for a Better Learning Experience:
+
+-   **Set your operating system and software language to English**: this will make it easier to follow tutorials, search for solutions online, and understand error messages.
+
+-   **Save all files to a cloud storage service**: use platforms like Google Drive, OneDrive, Dropbox, or Git to ensure your work is backed up and can be restored easily when the laptop gets stolen or broken.
+
+-   **Avoid whitespace in file names and column names in datasets**
+:::
+
+# Revisiting London Fire Brigade Dataset 
+
+This week, we will continue using the London Fire Brigade (LFB) dataset for supervised learning tasks. For the context of LFB data and the two learning tasks, please refer to Week 2 practical notebook. Remember that we formulated two supervised learning tasks using the LFB dataset and random forest:
+
+1. *Regression*: predicting daily LFB callouts in Greater London, using weather and temporal features.
+2. *Classification*: predicting whether a fire incident is a false alarm given the location available at the time of the callout, which includes time of day, day of week, building type (dwelling or commercial).
+
+In this practical, we will apply the algorithms of decision tree, random forest, and XGBoost to these two tasks and look into the model design and performance. For each task, we will train three algorithms with hyperparameter tuning using cross-validation, and then compare their performance.
+
+:::{.callout-note}
+
+This practical is closely related to the Week-2 (introduction to the dataset & metrics) and Week-3 content (supervised learning workflow and cross validation). If you are not familiar with the dataset or train-test split or cross validation, please review Week-3 lecture notes and practical before proceeding.
+
+:::
+
+# Predicting daily LFB callouts
+
+We will start with a regression tree to predict daily LFB callouts using weather and temporal features, using train-test split and cross-validation.
+
+## Regression tree
+
+Firstly, we import the dataset and prepare the train-test split. 
+
+```{python}
+# import data from https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_daily_data.csv
+import pandas as pd
+# suppress warnings
+import warnings
+warnings.filterwarnings('ignore')
+df_lfb_daily = pd.read_csv("https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_daily_data.csv")
+
+# using Random Forest to predict IncidentCount using weather, weekday, weekend, and bank holiday info
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import mean_squared_error, r2_score
+
+# prepare data for modeling
+feature_cols = ['TX', 'TN', 'TG', 'SS', 'SD','RR','QQ', 'PP','HU','CC', 'IsWeekend', 'IsBankHoliday', 'weekday']
+X = df_lfb_daily[feature_cols]
+y = df_lfb_daily['IncidentCount']
+
+# one-hot encode the 'weekday' column
+X = pd.get_dummies(X, columns=['weekday'], drop_first=True)
+
+# split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+```
+
+Then, we will train a regression tree model using `DecisionTreeRegressor` from `sklearn.tree`, tune the hyperparameters using cross-validation, and evaluate its performance on both the training and testing data.
+
+The hyperparameters to tune include:
+
+-   `max_depth`: maximum depth of the tree (default at None, meaning this hyperparameter is not used and nodes are expanded until all leaves are pure or until all leaves contain less tha min_samples_split samples)
+-   `min_samples_split`: minimum number of samples required to split an internal node (default at 2)
+-   `min_samples_leaf`: minimum number of samples required to be at a leaf node (default at 1)
+
+To get a sense of the range of these hyperparameters, we can try a regression tree and print the results:
+
+```{python}
+# train a regression tree using training data and print max_depth, average number of samples at internal nodes, average number of samples at leaf nodes
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import r2_score
+dt = DecisionTreeRegressor(random_state=12)
+dt.fit(X_train, y_train)
+print("Max depth:", dt.get_depth())
+internal_node_samples = [dt.tree_.n_node_samples[i] for i in range(dt.tree_.node_count) if dt.tree_.children_left[i] != dt.tree_.children_right[i]]
+leaf_node_samples = [dt.tree_.n_node_samples[i] for i in range(dt.tree_.node_count) if dt.tree_.children_left[i] == dt.tree_.children_right[i]]
+print("Average samples at internal nodes:", sum(internal_node_samples)/len(internal_node_samples))
+print("Average samples at leaf nodes:", sum(leaf_node_samples)/len(leaf_node_samples))
+
+# print train and test R-squared
+train_r2 = r2_score(y_train, dt.predict(X_train))
+test_r2 = r2_score(y_test, dt.predict(X_test))
+print(f"Train R-squared: {train_r2:.3f}")
+print(f"Test R-squared: {test_r2:.3f}")
+```
+
+```{python}
+# code for cross-validation and hyperparameter tuning for DecisionTreeRegressor based on three hyperparameters above. Print the training, cross-validation, and testing R-squared.
+from sklearn.tree import DecisionTreeRegressor
+param_grid = {
+  'max_depth': [None, 5, 10, 20],
+  'min_samples_split': [5, 10, 15],
+  'min_samples_leaf': [1, 2, 4]
+}
+grid = GridSearchCV(
+  estimator=DecisionTreeRegressor(random_state=12),
+  param_grid=param_grid,
+  cv=5,
+  scoring='r2',
+  n_jobs=-1,
+  return_train_score=True
+)
+grid.fit(X_train, y_train)
+# print best hyperparameters and best CV R-squared
+print("Best hyperparameters:", grid.best_params_)
+print(f"Best CV R-squared: {grid.best_score_:.3f}")
+# retrain with optimal hyperparameters
+best_params = grid.best_params_
+best_model = DecisionTreeRegressor(random_state=20, **best_params)
+best_model.fit(X_train, y_train)
+# r2 on training and testing data
+train_r2 = r2_score(y_train, best_model.predict(X_train))
+print(f"Train R-squared: {train_r2:.3f}")
+test_r2 = r2_score(y_test, best_model.predict(X_test))
+print(f"Test R-squared: {test_r2:.3f}")
+# store the accuracy of CV, train, and test R-squared in a dictionary
+dt_results = {
+  'CV_R2': grid.best_score_,
+  'Train_R2': train_r2,
+  'Test_R2': test_r2
+}
+
+```
+
+Question #1: **can you estimate the number of regression tree models that have been trained during cross-validation with grid search?** Hint: you can calculate it based on number of hyperparameter combinations and number of folds in cross-validation, or using the `cv_results_` attribute of the `GridSearchCV` object.
+
+Question #2: **what is the criterion used in the regression tree to split nodes by default?** Hint: check the documentation of `DecisionTreeRegressor` in sklearn.
+
+## Random forest
+
+We will train a random forest model using a similar workflow as above. The hyperparameters to tune include:
+-   `max_depth`: maximum depth of the tree (default at None, meaning this hyperparameter is not used and nodes are expanded until all leaves are pure or until all leaves contain less tha min_samples_split samples)
+-   `min_samples_leaf`: minimum number of samples required to be at a leaf node (default at 1)
+-   `max_features`: number of features to consider when looking for the best split. This feature controls the randomness of each tree; more randomness can be achieved by setting smaller values (default to 1.0, meaning all features are considered)
+
+```{python}
+# use cross validation to tune RandomForestRegressor. No need to impoort data or split data again, as it is the same as above.
+from sklearn.ensemble import RandomForestRegressor
+param_grid = {
+  'max_depth': [None, 5, 10, 20],
+  'min_samples_leaf': [1, 2, 4],
+  'max_features': ['sqrt', 'log2', 0.5, 1.0]
+}
+grid = GridSearchCV(
+  estimator=RandomForestRegressor(random_state=23),
+  param_grid=param_grid,
+  cv=5,
+  scoring='r2',
+  n_jobs=-1,
+  return_train_score=True
+)
+grid.fit(X_train, y_train)
+# print best hyperparameters and best CV R-squared
+print("Best hyperparameters:", grid.best_params_)
+print(f"Best CV R-squared: {grid.best_score_:.3f}")
+# retrain with optimal hyperparameters
+best_params = grid.best_params_
+best_model = RandomForestRegressor(random_state=20, **best_params)
+best_model.fit(X_train, y_train)
+# r2 on training and testing data
+train_r2 = r2_score(y_train, best_model.predict(X_train))
+print(f"Train R-squared: {train_r2:.3f}")
+test_r2 = r2_score(y_test, best_model.predict(X_test))
+print(f"Test R-squared: {test_r2:.3f}")
+
+# store the accuracy of CV, train, and test R-squared in a dictionary
+rf_results = {
+  'CV_R2': grid.best_score_,
+  'Train_R2': train_r2,
+  'Test_R2': test_r2
+}
+```
+
+## XGBoost
+
+We will train an XGBoost model using a similar workflow as above. XGBoost stands for Extreme Gradient Boosting, which is an efficient, scalable, and industry-standard implementation of gradient boosting algorithm. We will use the `XGBoostRegressor` from `xgboost` library to train the model. Although this library is different from `sklearn`, it provides a sklearn-style interface, which makes it easy to use. 
+
+The hyperparameters to tune include:
+-   `max_depth`: maximum depth of the tree; increasing this value will make the model more complex and more likely to overfit. (default at 6)
+-   `min_split_loss` (called `gamma` in XGBoost functions): minimum loss reduction required to make a further partition on a leaf node of the tree. The larger this value, the more *conservative* the algorithm will be. (default at 0)
+-   `subsample`: the fraction of observations to be randomly sampled for each tree. Setting it to 0.5 means that XGBoost would randomly sample half of the training data prior to growing trees. and this will prevent overfitting. Subsampling will occur once in every boosting iteration. (default at 1.0, meaning all observations are used to build each tree)
+
+Some notes on hyperparameter tuning of XGBoost can be found in [this post](https://xgboost.readthedocs.io/en/stable/tutorials/param_tuning.html).
+
+```{python}
+# use cross validation to tune XGBoostRegressor, see hyperparameters above. No need to impoort data or split data again, as it is the same as above.
+from xgboost import XGBRegressor
+param_grid = {
+  'max_depth': [3, 5, 7],
+  'min_split_loss': [0, 1, 5],
+  'subsample': [0.5, 0.7, 1.0]
+}
+grid = GridSearchCV(
+  estimator=XGBRegressor(random_state=42, objective='reg:squarederror', eval_metric='rmse'),
+  param_grid=param_grid,
+  cv=5,
+  scoring='r2',
+  n_jobs=-1,
+  return_train_score=True
+)
+grid.fit(X_train, y_train)
+# print best hyperparameters and best CV R-squared
+print("Best hyperparameters:", grid.best_params_)
+print(f"Best CV R-squared: {grid.best_score_:.3f}")
+# retrain with optimal hyperparameters
+best_params = grid.best_params_
+best_model = XGBRegressor(random_state=42, objective='reg:squarederror', eval_metric='rmse', **best_params)
+best_model.fit(X_train, y_train)
+# r2 on training and testing data
+train_r2 = r2_score(y_train, best_model.predict(X_train))
+print(f"Train R-squared: {train_r2:.3f}")
+test_r2 = r2_score(y_test, best_model.predict(X_test))
+print(f"Test R-squared: {test_r2:.3f}")
+# store the accuracy of CV, train, and test R-squared in a dictionary
+xgb_results = {
+  'CV_R2': grid.best_score_,
+  'Train_R2': train_r2,
+  'Test_R2': test_r2
+}
+
+```
+
+# Model performance comparison
+
+Now that we have trained and tuned three models (regression tree, random forest, and XGBoost), we can compare their performance on the training, cross-validated, and testing data.
+
+```{python}
+import pandas as pd
+results_df = pd.DataFrame({
+  'Decision Tree': dt_results,
+  'Random Forest': rf_results,
+  'XGBoost': xgb_results
+}).T
+print(results_df.round(3))
+```
+
+The results show that the decision tree model is **underfitting** the training data, as its accuracy on the training and testing data is both low. The XGBoost model overfits the training data (R2=1.0) but doesn't generalise well to unseen data (R2=0.063). Finally, the random forest model achieves the best performance on the testing data (R2=0.169) and is less prone to overfitting compared to XGBoost.
+
+# Classification task: predicting false alarms in fire incidents
+
+We will now apply the same workflow to the classification task of predicting false alarms in fire incidents using decision tree, random forest, and XGBoost classifiers. 
+
+First, we will import the dataset and prepare the train-test split.
+
+```{python}
+# import data from https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_data.csv
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
+df_lfb = pd.read_csv("https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_data.csv")
+# add DayOfWeek column
+df_lfb['DayOfWeek'] = pd.to_datetime(df_lfb['DateOfCall']).dt.day_name()
+# remove 'Special Service' type
+df_lfb = df_lfb[df_lfb['IncidentGroup'].isin(['False Alarm', 'Fire'])]
+
+# proportion of both class
+print("proportion of Fire and False Alarm:")
+print(df_lfb['IncidentGroup'].value_counts(normalize=True))
+```
+
+Then, we will prepare the data for train-test split and model training. As the target variable is highly imbalanced (nearly 80% false alarms and 20% actual fires), we will use stratified sampling in train-test split to ensure that both training and testing sets have similar class distributions.
+
+As discussed in W2, recall is a more suitable metric than accuracy or precision for evaluating this classification task, as we would like to minimise false negatives (i.e. predicting a fire incident as a false alarm).
+
+```{python}
+# prepare data for modelling
+feature_cols = ['HourOfCall', 
+'DayOfWeek',
+'PropertyCategory']
+X = df_lfb[feature_cols]
+
+# one-hot encode categorical features
+X = pd.get_dummies(X, columns=[
+  'DayOfWeek', 
+  'PropertyCategory'], drop_first=True)
+
+y = df_lfb['IncidentGroup'].map({'False Alarm': 0, 'Fire': 1})  # map to binary labels
+
+# split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+```
+
+Can you complete the following code (replacing ?? with code) to train a decision tree, random forest, and XGBoost classifier?
+
+## Classification tree
+
+::: qna
+#### Question
+
+```{python}
+# train a classification tree using training data and cross validation with hyperparameter tuning. Print the training, cross-validation, and testing accuracy.
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import recall_score, accuracy_score
+
+param_grid = {
+  'max_depth': [None, 5, 10, 20],
+  'min_samples_split': [5, 10, 15],
+  'min_samples_leaf': [1, 2, 4]
+}
+grid = GridSearchCV(
+  estimator=DecisionTreeClassifier(random_state=12),
+  param_grid=param_grid,
+  cv=5,
+  scoring='recall',
+  n_jobs=-1,
+  return_train_score=True
+)
+grid.fit(X_train, y_train)
+# print best hyperparameters and best CV accuracy
+print("Best hyperparameters:", grid.??)
+print(f"Best CV recall: {grid.??:.3f}")
+# retrain with optimal hyperparameters
+best_params = grid.best_params_
+best_model = ??(random_state=20, **best_params)
+best_model.fit(X_train, y_train)
+
+# recall on training and testing data
+train_recall = recall_score(y_train, ??.predict(X_train))
+print(f"Train recall: {train_recall:.3f}")
+test_recall = recall_score(y_test, ??.predict(X_test))
+print(f"Test recall: {test_recall:.3f}")
+
+# accuracy on training and testing data
+train_accuracy = accuracy_score(y_train, best_model.??(X_train))
+print(f"Train accuracy: {train_accuracy:.3f}")
+test_accuracy = accuracy_score(y_test, best_model.??(X_test))
+print(f"Test accuracy: {test_accuracy:.3f}")
+
+# store the recall of CV, train, and test in a dictionary
+dt_clf_results = {
+  'CV_Recall': grid.??,
+  'Train_Recall': train_recall,
+  'Test_Recall': test_recall,
+  'Train_Accuracy': train_accuracy,
+  'Test_Accuracy': test_accuracy
+}
+```
+
+#### Answer
+
+```{python}
+# train a classification tree using training data and cross validation with hyperparameter tuning. Print the training, cross-validation, and testing accuracy.
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import recall_score, accuracy_score
+
+param_grid = {
+  'max_depth': [None, 5, 10, 20],
+  'min_samples_split': [5, 10, 15],
+  'min_samples_leaf': [1, 2, 4]
+}
+grid = GridSearchCV(
+  estimator=DecisionTreeClassifier(random_state=12),
+  param_grid=param_grid,
+  cv=5,
+  scoring='recall',
+  n_jobs=-1,
+  return_train_score=True
+)
+grid.fit(X_train, y_train)
+# print best hyperparameters and best CV accuracy
+print("Best hyperparameters:", grid.best_params_)
+print(f"Best CV recall: {grid.best_score_:.3f}")
+# retrain with optimal hyperparameters
+best_params = grid.best_params_
+best_model = DecisionTreeClassifier(random_state=20, **best_params)
+best_model.fit(X_train, y_train)
+
+# recall on training and testing data
+train_recall = recall_score(y_train, best_model.predict(X_train))
+print(f"Train recall: {train_recall:.3f}")
+test_recall = recall_score(y_test, best_model.predict(X_test))
+print(f"Test recall: {test_recall:.3f}")
+
+# accuracy on training and testing data
+train_accuracy = accuracy_score(y_train, best_model.predict(X_train))
+print(f"Train accuracy: {train_accuracy:.3f}")
+test_accuracy = accuracy_score(y_test, best_model.predict(X_test))
+print(f"Test accuracy: {test_accuracy:.3f}")
+
+# store the recall of CV, train, and test in a dictionary
+dt_clf_results = {
+  'CV_Recall': grid.best_score_,
+  'Train_Recall': train_recall,
+  'Test_Recall': test_recall,
+  'Train_Accuracy': train_accuracy,
+  'Test_Accuracy': test_accuracy
+}
+```
+:::
+
+
+## Random forest
+```{python}
+# use cross validation to tune RandomForestClassifier. No need to impoort data or split data again, as it is the same as above.
+from sklearn.ensemble import RandomForestClassifier
+param_grid = {
+  'max_depth': [None, 5, 10, 20],
+  'min_samples_leaf': [1, 2, 4],
+  'max_features': ['sqrt', 'log2', 0.5, 1.0]
+}
+grid = GridSearchCV(
+  estimator=RandomForestClassifier(random_state=23),
+  param_grid=param_grid,
+  cv=5,
+  scoring='recall',
+  n_jobs=-1,
+  return_train_score=True
+)
+grid.fit(X_train, y_train)
+# print best hyperparameters and best CV accuracy
+print("Best hyperparameters:", grid.best_params_)
+print(f"Best CV accuracy: {grid.best_score_:.3f}")
+# retrain with optimal hyperparameters
+best_params = grid.best_params_
+best_model = RandomForestClassifier(random_state=20, **best_params)
+best_model.fit(X_train, y_train)
+# recall on training and testing data
+train_recall = recall_score(y_train, best_model.predict(X_train))
+print(f"Train recall: {train_recall:.3f}")
+test_recall = recall_score(y_test, best_model.predict(X_test))
+print(f"Test recall: {test_recall:.3f}")
+# accuracy on training and testing data
+train_accuracy = accuracy_score(y_train, best_model.predict(X_train))
+print(f"Train accuracy: {train_accuracy:.3f}")
+test_accuracy = accuracy_score(y_test, best_model.predict(X_test))
+print(f"Test accuracy: {test_accuracy:.3f}")
+
+# store the recall of CV, train, and test in a dictionary
+rf_clf_results = {
+  'CV_Recall': grid.best_score_,
+  'Train_Recall': train_recall,
+  'Test_Recall': test_recall,
+  'Train_Accuracy': train_accuracy,
+  'Test_Accuracy': test_accuracy
+}
+```
+
+# XGBoost
+```{python}
+# use cross validation to tune XGBClassifier, see hyperparameters above. No need to impoort data or split data again, as it is the same as above.
+from xgboost import XGBClassifier
+param_grid = {
+  'max_depth': [3, 5, 7],
+  'min_split_loss': [0, 1, 5],
+  'subsample': [0.5, 0.7, 1.0]
+}
+grid = GridSearchCV(
+  estimator=XGBClassifier(random_state=42, use_label_encoder=False, eval_metric='logloss'),
+  param_grid=param_grid,
+  cv=5,
+  scoring='recall',
+  n_jobs=-1,
+  return_train_score=True
+)
+grid.fit(X_train, y_train)
+# print best hyperparameters and best CV accuracy
+print("Best hyperparameters:", grid.best_params_)
+print(f"Best CV accuracy: {grid.best_score_:.3f}")
+# retrain with optimal hyperparameters
+best_params = grid.best_params_
+best_model = XGBClassifier(random_state=42, use_label_encoder=False, eval_metric='logloss', **best_params)
+best_model.fit(X_train, y_train)
+# recall on training and testing data
+train_recall = recall_score(y_train, best_model.predict(X_train))
+print(f"Train recall: {train_recall:.3f}")
+test_recall = recall_score(y_test, best_model.predict(X_test))
+print(f"Test recall: {test_recall:.3f}")
+# accuracy on training and testing data
+train_accuracy = accuracy_score(y_train, best_model.predict(X_train))
+print(f"Train accuracy: {train_accuracy:.3f}")
+test_accuracy = accuracy_score(y_test, best_model.predict(X_test))
+print(f"Test accuracy: {test_accuracy:.3f}")
+
+# store the recall of CV, train, and test in a dictionary
+xgb_clf_results = {
+  'CV_Recall': grid.best_score_,
+  'Train_Recall': train_recall,
+  'Test_Recall': test_recall,
+  'Train_Accuracy': train_accuracy,
+  'Test_Accuracy': test_accuracy
+}
+
+```
+
+## Model performance comparison
+
+We can collate the results from the three classification models and compare their performance. 
+
+```{python}
+import pandas as pd
+results_clf_df = pd.DataFrame({
+  'Decision Tree': dt_clf_results,
+  'Random Forest': rf_clf_results,
+  'XGBoost': xgb_clf_results
+}).T
+print(results_clf_df.round(3))
+```
+
+The results show that the performance is very similar across the three models, although XGBoost achieves slightly higher recall on the training and testing data. A recall of around 0.6 is not very high, which indicates that approximately 40% of actual fire incidents are misclassified as false alarms. The results also suggest that hyperparameter tuning doesn't improve the model performance here. It is possible that the features used in this task are not very predictive of false alarms, and extra features (e.g. more accurate locations) may be needed to improve the model performance.
+
+# Summary
+
+We have demonstrated how to use tree-based methods for regression and classification tasks using London Fire Brigade dataset. In the regression task, decision tree underfits the data, while XGBoost overfits the training data. Random forest achieves the best performance and a good balance between bias and variance. In the classification task, all three models achieve similar performance and the recall is not very high, which indicates that more predictive features may be needed to improve the model performance.
