@@ -305,7 +305,7 @@ y_i &amp;\in
 <section>
 <section id="knn-with-scikit-learn" class="title-slide slide level1 center">
 <h1>KNN with scikit-learn</h1>
-<div id="664a979f" class="cell" data-execution_count="2">
+<div id="70aaab12" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>accuracy: 0.6923076923076923</code></pre>
 </div>
@@ -453,7 +453,7 @@ y_i &amp;\in
 <li>Fixed train/val/test split → results depend on split</li>
 <li>High variance in best k and test score, not robust</li>
 </ul>
-<div id="22b98a16" class="cell" data-execution_count="3">
+<div id="0ffe6990" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>   random_seed  best_validation_score  best_k  test_set_score
 0            0                    0.7       5        0.846154
@@ -481,9 +481,9 @@ y_i &amp;\in
 </section></section>
 <section id="grid-search-with-cv-code" class="title-slide slide level1 center">
 <h1>Grid-Search with CV (Code)</h1>
-<div id="74f42978" class="cell" data-execution_count="4">
+<div id="413b3cfa" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
-<pre><code>test-set score: 0.385</code></pre>
+<pre><code>test-set score: 0.692</code></pre>
 </div>
 </div>
 </section>
@@ -497,10 +497,10 @@ y_i &amp;\in
 
 <section id="gridsearchcv-code" class="title-slide slide level1 center">
 <h1>GridSearchCV (Code)</h1>
-<div id="ac70c4cb" class="cell" data-execution_count="5">
+<div id="3e9f7b29" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
-<pre><code>best parameters: {'n_neighbors': np.int64(9)}
-test-set score: 0.846</code></pre>
+<pre><code>best parameters: {'n_neighbors': np.int64(15)}
+test-set score: 0.538</code></pre>
 </div>
 </div>
 </section>
@@ -508,7 +508,7 @@ test-set score: 0.846</code></pre>
 <section>
 <section id="gridsearchcv-results" class="title-slide slide level1 center">
 <h1>GridSearchCV Results</h1>
-<div id="f2b2f75a" class="cell" data-execution_count="6">
+<div id="acbd296f" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>0    {'n_neighbors': 1}
 1    {'n_neighbors': 3}

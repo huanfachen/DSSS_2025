@@ -476,35 +476,34 @@
 </section>
 <section id="limitations-of-trees" class="slide level2">
 <h2>Limitations of Trees</h2>
+<!-- - Cannot extrapolate beyond training data range -->
 <ul>
-<li>Cannot extrapolate beyond training data range</li>
 <li>Instability &amp; overfitting: small data changes can alter splits.</li>
 <li>(Emsembles help)</li>
 </ul>
-</section>
-<section id="extrapolation-limits" class="slide level2">
-<h2>Extrapolation Limits</h2>
+<!-- ## Extrapolation Limits
+
 <div style="text-align:center;">
-<p><img src="images/ram_prices.png" alt="RAM prices" style="max-width:80%;"></p>
+  <img src="images/ram_prices.png" alt="RAM prices" style="max-width:80%;">
 </div>
-<ul>
-<li>Trees behave like nearest neighbors; cannot extrapolate beyond observed range</li>
-</ul>
-</section>
-<section id="extrapolation-train-on-data-before-2000" class="slide level2">
-<h2>Extrapolation: train on data before 2000</h2>
+
+- Trees behave like nearest neighbors; cannot extrapolate beyond observed range
+
+
+## Extrapolation: train on data before 2000
+
 <div style="text-align:center;">
-<p><img src="images/ram_prices_train.png" alt="RAM prices train" style="max-width:80%;"></p>
+  <img src="images/ram_prices_train.png" alt="RAM prices train" style="max-width:80%;">
 </div>
-</section>
-<section id="extrapolation-test-on-data-after-2000" class="slide level2">
-<h2>Extrapolation: test on data after 2000</h2>
-<ul>
-<li>Tree predictions flatten outside training support; linear models can extrapolate</li>
-</ul>
+
+
+## Extrapolation: test on data after 2000
+
+- Tree predictions flatten outside training support; linear models can extrapolate
+
 <div style="text-align:center;">
-<p><img src="images/ram_prices_test.png" alt="RAM prices test" style="max-width:80%;"></p>
-</div>
+  <img src="images/ram_prices_test.png" alt="RAM prices test" style="max-width:80%;">
+</div> -->
 </section>
 <section id="instability" class="slide level2">
 <h2>Instability</h2>
@@ -537,7 +536,7 @@
 <li>Key to success: <code>diversity among models</code></li>
 <li>sklearn: <code>VotingClassifier</code>
 <ul>
-<li><code>soft</code>: average the probabilities of all models and take the arg max (need models provide calibrated probabilities)</li>
+<li><code>soft</code>: average the probabilities of all models and take the class with largest average probability</li>
 <li><code>hard</code>: let each model make a prediction and take majority vote</li>
 </ul></li>
 </ul>
@@ -660,7 +659,7 @@
 <span id="cb9-3"><a></a>rf.fit(X_train, y_train)</span>
 <span id="cb9-4"><a></a>oob_scores.append(rf.oob_score_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
-<p><img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:70%;"></p>
+<p><img src="images/oob_estimates.png" alt="OOB estimates" style="max-width:50%;"></p>
 </div>
 </section>
 <section id="variable-importance-rf" class="slide level2">
