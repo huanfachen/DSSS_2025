@@ -314,7 +314,7 @@ Can you complete the following code (replacing ?? with code) to train a decision
 ::: qna
 #### Question
 
-```{python}
+``` python
 # train a classification tree using training data and cross validation with hyperparameter tuning. Print the training, cross-validation, and testing accuracy.
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import recall_score, accuracy_score
