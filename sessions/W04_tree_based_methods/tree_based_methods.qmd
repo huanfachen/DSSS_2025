@@ -515,7 +515,7 @@ rf.feature_importances_
 
 ::: {.column width="50%"}
 <div style="text-align:center;">
-  <img src="images/gradient_3d.png" alt="Gradient 3D" style="max-width:100%;">
+  <img src="images/gradient_descent_1D.jpeg" alt="Gradient 1D" style="max-width:60%;">
 </div>
 :::
 
