@@ -79,8 +79,7 @@ format:
 
 - Gini: $H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})$
 - Cross-Entropy: $H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}$
-- Here, $p_{mk}$ is class $k$ proportion in node $m$
-
+    - Here, $p_{mk}$ is class $k$ proportion in node $m$
 - Example: a dataset with 10 samples in three classes (A, B, C) with proportions (0.2, 0.5, 0.3).
 - Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66
 - Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296
