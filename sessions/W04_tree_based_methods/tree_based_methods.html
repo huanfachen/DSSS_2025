@@ -286,12 +286,14 @@
 <section id="criteria-classification" class="slide level2">
 <h2>Criteria (Classification)</h2>
 <ul>
-<li><p>Gini: <span class="math inline">\(H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})\)</span></p></li>
-<li><p>Cross-Entropy: <span class="math inline">\(H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}\)</span></p></li>
-<li><p>Here, <span class="math inline">\(p_{mk}\)</span> is class <span class="math inline">\(k\)</span> proportion in node <span class="math inline">\(m\)</span></p></li>
-<li><p>Example: a dataset with 10 samples in three classes (A, B, C) with proportions (0.2, 0.5, 0.3).</p></li>
-<li><p>Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66</p></li>
-<li><p>Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296</p></li>
+<li>Gini: <span class="math inline">\(H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})\)</span></li>
+<li>Cross-Entropy: <span class="math inline">\(H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}\)</span>
+<ul>
+<li>Here, <span class="math inline">\(p_{mk}\)</span> is class <span class="math inline">\(k\)</span> proportion in node <span class="math inline">\(m\)</span></li>
+</ul></li>
+<li>Example: a dataset with 10 samples in three classes (A, B, C) with proportions (0.2, 0.5, 0.3).</li>
+<li>Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66</li>
+<li>Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296</li>
 </ul>
 </section>
 <section id="prediction" class="slide level2">
@@ -697,7 +699,7 @@
 </ul>
 </div><div class="column" style="width:50%;">
 <div style="text-align:center;">
-<p><img src="images/gradient_3d.png" alt="Gradient 3D" style="max-width:100%;"></p>
+<p><img src="images/gradient_descent_1D.jpeg" alt="Gradient 1D" style="max-width:60%;"></p>
 </div>
 </div></div>
 <!-- ## Learning Rate
