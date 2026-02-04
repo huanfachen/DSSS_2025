@@ -238,10 +238,11 @@
 <section id="decision-trees-dt" class="slide level2">
 <h2>Decision Trees (DT)</h2>
 <ul>
-<li>Many types of decision trees: <strong>classification and regression trees (CART)</strong>, C4.5, ID3, CHAID, etc. These trees (except CART) are rarely used these days.</li>
+<li>Many types of decision trees: <strong>classification and regression trees (CART)</strong>, C4.5, ID3, CHAID, etc.</li>
+<li>Most trees (except CART) are rarely used these days, and CART is still popular.</li>
 <li>Focus on CART: binary trees for classification and regression</li>
-<li>A CART is a regression tree when the target variable <em>Y</em> is continous, and a classification tree when <em>Y</em> is categorical. It is not dependent on type of features (<em>X</em>).</li>
-<li></li>
+<li>A CART is a regression tree when the target variable <em>Y</em> is continous, and a classification tree when <em>Y</em> is categorical.</li>
+<li>It is not dependent on type of features (<em>X</em>).</li>
 </ul>
 </section>
 <section id="why-dt" class="slide level2">
@@ -272,17 +273,17 @@
 <li>a node with <em>counts=[40, 30]</em> means this node contains 40 <span style="color: red;">RED</span> samples, 30 <span style="color: blue;">BLUE</span> samples.</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/tree_depth_2.png" alt="tree_demonstration_depth_2" style="max-width:30%;"></p>
+<p><img src="images/tree_depth_2.png" alt="tree_demonstration_depth_2" style="max-width:60%;"></p>
 </div>
 </section>
 <section id="making-predictions-with-classification-tree" class="slide level2">
 <h2>Making predictions with classification tree</h2>
 <ul>
 <li>Given a new sample, start from the root node, traverse the tree according to split, until reaching a leaf node.</li>
-<li>The leaf node D has <em>counts=[1, 10]</em>, so it predicts <span style="color: blue;">BLUE</span> class AND probability distribution of [1/11, 10/11] over two classes.</li>
+<li>Leaf node D has <em>counts=[1, 10]</em>, so it predicts <span style="color: blue;">BLUE</span> class AND probability distribution of [1/11, 10/11] over two classes.</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/tree_depth_2_making_prediction.png" alt="tree_demonstration_depth_2_making_prediction" style="max-width:30%;"></p>
+<p><img src="images/tree_depth_2_making_prediction.png" alt="tree_demonstration_depth_2_making_prediction" style="max-width:60%;"></p>
 </div>
 </section>
 <section id="how-to-build-a-classification-tree" class="slide level2">
@@ -290,19 +291,24 @@
 <ul>
 <li>A tree is built by a split from the root node, then recursively splitting child nodes.</li>
 <li>A key question: <strong>How to choose a split?</strong></li>
-<li><em>Note:</em> a split is <strong>a X feature</strong> and <strong>a threshold</strong>.</li>
-<li><em>Note #2:</em> can’t split on <em>Y</em>, as <em>Y</em> is unknown for new datasets.</li>
-<li><em>Note #3:</em> can’t split on multiple <em>X</em> variables.</li>
+<li><em>Note:</em>
+<ul>
+<li>A split is <strong>a X feature</strong> and <strong>a threshold</strong>.</li>
+<li>Can’t split on <em>Y</em>, as <em>Y</em> is unknown for new datasets.</li>
+<li>Can’t split on multiple <em>X</em> variables.</li>
+</ul></li>
 <li>A split is chosen to best separate <em>Y</em> classes, by measuring <em>impurity</em> reduction before &amp; after split</li>
 </ul>
 </section>
 <section id="to-measure-impurity-of-a-node" class="slide level2">
 <h2>To measure impurity of a node</h2>
 <ul>
-<li>Gini: <span class="math inline">\(H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})\)</span></li>
+<li>Gini: <span class="math inline">\(H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})\)</span>
+<ul>
 <li><span class="math inline">\(p_{mk}\)</span> is class <span class="math inline">\(k\)</span> proportion in node <span class="math inline">\(m\)</span></li>
+</ul></li>
 <li>The larger Gini, the more impure the node</li>
-<li>When Gini=0, the node is pure (all samples in one class)</li>
+<li>When Gini=0, the node is pure (<em>all samples in one class</em>)</li>
 <li>Example: a node with 10 samples in three classes [2,5,3].</li>
 <li>Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66</li>
 </ul>
@@ -314,7 +320,7 @@
 <li>Impurity reduction by a split = impurity(parent) - weighted impurity(children)</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/tree_depth_2_impurity_reduction.png" alt="tree_depth_2_impurity_reduction" style="max-width:30%;"></p>
+<p><img src="images/tree_depth_2_impurity_reduction.png" alt="tree_depth_2_impurity_reduction" style="max-width:100%;"></p>
 </div>
 </section>
 <section id="to-choose-a-split" class="slide level2">
@@ -324,7 +330,7 @@
 <li>The split with the largest impurity reduction will be chosen</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/tree_depth_2_impurity_reduction_comparison.png" alt="tree_depth_2_impurity_reduction_comparison" style="max-width:30%;"></p>
+<p><img src="images/tree_depth_2_impurity_reduction_comparison.png" alt="tree_depth_2_impurity_reduction_comparison" style="max-width:100%;"></p>
 </div>
 </section>
 <section id="a-regression-tree" class="slide level2">
@@ -340,8 +346,16 @@
 <section id="summary-of-impurity-measures-of-decision-trees" class="slide level2">
 <h2>Summary of impurity measures of decision trees</h2>
 <ul>
-<li>For classification: Gini (by default), or Cross-Entropy</li>
-<li>For regression: Mean Square Error (by default), or Mean Absolute Error</li>
+<li>For classification:
+<ul>
+<li>Gini (by default)</li>
+<li>Cross-Entropy</li>
+</ul></li>
+<li>For regression
+<ul>
+<li>Mean Square Error (by default)</li>
+<li>Mean Absolute Error</li>
+</ul></li>
 </ul>
 </section>
 <section id="visualising-trees-sklearn" class="slide level2">

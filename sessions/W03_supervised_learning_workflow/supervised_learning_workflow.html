@@ -319,7 +319,7 @@ y_i &amp;\in
 
 
 
-::: {#a8e4c38e .cell execution_count=2}
+::: {#c030e7d9 .cell execution_count=2}
 
 ::: {.cell-output .cell-output-stdout}
 ```
@@ -494,7 +494,7 @@ accuracy: 0.7692307692307693
 <li>Fixed train-val-test split: results depend on split</li>
 <li>High variance in best k and test score, not robust</li>
 </ul>
-<div id="1f90d972" class="cell" data-execution_count="3">
+<div id="a8d029fd" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>   random_seed  best_validation_score  best_k  test_set_score
 0            0                    0.7       5        0.846154
@@ -527,7 +527,7 @@ accuracy: 0.7692307692307693
 </section></section>
 <section id="grid-search-with-cv-code" class="title-slide slide level1 center">
 <h1>Grid-Search with CV (Code)</h1>
-<div id="e66749ee" class="cell" data-execution_count="4">
+<div id="e0fa5626" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
 <span id="cb3-2"><a></a></span>
 <span id="cb3-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y)</span>
@@ -543,7 +543,7 @@ accuracy: 0.7692307692307693
 <span id="cb3-13"><a></a>knn.fit(X_train, y_train)</span>
 <span id="cb3-14"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>knn<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>test-set score: 0.923</code></pre>
+<pre><code>test-set score: 0.615</code></pre>
 </div>
 </div>
 </section>
@@ -557,7 +557,7 @@ accuracy: 0.7692307692307693
 
 <section id="gridsearchcv-code" class="title-slide slide level1 center">
 <h1>GridSearchCV (Code)</h1>
-<div id="e6e18d60" class="cell" data-execution_count="5">
+<div id="5c6d1384" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
 <span id="cb5-2"><a></a></span>
 <span id="cb5-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, stratify<span class="op">=</span>y)</span>
@@ -570,8 +570,8 @@ accuracy: 0.7692307692307693
 <span id="cb5-10"><a></a><span class="bu">print</span>(<span class="st">"best parameters:"</span>, grid.best_params_)</span>
 <span id="cb5-11"><a></a><span class="bu">print</span>(<span class="ss">f"test-set score: </span><span class="sc">{</span>grid<span class="sc">.</span>score(X_test, y_test)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>best parameters: {'n_neighbors': np.int64(1)}
-test-set score: 0.538</code></pre>
+<pre><code>best parameters: {'n_neighbors': np.int64(21)}
+test-set score: 0.846</code></pre>
 </div>
 </div>
 </section>
@@ -579,7 +579,7 @@ test-set score: 0.538</code></pre>
 <section>
 <section id="gridsearchcv-results" class="title-slide slide level1 center">
 <h1>GridSearchCV Results</h1>
-<div id="2e1fc36e" class="cell" data-execution_count="6">
+<div id="41562776" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb7-2"><a></a>results <span class="op">=</span> pd.DataFrame(grid.cv_results_)</span>
 <span id="cb7-3"><a></a>results.params.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
