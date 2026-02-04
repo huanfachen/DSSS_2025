@@ -33,9 +33,9 @@ format:
 
 ## Why DT?
 
-- Non-linear, strong models for classification and regression
-- Minimal preprocessing: scale and distributions matter little
-- Good interpretation: small trees can be explained
+- **Non-linear, strong models** for classification and regression
+- **Minimal preprocessing**: scale and distributions matter little
+- **Good interpretation**: small trees can be explained
 
 ## Decision Trees for Classification
 
@@ -47,16 +47,40 @@ format:
   <img src="images/tree_illustration.png" alt="Tree illustration" style="max-width:60%;">
 </div>
 
-## A classification tree
+## Another classification tree
 
-- A leaf node may contain samples of multiple classes.
-- A leaf node can predict the probability distribution of classes AND the major class.
+- Kaggle example: predict outdoor *badminton playability* based on *weather conditions*
+
+:::: columns
+
+::: {.column width="50%"}
+
+- **Y**: playability (Yes, No)
+- **X1**: outlook (Sunny, Overcast, Rain)
+- **X2**: temperature (Hot, Mild, Cool)
+- **X3**: humidity (High, Normal)
+- **X4**: wind (Weak, Strong)
+
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/images/outdoor_badminton.jpg" alt="Tree building step 2" style="max-width:30%;">
+</div>
+:::
+
+::::
+
+## Another classification tree
 
 
 
 ** Add a classification tree, with regions **
 
 ## A classification tree: making prediction
+
+- A leaf node may contain samples of multiple classes.
+- A leaf node can predict the probability distribution of classes AND the major class.
 
 ** How to make prediction **
 
