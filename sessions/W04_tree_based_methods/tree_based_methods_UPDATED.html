@@ -263,102 +263,85 @@
 <p><img src="images/tree_illustration.png" alt="Tree illustration" style="max-width:60%;"></p>
 </div>
 </section>
-<section id="another-classification-tree" class="slide level2">
-<h2>Another classification tree</h2>
+<section id="another-synthetic-classification-tree" class="slide level2">
+<h2>Another (synthetic) classification tree</h2>
 <ul>
-<li>Kaggle example: predict outdoor <em>badminton playability</em> based on <em>weather conditions</em></li>
+<li>A dataset with two numertical features (X[0], [1]), to predict <em>Y</em> with two classes (<span style="color: red;">RED</span> and <span style="color: blue;">BLUE</span>)</li>
+<li>Two visuals: tree structure, decision boundary</li>
+<li>The <em>leaf node</em> and <em>region</em> are one-to-one mapped.</li>
+<li>a node with <em>counts=[40, 30]</em> means this node contains 40 <span style="color: red;">RED</span> samples, 30 <span style="color: blue;">BLUE</span> samples.</li>
 </ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li><strong>Y</strong>: playability (Yes, No)</li>
-<li><strong>X1</strong>: outlook (Sunny, Overcast, Rain)</li>
-<li><strong>X2</strong>: temperature (Hot, Mild, Cool)</li>
-<li><strong>X3</strong>: humidity (High, Normal)</li>
-<li><strong>X4</strong>: wind (Weak, Strong)</li>
-</ul>
-</div><div class="column" style="width:50%;">
 <div style="text-align:center;">
-<p><img src="images/images/outdoor_badminton.jpg" alt="Tree building step 2" style="max-width:30%;"></p>
+<p><img src="images/tree_depth_2.png" alt="tree_demonstration_depth_2" style="max-width:30%;"></p>
 </div>
-</div></div>
 </section>
-<section id="another-classification-tree-1" class="slide level2">
-<h2>Another classification tree</h2>
-<p>** Add a classification tree, with regions **</p>
-</section>
-<section id="a-classification-tree-making-prediction" class="slide level2">
-<h2>A classification tree: making prediction</h2>
+<section id="making-predictions-with-classification-tree" class="slide level2">
+<h2>Making predictions with classification tree</h2>
 <ul>
-<li>A leaf node may contain samples of multiple classes.</li>
-<li>A leaf node can predict the probability distribution of classes AND the major class.</li>
+<li>Given a new sample, start from the root node, traverse the tree according to split, until reaching a leaf node.</li>
+<li>The leaf node D has <em>counts=[1, 10]</em>, so it predicts <span style="color: blue;">BLUE</span> class AND probability distribution of [1/11, 10/11] over two classes.</li>
 </ul>
-<p>** How to make prediction **</p>
+<div style="text-align:center;">
+<p><img src="images/tree_depth_2_making_prediction.png" alt="tree_demonstration_depth_2_making_prediction" style="max-width:30%;"></p>
+</div>
 </section>
 <section id="how-to-build-a-classification-tree" class="slide level2">
 <h2>How to build a classification tree</h2>
-<p>** Criteria: Gini index <strong> </strong> Split: before, after **</p>
+<ul>
+<li>A tree is built by a split from the root node, then recursively splitting child nodes.</li>
+<li>A key question: <strong>How to choose a split?</strong></li>
+<li><em>Note:</em> a split is <strong>a X feature</strong> and <strong>a threshold</strong>.</li>
+<li><em>Note #2:</em> can’t split on <em>Y</em>, as <em>Y</em> is unknown for new datasets.</li>
+<li><em>Note #3:</em> can’t split on multiple <em>X</em> variables.</li>
+<li>A split is chosen to best separate <em>Y</em> classes, by measuring <em>impurity</em> reduction before &amp; after split</li>
+</ul>
+</section>
+<section id="to-measure-impurity-of-a-node" class="slide level2">
+<h2>To measure impurity of a node</h2>
+<ul>
+<li>Gini: <span class="math inline">\(H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})\)</span></li>
+<li><span class="math inline">\(p_{mk}\)</span> is class <span class="math inline">\(k\)</span> proportion in node <span class="math inline">\(m\)</span></li>
+<li>The larger Gini, the more impure the node</li>
+<li>When Gini=0, the node is pure (all samples in one class)</li>
+<li>Example: a node with 10 samples in three classes [2,5,3].</li>
+<li>Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66</li>
+</ul>
+</section>
+<section id="to-measure-impurity-reduction-by-a-split" class="slide level2">
+<h2>To measure impurity reduction by a split</h2>
+<ul>
+<li>A good split will put similar samples together, or generate two child nodes with lower impurity</li>
+<li>Impurity reduction by a split = impurity(parent) - weighted impurity(children)</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/tree_depth_2_impurity_reduction.png" alt="tree_depth_2_impurity_reduction" style="max-width:30%;"></p>
+</div>
+</section>
+<section id="to-choose-a-split" class="slide level2">
+<h2>To choose a split</h2>
+<ul>
+<li>All splits will be evaluated</li>
+<li>The split with the largest impurity reduction will be chosen</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/tree_depth_2_impurity_reduction_comparison.png" alt="tree_depth_2_impurity_reduction_comparison" style="max-width:30%;"></p>
+</div>
 </section>
 <section id="a-regression-tree" class="slide level2">
 <h2>A regression tree</h2>
-</section>
-<section id="a-classifcation-tree-making-prediction" class="slide level2">
-<h2>A classifcation tree: making prediction</h2>
-</section>
-<section id="building-trees" class="slide level2">
-<h2>Building Trees</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <ul>
-<li>Search all features and thresholds</li>
-<li>Choose split that most reduces impurity of data on a node</li>
-<li>Recurse on each child until stopping rule</li>
-</ul>
-<div style="text-align:center;">
-<p><img src="images/tree_building_iteration_1.png" alt="Tree building step 1" style="max-width:100%;"></p>
-</div>
-</div><div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/tree_building_iteration_2.png" alt="Tree building step 2" style="max-width:100%;"></p>
-</div>
-<div style="text-align:center;">
-<p><img src="images/tree_building_iteration_9.png" alt="Tree building step 9" style="max-width:100%;"></p>
-</div>
-</div></div>
-</section>
-<section id="criteria-classification" class="slide level2">
-<h2>Criteria (Classification)</h2>
-<ul>
-<li>Gini: <span class="math inline">\(H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})\)</span></li>
-<li>Cross-Entropy: <span class="math inline">\(H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}\)</span>
-<ul>
-<li>Here, <span class="math inline">\(p_{mk}\)</span> is class <span class="math inline">\(k\)</span> proportion in node <span class="math inline">\(m\)</span></li>
-</ul></li>
-<li>Example: a dataset with 10 samples in three classes (A, B, C) with proportions (0.2, 0.5, 0.3).</li>
-<li>Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66</li>
-<li>Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296</li>
+<li>Similar to classification tree, but a leaf node stores a range of <em>Y</em> values and will predict the mean of <em>Y</em></li>
+<li>To measure impurity of a node in regresiion tree: Mean Square Error</li>
+<li><span class="math inline">\(H(X_m) = \frac{1}{N_m}\sum_{i \in N_m}(y_i-\bar{y}_m)^2\)</span></li>
+<li>MSE measures the deviation of <em>Y</em> values from its mean, which is similar to the idea of impurity.</li>
+<li>If all <em>Y</em> values are the same, MSE=0, meaning the node is pure.</li>
 </ul>
 </section>
-<section id="prediction" class="slide level2">
-<h2>Prediction</h2>
-<div style="text-align:center;">
-<p><img src="images/tree_prediction.png" alt="Tree prediction" style="max-width:80%;"></p>
-</div>
+<section id="summary-of-impurity-measures-of-decision-trees" class="slide level2">
+<h2>Summary of impurity measures of decision trees</h2>
 <ul>
-<li>Given a new sample, start from the top</li>
-<li>Traverse splits; follow feature tests</li>
-<li>Predict majority class in the reached leaf</li>
-</ul>
-</section>
-<section id="regression-trees" class="slide level2">
-<h2>Regression Trees</h2>
-<ul>
-<li>Predict mean in leaf: <span class="math inline">\(\bar{y}_m = \frac{1}{N_m}\sum_{i \in N_m} y_i\)</span></li>
-<li>Two impurity metrics
-<ul>
-<li>MSE: <span class="math inline">\(H(X_m) = \frac{1}{N_m}\sum_{i \in N_m}(y_i-\bar{y}_m)^2\)</span></li>
-<li>MAE: <span class="math inline">\(\frac{1}{N_m}\sum_{i \in N_m}|y_i-\bar{y}_m|\)</span> <!-- - Deep trees risk pure leaves (one point) without pruning --></li>
-</ul></li>
+<li>For classification: Gini (by default), or Cross-Entropy</li>
+<li>For regression: Mean Square Error (by default), or Mean Absolute Error</li>
 </ul>
 </section>
 <section id="visualising-trees-sklearn" class="slide level2">
