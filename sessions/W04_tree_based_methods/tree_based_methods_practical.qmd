@@ -203,6 +203,7 @@ rf_results = {
 We will train an XGBoost model using a similar workflow as above. XGBoost stands for Extreme Gradient Boosting, which is an efficient, scalable, and industry-standard implementation of gradient boosting algorithm. We will use the `XGBoostRegressor` from `xgboost` library to train the model. Although this library is different from `sklearn`, it provides a sklearn-style interface, which makes it easy to use. 
 
 The hyperparameters to tune include:
+
 -   `max_depth`: maximum depth of the tree; increasing this value will make the model more complex and more likely to overfit. (default at 6)
 -   `min_split_loss` (called `gamma` in XGBoost functions): minimum loss reduction required to make a further partition on a leaf node of the tree. The larger this value, the more *conservative* the algorithm will be. (default at 0)
 -   `subsample`: the fraction of observations to be randomly sampled for each tree. Setting it to 0.5 means that XGBoost would randomly sample half of the training data prior to growing trees. and this will prevent overfitting. Subsampling will occur once in every boosting iteration. (default at 1.0, meaning all observations are used to build each tree)
@@ -435,7 +436,7 @@ grid = GridSearchCV(
 grid.fit(X_train, y_train)
 # print best hyperparameters and best CV accuracy
 print("Best hyperparameters:", grid.best_params_)
-print(f"Best CV accuracy: {grid.best_score_:.3f}")
+print(f"Best CV recall: {grid.best_score_:.3f}")
 # retrain with optimal hyperparameters
 best_params = grid.best_params_
 best_model = RandomForestClassifier(random_state=20, **best_params)
@@ -481,7 +482,7 @@ grid = GridSearchCV(
 grid.fit(X_train, y_train)
 # print best hyperparameters and best CV accuracy
 print("Best hyperparameters:", grid.best_params_)
-print(f"Best CV accuracy: {grid.best_score_:.3f}")
+print(f"Best CV recall: {grid.best_score_:.3f}")
 # retrain with optimal hyperparameters
 best_params = grid.best_params_
 best_model = XGBClassifier(random_state=42, use_label_encoder=False, eval_metric='logloss', **best_params)
