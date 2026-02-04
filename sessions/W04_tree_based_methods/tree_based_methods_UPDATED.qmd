@@ -47,110 +47,74 @@ format:
   <img src="images/tree_illustration.png" alt="Tree illustration" style="max-width:60%;">
 </div>
 
-## Another classification tree
+## Another (synthetic) classification tree
 
-- Kaggle example: predict outdoor *badminton playability* based on *weather conditions*
+- A dataset with two numertical features (X[0], [1]), to predict *Y* with two classes (<span style="color: red;">RED</span> and <span style="color: blue;">BLUE</span>)
+- Two visuals: tree structure, decision boundary
+- The *leaf node* and *region* are one-to-one mapped.
+- a node with *counts=[40, 30]* means this node contains 40 <span style="color: red;">RED</span> samples, 30 <span style="color: blue;">BLUE</span> samples.
 
-:::: columns
-
-::: {.column width="50%"}
-
-- **Y**: playability (Yes, No)
-- **X1**: outlook (Sunny, Overcast, Rain)
-- **X2**: temperature (Hot, Mild, Cool)
-- **X3**: humidity (High, Normal)
-- **X4**: wind (Weak, Strong)
-
-:::
-
-::: {.column width="50%"}
 <div style="text-align:center;">
-  <img src="images/images/outdoor_badminton.jpg" alt="Tree building step 2" style="max-width:30%;">
+  <img src="images/tree_depth_2.png" alt="tree_demonstration_depth_2" style="max-width:30%;">
 </div>
-:::
 
-::::
+## Making predictions with classification tree
 
-## Another classification tree
+- Given a new sample, start from the root node, traverse the tree according to split, until reaching a leaf node.
+- The leaf node D has *counts=[1, 10]*, so it predicts <span style="color: blue;">BLUE</span> class AND probability distribution of [1/11, 10/11] over two classes.
 
-
-
-** Add a classification tree, with regions **
-
-## A classification tree: making prediction
-
-- A leaf node may contain samples of multiple classes.
-- A leaf node can predict the probability distribution of classes AND the major class.
-
-** How to make prediction **
+<div style="text-align:center;">
+  <img src="images/tree_depth_2_making_prediction.png" alt="tree_demonstration_depth_2_making_prediction" style="max-width:30%;">
+</div>
 
 ## How to build a classification tree
 
-** Criteria: Gini index **
-** Split: before, after **
+- A tree is built by a split from the root node, then recursively splitting child nodes.
+- A key question: **How to choose a split?**
+- *Note:* a split is **a X feature** and **a threshold**. 
+- *Note #2:* can't split on *Y*, as *Y* is unknown for new datasets.
+- *Note #3:* can't split on multiple *X* variables.
+- A split is chosen to best separate *Y* classes, by measuring *impurity* reduction before & after split
+
+## To measure impurity of a node
+
+- Gini: $H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})$
+- $p_{mk}$ is class $k$ proportion in node $m$
+- The larger Gini, the more impure the node
+- When Gini=0, the node is pure (all samples in one class)
+- Example: a node with 10 samples in three classes [2,5,3].
+- Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66
+
+## To measure impurity reduction by a split
+
+- A good split will put similar samples together, or generate two child nodes with lower impurity
+- Impurity reduction by a split = impurity(parent) - weighted impurity(children)
+
+<div style="text-align:center;">
+  <img src="images/tree_depth_2_impurity_reduction.png" alt="tree_depth_2_impurity_reduction" style="max-width:30%;">
+</div>
+
+## To choose a split
+
+- All splits will be evaluated
+- The split with the largest impurity reduction will be chosen
+
+<div style="text-align:center;">
+  <img src="images/tree_depth_2_impurity_reduction_comparison.png" alt="tree_depth_2_impurity_reduction_comparison" style="max-width:30%;">
+</div>
 
 ## A regression tree
 
-## A classifcation tree: making prediction
+- Similar to classification tree, but a leaf node stores a range of *Y* values and will predict the mean of *Y*
+- To measure impurity of a node in regresiion tree: Mean Square Error
+- $H(X_m) = \frac{1}{N_m}\sum_{i \in N_m}(y_i-\bar{y}_m)^2$
+- MSE measures the deviation of *Y* values from its mean, which is similar to the idea of impurity.
+- If all *Y* values are the same, MSE=0, meaning the node is pure.
 
+## Summary of impurity measures of decision trees
 
-
-## Building Trees
-
-:::: columns
-
-::: {.column width="50%"}
-
-- Search all features and thresholds
-- Choose split that most reduces impurity of data on a node
-- Recurse on each child until stopping rule
-
-<div style="text-align:center;">
-  <img src="images/tree_building_iteration_1.png" alt="Tree building step 1" style="max-width:100%;">
-</div>
-
-:::
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/tree_building_iteration_2.png" alt="Tree building step 2" style="max-width:100%;">
-</div>
-<div style="text-align:center;">
-  <img src="images/tree_building_iteration_9.png" alt="Tree building step 9" style="max-width:100%;">
-</div>
-:::
-
-::::
-
-
-## Criteria (Classification)
-
-- Gini: $H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})$
-- Cross-Entropy: $H_{\text{CE}}(X_m) = - \sum_{k \in \mathcal{Y}} p_{mk}\log p_{mk}$
-    - Here, $p_{mk}$ is class $k$ proportion in node $m$
-- Example: a dataset with 10 samples in three classes (A, B, C) with proportions (0.2, 0.5, 0.3).
-- Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66
-- Cross-Entropy = −(0.2 log 0.2 + 0.5 log 0.5 + 0.3 log 0.3) ≈ 1.0296
-
-## Prediction
-
-<div style="text-align:center;">
-  <img src="images/tree_prediction.png" alt="Tree prediction" style="max-width:80%;">
-</div>
-
-- Given a new sample, start from the top
-- Traverse splits; follow feature tests
-- Predict majority class in the reached leaf
-
-
-## Regression Trees
-
-- Predict mean in leaf: $\bar{y}_m = \frac{1}{N_m}\sum_{i \in N_m} y_i$
-- Two impurity metrics
-    - MSE: $H(X_m) = \frac{1}{N_m}\sum_{i \in N_m}(y_i-\bar{y}_m)^2$
-    - MAE: $\frac{1}{N_m}\sum_{i \in N_m}|y_i-\bar{y}_m|$
-<!-- - Deep trees risk pure leaves (one point) without pruning -->
-
+- For classification: Gini (by default), or Cross-Entropy
+- For regression: Mean Square Error (by default), or Mean Absolute Error
 
 ## Visualising Trees (sklearn)
 
@@ -187,7 +151,6 @@ tree_dot = plot_tree(tree, feature_names=cancer.feature_names)
     - `min_samples_split`
     - `min_impurity_decrease`
 - Post-pruning (cost-complexity) after full growth
-
 
 ## No Pruning
 

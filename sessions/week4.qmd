@@ -21,6 +21,7 @@ By the end of this week, you will be able to:
 ## Lecture 
 
 To access the lecture notes: [Lecture](W04_tree_based_methods/tree_based_methods.qmd)
+An UPDATED lecture notes with more explanation on *decision tree & impurity*: [UPDATED Lecture](W04_tree_based_methods/tree_based_methods_UPDATED.qmd) 
 
 ## Quiz
 
