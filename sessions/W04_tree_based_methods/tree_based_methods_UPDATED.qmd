@@ -26,10 +26,11 @@ format:
 
 ## Decision Trees (DT)
 
-- Many types of decision trees: **classification and regression trees (CART)**, C4.5, ID3, CHAID, etc. These trees (except CART) are rarely used these days.
+- Many types of decision trees: **classification and regression trees (CART)**, C4.5, ID3, CHAID, etc. 
+- Most trees (except CART) are rarely used these days, and CART is still popular.
 - Focus on CART: binary trees for classification and regression
-- A CART is a regression tree when the target variable *Y* is continous, and a classification tree when *Y* is categorical. It is not dependent on type of features (*X*).
-- 
+- A CART is a regression tree when the target variable *Y* is continous, and a classification tree when *Y* is categorical. 
+- It is not dependent on type of features (*X*).
 
 ## Why DT?
 
@@ -55,33 +56,34 @@ format:
 - a node with *counts=[40, 30]* means this node contains 40 <span style="color: red;">RED</span> samples, 30 <span style="color: blue;">BLUE</span> samples.
 
 <div style="text-align:center;">
-  <img src="images/tree_depth_2.png" alt="tree_demonstration_depth_2" style="max-width:30%;">
+  <img src="images/tree_depth_2.png" alt="tree_demonstration_depth_2" style="max-width:60%;">
 </div>
 
 ## Making predictions with classification tree
 
 - Given a new sample, start from the root node, traverse the tree according to split, until reaching a leaf node.
-- The leaf node D has *counts=[1, 10]*, so it predicts <span style="color: blue;">BLUE</span> class AND probability distribution of [1/11, 10/11] over two classes.
+- Leaf node D has *counts=[1, 10]*, so it predicts <span style="color: blue;">BLUE</span> class AND probability distribution of [1/11, 10/11] over two classes.
 
 <div style="text-align:center;">
-  <img src="images/tree_depth_2_making_prediction.png" alt="tree_demonstration_depth_2_making_prediction" style="max-width:30%;">
+  <img src="images/tree_depth_2_making_prediction.png" alt="tree_demonstration_depth_2_making_prediction" style="max-width:60%;">
 </div>
 
 ## How to build a classification tree
 
 - A tree is built by a split from the root node, then recursively splitting child nodes.
 - A key question: **How to choose a split?**
-- *Note:* a split is **a X feature** and **a threshold**. 
-- *Note #2:* can't split on *Y*, as *Y* is unknown for new datasets.
-- *Note #3:* can't split on multiple *X* variables.
+- *Note:* 
+  - A split is **a X feature** and **a threshold**. 
+  - Can't split on *Y*, as *Y* is unknown for new datasets.
+  - Can't split on multiple *X* variables.
 - A split is chosen to best separate *Y* classes, by measuring *impurity* reduction before & after split
 
 ## To measure impurity of a node
 
 - Gini: $H_{\text{gini}}(X_m) = \sum_{k \in \mathcal{Y}} p_{mk}(1-p_{mk})$
-- $p_{mk}$ is class $k$ proportion in node $m$
+  - $p_{mk}$ is class $k$ proportion in node $m$
 - The larger Gini, the more impure the node
-- When Gini=0, the node is pure (all samples in one class)
+- When Gini=0, the node is pure (*all samples in one class*)
 - Example: a node with 10 samples in three classes [2,5,3].
 - Gini = 0.2 × 0.8 + 0.5 × 0.5 + 0.3 × 0.7 = 0.66
 
@@ -91,7 +93,7 @@ format:
 - Impurity reduction by a split = impurity(parent) - weighted impurity(children)
 
 <div style="text-align:center;">
-  <img src="images/tree_depth_2_impurity_reduction.png" alt="tree_depth_2_impurity_reduction" style="max-width:30%;">
+  <img src="images/tree_depth_2_impurity_reduction.png" alt="tree_depth_2_impurity_reduction" style="max-width:100%;">
 </div>
 
 ## To choose a split
@@ -100,7 +102,7 @@ format:
 - The split with the largest impurity reduction will be chosen
 
 <div style="text-align:center;">
-  <img src="images/tree_depth_2_impurity_reduction_comparison.png" alt="tree_depth_2_impurity_reduction_comparison" style="max-width:30%;">
+  <img src="images/tree_depth_2_impurity_reduction_comparison.png" alt="tree_depth_2_impurity_reduction_comparison" style="max-width:100%;">
 </div>
 
 ## A regression tree
@@ -113,8 +115,12 @@ format:
 
 ## Summary of impurity measures of decision trees
 
-- For classification: Gini (by default), or Cross-Entropy
-- For regression: Mean Square Error (by default), or Mean Absolute Error
+- For classification: 
+  - Gini (by default)
+  - Cross-Entropy
+- For regression
+  - Mean Square Error (by default)
+  - Mean Absolute Error
 
 ## Visualising Trees (sklearn)
 
