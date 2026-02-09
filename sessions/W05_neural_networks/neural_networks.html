@@ -239,14 +239,15 @@
 </section>
 <section id="linear-regression-as-neural-net" class="slide level2">
 <h2>Linear Regression as Neural Net</h2>
-<p><span class="math inline">\(y = \sum_i W_i x_i + b = Wx\)</span></p>
+<p><span class="math inline">\(y = \sum_i W_i x_i + b = Wx + b\)</span></p>
+<p><span class="math inline">\(y = g(Wx + b)\)</span>, where <span class="math inline">\(g(z) = z\)</span> (identity function)</p>
 <div style="text-align:center;">
 <p><img src="images/log_reg_nn.png" alt="Logistic regression as neural net" style="max-width:40%;"></p>
 </div>
 </section>
 <section id="logistic-regression-as-neural-net" class="slide level2">
 <h2>Logistic Regression as Neural Net</h2>
-<p><span class="math inline">\(y = \sigma(Wx)\)</span></p>
+<p><span class="math inline">\(y = \sigma(Wx + b)\)</span></p>
 <p><span class="math inline">\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</span></p>
 <div style="text-align:center;">
 <p><img src="images/log_reg_nn.png" alt="Logistic regression as neural net" style="max-width:40%;"></p>
@@ -254,7 +255,7 @@
 </section>
 <section id="basic-architecture-of-neural-networks" class="slide level2">
 <h2>Basic Architecture of Neural Networks</h2>
-<p><span class="math inline">\(h(x) = f(W_1x+b_1)\)</span>; f: hidden layer activation function</p>
+<p><span class="math inline">\(h(x) = f(W_1x + b_1)\)</span>; f: hidden layer activation function</p>
 <p><span class="math inline">\(o(x) = g(W_2h(x) + b_2)\)</span> g: output layer activation function</p>
 <div style="text-align:center;">
 <p><img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:50%;"></p>
@@ -262,31 +263,31 @@
 </section>
 <section id="output-layer-activation-function-g" class="slide level2">
 <h2>Output layer activation function <span class="math inline">\(g\)</span></h2>
-<div style="text-align:center;">
-<p><img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:50%;"></p>
-</div>
 <ul>
 <li>For regression: <span class="math inline">\(g\)</span> is identity function <span class="math inline">\(g(z) = z\)</span></li>
 <li>For binary classification: <span class="math inline">\(g\)</span> is sigmoid function <span class="math inline">\(g(z) = \sigma(z)\)</span> (to output a probability [0,1])</li>
 <li>For multi-class classification: <span class="math inline">\(g\)</span> is softmax function <span class="math inline">\(g(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}\)</span> (to output a probability distribution over classes)</li>
 </ul>
+<div style="text-align:center;">
+<p><img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:30%;"></p>
+</div>
 </section>
 <section id="nonlinear-activation-functions-f" class="slide level2">
 <h2>Nonlinear Activation Functions <span class="math inline">\(f\)</span></h2>
-<div style="text-align:center;">
-<p><img src="images/nonlin_fn.png" alt="Nonlinear activation functions" style="max-width:65%;"></p>
-</div>
 <ul>
 <li>The primary job of <em>f</em> is to break the linearity of the model</li>
-<li>Standard choices: tanh (pronounced like “than”) or relu (rectified linear unit)</li>
-<li>Tanh squashes between -1 and 1; saturates towards infinities</li>
-<li>ReLU is constant zero for negative numbers, then identity</li>
+<li>Standard choices: tanh (pronounced like “than”) or relu (rectified linear unit) (pronounced as /ray-loo/)</li>
+<li><strong>Tanh</strong> squashes between -1 and 1; saturates towards infinities</li>
+<li><strong>ReLU</strong> is constant zero for negative numbers, then identity</li>
 </ul>
+<div style="text-align:center;">
+<p><img src="images/nonlin_fn.png" alt="Nonlinear activation functions" style="max-width:50%;"></p>
+</div>
 </section>
 <section id="more-layers" class="slide level2">
 <h2>More Layers</h2>
 <div style="text-align:center;">
-<p><img src="images/nn_manylayers.png" alt="Neural network with many layers" style="max-width:60%;"></p>
+<p><img src="images/nn_manylayers.png" alt="Neural network with many layers" style="max-width:50%;"></p>
 </div>
 <ul>
 <li>Hidden layers usually all have the same non-linear function</li>
@@ -308,6 +309,9 @@
 <h2>Training Objective</h2>
 <p><span class="math inline">\(h(x) = f(W_1x+b_1)\)</span></p>
 <p><span class="math inline">\(o(x) = g(W_2h(x)+b_2) = g(W_2f(W_1x + b_1) + b_2)\)</span></p>
+<ul>
+<li>The objective is to minimise the difference between true and predicted <em>y</em> values, or the loss function</li>
+</ul>
 <p><span class="math inline">\(\min_{W_1,W_2,b_1,b_2} \sum\limits_{i=1}^N l(y_i,o(x_i))\)</span></p>
 <p><span class="math inline">\(= \min_{W_1,W_2,b_1,b_2} \sum\limits_{i=1}^N l(y_i,g(W_2f(W_1x+b_1)+b_2))\)</span></p>
 <ul>
@@ -315,6 +319,12 @@
 </ul>
 </section>
 <section id="backpropagation" class="slide level2">
+<h2>Backpropagation</h2>
+<div style="text-align:center;">
+<p><img src="images/Backpropagation-in-Neural-Network-1.webp" alt="Backpropagation in neural networks" style="max-width:70%;"></p>
+</div>
+</section>
+<section id="backpropagation-1" class="slide level2">
 <h2>Backpropagation</h2>
 <ul>
 <li>Need <span class="math inline">\(\frac{\partial l(y, o)}{\partial W_i}\)</span> and <span class="math inline">\(\frac{\partial l(y, o)}{\partial b_i}\)</span></li>
@@ -329,8 +339,25 @@
 <ul>
 <li>Backpropagation is clever application of chain rule for derivatives</li>
 <li>Single backward pass from output to input computes derivatives</li>
-<li>Not an optimisation algorithm, just a way to compute gradients</li>
+<li>An efficient way to compute gradients</li>
+<li>Training NN is an optimisation problem, which means to find the <strong>optimal</strong> parameters <span class="math inline">\(W_i\)</span> and <span class="math inline">\(b_i\)</span> that minimise the loss function</li>
+<li>Training NN is a non-convex and challenging optimisation problem. Usually a local optimum is found.</li>
 </ul>
+</section>
+<section id="recap-on-gradient" class="slide level2">
+<h2>Recap on gradient</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Optimise <span class="math inline">\(\arg\min_w F(w)\)</span> by stepping along <span class="math inline">\(-\nabla F(w)\)</span></li>
+<li>Update: <span class="math inline">\(w_{i+1} = w_i - \eta_i \nabla F(w_i)\)</span></li>
+<li>Converges to a local minimum</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<p><img src="images/gradient_descent_1D.jpeg" alt="Gradient 1D" style="max-width:60%;"></p>
+</div>
+</div></div>
 </section>
 <section id="relu-differentiability" class="slide level2">
 <h2>ReLU Differentiability</h2>
@@ -346,23 +373,43 @@
 </section>
 <section id="optimising-w-b" class="slide level2">
 <h2>Optimising W, b</h2>
+<p>Usually, We don’t use all data to compute the gradient at each step.</p>
 <p>Batch <span class="math inline">\(W_i \leftarrow W_i - \eta\sum\limits_{j=1}^N \frac{\partial l(x_j,y_j)}{\partial W_i}\)</span></p>
+<p>Instead, we can use a subset of data to estimate the gradient.</p>
 <p>Online/Stochastic <span class="math inline">\(W_i \leftarrow W_i - \eta\frac{\partial l(x_j,y_j)}{\partial W_i}\)</span></p>
 <p>Minibatch <span class="math inline">\(W_i \leftarrow W_i - \eta\sum\limits_{j=k}^{k+m} \frac{\partial l(x_j,y_j)}{\partial W_i}\)</span></p>
 </section>
 <section id="learning-heuristics" class="slide level2">
 <h2>Learning Heuristics</h2>
 <ul>
-<li>Constant <span class="math inline">\(\eta\)</span> not good</li>
+<li><span class="math inline">\(\eta\)</span> controls the step size of gradient descent. Can adjust during training.</li>
+<li>Constant <span class="math inline">\(\eta\)</span> is not good</li>
 <li>Can decrease <span class="math inline">\(\eta\)</span> over time</li>
 <li>Better: adaptive <span class="math inline">\(\eta\)</span> for each entry of <span class="math inline">\(W_i\)</span></li>
-<li>State-of-the-art: adam (with magic numbers)</li>
+<li>State-of-the-art: Adam (<em>Adaptive Moment Estimation</em>)</li>
 </ul>
 </section>
-<section id="picking-optimization-algorithms" class="slide level2">
-<h2>Picking Optimization Algorithms</h2>
+<section id="adam-optimiser" class="slide level2">
+<h2>Adam optimiser</h2>
 <ul>
-<li>Small dataset: off the shelf like l-bfgs</li>
+<li><strong>The logic</strong>: for a parameter, if a gradient is consistely large, should decrease the learning rate and slow down;</li>
+<li>If a gradient is consistely small, should increase the learning rate for that parameter.</li>
+<li><strong>The process</strong>: keep track of the first moment (mean) and second moment (uncentered variance) of the gradients; use them to adapt the learning rate for each parameter</li>
+</ul>
+</section>
+<section id="update-rule-of-adam-optimiser" class="slide level2">
+<h2>Update rule of Adam optimiser</h2>
+<ol type="1">
+<li>Estimate 1st moment: <span class="math inline">\(m_t = \beta_1 m_{t-1} + (1 - \beta_1)g_t\)</span></li>
+<li>Estimate 2nd moment: <span class="math inline">\(v_t = \beta_2 v_{t-1} + (1 - \beta_2)g_t^2\)</span></li>
+<li>Bias Correction: as <span class="math inline">\(m_t\)</span> and <span class="math inline">\(v_t\)</span> start at zero, Adam uses a mathematical trick to “warm them up” during the first few steps.</li>
+<li>Update Weight: <span class="math inline">\(\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t\)</span></li>
+</ol>
+</section>
+<section id="picking-optimisation-algorithms" class="slide level2">
+<h2>Picking Optimisation Algorithms</h2>
+<ul>
+<li>Small dataset: off-the-shelf like l-bfgs (quicker than Adam on small datasets)</li>
 <li>Big dataset: adam / rmsprop</li>
 <li>Have time &amp; nerve: tune the schedule</li>
 </ul>
@@ -389,10 +436,10 @@
 <li>Dropout</li>
 </ul>
 </section>
-<section id="random-state" class="slide level2">
-<h2>Random State</h2>
+<section id="nn-subject-to-overfitting-and-random-seeds" class="slide level2">
+<h2>NN subject to overfitting and random seeds</h2>
 <div style="text-align:center;">
-<p><img src="images/random_state.png" alt="Effect of random state" style="max-width:75%;"></p>
+<p><img src="images/random_state.png" alt="Effect of random state" style="max-width:65%;"></p>
 </div>
 <ul>
 <li>Network is way over capacity and can overfit in many ways</li>
@@ -403,9 +450,9 @@
 <section id="regularisation" class="title-slide slide level1 center">
 <h1>Regularisation</h1>
 <ul>
-<li>Without regularisation, can easily overfit with large networks. Loss function: <span class="math inline">\(L = \sum\limits_{i=1}^N l(y_i, o(x_i))\)</span></li>
-<li><strong>L2 regularisation</strong>: add <span class="math inline">\(\lambda \sum\limits_i W_i^2\)</span> to loss function; penalise large weights</li>
-<li><strong>L1 regularisation</strong>: add <span class="math inline">\(\lambda \sum\limits_i |W_i|\)</span> to loss function</li>
+<li>Regularisation works by modifying the loss function: <span class="math inline">\(L = \sum\limits_{i=1}^N l(y_i, o(x_i))\)</span></li>
+<li><strong>L2 regularisation</strong>: add <span class="math inline">\(\lambda \sum\limits_i W_i^2\)</span> to loss function; to penalise large weights</li>
+<li><strong>L1 regularisation</strong>: add <span class="math inline">\(\lambda \sum\limits_i |W_i|\)</span> to loss function; to encourage many weights to be zero</li>
 <li><strong>Dropout</strong>: randomly set some activations to zero during training; prevents co-adaptation of neurons</li>
 </ul>
 </section>
@@ -557,7 +604,7 @@ print(d.grad(1))
 </section>
 <section id="cpu-vs.-gpu" class="slide level2">
 <h2>CPU VS. GPU</h2>
-<table class="caption-top">
+<table class="small table-sm caption-top">
 <colgroup>
 <col style="width: 25%">
 <col style="width: 37%">
@@ -577,31 +624,26 @@ print(d.grad(1))
 <td>Thousands of cores for parallel processing</td>
 </tr>
 <tr class="even">
-<td>Performance</td>
-<td>Better for single-threaded tasks</td>
-<td>Superior for parallel tasks like matrix operations</td>
-</tr>
-<tr class="odd">
 <td>Memory</td>
 <td>Larger cache size, less memory bandwidth</td>
 <td>Higher memory bandwidth, less cache size</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Power Consumption</td>
 <td>Generally lower power consumption</td>
 <td>Higher power consumption due to many cores</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Use Cases</td>
 <td>General-purpose computing, complex logic</td>
 <td>Graphics rendering, deep learning, scientific simulations</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Cost</td>
 <td>Less expensive</td>
 <td>Expensive</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Programming Complexity</td>
 <td>Easier to program for general tasks</td>
 <td>Requires knowledge of parallel programming (e.g., CUDA)</td>
@@ -611,7 +653,7 @@ print(d.grad(1))
 </section>
 <section id="how-much-gpu-power-do-you-need" class="slide level2">
 <h2>How much GPU power do you need?</h2>
-<table class="caption-top">
+<table class="small table-sm caption-top">
 <colgroup>
 <col style="width: 25%">
 <col style="width: 25%">
@@ -660,7 +702,7 @@ print(d.grad(1))
 <p><img src="images/computation_graph.png" alt="Computation graph" style="max-width:60%;"></p>
 </div>
 <ul>
-<li>A ‘blue-print’, or a directed acyclic graph representing computations in a neural network</li>
+<li>‘blue-print’; a directed acyclic graph representing computations in NN</li>
 <li>Nodes represent variabels or operations (e.g., matrix multiplication, activation functions), edges represent flow of data (tensors) between operations</li>
 <li>Given limited GPU memory, important to know what to cache/discard</li>
 <li>Helps with visual debugging and understanding network structure</li>
@@ -696,10 +738,9 @@ print(d.grad(1))
 <li>Create Optimizer (gradient descent, adam, etc.) attached to graph</li>
 <li>Run actual computation</li>
 </ol></li>
-<li>Eager mode (default in TensorFlow 2.0): write imperative code directly</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/tensor_flow_basics.png" alt="TensorFlow basics" style="max-width:75%;"></p>
+<p><img src="images/tensor_flow_basics.png" alt="TensorFlow basics" style="max-width:55%;"></p>
 </div>
 </section>
 <section id="pytorch-example" class="slide level2">
