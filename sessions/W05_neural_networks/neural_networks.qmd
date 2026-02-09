@@ -413,6 +413,7 @@ print(d.grad(1))
 
 ## CPU VS. GPU
 
+::: {.small}
 | Feature                  | CPU                                   | GPU                                   |
 |--------------------------|---------------------------------------|---------------------------------------|
 | Architecture             | Few cores optimised for sequential tasks | Thousands of cores for parallel processing |
@@ -421,19 +422,18 @@ print(d.grad(1))
 | Use Cases                | General-purpose computing, complex logic | Graphics rendering, deep learning, scientific simulations |
 | Cost                     | Less expensive              | Expensive |
 | Programming Complexity    | Easier to program for general tasks   | Requires knowledge of parallel programming (e.g., CUDA) |
-
-: {.small}
+:::
 
 ## How much GPU power do you need?
 
+::: {.small}
 | Task Type | Typical GPU | Total GPU Hours | Estimated Cost (Cloud) |
 | --- | --- | --- | --- |
 | **Small Project** (MNIST, basic CNN) | 1x RTX 3060 / 4060 | < 1 hour | < $1 |
 | **Fine-tuning 7B LLM** (e.g., Llama 3 8B) | 1x A100 (80GB) | 5–20 hours | $10 – $40 |
 | **Training Mid-size Model** (e.g., Stable Diffusion) | 8x A100 Cluster | 500–2,000 hours | $1,000 – $5,000 |
 | **Pre-training Large LLM** (GPT-3/4 scale) | 10,000+ H100s | Millions of hours | $50M – $100M+ |
-
-: {.small}
+:::
 
 ## Computational Graph
 
