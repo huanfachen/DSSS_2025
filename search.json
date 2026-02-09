@@ -3041,7 +3041,7 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow_practical.html#cross-validation-and-grid-search",
     "title": "Practical 3: Supervised learning workflow",
     "section": "Cross-validation and grid search",
-    "text": "Cross-validation and grid search\nCross-validation and grid search are techniques to tune hyperparameters and evaluate model performance more robustly.\nIn k-fold cross-validation, the training data is split into k folds, and the model is trained on k-1 folds and validated on the remaining fold. This process is repeated k times, with each fold used as the validation set once. The average performance across all folds is used to evaluate the model.\nIn grid search, a set of hyperparameter values is defined, and the model is trained and evaluated for each combination of hyperparameters using cross-validation. The combination that yields the best average performance across all folds is selected as the optimal hyperparameter set.\nEstimating the computing time of cross-validation with grid search is key to planning the experiment, especially with large datasets or complex models. The total number of models to train is equal to the number of hyperparameter combinations multiplied by the number of folds in cross-validation. For example, if we have 3 hyperparameters with 4, 3, and 3 possible values, respectively, and we use 5-fold cross-validation, the total number of models to train is \\(4 \\times 3 \\times 3 \\times 5 = 180\\).\nThe time for training a single model is estimated as below:\n\nimport time\nmodel = RandomForestRegressor(random_state=42)\nstart_time = time.time()\nmodel.fit(X_train, y_train)\nend_time = time.time()\ntraining_time = end_time - start_time\nprint(f'Training time: {training_time:.3f} seconds')\n\nTraining time: 0.189 seconds\n\n\nThis training took around 0.28 seconds on my desktop, so the total time for cross-validation with grid search would be approximately \\(180 \\times 0.28 = 50.4\\) seconds, less than 1 minute.\nWe will start with defining the hyperparameters to tune and their possible values. The first value of max_depth and min_samples_leaf is their default value in RandomForestRegressor, respectively. See link.\n\n# 5-fold CV to tune RandomForestRegressor\n\n# the code below is a duplicate of the above code for data preparation\n\n# import pandas as pd\n# from sklearn.model_selection import train_test_split, GridSearchCV\n# from sklearn.ensemble import RandomForestRegressor\n# from sklearn.metrics import r2_score\n\n# df_lfb_daily = pd.read_csv(\"https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_daily_data.csv\")\n\n# feature_cols = ['TX', 'TN', 'TG', 'SS', 'SD','RR','QQ', 'PP','HU','CC', 'IsWeekend', 'IsBankHoliday', 'weekday']\n# X = df_lfb_daily[feature_cols]\n# y = df_lfb_daily['IncidentCount']\n# X = pd.get_dummies(X, columns=['weekday'], drop_first=True)\n\n# # split data\n# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nparam_grid = {\n  'max_depth': [None, 5, 10, 20],\n  'min_samples_leaf': [1, 2, 4],\n  'max_features': ['sqrt', 'log2', 0.5]\n}\n\nWe will then use GridSearchCV function from sklearn.model_selection to perform grid search with 5-fold cross-validation to find the optimal hyperparameters. This function is very handy, as it automatically handles the cross-validation and hyperparameter tuning. Moreover, we will fit the grid search object on the training data just like how we fit a model. The power of interface design.\nAfter fitting, we can access the best hyperparameters and the best cross-validated \\(R^2\\) using the best_params_ and best_score_ attributes, respectively. Then, we will retrain the final model using the optimal hyperparameters on the entire training data and evaluate its performance on both the training and testing data.\n\nstart_time = time.time()\ngrid = GridSearchCV(\n  estimator=RandomForestRegressor(random_state=42),\n  param_grid=param_grid,\n  cv=5,\n  scoring='r2',\n  n_jobs=-1, # n_jobs=-1 use all available cores\n  return_train_score=True\n)\n\ngrid.fit(X_train, y_train)\n\n# print best hyperparameters and best CV R-squared\nprint(\"Best hyperparameters:\", grid.best_params_)\nprint(f\"Best CV R-squared: {grid.best_score_:.3f}\")\n\nend_time = time.time()\ntraining_time = end_time - start_time\nprint(f'CV training time: {training_time:.3f} seconds')\n\n# retrain with optimal hyperparameters\nbest_params = grid.best_params_\nbest_model = RandomForestRegressor(random_state=42, **best_params)\nbest_model.fit(X_train, y_train)\n\n# r2 on training and testing data\ntrain_r2 = r2_score(y_train, best_model.predict(X_train))\nprint(f\"Train R-squared: {train_r2:.3f}\")\ntest_r2 = r2_score(y_test, best_model.predict(X_test))\nprint(f\"Test R-squared: {test_r2:.3f}\")\n\nBest hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1}\nBest CV R-squared: 0.368\nCV training time: 10.728 seconds\nTrain R-squared: 0.860\nTest R-squared: 0.200\n\n\nThe GridSearchCV took around 3.66 seconds on my desktop, which is much faster than the estimated time. This is because the n_jobs=-1 argument allows parallel processing and using all processors, which speeds up the computation significantly.\nThe best hyperparameters found are as follows: - max_depth: 10 - max_features: ‘sqrt’ - min_samples_leaf: 1\nAnd the \\(R^2\\) on the training, testing, and cross-validated data are as follows:\n\nTraining data: 0.860\nTesting data: 0.200\nCV: 0.368\n\nThe \\(R^2\\) on the training data has decreased from 0.92 to 0.86, while the \\(R^2\\) on the testing data has increased from 0.18 to 0.20, indicating that the overfitting issue has been mitigated to some extent. Note that the cross-validated \\(R^2\\) is higher than the testing \\(R^2\\), which indicates that the model is overfitting during cross validation and the best way to evaluate the model is using the unseen testing data."
+    "text": "Cross-validation and grid search\nCross-validation and grid search are techniques to tune hyperparameters and evaluate model performance more robustly.\nIn k-fold cross-validation, the training data is split into k folds, and the model is trained on k-1 folds and validated on the remaining fold. This process is repeated k times, with each fold used as the validation set once. The average performance across all folds is used to evaluate the model.\nIn grid search, a set of hyperparameter values is defined, and the model is trained and evaluated for each combination of hyperparameters using cross-validation. The combination that yields the best average performance across all folds is selected as the optimal hyperparameter set.\nEstimating the computing time of cross-validation with grid search is key to planning the experiment, especially with large datasets or complex models. The total number of models to train is equal to the number of hyperparameter combinations multiplied by the number of folds in cross-validation. For example, if we have 3 hyperparameters with 4, 3, and 3 possible values, respectively, and we use 5-fold cross-validation, the total number of models to train is \\(4 \\times 3 \\times 3 \\times 5 = 180\\).\nThe time for training a single model is estimated as below:\n\nimport time\nmodel = RandomForestRegressor(random_state=42)\nstart_time = time.time()\nmodel.fit(X_train, y_train)\nend_time = time.time()\ntraining_time = end_time - start_time\nprint(f'Training time: {training_time:.3f} seconds')\n\nTraining time: 0.191 seconds\n\n\nThis training took around 0.28 seconds on my desktop, so the total time for cross-validation with grid search would be approximately \\(180 \\times 0.28 = 50.4\\) seconds, less than 1 minute.\nWe will start with defining the hyperparameters to tune and their possible values. The first value of max_depth and min_samples_leaf is their default value in RandomForestRegressor, respectively. See link.\n\n# 5-fold CV to tune RandomForestRegressor\n\n# the code below is a duplicate of the above code for data preparation\n\n# import pandas as pd\n# from sklearn.model_selection import train_test_split, GridSearchCV\n# from sklearn.ensemble import RandomForestRegressor\n# from sklearn.metrics import r2_score\n\n# df_lfb_daily = pd.read_csv(\"https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_daily_data.csv\")\n\n# feature_cols = ['TX', 'TN', 'TG', 'SS', 'SD','RR','QQ', 'PP','HU','CC', 'IsWeekend', 'IsBankHoliday', 'weekday']\n# X = df_lfb_daily[feature_cols]\n# y = df_lfb_daily['IncidentCount']\n# X = pd.get_dummies(X, columns=['weekday'], drop_first=True)\n\n# # split data\n# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nparam_grid = {\n  'max_depth': [None, 5, 10, 20],\n  'min_samples_leaf': [1, 2, 4],\n  'max_features': ['sqrt', 'log2', 0.5]\n}\n\nWe will then use GridSearchCV function from sklearn.model_selection to perform grid search with 5-fold cross-validation to find the optimal hyperparameters. This function is very handy, as it automatically handles the cross-validation and hyperparameter tuning. Moreover, we will fit the grid search object on the training data just like how we fit a model. The power of interface design.\nAfter fitting, we can access the best hyperparameters and the best cross-validated \\(R^2\\) using the best_params_ and best_score_ attributes, respectively. Then, we will retrain the final model using the optimal hyperparameters on the entire training data and evaluate its performance on both the training and testing data.\n\nstart_time = time.time()\ngrid = GridSearchCV(\n  estimator=RandomForestRegressor(random_state=42),\n  param_grid=param_grid,\n  cv=5,\n  scoring='r2',\n  n_jobs=-1, # n_jobs=-1 use all available cores\n  return_train_score=True\n)\n\ngrid.fit(X_train, y_train)\n\n# print best hyperparameters and best CV R-squared\nprint(\"Best hyperparameters:\", grid.best_params_)\nprint(f\"Best CV R-squared: {grid.best_score_:.3f}\")\n\nend_time = time.time()\ntraining_time = end_time - start_time\nprint(f'CV training time: {training_time:.3f} seconds')\n\n# retrain with optimal hyperparameters\nbest_params = grid.best_params_\nbest_model = RandomForestRegressor(random_state=42, **best_params)\nbest_model.fit(X_train, y_train)\n\n# r2 on training and testing data\ntrain_r2 = r2_score(y_train, best_model.predict(X_train))\nprint(f\"Train R-squared: {train_r2:.3f}\")\ntest_r2 = r2_score(y_test, best_model.predict(X_test))\nprint(f\"Test R-squared: {test_r2:.3f}\")\n\nBest hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1}\nBest CV R-squared: 0.368\nCV training time: 11.076 seconds\nTrain R-squared: 0.860\nTest R-squared: 0.200\n\n\nThe GridSearchCV took around 3.66 seconds on my desktop, which is much faster than the estimated time. This is because the n_jobs=-1 argument allows parallel processing and using all processors, which speeds up the computation significantly.\nThe best hyperparameters found are as follows: - max_depth: 10 - max_features: ‘sqrt’ - min_samples_leaf: 1\nAnd the \\(R^2\\) on the training, testing, and cross-validated data are as follows:\n\nTraining data: 0.860\nTesting data: 0.200\nCV: 0.368\n\nThe \\(R^2\\) on the training data has decreased from 0.92 to 0.86, while the \\(R^2\\) on the testing data has increased from 0.18 to 0.20, indicating that the overfitting issue has been mitigated to some extent. Note that the cross-validated \\(R^2\\) is higher than the testing \\(R^2\\), which indicates that the model is overfitting during cross validation and the best way to evaluate the model is using the unseen testing data."
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow_practical.html#temporal-train-test-split",
@@ -3720,42 +3720,63 @@
     "href": "sessions/W05_neural_networks/neural_networks.html#history",
     "title": "Neural Networks",
     "section": "History",
-    "text": "History\n\nNearly everything we talk about today existed ~1990\nWhat changed?\n\nMore data\nFaster computers (GPUs)\nSome improvements: relu, dropout, adam, batch-normalization, residual networks"
+    "text": "History\n\n\n\nImage Credit: medium.com"
+  },
+  {
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#history-1",
+    "href": "sessions/W05_neural_networks/neural_networks.html#history-1",
+    "title": "Neural Networks",
+    "section": "History",
+    "text": "History\n\n\n\n\nNearly everything we talk about today existed in 1990\nWhat changed since then?\n\nMore data\nFaster computers (GPUs)\nSome improvements: Relu, dropout, adam, batch-normalization, residual networks"
+  },
+  {
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#linear-regression-as-neural-net",
+    "href": "sessions/W05_neural_networks/neural_networks.html#linear-regression-as-neural-net",
+    "title": "Neural Networks",
+    "section": "Linear Regression as Neural Net",
+    "text": "Linear Regression as Neural Net\n\\(y = \\sum_i W_i x_i + b = Wx\\)"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#logistic-regression-as-neural-net",
     "href": "sessions/W05_neural_networks/neural_networks.html#logistic-regression-as-neural-net",
     "title": "Neural Networks",
     "section": "Logistic Regression as Neural Net",
-    "text": "Logistic Regression as Neural Net"
+    "text": "Logistic Regression as Neural Net\n\\(y = \\sigma(Wx)\\)\n\\(\\sigma(z) = \\frac{1}{1 + e^{-z}}\\)"
   },
   {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#basic-architecture",
-    "href": "sessions/W05_neural_networks/neural_networks.html#basic-architecture",
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#basic-architecture-of-neural-networks",
+    "href": "sessions/W05_neural_networks/neural_networks.html#basic-architecture-of-neural-networks",
     "title": "Neural Networks",
-    "section": "Basic Architecture",
-    "text": "Basic Architecture\n\n\n\n\\(h(x) = f(W_1x+b_1)\\)\n\\(o(x) = g(W_2h(x) + b_2)\\)"
+    "section": "Basic Architecture of Neural Networks",
+    "text": "Basic Architecture of Neural Networks\n\\(h(x) = f(W_1x+b_1)\\); f: hidden layer activation function\n\\(o(x) = g(W_2h(x) + b_2)\\) g: output layer activation function"
+  },
+  {
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#output-layer-activation-function-g",
+    "href": "sessions/W05_neural_networks/neural_networks.html#output-layer-activation-function-g",
+    "title": "Neural Networks",
+    "section": "Output layer activation function \\(g\\)",
+    "text": "Output layer activation function \\(g\\)\n\n\n\n\nFor regression: \\(g\\) is identity function \\(g(z) = z\\)\nFor binary classification: \\(g\\) is sigmoid function \\(g(z) = \\sigma(z)\\) (to output a probability [0,1])\nFor multi-class classification: \\(g\\) is softmax function \\(g(z_i) = \\frac{e^{z_i}}{\\sum_j e^{z_j}}\\) (to output a probability distribution over classes)"
+  },
+  {
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#nonlinear-activation-functions-f",
+    "href": "sessions/W05_neural_networks/neural_networks.html#nonlinear-activation-functions-f",
+    "title": "Neural Networks",
+    "section": "Nonlinear Activation Functions \\(f\\)",
+    "text": "Nonlinear Activation Functions \\(f\\)\n\n\n\n\nThe primary job of f is to break the linearity of the model\nStandard choices: tanh (pronounced like “than”) or relu (rectified linear unit)\nTanh squashes between -1 and 1; saturates towards infinities\nReLU is constant zero for negative numbers, then identity"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#more-layers",
     "href": "sessions/W05_neural_networks/neural_networks.html#more-layers",
     "title": "Neural Networks",
     "section": "More Layers",
-    "text": "More Layers\n\n\n\n\nHidden layers usually all have the same non-linear function\nMany layers → “deep learning”\nMultilayer perceptron, feed-forward neural network, vanilla feed-forward neural network\nRegression: single output neuron with linear activation\nClassification: one-hot-encoding of classes, n_classes output variables with softmax"
-  },
-  {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#nonlinear-activation-functions",
-    "href": "sessions/W05_neural_networks/neural_networks.html#nonlinear-activation-functions",
-    "title": "Neural Networks",
-    "section": "Nonlinear Activation Functions",
-    "text": "Nonlinear Activation Functions\n\n\n\n\nStandard choices: tanh or rectified linear unit (relu)\nTanh squashes between -1 and 1; saturates towards infinities\nReLU is constant zero for negative numbers, then identity"
+    "text": "More Layers\n\n\n\n\nHidden layers usually all have the same non-linear function\nOther names: Multilayer perceptron, feed-forward neural network\nMany layers → “deep learning”"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#supervised-neural-networks",
     "href": "sessions/W05_neural_networks/neural_networks.html#supervised-neural-networks",
     "title": "Neural Networks",
     "section": "Supervised Neural Networks",
-    "text": "Supervised Neural Networks\n\nNon-linear models for classification and regression\nWork well for very large datasets\nNon-convex optimization\nNotoriously slow to train – need for GPUs\nUse dot products; require preprocessing similar to SVM or linear models, unlike trees\nMany variants: Convolutional nets, GRUs, LSTMs, recursive networks, VAEs, GANs, deep RL"
+    "text": "Supervised Neural Networks\n\nNon-linear models for classification and regression\nWork well for very large datasets\nNotoriously slow to train; need for GPUs\nUse dot products \\(Wx\\); require preprocessing similar to SVM or PCA, unlike trees\nMany variants: Convolutional nets, GRUs, LSTMs, recursive networks, VAEs, GANs, deep RL"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#training-objective",
@@ -3776,21 +3797,21 @@
     "href": "sessions/W05_neural_networks/neural_networks.html#gradient-computation",
     "title": "Neural Networks",
     "section": "Gradient Computation",
-    "text": "Gradient Computation\n\nBackpropagation is clever application of chain rule for derivatives\nSingle backward pass from output to input computes derivatives\nNot an optimization algorithm, just a way to compute gradients"
+    "text": "Gradient Computation\n\nBackpropagation is clever application of chain rule for derivatives\nSingle backward pass from output to input computes derivatives\nNot an optimisation algorithm, just a way to compute gradients"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#relu-differentiability",
     "href": "sessions/W05_neural_networks/neural_networks.html#relu-differentiability",
     "title": "Neural Networks",
     "section": "ReLU Differentiability",
-    "text": "ReLU Differentiability\n\n\n\n\nReLU not differentiable at zero\nUse subgradient descent; any gradient below function works\nIn practice, never hit zero with floating point numbers"
+    "text": "ReLU Differentiability\n\n\n\n\nReLU not differentiable at zero. At x&gt;0, gradient is 1; at x&lt;0, gradient is 0\nFor a function to be differentiable, the slope must be the same whether approaching from the left or right\nUse subgradient descent; any gradient below the function works\nIn practice, most FL framewors simply hardcode the gradient at zero to be 0 or 0.5"
   },
   {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#optimizing-w-b",
-    "href": "sessions/W05_neural_networks/neural_networks.html#optimizing-w-b",
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#optimising-w-b",
+    "href": "sessions/W05_neural_networks/neural_networks.html#optimising-w-b",
     "title": "Neural Networks",
-    "section": "Optimizing W, b",
-    "text": "Optimizing W, b\nBatch \\(W_i \\leftarrow W_i - \\eta\\sum\\limits_{j=1}^N \\frac{\\partial l(x_j,y_j)}{\\partial W_i}\\)\nOnline/Stochastic \\(W_i \\leftarrow W_i - \\eta\\frac{\\partial l(x_j,y_j)}{\\partial W_i}\\)\nMinibatch \\(W_i \\leftarrow W_i - \\eta\\sum\\limits_{j=k}^{k+m} \\frac{\\partial l(x_j,y_j)}{\\partial W_i}\\)"
+    "section": "Optimising W, b",
+    "text": "Optimising W, b\nBatch \\(W_i \\leftarrow W_i - \\eta\\sum\\limits_{j=1}^N \\frac{\\partial l(x_j,y_j)}{\\partial W_i}\\)\nOnline/Stochastic \\(W_i \\leftarrow W_i - \\eta\\frac{\\partial l(x_j,y_j)}{\\partial W_i}\\)\nMinibatch \\(W_i \\leftarrow W_i - \\eta\\sum\\limits_{j=k}^{k+m} \\frac{\\partial l(x_j,y_j)}{\\partial W_i}\\)"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#learning-heuristics",
@@ -3811,14 +3832,21 @@
     "href": "sessions/W05_neural_networks/neural_networks.html#neural-nets-with-sklearn",
     "title": "Neural Networks",
     "section": "Neural Nets with sklearn",
-    "text": "Neural Nets with sklearn\n\n\n\nmlp = MLPClassifier(solver='lbfgs', random_state=0).fit(X_train, y_train)\nprint(mlp.score(X_train, y_train))\nprint(mlp.score(X_test, y_test))\n\nDon’t use sklearn for anything but toy problems in neural nets"
+    "text": "Neural Nets with sklearn\n\n\n\nmlp = MLPClassifier(solver='lbfgs', random_state=0).fit(X_train, y_train)\nprint(mlp.score(X_train, y_train))\nprint(mlp.score(X_test, y_test))\n\nDon’t use sklearn for real projects but toy problems in neural nets\nWhy? sklearn’s MLP is not optimised for large datasets; no GPU support; no support for conv nets, etc."
+  },
+  {
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#complexity-control",
+    "href": "sessions/W05_neural_networks/neural_networks.html#complexity-control",
+    "title": "Neural Networks",
+    "section": "Complexity Control",
+    "text": "Complexity Control\n\nNumber of parameters: hidden layers, hidden units\nRegularisation\nEarly Stopping\nDropout"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#random-state",
     "href": "sessions/W05_neural_networks/neural_networks.html#random-state",
     "title": "Neural Networks",
     "section": "Random State",
-    "text": "Random State\n\n\n\n\nNetwork is way over capacity and can overfit in many ways\nRegularization might make it less dependent on initialization"
+    "text": "Random State\n\n\n\n\nNetwork is way over capacity and can overfit in many ways\nRegularisation might make it less dependent on initialization"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#hidden-layer-size",
@@ -3849,13 +3877,6 @@
     "text": "Regression\n\n\n\nfrom sklearn.neural_network import MLPRegressor\nmlp_relu = MLPRegressor(solver=\\\"lbfgs\\\").fit(X, y)\nmlp_tanh = MLPRegressor(solver=\\\"lbfgs\\\", activation='tanh').fit(X, y)"
   },
   {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#complexity-control",
-    "href": "sessions/W05_neural_networks/neural_networks.html#complexity-control",
-    "title": "Neural Networks",
-    "section": "Complexity Control",
-    "text": "Complexity Control\n\nNumber of parameters\nRegularization\nEarly Stopping\nDropout"
-  },
-  {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#grid-searching-neural-nets",
     "href": "sessions/W05_neural_networks/neural_networks.html#grid-searching-neural-nets",
     "title": "Neural Networks",
@@ -3870,27 +3891,6 @@
     "text": "Searching Hidden Layer Sizes\nfrom sklearn.model_selection import GridSearchCV\npipe = make_pipeline(StandardScaler(), MLPClassifier(solver=\\\"lbfgs\\\", random_state=1))\nparam_grid = {'mlpclassifier__hidden_layer_sizes':\n              [(10,), (50,), (100,), (500,), (10, 10), (50, 50), (100, 100), (500, 500)]}\ngrid = GridSearchCV(pipe, param_grid)\ngrid.fit(X_train, y_train)"
   },
   {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#write-your-own-neural-networks",
-    "href": "sessions/W05_neural_networks/neural_networks.html#write-your-own-neural-networks",
-    "title": "Neural Networks",
-    "section": "Write Your Own Neural Networks",
-    "text": "Write Your Own Neural Networks\nclass NeuralNetwork(object):\n    def __init__(self):\n        # initialize coefficients and biases\n        pass\n    def forward(self, x):\n        activation = x\n        for coef, bias in zip(self.coef_, self.bias_):\n            activation = self.nonlinearity(np.dot(activation, coef) + bias)\n        return activation\n    def backward(self, x):\n        # compute gradient of stuff in forward pass\n        pass"
-  },
-  {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#autodiff",
-    "href": "sessions/W05_neural_networks/neural_networks.html#autodiff",
-    "title": "Neural Networks",
-    "section": "Autodiff",
-    "text": "Autodiff\nclass array(object) :\n    \\\"\\\"\\\"Simple Array object that support autodiff.\\\"\\\"\\\"\n    def __init__(self, value, name=None):\n        self.value = value\n        if name:\n            self.grad = lambda g : {name : g}\n    def __add__(self, other):\n        assert isinstance(other, int)\n        ret = array(self.value + other)\n        ret.grad = lambda g : self.grad(g)\n        return ret\n    def __mul__(self, other):\n        assert isinstance(other, array)\n        ret = array(self.value * other.value)\n        def grad(g):\n            x = self.grad(g * other.value)\n            x.update(other.grad(g * self.value))\n            return x\n        ret.grad = grad\n        return ret"
-  },
-  {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#autodiff-example",
-    "href": "sessions/W05_neural_networks/neural_networks.html#autodiff-example",
-    "title": "Neural Networks",
-    "section": "Autodiff Example",
-    "text": "Autodiff Example\na = array(np.array([1, 2]), 'a')\nb = array(np.array([3, 4]), 'b')\nc = b * a\nd = c + 1\nprint(d.value)\nprint(d.grad(1))\n[4 9]\n{'b': array([1, 2]), 'a': array([3, 4])}\n\nAutomatic differentiation avoids writing gradients manually\nKeep track of computation while executing forward pass\nHard-code derivative for each operation (no symbolic differentiation)\nBuild computation graph automatically"
-  },
-  {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#gpu-support",
     "href": "sessions/W05_neural_networks/neural_networks.html#gpu-support",
     "title": "Neural Networks",
@@ -3898,25 +3898,39 @@
     "text": "GPU Support\n\n\n\n\nImportant limitation: GPUs have much less memory than RAM\nMemory copies between RAM and GPU are expensive"
   },
   {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#computation-graph",
-    "href": "sessions/W05_neural_networks/neural_networks.html#computation-graph",
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#cpu-vs.-gpu",
+    "href": "sessions/W05_neural_networks/neural_networks.html#cpu-vs.-gpu",
     "title": "Neural Networks",
-    "section": "Computation Graph",
-    "text": "Computation Graph\n\n\n\n\nStore different intermediate results depending on derivatives needed\nGiven limited GPU memory, important to know what to cache/discard\nHelps with visual debugging and understanding network structure"
+    "section": "CPU VS. GPU",
+    "text": "CPU VS. GPU\n\n\n\n\n\n\n\n\nFeature\nCPU\nGPU\n\n\n\n\nArchitecture\nFew cores optimised for sequential tasks\nThousands of cores for parallel processing\n\n\nPerformance\nBetter for single-threaded tasks\nSuperior for parallel tasks like matrix operations\n\n\nMemory\nLarger cache size, less memory bandwidth\nHigher memory bandwidth, less cache size\n\n\nPower Consumption\nGenerally lower power consumption\nHigher power consumption due to many cores\n\n\nUse Cases\nGeneral-purpose computing, complex logic\nGraphics rendering, deep learning, scientific simulations\n\n\nCost\nLess expensive\nExpensive\n\n\nProgramming Complexity\nEasier to program for general tasks\nRequires knowledge of parallel programming (e.g., CUDA)"
+  },
+  {
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#how-much-gpu-power-do-you-need",
+    "href": "sessions/W05_neural_networks/neural_networks.html#how-much-gpu-power-do-you-need",
+    "title": "Neural Networks",
+    "section": "How much GPU power do you need?",
+    "text": "How much GPU power do you need?\n\n\n\n\n\n\n\n\n\nTask Type\nTypical GPU\nTotal GPU Hours\nEstimated Cost (Cloud)\n\n\n\n\nSmall Project (MNIST, basic CNN)\n1x RTX 3060 / 4060\n&lt; 1 hour\n&lt; $1\n\n\nFine-tuning 7B LLM (e.g., Llama 3 8B)\n1x A100 (80GB)\n5–20 hours\n$10 – $40\n\n\nTraining Mid-size Model (e.g., Stable Diffusion)\n8x A100 Cluster\n500–2,000 hours\n$1,000 – $5,000\n\n\nPre-training Large LLM (GPT-3/4 scale)\n10,000+ H100s\nMillions of hours\n$50M – $100M+"
+  },
+  {
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#computational-graph",
+    "href": "sessions/W05_neural_networks/neural_networks.html#computational-graph",
+    "title": "Neural Networks",
+    "section": "Computational Graph",
+    "text": "Computational Graph\n\n\n\n\nA ‘blue-print’, or a directed acyclic graph representing computations in a neural network\nNodes represent variabels or operations (e.g., matrix multiplication, activation functions), edges represent flow of data (tensors) between operations\nGiven limited GPU memory, important to know what to cache/discard\nHelps with visual debugging and understanding network structure"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#deep-learning-framework-requirements",
     "href": "sessions/W05_neural_networks/neural_networks.html#deep-learning-framework-requirements",
     "title": "Neural Networks",
     "section": "Deep Learning Framework Requirements",
-    "text": "Deep Learning Framework Requirements\n\nAutodiff\nGPU support\nOptimization and inspection of computation graph\nOn-the-fly generation of computation graph (optional)\nDistribution over multiple GPUs and/or cluster (optional)\n\nCurrent choices: TensorFlow, PyTorch / Torch, Chainer"
+    "text": "Deep Learning Framework Requirements\n\nAutodiff\nGPU support\nOptimisation and inspection of computation graph\nOn-the-fly generation of computation graph (optional)\nDistribution over multiple GPUs and/or cluster (optional)\n\nCurrent choices: PyTorch / Torch, TensorFlow"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#deep-learning-libraries",
     "href": "sessions/W05_neural_networks/neural_networks.html#deep-learning-libraries",
     "title": "Neural Networks",
     "section": "Deep Learning Libraries",
-    "text": "Deep Learning Libraries\n\nKeras (TensorFlow, CNTK, Theano)\nPyTorch (torch)\nChainer (chainer)\nMXNet (MXNet)"
+    "text": "Deep Learning Libraries\n\nPyTorch (torch) (default for AI research & development)\nKeras (TensorFlow, CNTK, Theano) (enterprise production)\nChainer (chainer)\nMXNet (MXNet)"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#quick-look-at-tensorflow",
@@ -3940,18 +3954,25 @@
     "text": "Best Practices\n\nDon’t go down to the metal (i.e. write low-level code) unless you have to!\nDon’t write TensorFlow, write Keras!\nDon’t write PyTorch, write pytorch.nn or FastAI (or Skorch or ignite)"
   },
   {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#convolutional-neural-networks",
-    "href": "sessions/W05_neural_networks/neural_networks.html#convolutional-neural-networks",
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#idea-1-behind-cnns",
+    "href": "sessions/W05_neural_networks/neural_networks.html#idea-1-behind-cnns",
     "title": "Neural Networks",
-    "section": "Convolutional Neural Networks",
-    "text": "Convolutional Neural Networks"
+    "section": "Idea #1 Behind CNNs",
+    "text": "Idea #1 Behind CNNs\n\nTranslation invariance: CNN can recognise an object regardless of where it is in the frame.\n… because the same filters scan every part of the image (weight sharing)"
   },
   {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#idea-behind-cnns",
-    "href": "sessions/W05_neural_networks/neural_networks.html#idea-behind-cnns",
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#idea-2-behind-cnns",
+    "href": "sessions/W05_neural_networks/neural_networks.html#idea-2-behind-cnns",
     "title": "Neural Networks",
-    "section": "Idea Behind CNNs",
-    "text": "Idea Behind CNNs\n\nTranslation invariance\nWeight sharing"
+    "section": "Idea #2 Behind CNNs",
+    "text": "Idea #2 Behind CNNs\n\nWeight sharing: the principle that the same set of weights (a filter, or kernel) is used to scan every part of an image\nSo, this filter will detect a specific feature (e.g. edge, curve), regardless of its position\nEach filter corresponds to a specific feature or pattern, rather than location-specific information"
+  },
+  {
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#why-weight-sharing",
+    "href": "sessions/W05_neural_networks/neural_networks.html#why-weight-sharing",
+    "title": "Neural Networks",
+    "section": "Why Weight Sharing?",
+    "text": "Why Weight Sharing?\n\nReduces number of parameters; less prone to overfitting\nComparison: for a 100x100 image with 3 channels (RGB), a fully connected layer in NN with 100 hidden units would have 3 million parameters (1001003*100);\na convolutional layer with 10 filters of size 5x5 would have only 750 parameters (5510)"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#definition-of-convolution",
@@ -4052,11 +4073,11 @@
     "text": "Train and Evaluate\ncnn.compile(\\\"adam\\\", \\\"categorical_crossentropy\\\", metrics=['accuracy'])\nhistory_cnn = cnn.fit(X_train_images, y_train,\n                      batch_size=128, epochs=20, verbose=1, validation_split=.1)\ncnn.evaluate(X_test_images, y_test)\n 9952/10000 [============================&gt;.] - ETA: 0s\n [0.089020583277629253, 0.98429999999999995]"
   },
   {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#visualize-filters",
-    "href": "sessions/W05_neural_networks/neural_networks.html#visualize-filters",
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#visualise-filters",
+    "href": "sessions/W05_neural_networks/neural_networks.html#visualise-filters",
     "title": "Neural Networks",
-    "section": "Visualize Filters",
-    "text": "Visualize Filters\nweights, biases = cnn_small.layers[0].get_weights()\nweights2, biases2 = cnn_small.layers[2].get_weights()\nprint(weights.shape)\nprint(weights2.shape)\n(3,3,1,8)\n(3,3,8,8)"
+    "section": "Visualise Filters",
+    "text": "Visualise Filters\nweights, biases = cnn_small.layers[0].get_weights()\nweights2, biases2 = cnn_small.layers[2].get_weights()\nprint(weights.shape)\nprint(weights2.shape)\n(3,3,1,8)\n(3,3,8,8)"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#learned-features",
@@ -4066,18 +4087,18 @@
     "text": "Learned Features"
   },
   {
-    "objectID": "sessions/W05_neural_networks/neural_networks.html#convnets-vs-fully-connected-nets-illustrated",
-    "href": "sessions/W05_neural_networks/neural_networks.html#convnets-vs-fully-connected-nets-illustrated",
-    "title": "Neural Networks",
-    "section": "Convnets vs Fully Connected Nets Illustrated",
-    "text": "Convnets vs Fully Connected Nets Illustrated"
-  },
-  {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#mnist-and-permuted-mnist",
     "href": "sessions/W05_neural_networks/neural_networks.html#mnist-and-permuted-mnist",
     "title": "Neural Networks",
     "section": "MNIST and Permuted MNIST",
     "text": "MNIST and Permuted MNIST\n\n\n\nrng = np.random.RandomState(42)\nperm = rng.permutation(784)\nX_train_perm = X_train.reshape(-1, 784)[:, perm].reshape(-1, 28, 28)\nX_test_perm = X_test.reshape(-1, 784)[:, perm].reshape(-1, 28, 28)"
+  },
+  {
+    "objectID": "sessions/W05_neural_networks/neural_networks.html#summary",
+    "href": "sessions/W05_neural_networks/neural_networks.html#summary",
+    "title": "Neural Networks",
+    "section": "Summary",
+    "text": "Summary\n\nWe’ve covered the architecture and training of neural networks\nWe also covered the idea and implementation of convolutional neural networks"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks.html#questions",
@@ -4140,7 +4161,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.01 + 28.31*X1 + 74.16*X2 + 30.83*X3 + -13.15*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.993\n\nModel 2 (4 features): y = 1.27 + 28.32*X1 + 73.98*X2 + 21.35*X3 + -2.82*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",

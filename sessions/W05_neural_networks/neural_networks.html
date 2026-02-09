@@ -209,35 +209,79 @@
 
 <p><span style="margin:0px; font-weight:700;" class="author">Huanfa Chen</span> - huanfa.chen@ucl.ac.uk </p>
 
-<p style="opacity: 0.8">13/12/2025</p>
+<p style="opacity: 0.8">09/02/2026</p>
 
 
 </section>
 <section id="history" class="slide level2">
 <h2>History</h2>
+<div style="text-align:center;">
+<img src="images/history_of_AI.png" alt="History of neural net" style="max-width:80%;">
+<div style="font-size:0.8em; color: #555; margin-top:4px;">
+<pre><code>Image Credit: medium.com</code></pre>
+</div>
+</div>
+</section>
+<section id="history-1" class="slide level2">
+<h2>History</h2>
+<div style="text-align:center;">
+<p><img src="images/history_of_AI.png" alt="History of neural net" style="max-width:40%;"></p>
+</div>
 <ul>
-<li>Nearly everything we talk about today existed ~1990</li>
-<li>What changed?
+<li>Nearly everything we talk about today existed in 1990</li>
+<li>What changed since then?
 <ul>
 <li>More data</li>
 <li>Faster computers (GPUs)</li>
-<li>Some improvements: relu, dropout, adam, batch-normalization, residual networks</li>
+<li>Some improvements: Relu, dropout, adam, batch-normalization, residual networks</li>
 </ul></li>
 </ul>
 </section>
-<section id="logistic-regression-as-neural-net" class="slide level2">
-<h2>Logistic Regression as Neural Net</h2>
+<section id="linear-regression-as-neural-net" class="slide level2">
+<h2>Linear Regression as Neural Net</h2>
+<p><span class="math inline">\(y = \sum_i W_i x_i + b = Wx\)</span></p>
 <div style="text-align:center;">
 <p><img src="images/log_reg_nn.png" alt="Logistic regression as neural net" style="max-width:40%;"></p>
 </div>
 </section>
-<section id="basic-architecture" class="slide level2">
-<h2>Basic Architecture</h2>
+<section id="logistic-regression-as-neural-net" class="slide level2">
+<h2>Logistic Regression as Neural Net</h2>
+<p><span class="math inline">\(y = \sigma(Wx)\)</span></p>
+<p><span class="math inline">\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</span></p>
+<div style="text-align:center;">
+<p><img src="images/log_reg_nn.png" alt="Logistic regression as neural net" style="max-width:40%;"></p>
+</div>
+</section>
+<section id="basic-architecture-of-neural-networks" class="slide level2">
+<h2>Basic Architecture of Neural Networks</h2>
+<p><span class="math inline">\(h(x) = f(W_1x+b_1)\)</span>; f: hidden layer activation function</p>
+<p><span class="math inline">\(o(x) = g(W_2h(x) + b_2)\)</span> g: output layer activation function</p>
 <div style="text-align:center;">
 <p><img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:50%;"></p>
 </div>
-<p><span class="math inline">\(h(x) = f(W_1x+b_1)\)</span></p>
-<p><span class="math inline">\(o(x) = g(W_2h(x) + b_2)\)</span></p>
+</section>
+<section id="output-layer-activation-function-g" class="slide level2">
+<h2>Output layer activation function <span class="math inline">\(g\)</span></h2>
+<div style="text-align:center;">
+<p><img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:50%;"></p>
+</div>
+<ul>
+<li>For regression: <span class="math inline">\(g\)</span> is identity function <span class="math inline">\(g(z) = z\)</span></li>
+<li>For binary classification: <span class="math inline">\(g\)</span> is sigmoid function <span class="math inline">\(g(z) = \sigma(z)\)</span> (to output a probability [0,1])</li>
+<li>For multi-class classification: <span class="math inline">\(g\)</span> is softmax function <span class="math inline">\(g(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}\)</span> (to output a probability distribution over classes)</li>
+</ul>
+</section>
+<section id="nonlinear-activation-functions-f" class="slide level2">
+<h2>Nonlinear Activation Functions <span class="math inline">\(f\)</span></h2>
+<div style="text-align:center;">
+<p><img src="images/nonlin_fn.png" alt="Nonlinear activation functions" style="max-width:65%;"></p>
+</div>
+<ul>
+<li>The primary job of <em>f</em> is to break the linearity of the model</li>
+<li>Standard choices: tanh (pronounced like “than”) or relu (rectified linear unit)</li>
+<li>Tanh squashes between -1 and 1; saturates towards infinities</li>
+<li>ReLU is constant zero for negative numbers, then identity</li>
+</ul>
 </section>
 <section id="more-layers" class="slide level2">
 <h2>More Layers</h2>
@@ -246,21 +290,8 @@
 </div>
 <ul>
 <li>Hidden layers usually all have the same non-linear function</li>
+<li>Other names: Multilayer perceptron, feed-forward neural network</li>
 <li>Many layers → “deep learning”</li>
-<li>Multilayer perceptron, feed-forward neural network, vanilla feed-forward neural network</li>
-<li>Regression: single output neuron with linear activation</li>
-<li>Classification: one-hot-encoding of classes, n_classes output variables with softmax</li>
-</ul>
-</section>
-<section id="nonlinear-activation-functions" class="slide level2">
-<h2>Nonlinear Activation Functions</h2>
-<div style="text-align:center;">
-<p><img src="images/nonlin_fn.png" alt="Nonlinear activation functions" style="max-width:65%;"></p>
-</div>
-<ul>
-<li>Standard choices: tanh or rectified linear unit (relu)</li>
-<li>Tanh squashes between -1 and 1; saturates towards infinities</li>
-<li>ReLU is constant zero for negative numbers, then identity</li>
 </ul>
 </section>
 <section id="supervised-neural-networks" class="slide level2">
@@ -268,9 +299,8 @@
 <ul>
 <li>Non-linear models for classification and regression</li>
 <li>Work well for very large datasets</li>
-<li>Non-convex optimization</li>
-<li>Notoriously slow to train – need for GPUs</li>
-<li>Use dot products; require preprocessing similar to SVM or linear models, unlike trees</li>
+<li>Notoriously slow to train; need for GPUs</li>
+<li>Use dot products <span class="math inline">\(Wx\)</span>; require preprocessing similar to SVM or PCA, unlike trees</li>
 <li>Many variants: Convolutional nets, GRUs, LSTMs, recursive networks, VAEs, GANs, deep RL</li>
 </ul>
 </section>
@@ -299,7 +329,7 @@
 <ul>
 <li>Backpropagation is clever application of chain rule for derivatives</li>
 <li>Single backward pass from output to input computes derivatives</li>
-<li>Not an optimization algorithm, just a way to compute gradients</li>
+<li>Not an optimisation algorithm, just a way to compute gradients</li>
 </ul>
 </section>
 <section id="relu-differentiability" class="slide level2">
@@ -308,13 +338,14 @@
 <p><img src="images/relu_differentiability.png" alt="ReLU differentiability" style="max-width:75%;"></p>
 </div>
 <ul>
-<li>ReLU not differentiable at zero</li>
-<li>Use subgradient descent; any gradient below function works</li>
-<li>In practice, never hit zero with floating point numbers</li>
+<li>ReLU not differentiable at zero. At x&gt;0, gradient is 1; at x&lt;0, gradient is 0</li>
+<li><em>For a function to be differentiable, the slope must be the same whether approaching from the left or right</em></li>
+<li>Use subgradient descent; any gradient <em>below</em> the function works</li>
+<li>In practice, most FL framewors simply hardcode the gradient at zero to be 0 or 0.5</li>
 </ul>
 </section>
-<section id="optimizing-w-b" class="slide level2">
-<h2>Optimizing W, b</h2>
+<section id="optimising-w-b" class="slide level2">
+<h2>Optimising W, b</h2>
 <p>Batch <span class="math inline">\(W_i \leftarrow W_i - \eta\sum\limits_{j=1}^N \frac{\partial l(x_j,y_j)}{\partial W_i}\)</span></p>
 <p>Online/Stochastic <span class="math inline">\(W_i \leftarrow W_i - \eta\frac{\partial l(x_j,y_j)}{\partial W_i}\)</span></p>
 <p>Minibatch <span class="math inline">\(W_i \leftarrow W_i - \eta\sum\limits_{j=k}^{k+m} \frac{\partial l(x_j,y_j)}{\partial W_i}\)</span></p>
@@ -341,11 +372,21 @@
 <div style="text-align:center;">
 <p><img src="images/nn_sklearn.png" alt="Neural nets with sklearn" style="max-width:45%;"></p>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>mlp <span class="op">=</span> MLPClassifier(solver<span class="op">=</span><span class="st">'lbfgs'</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit(X_train, y_train)</span>
-<span id="cb1-2"><a></a><span class="bu">print</span>(mlp.score(X_train, y_train))</span>
-<span id="cb1-3"><a></a><span class="bu">print</span>(mlp.score(X_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>mlp <span class="op">=</span> MLPClassifier(solver<span class="op">=</span><span class="st">'lbfgs'</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit(X_train, y_train)</span>
+<span id="cb2-2"><a></a><span class="bu">print</span>(mlp.score(X_train, y_train))</span>
+<span id="cb2-3"><a></a><span class="bu">print</span>(mlp.score(X_test, y_test))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li>Don’t use sklearn for anything but toy problems in neural nets</li>
+<li>Don’t use sklearn for real projects but toy problems in neural nets</li>
+<li>Why? sklearn’s MLP is not optimised for large datasets; no GPU support; no support for conv nets, etc.</li>
+</ul>
+</section>
+<section id="complexity-control" class="slide level2">
+<h2>Complexity Control</h2>
+<ul>
+<li>Number of parameters: hidden layers, hidden units</li>
+<li>Regularisation</li>
+<li>Early Stopping</li>
+<li>Dropout</li>
 </ul>
 </section>
 <section id="random-state" class="slide level2">
@@ -355,13 +396,23 @@
 </div>
 <ul>
 <li>Network is way over capacity and can overfit in many ways</li>
-<li>Regularization might make it less dependent on initialization</li>
+<li>Regularisation might make it less dependent on initialization</li>
+</ul>
+</section>
+<section>
+<section id="regularisation" class="title-slide slide level1 center">
+<h1>Regularisation</h1>
+<ul>
+<li>Without regularisation, can easily overfit with large networks. Loss function: <span class="math inline">\(L = \sum\limits_{i=1}^N l(y_i, o(x_i))\)</span></li>
+<li><strong>L2 regularisation</strong>: add <span class="math inline">\(\lambda \sum\limits_i W_i^2\)</span> to loss function; penalise large weights</li>
+<li><strong>L1 regularisation</strong>: add <span class="math inline">\(\lambda \sum\limits_i |W_i|\)</span> to loss function</li>
+<li><strong>Dropout</strong>: randomly set some activations to zero during training; prevents co-adaptation of neurons</li>
 </ul>
 </section>
 <section id="hidden-layer-size" class="slide level2">
 <h2>Hidden Layer Size</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>mlp <span class="op">=</span> MLPClassifier(solver<span class="op">=</span><span class="st">'lbfgs'</span>, hidden_layer_sizes<span class="op">=</span>(<span class="dv">5</span>,), random_state<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb2-2"><a></a>mlp.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>mlp <span class="op">=</span> MLPClassifier(solver<span class="op">=</span><span class="st">'lbfgs'</span>, hidden_layer_sizes<span class="op">=</span>(<span class="dv">5</span>,), random_state<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-2"><a></a>mlp.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/hidden_layer_size.png" alt="Hidden layer size effect" style="max-width:50%;"></p>
 </div>
@@ -372,8 +423,8 @@
 </section>
 <section id="multiple-hidden-layers" class="slide level2">
 <h2>Multiple Hidden Layers</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>mlp <span class="op">=</span> MLPClassifier(solver<span class="op">=</span><span class="st">'lbfgs'</span>, hidden_layer_sizes<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>), random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb3-2"><a></a>mlp.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>mlp <span class="op">=</span> MLPClassifier(solver<span class="op">=</span><span class="st">'lbfgs'</span>, hidden_layer_sizes<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>), random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-2"><a></a>mlp.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/hidden_layer_size_2.png" alt="Multiple hidden layers" style="max-width:48%;"></p>
 </div>
@@ -384,9 +435,9 @@
 </section>
 <section id="activation-functions" class="slide level2">
 <h2>Activation Functions</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>mlp <span class="op">=</span> MLPClassifier(solver<span class="op">=</span><span class="st">'lbfgs'</span>, hidden_layer_sizes<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
-<span id="cb4-2"><a></a>                    activation<span class="op">=</span><span class="st">'tanh'</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb4-3"><a></a>mlp.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>mlp <span class="op">=</span> MLPClassifier(solver<span class="op">=</span><span class="st">'lbfgs'</span>, hidden_layer_sizes<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb5-2"><a></a>                    activation<span class="op">=</span><span class="st">'tanh'</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-3"><a></a>mlp.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/activation_functions_plot.png" alt="Activation functions" style="max-width:45%;"></p>
 </div>
@@ -401,100 +452,98 @@
 <div style="text-align:center;">
 <p><img src="images/regression_plot.png" alt="Neural network regression" style="max-width:55%;"></p>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPRegressor</span>
-<span id="cb5-2"><a></a>mlp_relu <span class="op">=</span> MLPRegressor(solver<span class="op">=</span>\<span class="st">"lbfgs</span><span class="ch">\"</span><span class="st">).fit(X, y)</span></span>
-<span id="cb5-3"><a></a><span class="er">mlp_tanh = MLPRegressor</span>(solver<span class="op">=</span>\<span class="st">"lbfgs</span><span class="ch">\"</span><span class="st">, activation='tanh').fit(X, y)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="complexity-control" class="slide level2">
-<h2>Complexity Control</h2>
-<ul>
-<li>Number of parameters</li>
-<li>Regularization</li>
-<li>Early Stopping</li>
-<li>Dropout</li>
-</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPRegressor</span>
+<span id="cb6-2"><a></a>mlp_relu <span class="op">=</span> MLPRegressor(solver<span class="op">=</span>\<span class="st">"lbfgs</span><span class="ch">\"</span><span class="st">).fit(X, y)</span></span>
+<span id="cb6-3"><a></a><span class="er">mlp_tanh = MLPRegressor</span>(solver<span class="op">=</span>\<span class="st">"lbfgs</span><span class="ch">\"</span><span class="st">, activation='tanh').fit(X, y)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="grid-searching-neural-nets" class="slide level2">
 <h2>Grid-Searching Neural Nets</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
-<span id="cb6-2"><a></a>data <span class="op">=</span> load_breast_cancer()</span>
-<span id="cb6-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb6-4"><a></a>    data.data, data.target, stratify<span class="op">=</span>data.target, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb6-5"><a></a></span>
-<span id="cb6-6"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
-<span id="cb6-7"><a></a>pipe <span class="op">=</span> make_pipeline(StandardScaler(), MLPClassifier(solver<span class="op">=</span>\<span class="st">"lbfgs</span><span class="ch">\"</span><span class="st">, random_state=1))</span></span>
-<span id="cb6-8"><a></a><span class="er">param_grid = {'mlpclassifier__alpha': np.logspace(-3, 3, 7)}</span></span>
-<span id="cb6-9"><a></a>grid <span class="op">=</span> GridSearchCV(pipe, param_grid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb7-2"><a></a>data <span class="op">=</span> load_breast_cancer()</span>
+<span id="cb7-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb7-4"><a></a>    data.data, data.target, stratify<span class="op">=</span>data.target, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-5"><a></a></span>
+<span id="cb7-6"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb7-7"><a></a>pipe <span class="op">=</span> make_pipeline(StandardScaler(), MLPClassifier(solver<span class="op">=</span>\<span class="st">"lbfgs</span><span class="ch">\"</span><span class="st">, random_state=1))</span></span>
+<span id="cb7-8"><a></a><span class="er">param_grid = {'mlpclassifier__alpha': np.logspace(-3, 3, 7)}</span></span>
+<span id="cb7-9"><a></a>grid <span class="op">=</span> GridSearchCV(pipe, param_grid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/gridsearch_plot.png" alt="Grid search results" style="max-width:45%;"></p>
 </div>
 </section>
 <section id="searching-hidden-layer-sizes" class="slide level2">
 <h2>Searching Hidden Layer Sizes</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
-<span id="cb7-2"><a></a>pipe <span class="op">=</span> make_pipeline(StandardScaler(), MLPClassifier(solver<span class="op">=</span>\<span class="st">"lbfgs</span><span class="ch">\"</span><span class="st">, random_state=1))</span></span>
-<span id="cb7-3"><a></a><span class="er">param_grid = {'mlpclassifier__hidden_layer_sizes':</span></span>
-<span id="cb7-4"><a></a>              [(<span class="dv">10</span>,), (<span class="dv">50</span>,), (<span class="dv">100</span>,), (<span class="dv">500</span>,), (<span class="dv">10</span>, <span class="dv">10</span>), (<span class="dv">50</span>, <span class="dv">50</span>), (<span class="dv">100</span>, <span class="dv">100</span>), (<span class="dv">500</span>, <span class="dv">500</span>)]}</span>
-<span id="cb7-5"><a></a>grid <span class="op">=</span> GridSearchCV(pipe, param_grid)</span>
-<span id="cb7-6"><a></a>grid.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb8-2"><a></a>pipe <span class="op">=</span> make_pipeline(StandardScaler(), MLPClassifier(solver<span class="op">=</span>\<span class="st">"lbfgs</span><span class="ch">\"</span><span class="st">, random_state=1))</span></span>
+<span id="cb8-3"><a></a><span class="er">param_grid = {'mlpclassifier__hidden_layer_sizes':</span></span>
+<span id="cb8-4"><a></a>              [(<span class="dv">10</span>,), (<span class="dv">50</span>,), (<span class="dv">100</span>,), (<span class="dv">500</span>,), (<span class="dv">10</span>, <span class="dv">10</span>), (<span class="dv">50</span>, <span class="dv">50</span>), (<span class="dv">100</span>, <span class="dv">100</span>), (<span class="dv">500</span>, <span class="dv">500</span>)]}</span>
+<span id="cb8-5"><a></a>grid <span class="op">=</span> GridSearchCV(pipe, param_grid)</span>
+<span id="cb8-6"><a></a>grid.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/search_hidden_layers_plot.png" alt="Search hidden layer sizes" style="max-width:40%;"></p>
 </div>
-</section>
-<section id="write-your-own-neural-networks" class="slide level2">
-<h2>Write Your Own Neural Networks</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="kw">class</span> NeuralNetwork(<span class="bu">object</span>):</span>
-<span id="cb8-2"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
-<span id="cb8-3"><a></a>        <span class="co"># initialize coefficients and biases</span></span>
-<span id="cb8-4"><a></a>        <span class="cf">pass</span></span>
-<span id="cb8-5"><a></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
-<span id="cb8-6"><a></a>        activation <span class="op">=</span> x</span>
-<span id="cb8-7"><a></a>        <span class="cf">for</span> coef, bias <span class="kw">in</span> <span class="bu">zip</span>(<span class="va">self</span>.coef_, <span class="va">self</span>.bias_):</span>
-<span id="cb8-8"><a></a>            activation <span class="op">=</span> <span class="va">self</span>.nonlinearity(np.dot(activation, coef) <span class="op">+</span> bias)</span>
-<span id="cb8-9"><a></a>        <span class="cf">return</span> activation</span>
-<span id="cb8-10"><a></a>    <span class="kw">def</span> backward(<span class="va">self</span>, x):</span>
-<span id="cb8-11"><a></a>        <span class="co"># compute gradient of stuff in forward pass</span></span>
-<span id="cb8-12"><a></a>        <span class="cf">pass</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="autodiff" class="slide level2">
-<h2>Autodiff</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="kw">class</span> array(<span class="bu">object</span>) :</span>
-<span id="cb9-2"><a></a>    \<span class="st">"</span><span class="ch">\"\"</span><span class="st">Simple Array object that support autodiff.</span><span class="ch">\"\"\"</span></span>
-<span id="cb9-3"><a></a><span class="er">    def __init__</span>(<span class="va">self</span>, value, name<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb9-4"><a></a>        <span class="va">self</span>.value <span class="op">=</span> value</span>
-<span id="cb9-5"><a></a>        <span class="cf">if</span> name:</span>
-<span id="cb9-6"><a></a>            <span class="va">self</span>.grad <span class="op">=</span> <span class="kw">lambda</span> g : {name : g}</span>
-<span id="cb9-7"><a></a>    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other):</span>
-<span id="cb9-8"><a></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(other, <span class="bu">int</span>)</span>
-<span id="cb9-9"><a></a>        ret <span class="op">=</span> array(<span class="va">self</span>.value <span class="op">+</span> other)</span>
-<span id="cb9-10"><a></a>        ret.grad <span class="op">=</span> <span class="kw">lambda</span> g : <span class="va">self</span>.grad(g)</span>
-<span id="cb9-11"><a></a>        <span class="cf">return</span> ret</span>
-<span id="cb9-12"><a></a>    <span class="kw">def</span> <span class="fu">__mul__</span>(<span class="va">self</span>, other):</span>
-<span id="cb9-13"><a></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(other, array)</span>
-<span id="cb9-14"><a></a>        ret <span class="op">=</span> array(<span class="va">self</span>.value <span class="op">*</span> other.value)</span>
-<span id="cb9-15"><a></a>        <span class="kw">def</span> grad(g):</span>
-<span id="cb9-16"><a></a>            x <span class="op">=</span> <span class="va">self</span>.grad(g <span class="op">*</span> other.value)</span>
-<span id="cb9-17"><a></a>            x.update(other.grad(g <span class="op">*</span> <span class="va">self</span>.value))</span>
-<span id="cb9-18"><a></a>            <span class="cf">return</span> x</span>
-<span id="cb9-19"><a></a>        ret.grad <span class="op">=</span> grad</span>
-<span id="cb9-20"><a></a>        <span class="cf">return</span> ret</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="autodiff-example" class="slide level2">
-<h2>Autodiff Example</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>a <span class="op">=</span> array(np.array([<span class="dv">1</span>, <span class="dv">2</span>]), <span class="st">'a'</span>)</span>
-<span id="cb10-2"><a></a>b <span class="op">=</span> array(np.array([<span class="dv">3</span>, <span class="dv">4</span>]), <span class="st">'b'</span>)</span>
-<span id="cb10-3"><a></a>c <span class="op">=</span> b <span class="op">*</span> a</span>
-<span id="cb10-4"><a></a>d <span class="op">=</span> c <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb10-5"><a></a><span class="bu">print</span>(d.value)</span>
-<span id="cb10-6"><a></a><span class="bu">print</span>(d.grad(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<pre><code>[4 9]
-{'b': array([1, 2]), 'a': array([3, 4])}</code></pre>
-<ul>
-<li>Automatic differentiation avoids writing gradients manually</li>
-<li>Keep track of computation while executing forward pass</li>
-<li>Hard-code derivative for each operation (no symbolic differentiation)</li>
-<li>Build computation graph automatically</li>
-</ul>
+<!-- ## Write Your Own Neural Networks
+
+```python
+class NeuralNetwork(object):
+    def __init__(self):
+        # initialize coefficients and biases
+        pass
+    def forward(self, x):
+        activation = x
+        for coef, bias in zip(self.coef_, self.bias_):
+            activation = self.nonlinearity(np.dot(activation, coef) + bias)
+        return activation
+    def backward(self, x):
+        # compute gradient of stuff in forward pass
+        pass
+```
+
+## Autodiff
+
+```python
+class array(object) :
+    \"\"\"Simple Array object that support autodiff.\"\"\"
+    def __init__(self, value, name=None):
+        self.value = value
+        if name:
+            self.grad = lambda g : {name : g}
+    def __add__(self, other):
+        assert isinstance(other, int)
+        ret = array(self.value + other)
+        ret.grad = lambda g : self.grad(g)
+        return ret
+    def __mul__(self, other):
+        assert isinstance(other, array)
+        ret = array(self.value * other.value)
+        def grad(g):
+            x = self.grad(g * other.value)
+            x.update(other.grad(g * self.value))
+            return x
+        ret.grad = grad
+        return ret
+```
+
+## Autodiff Example
+
+```python
+a = array(np.array([1, 2]), 'a')
+b = array(np.array([3, 4]), 'b')
+c = b * a
+d = c + 1
+print(d.value)
+print(d.grad(1))
+```
+
+```
+[4 9]
+{'b': array([1, 2]), 'a': array([3, 4])}
+```
+
+- Automatic differentiation avoids writing gradients manually
+- Keep track of computation while executing forward pass
+- Hard-code derivative for each operation (no symbolic differentiation)
+- Build computation graph automatically -->
 </section>
 <section id="gpu-support" class="slide level2">
 <h2>GPU Support</h2>
@@ -506,13 +555,113 @@
 <li>Memory copies between RAM and GPU are expensive</li>
 </ul>
 </section>
-<section id="computation-graph" class="slide level2">
-<h2>Computation Graph</h2>
+<section id="cpu-vs.-gpu" class="slide level2">
+<h2>CPU VS. GPU</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 37%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>CPU</th>
+<th>GPU</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Architecture</td>
+<td>Few cores optimised for sequential tasks</td>
+<td>Thousands of cores for parallel processing</td>
+</tr>
+<tr class="even">
+<td>Performance</td>
+<td>Better for single-threaded tasks</td>
+<td>Superior for parallel tasks like matrix operations</td>
+</tr>
+<tr class="odd">
+<td>Memory</td>
+<td>Larger cache size, less memory bandwidth</td>
+<td>Higher memory bandwidth, less cache size</td>
+</tr>
+<tr class="even">
+<td>Power Consumption</td>
+<td>Generally lower power consumption</td>
+<td>Higher power consumption due to many cores</td>
+</tr>
+<tr class="odd">
+<td>Use Cases</td>
+<td>General-purpose computing, complex logic</td>
+<td>Graphics rendering, deep learning, scientific simulations</td>
+</tr>
+<tr class="even">
+<td>Cost</td>
+<td>Less expensive</td>
+<td>Expensive</td>
+</tr>
+<tr class="odd">
+<td>Programming Complexity</td>
+<td>Easier to program for general tasks</td>
+<td>Requires knowledge of parallel programming (e.g., CUDA)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-much-gpu-power-do-you-need" class="slide level2">
+<h2>How much GPU power do you need?</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task Type</th>
+<th>Typical GPU</th>
+<th>Total GPU Hours</th>
+<th>Estimated Cost (Cloud)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Small Project</strong> (MNIST, basic CNN)</td>
+<td>1x RTX 3060 / 4060</td>
+<td>&lt; 1 hour</td>
+<td>&lt; $1</td>
+</tr>
+<tr class="even">
+<td><strong>Fine-tuning 7B LLM</strong> (e.g., Llama 3 8B)</td>
+<td>1x A100 (80GB)</td>
+<td>5–20 hours</td>
+<td>$10 – $40</td>
+</tr>
+<tr class="odd">
+<td><strong>Training Mid-size Model</strong> (e.g., Stable Diffusion)</td>
+<td>8x A100 Cluster</td>
+<td>500–2,000 hours</td>
+<td>$1,000 – $5,000</td>
+</tr>
+<tr class="even">
+<td><strong>Pre-training Large LLM</strong> (GPT-3/4 scale)</td>
+<td>10,000+ H100s</td>
+<td>Millions of hours</td>
+<td>$50M – $100M+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="computational-graph" class="slide level2">
+<h2>Computational Graph</h2>
 <div style="text-align:center;">
-<p><img src="images/computation_graph.png" alt="Computation graph" style="max-width:35%;"></p>
+<p><img src="images/computation_graph.png" alt="Computation graph" style="max-width:60%;"></p>
 </div>
 <ul>
-<li>Store different intermediate results depending on derivatives needed</li>
+<li>A ‘blue-print’, or a directed acyclic graph representing computations in a neural network</li>
+<li>Nodes represent variabels or operations (e.g., matrix multiplication, activation functions), edges represent flow of data (tensors) between operations</li>
 <li>Given limited GPU memory, important to know what to cache/discard</li>
 <li>Helps with visual debugging and understanding network structure</li>
 </ul>
@@ -522,17 +671,17 @@
 <ul>
 <li>Autodiff</li>
 <li>GPU support</li>
-<li>Optimization and inspection of computation graph</li>
+<li>Optimisation and inspection of computation graph</li>
 <li>On-the-fly generation of computation graph (optional)</li>
 <li>Distribution over multiple GPUs and/or cluster (optional)</li>
 </ul>
-<p>Current choices: TensorFlow, PyTorch / Torch, Chainer</p>
+<p>Current choices: PyTorch / Torch, TensorFlow</p>
 </section>
 <section id="deep-learning-libraries" class="slide level2">
 <h2>Deep Learning Libraries</h2>
 <ul>
-<li>Keras (TensorFlow, CNTK, Theano)</li>
-<li>PyTorch (torch)</li>
+<li>PyTorch (torch) (<em>default for AI research &amp; development</em>)</li>
+<li>Keras (TensorFlow, CNTK, Theano) (<em>enterprise production</em>)</li>
 <li>Chainer (chainer)</li>
 <li>MXNet (MXNet)</li>
 </ul>
@@ -555,21 +704,21 @@
 </section>
 <section id="pytorch-example" class="slide level2">
 <h2>PyTorch Example</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>dtype <span class="op">=</span> torch.<span class="bu">float</span></span>
-<span id="cb12-2"><a></a>device <span class="op">=</span> torch.device(<span class="st">"cpu"</span>)</span>
-<span id="cb12-3"><a></a></span>
-<span id="cb12-4"><a></a>N <span class="op">=</span> <span class="dv">100</span></span>
-<span id="cb12-5"><a></a>x <span class="op">=</span> torch.randn(N, <span class="dv">1</span>, device<span class="op">=</span>device, dtype<span class="op">=</span>dtype)</span>
-<span id="cb12-6"><a></a>y <span class="op">=</span> torch.randn(N, <span class="dv">1</span>, device<span class="op">=</span>device, dtype<span class="op">=</span>dtype)</span>
-<span id="cb12-7"><a></a>w <span class="op">=</span> torch.randn(D_in, H, device<span class="op">=</span>device, dtype<span class="op">=</span>dtype)</span>
-<span id="cb12-8"><a></a></span>
-<span id="cb12-9"><a></a>learning_rate <span class="op">=</span> <span class="fl">1e-6</span></span>
-<span id="cb12-10"><a></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">500</span>):</span>
-<span id="cb12-11"><a></a>    y_pred <span class="op">=</span> x.mm(w1)</span>
-<span id="cb12-12"><a></a>    loss <span class="op">=</span> (y_pred <span class="op">-</span> y).<span class="bu">pow</span>(<span class="dv">2</span>).<span class="bu">sum</span>().item()</span>
-<span id="cb12-13"><a></a>    loss.backward()</span>
-<span id="cb12-14"><a></a>    w1 <span class="op">-=</span> learning_rate <span class="op">*</span> w1.grad</span>
-<span id="cb12-15"><a></a>    w1.grad.zero_()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>dtype <span class="op">=</span> torch.<span class="bu">float</span></span>
+<span id="cb9-2"><a></a>device <span class="op">=</span> torch.device(<span class="st">"cpu"</span>)</span>
+<span id="cb9-3"><a></a></span>
+<span id="cb9-4"><a></a>N <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb9-5"><a></a>x <span class="op">=</span> torch.randn(N, <span class="dv">1</span>, device<span class="op">=</span>device, dtype<span class="op">=</span>dtype)</span>
+<span id="cb9-6"><a></a>y <span class="op">=</span> torch.randn(N, <span class="dv">1</span>, device<span class="op">=</span>device, dtype<span class="op">=</span>dtype)</span>
+<span id="cb9-7"><a></a>w <span class="op">=</span> torch.randn(D_in, H, device<span class="op">=</span>device, dtype<span class="op">=</span>dtype)</span>
+<span id="cb9-8"><a></a></span>
+<span id="cb9-9"><a></a>learning_rate <span class="op">=</span> <span class="fl">1e-6</span></span>
+<span id="cb9-10"><a></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">500</span>):</span>
+<span id="cb9-11"><a></a>    y_pred <span class="op">=</span> x.mm(w1)</span>
+<span id="cb9-12"><a></a>    loss <span class="op">=</span> (y_pred <span class="op">-</span> y).<span class="bu">pow</span>(<span class="dv">2</span>).<span class="bu">sum</span>().item()</span>
+<span id="cb9-13"><a></a>    loss.backward()</span>
+<span id="cb9-14"><a></a>    w1 <span class="op">-=</span> learning_rate <span class="op">*</span> w1.grad</span>
+<span id="cb9-15"><a></a>    w1.grad.zero_()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="best-practices" class="slide level2">
 <h2>Best Practices</h2>
@@ -578,15 +727,36 @@
 <li>Don’t write TensorFlow, write Keras!</li>
 <li>Don’t write PyTorch, write pytorch.nn or FastAI (or Skorch or ignite)</li>
 </ul>
+</section></section>
+<section>
+<section id="convolutional-neural-networks" class="title-slide slide level1 center">
+<h1>Convolutional Neural Networks</h1>
+
 </section>
-<section id="convolutional-neural-networks" class="slide level2">
-<h2>Convolutional Neural Networks</h2>
-</section>
-<section id="idea-behind-cnns" class="slide level2">
-<h2>Idea Behind CNNs</h2>
+<section id="idea-1-behind-cnns" class="slide level2">
+<h2>Idea #1 Behind CNNs</h2>
 <ul>
-<li>Translation invariance</li>
-<li>Weight sharing</li>
+<li><strong>Translation invariance</strong>: CNN can recognise an object regardless of where it is in the frame.</li>
+<li>… because the same filters scan every part of the image (weight sharing)</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/translation_invariance_dog.png" alt="Translation invariance in CNNs" style="max-width:80%;"></p>
+</div>
+</section>
+<section id="idea-2-behind-cnns" class="slide level2">
+<h2>Idea #2 Behind CNNs</h2>
+<ul>
+<li><strong>Weight sharing</strong>: the principle that the same set of weights (a filter, or kernel) is used to scan every part of an image</li>
+<li>So, this filter will detect a specific feature (e.g.&nbsp;edge, curve), regardless of its position</li>
+<li>Each filter corresponds to a specific feature or pattern, rather than location-specific information</li>
+</ul>
+</section>
+<section id="why-weight-sharing" class="slide level2">
+<h2>Why Weight Sharing?</h2>
+<ul>
+<li>Reduces number of parameters; less prone to overfitting</li>
+<li>Comparison: for a 100x100 image with 3 channels (RGB), a fully connected layer in NN with 100 hidden units would have 3 million parameters (100<em>100</em>3*100);</li>
+<li>a convolutional layer with 10 filters of size 5x5 would have only 750 parameters (5<em>5</em>10)</li>
 </ul>
 </section>
 <section id="definition-of-convolution" class="slide level2">
@@ -644,9 +814,9 @@
 <div style="text-align:center;">
 <p><img src="images/CNET1.png" alt="Convolutional neural network" style="max-width:100%;"></p>
 </div>
-<blockquote>
-<p>Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner: Gradient-based learning applied to document recognition</p>
-</blockquote>
+<ul>
+<li>Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner: Gradient-based learning applied to document recognition</li>
+</ul>
 </section>
 <section id="other-architectures" class="slide level2">
 <h2>Other Architectures</h2>
@@ -659,36 +829,36 @@
 </section>
 <section id="preparing-data" class="slide level2">
 <h2>Preparing Data</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>batch_size <span class="op">=</span> <span class="dv">128</span></span>
-<span id="cb13-2"><a></a>num_classes <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb13-3"><a></a>epochs <span class="op">=</span> <span class="dv">12</span></span>
-<span id="cb13-4"><a></a></span>
-<span id="cb13-5"><a></a>img_rows, img_cols <span class="op">=</span> <span class="dv">28</span>, <span class="dv">28</span></span>
-<span id="cb13-6"><a></a></span>
-<span id="cb13-7"><a></a>(x_train, y_train), (x_test, y_test) <span class="op">=</span> mnist.load_data()</span>
-<span id="cb13-8"><a></a></span>
-<span id="cb13-9"><a></a>X_train_images <span class="op">=</span> x_train.reshape(x_train.shape[<span class="dv">0</span>], img_rows, img_cols, <span class="dv">1</span>)</span>
-<span id="cb13-10"><a></a>X_test_images <span class="op">=</span> x_test.reshape(x_test.shape[<span class="dv">0</span>], img_rows, img_cols, <span class="dv">1</span>)</span>
-<span id="cb13-11"><a></a>input_shape <span class="op">=</span> (img_rows, img_cols, <span class="dv">1</span>)</span>
-<span id="cb13-12"><a></a></span>
-<span id="cb13-13"><a></a>y_train <span class="op">=</span> keras.utils.to_categorical(y_train, num_classes)</span>
-<span id="cb13-14"><a></a>y_test <span class="op">=</span> keras.utils.to_categorical(y_test, num_classes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>batch_size <span class="op">=</span> <span class="dv">128</span></span>
+<span id="cb10-2"><a></a>num_classes <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb10-3"><a></a>epochs <span class="op">=</span> <span class="dv">12</span></span>
+<span id="cb10-4"><a></a></span>
+<span id="cb10-5"><a></a>img_rows, img_cols <span class="op">=</span> <span class="dv">28</span>, <span class="dv">28</span></span>
+<span id="cb10-6"><a></a></span>
+<span id="cb10-7"><a></a>(x_train, y_train), (x_test, y_test) <span class="op">=</span> mnist.load_data()</span>
+<span id="cb10-8"><a></a></span>
+<span id="cb10-9"><a></a>X_train_images <span class="op">=</span> x_train.reshape(x_train.shape[<span class="dv">0</span>], img_rows, img_cols, <span class="dv">1</span>)</span>
+<span id="cb10-10"><a></a>X_test_images <span class="op">=</span> x_test.reshape(x_test.shape[<span class="dv">0</span>], img_rows, img_cols, <span class="dv">1</span>)</span>
+<span id="cb10-11"><a></a>input_shape <span class="op">=</span> (img_rows, img_cols, <span class="dv">1</span>)</span>
+<span id="cb10-12"><a></a></span>
+<span id="cb10-13"><a></a>y_train <span class="op">=</span> keras.utils.to_categorical(y_train, num_classes)</span>
+<span id="cb10-14"><a></a>y_test <span class="op">=</span> keras.utils.to_categorical(y_test, num_classes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="create-tiny-network" class="slide level2">
 <h2>Create Tiny Network</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="im">from</span> keras.layers <span class="im">import</span> Conv2D, MaxPooling2D, Flatten</span>
-<span id="cb14-2"><a></a></span>
-<span id="cb14-3"><a></a>num_classes <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb14-4"><a></a>cnn <span class="op">=</span> Sequential()</span>
-<span id="cb14-5"><a></a>cnn.add(Conv2D(<span class="dv">32</span>, kernel_size<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">3</span>),</span>
-<span id="cb14-6"><a></a>                 activation<span class="op">=</span><span class="st">'relu'</span>,</span>
-<span id="cb14-7"><a></a>                 input_shape<span class="op">=</span>input_shape))</span>
-<span id="cb14-8"><a></a>cnn.add(MaxPooling2D(pool_size<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">2</span>)))</span>
-<span id="cb14-9"><a></a>cnn.add(Conv2D(<span class="dv">32</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>))</span>
-<span id="cb14-10"><a></a>cnn.add(MaxPooling2D(pool_size<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">2</span>)))</span>
-<span id="cb14-11"><a></a>cnn.add(Flatten())</span>
-<span id="cb14-12"><a></a>cnn.add(Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>))</span>
-<span id="cb14-13"><a></a>cnn.add(Dense(num_classes, activation<span class="op">=</span><span class="st">'softmax'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">from</span> keras.layers <span class="im">import</span> Conv2D, MaxPooling2D, Flatten</span>
+<span id="cb11-2"><a></a></span>
+<span id="cb11-3"><a></a>num_classes <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb11-4"><a></a>cnn <span class="op">=</span> Sequential()</span>
+<span id="cb11-5"><a></a>cnn.add(Conv2D(<span class="dv">32</span>, kernel_size<span class="op">=</span>(<span class="dv">3</span>, <span class="dv">3</span>),</span>
+<span id="cb11-6"><a></a>                 activation<span class="op">=</span><span class="st">'relu'</span>,</span>
+<span id="cb11-7"><a></a>                 input_shape<span class="op">=</span>input_shape))</span>
+<span id="cb11-8"><a></a>cnn.add(MaxPooling2D(pool_size<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">2</span>)))</span>
+<span id="cb11-9"><a></a>cnn.add(Conv2D(<span class="dv">32</span>, (<span class="dv">3</span>, <span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>))</span>
+<span id="cb11-10"><a></a>cnn.add(MaxPooling2D(pool_size<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">2</span>)))</span>
+<span id="cb11-11"><a></a>cnn.add(Flatten())</span>
+<span id="cb11-12"><a></a>cnn.add(Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>))</span>
+<span id="cb11-13"><a></a>cnn.add(Dense(num_classes, activation<span class="op">=</span><span class="st">'softmax'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="number-of-parameters" class="slide level2">
 <h2>Number of Parameters</h2>
@@ -707,22 +877,22 @@
 </section>
 <section id="train-and-evaluate" class="slide level2">
 <h2>Train and Evaluate</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>cnn.<span class="bu">compile</span>(\<span class="st">"adam</span><span class="ch">\"</span><span class="st">, </span><span class="ch">\"</span><span class="st">categorical_crossentropy</span><span class="ch">\"</span><span class="st">, metrics=['accuracy'])</span></span>
-<span id="cb15-2"><a></a><span class="er">history_cnn = cnn.fit</span>(X_train_images, y_train,</span>
-<span id="cb15-3"><a></a>                      batch_size<span class="op">=</span><span class="dv">128</span>, epochs<span class="op">=</span><span class="dv">20</span>, verbose<span class="op">=</span><span class="dv">1</span>, validation_split<span class="op">=</span><span class="fl">.1</span>)</span>
-<span id="cb15-4"><a></a>cnn.evaluate(X_test_images, y_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>cnn.<span class="bu">compile</span>(\<span class="st">"adam</span><span class="ch">\"</span><span class="st">, </span><span class="ch">\"</span><span class="st">categorical_crossentropy</span><span class="ch">\"</span><span class="st">, metrics=['accuracy'])</span></span>
+<span id="cb12-2"><a></a><span class="er">history_cnn = cnn.fit</span>(X_train_images, y_train,</span>
+<span id="cb12-3"><a></a>                      batch_size<span class="op">=</span><span class="dv">128</span>, epochs<span class="op">=</span><span class="dv">20</span>, verbose<span class="op">=</span><span class="dv">1</span>, validation_split<span class="op">=</span><span class="fl">.1</span>)</span>
+<span id="cb12-4"><a></a>cnn.evaluate(X_test_images, y_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code> 9952/10000 [============================&gt;.] - ETA: 0s
  [0.089020583277629253, 0.98429999999999995]</code></pre>
 <div style="text-align:center;">
 <p><img src="images/train_evaluate.png" alt="Train and evaluate" style="max-width:50%;"></p>
 </div>
 </section>
-<section id="visualize-filters" class="slide level2">
-<h2>Visualize Filters</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>weights, biases <span class="op">=</span> cnn_small.layers[<span class="dv">0</span>].get_weights()</span>
-<span id="cb17-2"><a></a>weights2, biases2 <span class="op">=</span> cnn_small.layers[<span class="dv">2</span>].get_weights()</span>
-<span id="cb17-3"><a></a><span class="bu">print</span>(weights.shape)</span>
-<span id="cb17-4"><a></a><span class="bu">print</span>(weights2.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="visualise-filters" class="slide level2">
+<h2>Visualise Filters</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a>weights, biases <span class="op">=</span> cnn_small.layers[<span class="dv">0</span>].get_weights()</span>
+<span id="cb14-2"><a></a>weights2, biases2 <span class="op">=</span> cnn_small.layers[<span class="dv">2</span>].get_weights()</span>
+<span id="cb14-3"><a></a><span class="bu">print</span>(weights.shape)</span>
+<span id="cb14-4"><a></a><span class="bu">print</span>(weights2.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre><code>(3,3,1,8)
 (3,3,8,8)</code></pre>
 <div style="text-align:center;">
@@ -735,27 +905,31 @@
 <p><img src="images/digits.png" alt="Learned features" style="max-width:80%;"></p>
 </div>
 </section>
-<section id="convnets-vs-fully-connected-nets-illustrated" class="slide level2">
-<h2>Convnets vs Fully Connected Nets Illustrated</h2>
-</section>
 <section id="mnist-and-permuted-mnist" class="slide level2">
 <h2>MNIST and Permuted MNIST</h2>
 <div style="text-align:center;">
 <p><img src="images/mnist_org.png" alt="MNIST original" style="max-width:90%;"></p>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>rng <span class="op">=</span> np.random.RandomState(<span class="dv">42</span>)</span>
-<span id="cb19-2"><a></a>perm <span class="op">=</span> rng.permutation(<span class="dv">784</span>)</span>
-<span id="cb19-3"><a></a>X_train_perm <span class="op">=</span> X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">784</span>)[:, perm].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>)</span>
-<span id="cb19-4"><a></a>X_test_perm <span class="op">=</span> X_test.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">784</span>)[:, perm].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>rng <span class="op">=</span> np.random.RandomState(<span class="dv">42</span>)</span>
+<span id="cb16-2"><a></a>perm <span class="op">=</span> rng.permutation(<span class="dv">784</span>)</span>
+<span id="cb16-3"><a></a>X_train_perm <span class="op">=</span> X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">784</span>)[:, perm].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>)</span>
+<span id="cb16-4"><a></a>X_test_perm <span class="op">=</span> X_test.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">784</span>)[:, perm].reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">28</span>, <span class="dv">28</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/mnist_permuted.png" alt="MNIST permuted" style="max-width:90%;"></p>
 </div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li>We’ve covered the architecture and training of neural networks</li>
+<li>We also covered the idea and implementation of convolutional neural networks</li>
+</ul>
 </section>
 <section id="questions" class="slide level2">
 <h2>Questions?</h2>
 
 
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="../../img/logo/full.svg" class="slide-logo"></p>
