@@ -36,7 +36,9 @@ format:
 
 ## Linear Regression as Neural Net
 
-$y = \sum_i W_i x_i + b = Wx$
+$y = \sum_i W_i x_i + b = Wx + b$
+
+$y = g(Wx + b)$, where $g(z) = z$ (identity function)
 
 <div style="text-align:center;">
   <img src="images/log_reg_nn.png" alt="Logistic regression as neural net" style="max-width:40%;">
@@ -44,7 +46,7 @@ $y = \sum_i W_i x_i + b = Wx$
 
 ## Logistic Regression as Neural Net
 
-$y = \sigma(Wx)$
+$y = \sigma(Wx + b)$
 
 $\sigma(z) = \frac{1}{1 + e^{-z}}$
 
@@ -54,7 +56,7 @@ $\sigma(z) = \frac{1}{1 + e^{-z}}$
 
 ## Basic Architecture of Neural Networks
 
-$h(x) = f(W_1x+b_1)$; f: hidden layer activation function
+$h(x) = f(W_1x + b_1)$; f: hidden layer activation function
 
 $o(x) = g(W_2h(x) + b_2)$ g: output layer activation function
 
@@ -64,29 +66,29 @@ $o(x) = g(W_2h(x) + b_2)$ g: output layer activation function
 
 ## Output layer activation function $g$
 
-<div style="text-align:center;">
-  <img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:50%;">
-</div>
-
 - For regression: $g$ is identity function $g(z) = z$
 - For binary classification: $g$ is sigmoid function $g(z) = \sigma(z)$ (to output a probability [0,1])
 - For multi-class classification: $g$ is softmax function $g(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}$ (to output a probability distribution over classes)
 
-## Nonlinear Activation Functions $f$
-
 <div style="text-align:center;">
-  <img src="images/nonlin_fn.png" alt="Nonlinear activation functions" style="max-width:65%;">
+  <img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:30%;">
 </div>
 
+## Nonlinear Activation Functions $f$
+
 - The primary job of *f* is to break the linearity of the model
-- Standard choices: tanh (pronounced like "than") or relu (rectified linear unit)
-- Tanh squashes between -1 and 1; saturates towards infinities
-- ReLU is constant zero for negative numbers, then identity
+- Standard choices: tanh (pronounced like "than") or relu (rectified linear unit) (pronounced as /ray-loo/)
+- **Tanh** squashes between -1 and 1; saturates towards infinities
+- **ReLU** is constant zero for negative numbers, then identity
+
+<div style="text-align:center;">
+  <img src="images/nonlin_fn.png" alt="Nonlinear activation functions" style="max-width:50%;">
+</div>
 
 ## More Layers
 
 <div style="text-align:center;">
-  <img src="images/nn_manylayers.png" alt="Neural network with many layers" style="max-width:60%;">
+  <img src="images/nn_manylayers.png" alt="Neural network with many layers" style="max-width:50%;">
 </div>
 
 - Hidden layers usually all have the same non-linear function
@@ -107,11 +109,19 @@ $h(x) = f(W_1x+b_1)$
 
 $o(x) = g(W_2h(x)+b_2) = g(W_2f(W_1x + b_1) + b_2)$
 
+- The objective is to minimise the difference between true and predicted *y* values, or the loss function
+
 $\min_{W_1,W_2,b_1,b_2} \sum\limits_{i=1}^N l(y_i,o(x_i))$
 
 $= \min_{W_1,W_2,b_1,b_2} \sum\limits_{i=1}^N l(y_i,g(W_2f(W_1x+b_1)+b_2))$
 
 - $l$ = Squared loss for regression; Cross-entropy loss for classification
+
+## Backpropagation
+
+<div style="text-align:center;">
+  <img src="images/Backpropagation-in-Neural-Network-1.webp" alt="Backpropagation in neural networks" style="max-width:70%;">
+</div>
 
 ## Backpropagation
 
@@ -127,7 +137,27 @@ $\text{net}(x) := W_1x + b_1$
 
 - Backpropagation is clever application of chain rule for derivatives
 - Single backward pass from output to input computes derivatives
-- Not an optimisation algorithm, just a way to compute gradients
+- An efficient way to compute gradients
+- Training NN is an optimisation problem, which means to find the **optimal** parameters $W_i$ and $b_i$ that minimise the loss function
+- Training NN is a non-convex and challenging optimisation problem. Usually a local optimum is found.
+
+## Recap on gradient
+
+:::: columns
+
+::: {.column width="50%"}
+- Optimise $\arg\min_w F(w)$ by stepping along $-\nabla F(w)$
+- Update: $w_{i+1} = w_i - \eta_i \nabla F(w_i)$
+- Converges to a local minimum
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/gradient_descent_1D.jpeg" alt="Gradient 1D" style="max-width:60%;">
+</div>
+:::
+
+::::
 
 ## ReLU Differentiability
 
@@ -142,8 +172,12 @@ $\text{net}(x) := W_1x + b_1$
 
 ## Optimising W, b
 
+Usually, We don't use all data to compute the gradient at each step. 
+
 Batch
 $W_i \leftarrow W_i - \eta\sum\limits_{j=1}^N \frac{\partial l(x_j,y_j)}{\partial W_i}$
+
+Instead, we can use a subset of data to estimate the gradient.
 
 Online/Stochastic
 $W_i \leftarrow W_i - \eta\frac{\partial l(x_j,y_j)}{\partial W_i}$
@@ -153,14 +187,28 @@ $W_i \leftarrow W_i - \eta\sum\limits_{j=k}^{k+m} \frac{\partial l(x_j,y_j)}{\pa
 
 ## Learning Heuristics
 
-- Constant $\eta$ not good
+- $\eta$ controls the step size of gradient descent. Can adjust during training.
+- Constant $\eta$ is not good
 - Can decrease $\eta$ over time
 - Better: adaptive $\eta$ for each entry of $W_i$
-- State-of-the-art: adam (with magic numbers)
+- State-of-the-art: Adam (*Adaptive Moment Estimation*)
 
-## Picking Optimization Algorithms
+## Adam optimiser
 
-- Small dataset: off the shelf like l-bfgs
+- **The logic**: for a parameter, if a gradient is consistely large, should decrease the learning rate and slow down; 
+- If a gradient is consistely small, should increase the learning rate for that parameter.
+- **The process**: keep track of the first moment (mean) and second moment (uncentered variance) of the gradients; use them to adapt the learning rate for each parameter
+
+## Update rule of Adam optimiser
+
+1. Estimate 1st moment: $m_t = \beta_1 m_{t-1} + (1 - \beta_1)g_t$
+2. Estimate 2nd moment: $v_t = \beta_2 v_{t-1} + (1 - \beta_2)g_t^2$
+3. Bias Correction: as $m_t$ and $v_t$ start at zero, Adam uses a mathematical trick to "warm them up" during the first few steps.
+4. Update Weight: $\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t$
+
+## Picking Optimisation Algorithms
+
+- Small dataset: off-the-shelf like l-bfgs (quicker than Adam on small datasets)
 - Big dataset: adam / rmsprop
 - Have time & nerve: tune the schedule
 
@@ -186,10 +234,10 @@ print(mlp.score(X_test, y_test))
 - Early Stopping
 - Dropout
 
-## Random State
+## NN subject to overfitting and random seeds
 
 <div style="text-align:center;">
-  <img src="images/random_state.png" alt="Effect of random state" style="max-width:75%;">
+  <img src="images/random_state.png" alt="Effect of random state" style="max-width:65%;">
 </div>
 
 - Network is way over capacity and can overfit in many ways
@@ -197,9 +245,9 @@ print(mlp.score(X_test, y_test))
 
 # Regularisation
 
-- Without regularisation, can easily overfit with large networks. Loss function: $L = \sum\limits_{i=1}^N l(y_i, o(x_i))$
-- **L2 regularisation**: add $\lambda \sum\limits_i W_i^2$ to loss function; penalise large weights
-- **L1 regularisation**: add $\lambda \sum\limits_i |W_i|$ to loss function
+- Regularisation works by modifying the loss function: $L = \sum\limits_{i=1}^N l(y_i, o(x_i))$
+- **L2 regularisation**: add $\lambda \sum\limits_i W_i^2$ to loss function; to penalise large weights
+- **L1 regularisation**: add $\lambda \sum\limits_i |W_i|$ to loss function; to encourage many weights to be zero
 - **Dropout**: randomly set some activations to zero during training; prevents co-adaptation of neurons
 
 ## Hidden Layer Size
@@ -368,12 +416,13 @@ print(d.grad(1))
 | Feature                  | CPU                                   | GPU                                   |
 |--------------------------|---------------------------------------|---------------------------------------|
 | Architecture             | Few cores optimised for sequential tasks | Thousands of cores for parallel processing |
-| Performance              | Better for single-threaded tasks      | Superior for parallel tasks like matrix operations |
 | Memory                   | Larger cache size, less memory bandwidth | Higher memory bandwidth, less cache size |
 | Power Consumption        | Generally lower power consumption     | Higher power consumption due to many cores |
 | Use Cases                | General-purpose computing, complex logic | Graphics rendering, deep learning, scientific simulations |
 | Cost                     | Less expensive              | Expensive |
 | Programming Complexity    | Easier to program for general tasks   | Requires knowledge of parallel programming (e.g., CUDA) |
+
+: {.small}
 
 ## How much GPU power do you need?
 
@@ -384,13 +433,15 @@ print(d.grad(1))
 | **Training Mid-size Model** (e.g., Stable Diffusion) | 8x A100 Cluster | 500–2,000 hours | $1,000 – $5,000 |
 | **Pre-training Large LLM** (GPT-3/4 scale) | 10,000+ H100s | Millions of hours | $50M – $100M+ |
 
+: {.small}
+
 ## Computational Graph
 
 <div style="text-align:center;">
   <img src="images/computation_graph.png" alt="Computation graph" style="max-width:60%;">
 </div>
 
-- A 'blue-print', or a directed acyclic graph representing computations in a neural network
+- 'blue-print'; a directed acyclic graph representing computations in NN
 - Nodes represent variabels or operations (e.g., matrix multiplication, activation functions), edges represent flow of data (tensors) between operations
 - Given limited GPU memory, important to know what to cache/discard
 - Helps with visual debugging and understanding network structure
@@ -419,10 +470,9 @@ Current choices: PyTorch / Torch, TensorFlow
   1. Build computation graph (using array operations and functions)
   2. Create Optimizer (gradient descent, adam, etc.) attached to graph
   3. Run actual computation
-- Eager mode (default in TensorFlow 2.0): write imperative code directly
 
 <div style="text-align:center;">
-  <img src="images/tensor_flow_basics.png" alt="TensorFlow basics" style="max-width:75%;">
+  <img src="images/tensor_flow_basics.png" alt="TensorFlow basics" style="max-width:55%;">
 </div>
 
 ## PyTorch Example
