@@ -4,7 +4,7 @@ subtitle: "Feed-Forward Networks and Deep Learning"
 author: 
   - name: "Huanfa Chen"
 email: "huanfa.chen@ucl.ac.uk"
-date-as-string: "13/12/2025"
+date-as-string: "09/02/2026"
 from: markdown+emoji
 format:
   revealjs:
@@ -15,27 +15,73 @@ format:
 
 ## History
 
-- Nearly everything we talk about today existed ~1990
-- What changed?
+<div style="text-align:center;">
+  <img src="images/history_of_AI.png" alt="History of neural net" style="max-width:80%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Image Credit: medium.com
+  </div>
+</div>
+
+## History
+
+<div style="text-align:center;">
+  <img src="images/history_of_AI.png" alt="History of neural net" style="max-width:40%;">
+</div>
+
+- Nearly everything we talk about today existed in 1990
+- What changed since then?
   - More data
   - Faster computers (GPUs)
-  - Some improvements: relu, dropout, adam, batch-normalization, residual networks
+  - Some improvements: Relu, dropout, adam, batch-normalization, residual networks
 
-## Logistic Regression as Neural Net
+## Linear Regression as Neural Net
+
+$y = \sum_i W_i x_i + b = Wx$
 
 <div style="text-align:center;">
   <img src="images/log_reg_nn.png" alt="Logistic regression as neural net" style="max-width:40%;">
 </div>
 
-## Basic Architecture
+## Logistic Regression as Neural Net
+
+$y = \sigma(Wx)$
+
+$\sigma(z) = \frac{1}{1 + e^{-z}}$
+
+<div style="text-align:center;">
+  <img src="images/log_reg_nn.png" alt="Logistic regression as neural net" style="max-width:40%;">
+</div>
+
+## Basic Architecture of Neural Networks
+
+$h(x) = f(W_1x+b_1)$; f: hidden layer activation function
+
+$o(x) = g(W_2h(x) + b_2)$ g: output layer activation function
 
 <div style="text-align:center;">
   <img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:50%;">
 </div>
 
-$h(x) = f(W_1x+b_1)$
+## Output layer activation function $g$
 
-$o(x) = g(W_2h(x) + b_2)$
+<div style="text-align:center;">
+  <img src="images/nn_basic_arch.png" alt="Basic neural network architecture" style="max-width:50%;">
+</div>
+
+- For regression: $g$ is identity function $g(z) = z$
+- For binary classification: $g$ is sigmoid function $g(z) = \sigma(z)$ (to output a probability [0,1])
+- For multi-class classification: $g$ is softmax function $g(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}$ (to output a probability distribution over classes)
+
+## Nonlinear Activation Functions $f$
+
+<div style="text-align:center;">
+  <img src="images/nonlin_fn.png" alt="Nonlinear activation functions" style="max-width:65%;">
+</div>
+
+- The primary job of *f* is to break the linearity of the model
+- Standard choices: tanh (pronounced like "than") or relu (rectified linear unit)
+- Tanh squashes between -1 and 1; saturates towards infinities
+- ReLU is constant zero for negative numbers, then identity
 
 ## More Layers
 
@@ -44,28 +90,15 @@ $o(x) = g(W_2h(x) + b_2)$
 </div>
 
 - Hidden layers usually all have the same non-linear function
+- Other names: Multilayer perceptron, feed-forward neural network
 - Many layers → "deep learning"
-- Multilayer perceptron, feed-forward neural network, vanilla feed-forward neural network
-- Regression: single output neuron with linear activation
-- Classification: one-hot-encoding of classes, n_classes output variables with softmax
-
-## Nonlinear Activation Functions
-
-<div style="text-align:center;">
-  <img src="images/nonlin_fn.png" alt="Nonlinear activation functions" style="max-width:65%;">
-</div>
-
-- Standard choices: tanh or rectified linear unit (relu)
-- Tanh squashes between -1 and 1; saturates towards infinities
-- ReLU is constant zero for negative numbers, then identity
 
 ## Supervised Neural Networks
 
 - Non-linear models for classification and regression
 - Work well for very large datasets
-- Non-convex optimization
-- Notoriously slow to train – need for GPUs
-- Use dot products; require preprocessing similar to SVM or linear models, unlike trees
+- Notoriously slow to train; need for GPUs
+- Use dot products $Wx$; require preprocessing similar to SVM or PCA, unlike trees
 - Many variants: Convolutional nets, GRUs, LSTMs, recursive networks, VAEs, GANs, deep RL
 
 ## Training Objective
@@ -94,7 +127,7 @@ $\text{net}(x) := W_1x + b_1$
 
 - Backpropagation is clever application of chain rule for derivatives
 - Single backward pass from output to input computes derivatives
-- Not an optimization algorithm, just a way to compute gradients
+- Not an optimisation algorithm, just a way to compute gradients
 
 ## ReLU Differentiability
 
@@ -102,11 +135,12 @@ $\text{net}(x) := W_1x + b_1$
   <img src="images/relu_differentiability.png" alt="ReLU differentiability" style="max-width:75%;">
 </div>
 
-- ReLU not differentiable at zero
-- Use subgradient descent; any gradient below function works
-- In practice, never hit zero with floating point numbers
+- ReLU not differentiable at zero. At x>0, gradient is 1; at x<0, gradient is 0
+- *For a function to be differentiable, the slope must be the same whether approaching from the left or right*
+- Use subgradient descent; any gradient *below* the function works
+- In practice, most FL framewors simply hardcode the gradient at zero to be 0 or 0.5
 
-## Optimizing W, b
+## Optimising W, b
 
 Batch
 $W_i \leftarrow W_i - \eta\sum\limits_{j=1}^N \frac{\partial l(x_j,y_j)}{\partial W_i}$
@@ -142,7 +176,15 @@ print(mlp.score(X_train, y_train))
 print(mlp.score(X_test, y_test))
 ```
 
-- Don't use sklearn for anything but toy problems in neural nets
+- Don't use sklearn for real projects but toy problems in neural nets
+- Why? sklearn's MLP is not optimised for large datasets; no GPU support; no support for conv nets, etc.
+
+## Complexity Control
+
+- Number of parameters: hidden layers, hidden units
+- Regularisation
+- Early Stopping
+- Dropout
 
 ## Random State
 
@@ -151,7 +193,14 @@ print(mlp.score(X_test, y_test))
 </div>
 
 - Network is way over capacity and can overfit in many ways
-- Regularization might make it less dependent on initialization
+- Regularisation might make it less dependent on initialization
+
+# Regularisation
+
+- Without regularisation, can easily overfit with large networks. Loss function: $L = \sum\limits_{i=1}^N l(y_i, o(x_i))$
+- **L2 regularisation**: add $\lambda \sum\limits_i W_i^2$ to loss function; penalise large weights
+- **L1 regularisation**: add $\lambda \sum\limits_i |W_i|$ to loss function
+- **Dropout**: randomly set some activations to zero during training; prevents co-adaptation of neurons
 
 ## Hidden Layer Size
 
@@ -209,13 +258,6 @@ mlp_relu = MLPRegressor(solver=\"lbfgs\").fit(X, y)
 mlp_tanh = MLPRegressor(solver=\"lbfgs\", activation='tanh').fit(X, y)
 ```
 
-## Complexity Control
-
-- Number of parameters
-- Regularization
-- Early Stopping
-- Dropout
-
 ## Grid-Searching Neural Nets
 
 ```python
@@ -249,7 +291,7 @@ grid.fit(X_train, y_train)
   <img src="images/search_hidden_layers_plot.png" alt="Search hidden layer sizes" style="max-width:40%;">
 </div>
 
-## Write Your Own Neural Networks
+<!-- ## Write Your Own Neural Networks
 
 ```python
 class NeuralNetwork(object):
@@ -310,7 +352,7 @@ print(d.grad(1))
 - Automatic differentiation avoids writing gradients manually
 - Keep track of computation while executing forward pass
 - Hard-code derivative for each operation (no symbolic differentiation)
-- Build computation graph automatically
+- Build computation graph automatically -->
 
 ## GPU Support
 
@@ -321,13 +363,35 @@ print(d.grad(1))
 - Important limitation: GPUs have much less memory than RAM
 - Memory copies between RAM and GPU are expensive
 
-## Computation Graph
+## CPU VS. GPU
+
+| Feature                  | CPU                                   | GPU                                   |
+|--------------------------|---------------------------------------|---------------------------------------|
+| Architecture             | Few cores optimised for sequential tasks | Thousands of cores for parallel processing |
+| Performance              | Better for single-threaded tasks      | Superior for parallel tasks like matrix operations |
+| Memory                   | Larger cache size, less memory bandwidth | Higher memory bandwidth, less cache size |
+| Power Consumption        | Generally lower power consumption     | Higher power consumption due to many cores |
+| Use Cases                | General-purpose computing, complex logic | Graphics rendering, deep learning, scientific simulations |
+| Cost                     | Less expensive              | Expensive |
+| Programming Complexity    | Easier to program for general tasks   | Requires knowledge of parallel programming (e.g., CUDA) |
+
+## How much GPU power do you need?
+
+| Task Type | Typical GPU | Total GPU Hours | Estimated Cost (Cloud) |
+| --- | --- | --- | --- |
+| **Small Project** (MNIST, basic CNN) | 1x RTX 3060 / 4060 | < 1 hour | < $1 |
+| **Fine-tuning 7B LLM** (e.g., Llama 3 8B) | 1x A100 (80GB) | 5–20 hours | $10 – $40 |
+| **Training Mid-size Model** (e.g., Stable Diffusion) | 8x A100 Cluster | 500–2,000 hours | $1,000 – $5,000 |
+| **Pre-training Large LLM** (GPT-3/4 scale) | 10,000+ H100s | Millions of hours | $50M – $100M+ |
+
+## Computational Graph
 
 <div style="text-align:center;">
-  <img src="images/computation_graph.png" alt="Computation graph" style="max-width:35%;">
+  <img src="images/computation_graph.png" alt="Computation graph" style="max-width:60%;">
 </div>
 
-- Store different intermediate results depending on derivatives needed
+- A 'blue-print', or a directed acyclic graph representing computations in a neural network
+- Nodes represent variabels or operations (e.g., matrix multiplication, activation functions), edges represent flow of data (tensors) between operations
 - Given limited GPU memory, important to know what to cache/discard
 - Helps with visual debugging and understanding network structure
 
@@ -335,16 +399,16 @@ print(d.grad(1))
 
 - Autodiff
 - GPU support
-- Optimization and inspection of computation graph
+- Optimisation and inspection of computation graph
 - On-the-fly generation of computation graph (optional)
 - Distribution over multiple GPUs and/or cluster (optional)
 
-Current choices: TensorFlow, PyTorch / Torch, Chainer
+Current choices: PyTorch / Torch, TensorFlow 
 
 ## Deep Learning Libraries
 
-- Keras (TensorFlow, CNTK, Theano)
-- PyTorch (torch)
+- PyTorch (torch) (*default for AI research & development*)
+- Keras (TensorFlow, CNTK, Theano) (*enterprise production*)
 - Chainer (chainer)
 - MXNet (MXNet)
 
@@ -387,12 +451,28 @@ for t in range(500):
 - Don't write TensorFlow, write Keras!
 - Don't write PyTorch, write pytorch.nn or FastAI (or Skorch or ignite)
 
-## Convolutional Neural Networks
+# Convolutional Neural Networks
 
-## Idea Behind CNNs
+## Idea #1 Behind CNNs
 
-- Translation invariance
-- Weight sharing
+- **Translation invariance**: CNN can recognise an object regardless of where it is in the frame. 
+- ... because the same filters scan every part of the image (weight sharing)
+
+<div style="text-align:center;">
+  <img src="images/translation_invariance_dog.png" alt="Translation invariance in CNNs" style="max-width:80%;">
+</div>
+
+## Idea #2 Behind CNNs
+
+- **Weight sharing**: the principle that the same set of weights (a filter, or kernel) is used to scan every part of an image
+- So, this filter will detect a specific feature (e.g. edge, curve), regardless of its position
+- Each filter corresponds to a specific feature or pattern, rather than location-specific information
+
+## Why Weight Sharing?
+
+- Reduces number of parameters; less prone to overfitting
+- Comparison: for a 100x100 image with 3 channels (RGB), a fully connected layer in NN with 100 hidden units would have 3 million parameters (100*100*3*100);
+- a convolutional layer with 10 filters of size 5x5 would have only 750 parameters (5*5*10)
 
 ## Definition of Convolution
 
@@ -453,7 +533,7 @@ $$= \sum\limits_{m=-\infty}^\infty f[n-m]g[m]$$
   <img src="images/CNET1.png" alt="Convolutional neural network" style="max-width:100%;">
 </div>
 
-> Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner: Gradient-based learning applied to document recognition
+- Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner: Gradient-based learning applied to document recognition
 
 ## Other Architectures
 
@@ -539,7 +619,7 @@ cnn.evaluate(X_test_images, y_test)
   <img src="images/train_evaluate.png" alt="Train and evaluate" style="max-width:50%;">
 </div>
 
-## Visualize Filters
+## Visualise Filters
 
 ```python
 weights, biases = cnn_small.layers[0].get_weights()
@@ -563,8 +643,6 @@ print(weights2.shape)
   <img src="images/digits.png" alt="Learned features" style="max-width:80%;">
 </div>
 
-## Convnets vs Fully Connected Nets Illustrated
-
 ## MNIST and Permuted MNIST
 
 <div style="text-align:center;">
@@ -581,5 +659,10 @@ X_test_perm = X_test.reshape(-1, 784)[:, perm].reshape(-1, 28, 28)
 <div style="text-align:center;">
   <img src="images/mnist_permuted.png" alt="MNIST permuted" style="max-width:90%;">
 </div>
+
+## Summary
+
+- We've covered the architecture and training of neural networks
+- We also covered the idea and implementation of convolutional neural networks
 
 ## Questions?
