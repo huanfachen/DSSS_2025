@@ -354,7 +354,7 @@ Note
 <section id="predicting-daily-lfb-callouts" class="level1">
 <h1>Predicting daily LFB callouts</h1>
 <p>Remember in predicting daily LFB callouts, we used a random forest model and a train-test split:</p>
-<div id="2b5e35ad" class="cell" data-execution_count="1">
+<div id="65fe3000" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import data from https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_daily_data.csv</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df_lfb_daily <span class="op">=</span> pd.read_csv(<span class="st">"https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_daily_data.csv"</span>)</span>
@@ -409,7 +409,7 @@ Test R-squared: 0.180</code></pre>
 <p>In grid search, a set of hyperparameter values is defined, and the model is trained and evaluated for each combination of hyperparameters using cross-validation. The combination that yields the best average performance across all folds is selected as the optimal hyperparameter set.</p>
 <p>Estimating the computing time of cross-validation with grid search is key to planning the experiment, especially with large datasets or complex models. The total number of models to train is equal to the number of hyperparameter combinations multiplied by the number of folds in cross-validation. For example, if we have 3 hyperparameters with 4, 3, and 3 possible values, respectively, and we use 5-fold cross-validation, the total number of models to train is <span class="math inline">\(4 \times 3 \times 3 \times 5 = 180\)</span>.</p>
 <p>The time for training a single model is estimated as below:</p>
-<div id="61c73db8" class="cell" data-execution_count="2">
+<div id="75d9553a" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> RandomForestRegressor(random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>start_time <span class="op">=</span> time.time()</span>
@@ -418,12 +418,12 @@ Test R-squared: 0.180</code></pre>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>training_time <span class="op">=</span> end_time <span class="op">-</span> start_time</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Training time: </span><span class="sc">{</span>training_time<span class="sc">:.3f}</span><span class="ss"> seconds'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Training time: 0.190 seconds</code></pre>
+<pre><code>Training time: 0.192 seconds</code></pre>
 </div>
 </div>
 <p>This training took around 0.28 seconds on my desktop, so the total time for cross-validation with grid search would be approximately <span class="math inline">\(180 \times 0.28 = 50.4\)</span> seconds, less than 1 minute.</p>
 <p>We will start with defining the hyperparameters to tune and their possible values. The first value of <code>max_depth</code> and <code>min_samples_leaf</code> is their default value in <code>RandomForestRegressor</code>, respectively. See <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">link</a>.</p>
-<div id="e33340a8" class="cell" data-execution_count="3">
+<div id="718baa6e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 5-fold CV to tune RandomForestRegressor</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># the code below is a duplicate of the above code for data preparation</span></span>
@@ -451,7 +451,7 @@ Test R-squared: 0.180</code></pre>
 </div>
 <p>We will then use <code>GridSearchCV</code> function from <code>sklearn.model_selection</code> to perform grid search with 5-fold cross-validation to find the optimal hyperparameters. This function is very handy, as it automatically handles the cross-validation and hyperparameter tuning. Moreover, we will <em>fit</em> the grid search object on the training data just like how we fit a model. The power of interface design.</p>
 <p>After fitting, we can access the best hyperparameters and the best cross-validated <span class="math inline">\(R^2\)</span> using the <code>best_params_</code> and <code>best_score_</code> attributes, respectively. Then, we will retrain the final model using the optimal hyperparameters on the entire training data and evaluate its performance on both the training and testing data.</p>
-<div id="d00d4bee" class="cell" data-execution_count="4">
+<div id="7d5dd588" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>start_time <span class="op">=</span> time.time()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> GridSearchCV(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  estimator<span class="op">=</span>RandomForestRegressor(random_state<span class="op">=</span><span class="dv">42</span>),</span>
@@ -485,7 +485,7 @@ Test R-squared: 0.180</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1}
 Best CV R-squared: 0.368
-CV training time: 10.866 seconds
+CV training time: 11.013 seconds
 Train R-squared: 0.860
 Test R-squared: 0.200</code></pre>
 </div>
@@ -508,7 +508,7 @@ Test R-squared: 0.200</code></pre>
 <p>Please note that the analysis below doesn’t generate high predictive accuracy. Rather, this analysis serves as an example of how to implement temporal train-test split and temporal cross-validation in practice.</p>
 <section id="temporal-train-test-split" class="level2">
 <h2 class="anchored" data-anchor-id="temporal-train-test-split">Temporal train-test split</h2>
-<div id="168a4f4d" class="cell" data-execution_count="5">
+<div id="419e2318" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score</span>
@@ -551,7 +551,7 @@ Temporal split — Test R-squared: -2.673</code></pre>
 <div style="text-align:center;">
 <p><img src="images/time_series_cv.png" alt="Time series cross-validation" style="max-width:85%;"></p>
 </div>
-<div id="cf5ed246" class="cell" data-execution_count="6">
+<div id="a91bf1f7" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> TimeSeriesSplit, GridSearchCV</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># use only the training window for temporal CV to avoid leakage</span></span>
