@@ -177,7 +177,9 @@ t @ tf.transpose(t)
 
 ## Tensors and numpy ndarray
 
-Tensors and ndarray are highly compatible. Can create a tensor from ndarray.
+Tensors and ndarray are highly compatible, and we can create a tensor from ndarray.
+
+For the difference between tensors and ndarrays, see [tensors documentation](https://www.tensorflow.org/guide/tensor#tensors-vs-numpy-arrays) and [the geeksforgeeks post](https://www.geeksforgeeks.org/deep-learning/pytorch-tensor-vs-numpy-array/). I found the latter one more interesting and easier to understand.
 
 ```{python}
 a = np.array([2., 4., 5.])
@@ -206,9 +208,9 @@ np.square(t)
 
 ## Gradients
 
-**Notes:** the section of 'gradients' is optional. If you don't understand it, it is fine.
+**Notes:** the section of 'gradients' is optional, and you don't need to understand it. However, we recommend you to read through it as it is key to understanding how neural networks are trained under the hood.
 
-When training neural networks using gradient descent based approaches, we often need to compute the gradients, in particular, we need to compute the gradient of the cost function with respect to the model weights.
+When training neural networks using gradient descent based approaches, we often need to compute the gradients, in particular, the gradient of the cost function with respect to the model weights.
 
 TensorFlow supports automatical differentiation, which allows gradients to be computed automatically. We will compute gradients analytically, numerically and using TensorFlow's Autodiff functionality at the following point.
 
