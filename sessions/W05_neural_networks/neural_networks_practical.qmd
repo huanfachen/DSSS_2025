@@ -1,0 +1,445 @@
+---
+title: 'Practical 5: Neural Networks using TensorFlow'
+format:
+  html: default
+  ipynb: default
+filters:
+  - qna
+  - quarto
+---
+
+<a href="https://colab.research.google.com/github/huanfachen/DSSS_25/blob/main/sessions/W05_neural_networks/neural_networks_practical.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
+## Introduction
+
+In this practical, we will introduce [Tensorflow](https://www.tensorflow.org/guide/keras/overview) and use it to:
+
+1. Build a simple two-layer neural network for digit recognition;
+2. Train and evaluate this neural network.
+
+## Setting up Google Colab
+
+As installing and configuring tensorflow on laptop can be a pain, we recommend using Google Colab for this practical. Click [here](https://colab.research.google.com/github/huanfachen/DSSS_25/blob/main/sessions/W05_neural_networks/neural_networks_practical.ipynb) to run this practical on Google Colab, which requires a Google account.
+
+Resource limit of Google Colab under free plan:
+
+- Memory: up to 12 GB.
+- Maximum duration of running a notebook: notebooks can run for at most **12 hours**, depending on availability and your usage patterns. (The notebook will die after at most 12 hours)
+- GPU duration: dynamic, up to a few hours. If you use GPU regularly, runtime durations will become shorter and shorter and disconnections more frequent.
+
+*Very Important* - we will use the GPU on Google Colab to accelerate the model training. To do this, go to 'Runtime' -> 'Change runtime type' -> Select 'T4 GPU' -> Save. See below.
+
+![](https://github.com/huanfachen/DSSS/blob/main/Figures/Colab_GPU_setting.jpg?raw=true)
+
+If you are following along in your own development environment, rather than Colab, see the [install guide](https://www.tensorflow.org/install) for setting up TensorFlow for development.
+
+Note: if you are using your own development environment, please make sure you have upgraded to the latest `pip` before installing TensorFlow 2 package.
+
+## Overview of TensorFlow
+
+[TensorFlow](https://www.tensorflow.org/) is an open source library developed by Google for numerical computation. It is particularly well suited for large-scale machine learning.
+
+TensorFlow is based on the construction of *computational graphs*. It has evolved considerably since it's open source release in 2015. We will use TF2, which offers many additional features built on top of core features (the most important is `tf.keras` discussed in later lectures).
+
+### Features of TF
+
+- Similar to [`numpy`](https://numpy.org/doc/stable/) but with GPU support.
+- Supports distributed computing.
+- Includes a kind of just-in-time (JIT) compiler to optimise speed and memory usage.
+- Computational graphs can be saved and exported.
+- Supports autodiff and provides numerous advanced optimisers.
+
+### TensorFlow's Python API
+
+<img src="images/tensorflow-Python-API.png" width="700px" style="display:block; margin:auto"/>
+
+[Credit: Geron]
+
+### TensorFlow's Architecture
+
+<img src="images/tensorflow-Architecture.png" width="700px" style="display:block; margin:auto"/>
+
+[Credit: Geron]
+
+At lowest level TensorFlow is implemented in C++ so that it is highly efficient.
+
+We will focus on the Python TensorFlow and Keras interfaces in this practical. In real-world projects, if you use tensorflow, you will simply interact with the Keras interface but sometimes you might want to use the low-level python API for greater flexibility.
+
+### Hardware
+
+One of the factors responsible for the dramatic recent growth of machine learning and AI is advances in computing power. In particular, GPU/TPU hardware that supports high levels of parallelism.
+
+<img src="images/cpu_gpu_tpu.png" width="750px" style="display:block; margin:auto"/>
+
+- **Central Processing Unit (CPU)**:
+  - General purpose
+  - Low latency
+  - Low throughput
+  - Sequential
+  
+- **Graphics Processing Unit (GPU)**:
+  - Specialised (for graphics initially)
+  - High latency
+  - High throughput
+  - Parallel execution
+  
+- **Tensor Processing Unit (TPU)**:
+  - Specialised for matrix operations
+  - High latency
+  - Very high throughput
+  - Extreme parallel execution
+
+In TensorFlow many operations are implemented in low-level kernels, optimised for specific hardware, e.g. CPUs, GPUs, or TPUs.
+
+TensorFlow's execution engine will ensure operations are run efficiently (across multiple machines and devices if set up accordingly).
+
+#### Aside: chips optimised for ML and AI are an active area of development
+
+Key events of GPU:
+- 1999: NVIDIA released GeForce 256 (the first GPU), originally for gaming tasks;
+- 2007: NVIDIA released CUDA (**Computing Unified Device Architecture**), a software layer that allows software to use the powerful processing capabilities of GPUs to perform tasks much faster, including AI and gaming;
+- 2022: OpenAI launched ChatGPT, which was trained on thousands of Nvidia A100 and H100 GPUs.
+
+Google developed TPU in 2016.
+
+[Graphcore](https://www.graphcore.ai/) developed the Intelligence Processing Unit (IPU) in 2016.
+
+[Groq](https://www.groq.com/) developed the Language Processing Unit (LPU).
+
+## Set up TensorFlow
+
+Import TensorFlow into your programme to get started:
+
+```{python}
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
+print("TensorFlow version:", tf.__version__)
+```
+
+## Key data type: tensors
+
+TensorFlow API centers around "Tensors" (essentially multi-dimensional arrays of matrices), which are similar to numpy [`ndarray`](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html).
+
+### Tensors
+
+Can construct constant tensors with `tf.constant`.
+
+```{python}
+tf.constant([[1., 2., 3.], [4., 5., 6.]]) # 2x3 matrix
+```
+
+```{python}
+tf.constant(42) # scalar
+```
+
+Tensors have a shape and data type (dtype).
+
+```{python}
+t = tf.constant([[1., 2., 3.], [4., 5., 6.]])
+t.shape
+```
+
+```{python}
+t.dtype
+```
+
+### Indexing
+
+Tensor indexing is very similar to numpy.
+
+```{python}
+t[:, 1:]
+```
+
+```{python}
+t[..., 1,  tf.newaxis]
+```
+
+### Operations
+
+Variety of tensor operations are possible.
+
+```{python}
+t + 10
+```
+
+```{python}
+# square
+tf.square(t)
+```
+
+```{python}
+# matrix multiplication
+t @ tf.transpose(t) 
+```
+
+## Tensors and numpy ndarray
+
+Tensors and ndarray are highly compatible. Can create a tensor from ndarray.
+
+```{python}
+a = np.array([2., 4., 5.])
+tf.constant(a)
+```
+
+Can convert tensor to ndarray.
+
+```{python}
+t.numpy()
+```
+
+Can apply numpy operations to tensors and vice versa.
+
+```{python}
+np.array(t)
+```
+
+```{python}
+tf.square(a)
+```
+
+```{python}
+np.square(t)
+```
+
+## Gradients
+
+**Notes:** the section of 'gradients' is optional. If you don't understand it, it is fine.
+
+When training neural networks using gradient descent based approaches, we often need to compute the gradients, in particular, we need to compute the gradient of the cost function with respect to the model weights.
+
+TensorFlow supports automatical differentiation, which allows gradients to be computed automatically. We will compute gradients analytically, numerically and using TensorFlow's Autodiff functionality at the following point.
+
+Consider this function $ f(w_1, w_2) $ is defined as:
+
+$$
+f(w_1, w_2) = 3w_1^2 + 2w_1w_2
+$$
+
+```{python}
+def f(w1, w2):
+    return 3 * w1 ** 2 + 2 * w1 * w2
+```
+
+```{python}
+# example of w1 and w2
+w1, w2 = 5.0, 3.0
+```
+
+### Computing gradients analytically
+
+```{python}
+def df_dw1(w1, w2):
+    return 6 * w1 + 2 * w2
+def df_dw2(w1, w2):
+    return 2 * w1
+```
+
+```{python}
+df_dw1(w1, w2)
+```
+
+```{python}
+df_dw2(w1, w2)
+```
+
+If we compute the gradient analytically, we would need an extra function evaluation for every gradient. Computationally infeasible for many cases, e.g. large neural networks with hundreds of thousands or millions of parameters.
+
+### Computing gradients numerically
+
+Compute the gradient by finite differences.
+
+```{python}
+eps = 1e-6
+(f(w1 + eps, w2) - f(w1, w2)) / eps
+```
+
+```{python}
+(f(w1, w2 + eps) - f(w1, w2)) / eps
+```
+
+Note - the gradients computed numerically are approximate.
+
+### Computing gradients with Autodiff
+
+Autodiff builds derivatives of each stage of the computational graph so that gradients can be computed automatically and efficiently.
+
+```{python}
+w1, w2 = tf.Variable(5.), tf.Variable(3.)
+with tf.GradientTape() as tape:
+    z = f(w1, w2)
+
+gradients = tape.gradient(z, [w1, w2])
+```
+
+```{python}
+gradients
+```
+
+Computing gradients with Autodiff only requires one computation, regardless of how many derivatives need to be computed. The results do not suffer from any numerical approximations, although it is limited by machine precision arithmetic.
+
+## Building a simple neural network using TF
+
+We will build a 2-hidden layers fully connected neural network (a.k.a multilayer perceptron) with TF. This example uses a low-level approach to better understand all mechanics behind building neural networks and the training process.
+
+### Neural Network Overview
+
+<img src="http://cs231n.github.io/assets/nn1/neural_net2.jpeg" alt="nn" style="width: 400px;"/>
+
+### MNIST Dataset Overview
+
+We will train the neural network to identify MNIST handwritten digits. The dataset contains 60,000 examples for training and 10,000 examples for testing. The digits have been size-normalized and centered in a fixed-size image (28x28 pixels) with values from 0 to 255.
+
+In this example, each image will be converted to float32, normalized to [0, 1] and flattened to a 1-D array of 784 features (28*28).
+
+![MNIST Dataset](http://neuralnetworksanddeeplearning.com/images/mnist_100_digits.png)
+
+More info: http://yann.lecun.com/exdb/mnist/
+
+```{python}
+# MNIST dataset parameters.
+num_classes = 10 # total classes (0-9 digits).
+num_feature_one_dimension = 28 # img shape: 28*28
+
+# Training parameters.
+# learning_rate = 0.1
+# training_steps = 2000
+# batch_size = 256
+# display_step = 100
+
+# Network parameters.
+n_hidden_1 = 128 # 1st layer number of neurons.
+n_hidden_2 = 256 # 2nd layer number of neurons.
+```
+
+## Load a dataset
+
+Load and prepare the [MNIST dataset](http://yann.lecun.com/exdb/mnist/). Convert the sample data from integers to floating-point numbers:
+
+```{python}
+mnist = tf.keras.datasets.mnist
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+# normalisation - convert the sample data (range of 1-125) to floating numbers
+x_train, x_test = x_train / 255.0, x_test / 255.0
+```
+
+```{python}
+# function for visualising digits
+def plot_num(number):
+
+  item_index = np.where(y_train[:1000]==number)
+  subset=x_train[item_index]
+
+  egs=5
+  fig, axs = plt.subplots(1,egs, figsize=(20,10))
+
+  for i in range(0,egs):
+    axs[i].imshow(subset[i])
+
+for x in range(0,10):
+  plot_num(x)
+```
+
+## Build a machine learning model
+
+Build a `tf.keras.Sequential` model by stacking layers.
+
+```{python}
+model = tf.keras.models.Sequential([
+  # input layer (28*28), which is flattened before being fed into the neural network
+  tf.keras.layers.Flatten(input_shape=(num_feature_one_dimension, num_feature_one_dimension)),
+  # First fully-connected hidden layer.
+  tf.keras.layers.Dense(n_hidden_1, activation='relu'),
+  # Second fully-connected hidden layer.
+  tf.keras.layers.Dense(n_hidden_2, activation='relu'),
+  # output layer
+  tf.keras.layers.Dense(num_classes)
+])
+```
+
+For each example, the model returns a vector of [logits](https://developers.google.com/machine-learning/glossary#logits) or [log-odds](https://developers.google.com/machine-learning/glossary#log-odds) scores, one for each class.
+
+```{python}
+predictions = model(x_train[:1]).numpy()
+predictions
+```
+
+The `tf.nn.softmax` function converts these logits to *probabilities* for each class:
+
+```{python}
+tf.nn.softmax(predictions).numpy()
+```
+
+Note: It is possible to bake the `tf.nn.softmax` function into the activation function for the last layer of the network. While this can make the model output more directly interpretable, this approach is discouraged as it's impossible to provide an exact and numerically stable loss calculation for all models when using a softmax output.
+
+Define a loss function for training using `losses.SparseCategoricalCrossentropy`, which takes a vector of logits and a `True` index and returns a scalar loss for each example.
+
+```{python}
+loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+```
+
+This loss is equal to the negative log probability of the true class: The loss is zero if the model is sure of the correct class.
+
+This untrained model gives probabilities close to random (1/10 for each class), so the initial loss should be close to `-tf.math.log(1/10) ~= 2.3`.
+
+```{python}
+loss_fn(y_train[:1], predictions).numpy()
+```
+
+Before you start training, configure and compile the model using Keras `Model.compile`. Set the [`optimizer`](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) class to `adam`, set the `loss` to the `loss_fn` function you defined earlier, and specify a metric to be evaluated for the model by setting the `metrics` parameter to `accuracy`.
+
+```{python}
+model.compile(optimizer='adam',
+              loss=loss_fn,
+              metrics=['accuracy'])
+```
+
+## Train and evaluate your model
+
+Use the `Model.fit` method to adjust your model parameters and minimise the loss:
+
+```{python}
+model.fit(x_train, y_train, epochs=10)
+```
+
+The `Model.evaluate` method checks the models performance, usually on a [Validation set](https://developers.google.com/machine-learning/glossary#validation-set) or [Test set](https://developers.google.com/machine-learning/glossary#test-set).
+
+```{python}
+model.evaluate(x_test,  y_test, verbose=2)
+```
+
+The image classifier is now trained to ~98% accuracy on this dataset. To learn more, read the [TensorFlow tutorials](https://www.tensorflow.org/tutorials/).
+
+If you want your model to return a probability, you can wrap the trained model, and attach the softmax to it:
+
+```{python}
+probability_model = tf.keras.Sequential([
+  model,
+  tf.keras.layers.Softmax()
+])
+```
+
+To check a random data point and prediction:
+
+```{python}
+#probability_model(x_test[:1])
+predictions=probability_model.predict(x_test)
+
+index=20
+
+print(np.argmax(predictions[index]))
+plt.imshow(x_test[index])
+```
+
+## Conclusion
+
+Congratulations! You have trained a machine learning model using a prebuilt dataset using the [Keras](https://www.tensorflow.org/guide/keras/overview) API.
+
+For more examples of using Keras, check out the [tutorials](https://www.tensorflow.org/tutorials/keras/). To learn more about building models with Keras, read the [guides](https://www.tensorflow.org/guide/keras). If you want learn more about loading and preparing data, see the tutorials on [image data loading](https://www.tensorflow.org/tutorials/load_data/images) or [CSV data loading](https://www.tensorflow.org/tutorials/load_data/csv).
+
+## References and recommendations
+
+1. Some materials are from Machine Learning with Big Data (SPCE0038) module at UCL.
