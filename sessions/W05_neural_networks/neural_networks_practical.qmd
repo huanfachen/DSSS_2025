@@ -399,10 +399,18 @@ model.compile(optimizer='adam',
 
 ## Train and evaluate your model
 
-Use the `Model.fit` method to adjust your model parameters and minimise the loss:
+Use the `Model.fit` method to adjust your model parameters and minimise the loss. 
+
+The `Model.fit` method trains the model for a fixed number of epochs (iterations on a dataset). In this example, we will train the model for 10 epochs.
+
+In the `Model.fit` method, the `verbose` parameter controls how much output is printed during training:
+
+- `verbose=1`: Default. An animated progress bar for every single epoch (very noisy).
+- `verbose=0`: Silent. No output.
+- `verbose=2`: One line per epoch; shows the final stats for the epoch once it's finished; much cleaner.
 
 ```{python}
-model.fit(x_train, y_train, epochs=10)
+model.fit(x_train, y_train, epochs=10, verbose=2)
 ```
 
 The `Model.evaluate` method checks the models performance, usually on a [Validation set](https://developers.google.com/machine-learning/glossary#validation-set) or [Test set](https://developers.google.com/machine-learning/glossary#test-set).
