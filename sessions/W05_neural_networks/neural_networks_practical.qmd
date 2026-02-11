@@ -296,9 +296,9 @@ We will train the neural network to identify MNIST handwritten digits. The datas
 
 In this example, each image will be converted to float32, normalized to [0, 1] and flattened to a 1-D array of 784 features (28*28).
 
-![MNIST Dataset](http://neuralnetworksanddeeplearning.com/images/mnist_100_digits.png)
+<img src="http://neuralnetworksanddeeplearning.com/images/mnist_100_digits.png" alt="mnist" style="width: 400px;"/>
 
-More info: http://yann.lecun.com/exdb/mnist/
+More info on MNIST can be found [here](http://yann.lecun.com/exdb/mnist/).
 
 ```{python}
 # MNIST dataset parameters.

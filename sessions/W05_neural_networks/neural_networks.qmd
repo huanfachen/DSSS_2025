@@ -411,9 +411,8 @@ print(d.grad(1))
 - Important limitation: GPUs have much less memory than RAM
 - Memory copies between RAM and GPU are expensive
 
-## CPU VS. GPU
+## CPU VS. GPU {.smaller}
 
-::: {.small}
 | Feature                  | CPU                                   | GPU                                   |
 |--------------------------|---------------------------------------|---------------------------------------|
 | Architecture             | Few cores optimised for sequential tasks | Thousands of cores for parallel processing |
@@ -424,16 +423,14 @@ print(d.grad(1))
 | Programming Complexity    | Easier to program for general tasks   | Requires knowledge of parallel programming (e.g., CUDA) |
 :::
 
-## How much GPU power do you need?
+## How much GPU power do you need? {.smaller}
 
-::: {.small}
 | Task Type | Typical GPU | Total GPU Hours | Estimated Cost (Cloud) |
 | --- | --- | --- | --- |
 | **Small Project** (MNIST, basic CNN) | 1x RTX 3060 / 4060 | < 1 hour | < $1 |
 | **Fine-tuning 7B LLM** (e.g., Llama 3 8B) | 1x A100 (80GB) | 5–20 hours | $10 – $40 |
 | **Training Mid-size Model** (e.g., Stable Diffusion) | 8x A100 Cluster | 500–2,000 hours | $1,000 – $5,000 |
 | **Pre-training Large LLM** (GPT-3/4 scale) | 10,000+ H100s | Millions of hours | $50M – $100M+ |
-:::
 
 ## Computational Graph
 
@@ -442,7 +439,7 @@ print(d.grad(1))
 </div>
 
 - 'blue-print'; a directed acyclic graph representing computations in NN
-- Nodes represent variabels or operations (e.g., matrix multiplication, activation functions), edges represent flow of data (tensors) between operations
+- Nodes represent variables or operations (e.g., matrix multiplication, activation functions), edges represent flow of data (tensors) between operations
 - Given limited GPU memory, important to know what to cache/discard
 - Helps with visual debugging and understanding network structure
 
