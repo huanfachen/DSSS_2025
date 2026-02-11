@@ -8,6 +8,7 @@ date-as-string: "12 September 2025"
 from: markdown+emoji
 format:
   revealjs:
+    smaller: true
     transition: none
     slide-number: TRUE
     preview-links: auto
@@ -39,6 +40,28 @@ We've covered:
 - Key metrics 
 - Null values and outliers
 - Visualising data
+
+# A big table
+
+| Feature                  | CPU                                   | GPU                                   |
+|--------------------------|---------------------------------------|---------------------------------------|
+| Architecture             | Few cores optimised for sequential tasks | Thousands of cores for parallel processing |
+| Memory                   | Larger cache size, less memory bandwidth | Higher memory bandwidth, less cache size |
+| Power Consumption        | Generally lower power consumption     | Higher power consumption due to many cores |
+| Use Cases                | General-purpose computing, complex logic | Graphics rendering, deep learning, scientific simulations |
+| Cost                     | Less expensive              | Expensive |
+| Programming Complexity    | Easier to program for general tasks   | Requires knowledge of parallel programming (e.g., CUDA) |
+
+# A big table made smallers {.smaller}
+
+| Feature                  | CPU                                   | GPU                                   |
+|--------------------------|---------------------------------------|---------------------------------------|
+| Architecture             | Few cores optimised for sequential tasks | Thousands of cores for parallel processing |
+| Memory                   | Larger cache size, less memory bandwidth | Higher memory bandwidth, less cache size |
+| Power Consumption        | Generally lower power consumption     | Higher power consumption due to many cores |
+| Use Cases                | General-purpose computing, complex logic | Graphics rendering, deep learning, scientific simulations |
+| Cost                     | Less expensive              | Expensive |
+| Programming Complexity    | Easier to program for general tasks   | Requires knowledge of parallel programming (e.g., CUDA) |
 
 # Practical 
 Practical will focus on setting up Python environment and describing a dataset.
