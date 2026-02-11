@@ -602,9 +602,8 @@ print(d.grad(1))
 <li>Memory copies between RAM and GPU are expensive</li>
 </ul>
 </section>
-<section id="cpu-vs.-gpu" class="slide level2">
+<section id="cpu-vs.-gpu" class="slide level2 smaller">
 <h2>CPU VS. GPU</h2>
-<div class="small">
 <table class="caption-top">
 <colgroup>
 <col style="width: 25%">
@@ -651,11 +650,10 @@ print(d.grad(1))
 </tr>
 </tbody>
 </table>
-</div>
+<p>:::</p>
 </section>
-<section id="how-much-gpu-power-do-you-need" class="slide level2">
+<section id="how-much-gpu-power-do-you-need" class="slide level2 smaller">
 <h2>How much GPU power do you need?</h2>
-<div class="small">
 <table class="caption-top">
 <colgroup>
 <col style="width: 25%">
@@ -698,7 +696,6 @@ print(d.grad(1))
 </tr>
 </tbody>
 </table>
-</div>
 </section>
 <section id="computational-graph" class="slide level2">
 <h2>Computational Graph</h2>
@@ -707,7 +704,7 @@ print(d.grad(1))
 </div>
 <ul>
 <li>‘blue-print’; a directed acyclic graph representing computations in NN</li>
-<li>Nodes represent variabels or operations (e.g., matrix multiplication, activation functions), edges represent flow of data (tensors) between operations</li>
+<li>Nodes represent variables or operations (e.g., matrix multiplication, activation functions), edges represent flow of data (tensors) between operations</li>
 <li>Given limited GPU memory, important to know what to cache/discard</li>
 <li>Helps with visual debugging and understanding network structure</li>
 </ul>
