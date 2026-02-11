@@ -9,6 +9,7 @@ from: markdown+emoji
 format:
   revealjs:
     transition: none
+    smaller: true
     slide-number: TRUE
     preview-links: auto
 ---
@@ -421,7 +422,6 @@ print(d.grad(1))
 | Use Cases                | General-purpose computing, complex logic | Graphics rendering, deep learning, scientific simulations |
 | Cost                     | Less expensive              | Expensive |
 | Programming Complexity    | Easier to program for general tasks   | Requires knowledge of parallel programming (e.g., CUDA) |
-:::
 
 ## How much GPU power do you need? {.smaller}
 
