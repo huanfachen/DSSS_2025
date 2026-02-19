@@ -1166,18 +1166,32 @@
     "text": "Multi-Class Calibration\n\n\n\n\nCalibrate per class then renormalize"
   },
   {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#recap-neural-networks-or-mlp",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#recap-neural-networks-or-mlp",
+    "title": "Graph Neural Networks",
+    "section": "Recap: Neural Networks (or MLP)",
+    "text": "Recap: Neural Networks (or MLP)"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#recap-convolutional-neural-networks-cnn",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#recap-convolutional-neural-networks-cnn",
+    "title": "Graph Neural Networks",
+    "section": "Recap: Convolutional Neural Networks (CNN)",
+    "text": "Recap: Convolutional Neural Networks (CNN)\n\nLocal filter\nTranslation invariance"
+  },
+  {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#principles",
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#principles",
     "title": "Graph Neural Networks",
     "section": "Principles",
-    "text": "Principles\n\nA deep learning framework for graph-structured data\nIt generalises traditional neural networks to handle graph data by leveraging the relationships between nodes in a graph.\nMessage passing: nodes aggregate neighbor features over the graph\nSpatial vs spectral views of convolution on graphs\nTransductive vs inductive learning; sampling enables scalability\nLearnable transformations per layer; nonlinearity and normalization matter\nVariants differ in how neighbors are aggregated and weighted"
+    "text": "Principles\n\nA deep learning framework for graph-structured data\nIt generalises traditional neural networks to handle graph data by leveraging the relationships between nodes in a graph\nMessage passing: nodes aggregate neighbor features over the graph\nVariants differ in how neighbors are aggregated and weighted"
   },
   {
-    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#five-major-gnn-architectures",
-    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#five-major-gnn-architectures",
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#major-gnn-architectures",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#major-gnn-architectures",
     "title": "Graph Neural Networks",
-    "section": "Five Major GNN Architectures",
-    "text": "Five Major GNN Architectures\n\n\n\nDeepWalk: unsupervised node embeddings via random walks (word2vec-like)\nGCN: shared filters; normalised neighborhood aggregation (spectral → spatial)\nGraphSAGE: inductive sampling + learnable aggregators (mean/pool/LSTM)\nGAT: attention over neighbors; learns edge weights; multi-head for capacity\nChebNet: spectral filtering via Chebyshev polynomials; localized convolutions"
+    "section": "Major GNN Architectures",
+    "text": "Major GNN Architectures\n\nGCN: shared filters; normalised neighborhood aggregation (spectral → spatial)\nGraphSAGE: inductive sampling + learnable aggregators (mean/pool/LSTM)\nGAT: attention over neighbors; learns edge weights; multi-head for capacity\n\nDeepWalk: unsupervised node embeddings via random walks (word2vec-like)\nChebNet: spectral filtering via Chebyshev polynomials; localized convolutions"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#graph-convolutional-networks-gcn",
@@ -1191,7 +1205,7 @@
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#introduction-graphs",
     "title": "Graph Neural Networks",
     "section": "Introduction: Graphs",
-    "text": "Introduction: Graphs\n\n\n\nGraph = organized data representation\nConsists of vertices (nodes) V and edges E\nEdges can be weighted or binary\nDirected or undirected graphs\n\nExample graph:\n\\[V = \\{A, B, C, D, E, F, G\\}\\] \\[E = \\{(A,B), (B,C), (C,E), ...\\}\\]"
+    "text": "Introduction: Graphs\n\n\n\nGraph = organised data representation\nConsists of vertices (nodes) V and edges E\nEdges can be weighted or binary\nEdges can be directed or undirected\n\nExample graph:\n\\[V = \\{A, B, C, D, E, F, G\\}\\] \\[E = \\{(A,B), (B,C), (C,E), ...\\}\\]"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#graph-terminology",
@@ -1205,7 +1219,14 @@
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#why-gcns",
     "title": "Graph Neural Networks",
     "section": "Why GCNs?",
-    "text": "Why GCNs?\n\nMost real-world datasets come as graphs or networks:\n\nSocial networks\nProtein-interaction networks\nThe World Wide Web\n\nLearning on graphs enables domain-specific insights\nConventional CNNs assume compositional structure on Euclidean space"
+    "text": "Why GCNs?"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#why-gcns-1",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#why-gcns-1",
+    "title": "Graph Neural Networks",
+    "section": "Why GCNs?",
+    "text": "Why GCNs?\n\nMost real-world datasets come as graphs or networks:\n\nSocial networks\nProtein-interaction networks\nThe World Wide Web\n\nLearning on graphs enables domain-specific insights\nConventional CNNs assume compositional structure on Euclidean space\n\n2D grids (images)\n1D sequences (text, audio)"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#cnns-vs-gcns",
@@ -1219,35 +1240,84 @@
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#applications-of-gcns",
     "title": "Graph Neural Networks",
     "section": "Applications of GCNs",
-    "text": "Applications of GCNs\n\n\n\nFacebook Link Prediction for Suggesting Friends using Social Networks\n\n\n\nFriend prediction algorithms\nSocial network analysis\nProtein interaction prediction\nKnowledge graph completion"
+    "text": "Applications of GCNs\n\n\n\n\n\nFacebook Link Prediction for Suggesting Friends using Social Networks\n\n\n\n\nFriend prediction algorithms\nSocial network analysis\nProtein interaction prediction\nKnowledge graph completion"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#what-are-gcns",
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#what-are-gcns",
     "title": "Graph Neural Networks",
     "section": "What are GCNs?",
-    "text": "What are GCNs?\n\nNeural networks operating on graphs\nCapture neighbourhood information for non-euclidean spaces\nRe-define convolution for graph domains\n\nTwo Styles:\n\nSpectral GCNs: Graph signal processing perspective\nSpatial GCNs: Aggregate feature information from neighbours (more flexible)"
+    "text": "What are GCNs?\n\nNeural networks operating on graphs\nCapture neighbourhood information for non-euclidean spaces\nRe-define convolution for graph domains\n\nTwo Styles:\n\nSpectral GCNs: Graph signal processing perspective; Flourier transform on graphs; frequency domain\nSpatial GCNs: Aggregate feature information from neighbours; more flexible (OUR FOCUS!)"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#how-gcns-work-friend-prediction",
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#how-gcns-work-friend-prediction",
     "title": "Graph Neural Networks",
-    "section": "How GCNs Work: Friend Prediction",
-    "text": "How GCNs Work: Friend Prediction\n\n\nProblem: Predict future friendships\n\nGraph where edges = friendships\nCommon friends → higher likelihood\n\\((1,3)\\) have 2 common friends\n\\((1,5)\\) have 0 common friends"
+    "section": "How GCNs Work? Friend Prediction",
+    "text": "How GCNs Work? Friend Prediction\n\n\nTask: Predict future friendships\n\nEdges = friendships\nMore common friends → higher likelihood\n\\((1,3)\\) have 2 common friends\n\\((1,5)\\) have 0 common friends\nSo, \\((1,3)\\) is more likely to become friends than \\((1,5)\\)"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#try-it-again---friend-prediction",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#try-it-again---friend-prediction",
+    "title": "Graph Neural Networks",
+    "section": "Try it again - Friend Prediction",
+    "text": "Try it again - Friend Prediction\n\n\nProblem: Predict future friendships\n\n\\((1,11)\\) have 1 common friends and distance of 2\n\\((3,11)\\) have 0 common friends and distance of 4\nSo, \\((1,11)\\) is more likely to become friends than \\((3,11)\\)"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#how-to-implement-this-idea-mathmatically",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#how-to-implement-this-idea-mathmatically",
+    "title": "Graph Neural Networks",
+    "section": "How to implement this idea MATHMATICALLY?",
+    "text": "How to implement this idea MATHMATICALLY?\n\nUsing filtering, from CNN?\nIn CNN, we apply a filter on an image to get representation of next layer\nIn a graph, we apply a filter to create the next layer representation, by aggregating the features of neighbours\nNote: in each layer, the graph structure is fixed, but the features of each node are updated."
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#adjacency-matrix-feature-matrix",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#adjacency-matrix-feature-matrix",
+    "title": "Graph Neural Networks",
+    "section": "Adjacency matrix & feature matrix",
+    "text": "Adjacency matrix & feature matrix\n\n\n\n\n\nAdjacency matrix \\[\nA = \\begin{pmatrix}\n0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\\\\n1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\\n0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\\\\n1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\\n0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\\n0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \\\\\n0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 \\\\\n0 & 0 & 0 & 0 & 0 & 1 & 1 & 0\n\\end{pmatrix}\n\\]\n\nFeature matrix (Randomly initialised. Can be anything like age, hobby) \\[\nH^0 = \\left( \\begin{array}{ccc}\n1 & 0 & 1 \\\\\n1 & 1 & 0 \\\\\n0 & 1 & 1 \\\\\n1 & 1 & 1 \\\\\n0 & 0 & 1 \\\\\n0 & 1 & 0 \\\\\n1 & 0 & 0 \\\\\n1 & 1 & 0\n\\end{array} \\right)\n\\]"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#update-rule-for-a-node-in-a-new-layer",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#update-rule-for-a-node-in-a-new-layer",
+    "title": "Graph Neural Networks",
+    "section": "Update rule for a node in a new layer",
+    "text": "Update rule for a node in a new layer\n\nIteratively, calculate new features for each node in a new layer by aggregating from neighhours in the previous layer\nEach layer represent ‘friends’ information at different ‘hops’ \\[\nh_v^i = \\sum_{u \\in \\mathcal{N}(v)} h_u^{i-1}\n\\]\n\nwhere \\(\\mathcal{N}(v)\\) is the set of immediate neighbours of \\(v\\), excluding \\(v\\) itself."
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#layer-1-h1-a-h0",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#layer-1-h1-a-h0",
+    "title": "Graph Neural Networks",
+    "section": "Layer 1: \\(H^1 = A H^0\\)",
+    "text": "Layer 1: \\(H^1 = A H^0\\)\n\n\n\n\nNode 1 (Neighbours: 2, 4):\\(h_1^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \\mathbf{[2, 2, 1]}\\)\nNode 3 (Neighbours: 2, 4):\\(h_3^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \\mathbf{[2, 2, 1]}\\)\nNode 5 (Neighbour: 6):\\(h_5^1 = h_6^0 = \\mathbf{[0, 1, 0]}\\)\nNote: Node 1 and 3 have identifical features after one layer, due to same set of neighbours.\n\\((1,3)\\) is more similar than \\((1,5)\\)"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#layer-2-h2-a-h1.-friend-of-friend",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#layer-2-h2-a-h1.-friend-of-friend",
+    "title": "Graph Neural Networks",
+    "section": "Layer 2: \\(H^2 = A H^1\\). Friend-of-friend",
+    "text": "Layer 2: \\(H^2 = A H^1\\). Friend-of-friend\n\n\n\n\nNode 1 (Neighbours: 2, 4):\\(h_1^2 = h_2^1 + h_4^1 = [1, 1, 2] + [1, 1, 2] = \\mathbf{[2, 2, 4]}\\)\nNode 3 (Neighbours: 2, 4):\\(h_3^2 = h_2^1 + h_4^1\\)\\(h_3^2 = [1, 1, 2] + [1, 1, 2] = \\mathbf{[2, 2, 4]}\\)\nNode 5 (Neighbour: 6):\\(h_5^2 = h_6^1\\)\\(h_6^1 = h_5^0 + h_7^0 + h_8^0 = [2, 1, 1] = \\mathbf{[2, 1, 1]}\\)\n\\((1,3)\\) is more similar than \\((1,5)\\)"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#gcn-mathematical-formulation",
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#gcn-mathematical-formulation",
     "title": "Graph Neural Networks",
     "section": "GCN Mathematical Formulation",
-    "text": "GCN Mathematical Formulation\nLayer-wise propagation:\n\\[H^{i} = f(H^{i-1}, A)\\]\nSimple example:\n\\[f(H^{i}, A) = σ(AH^{i}W^{i})\\]\nwhere:\n\n\\(A\\) = N × N adjacency matrix\n\\(X\\) = input feature matrix (N × F)\n\\(σ\\) = ReLU activation function\n\\(H^{0} = X\\) (initial features)\nEach layer aggregates neighborhood features"
+    "text": "GCN Mathematical Formulation\nLayer-wise propagation:\n\\[H^{i} = f(H^{i-1}, A)\\]\nSimple example:\n\\[f(H^{i}, A) = σ(AH^{i}W^{i})\\]\nwhere:\n\n\\(A\\) = N × N adjacency matrix\n\\(W^{(l)}\\) = learnable weight matrix for layer \\(l\\)\n\\(H^{0} = X\\) (initial features)\n\\(X\\) = input feature matrix (N × F, F = number of features)\n\\(σ\\) = ReLU activation function\nEach layer aggregates neighborhood features from previous layer"
   },
   {
-    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#problems-with-simple-formulation",
-    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#problems-with-simple-formulation",
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#problem-1-no-self-representation",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#problem-1-no-self-representation",
     "title": "Graph Neural Networks",
-    "section": "Problems with Simple Formulation",
-    "text": "Problems with Simple Formulation\n\n\nProblem 1: No self-representation\n\nNew features don’t include node’s own features\nSolution: Add self-loops\n\nProblem 2: Degree scaling\n\nHigh-degree nodes get larger values\nLow-degree nodes get smaller values\nSolution: Normalize by degree\n\n\nFixes:\n\nAdd identity: \\(\\hat{A} = A + I\\)\nSymmetric normalization:\n\n\\[\\hat{D}^{-\\frac{1}{2}}\\hat{A}\\hat{D}^{-\\frac{1}{2}}\\]\nwhere \\(\\hat{D}\\) is degree matrix of \\(\\hat{A}\\)"
+    "section": "Problem 1: No self-representation",
+    "text": "Problem 1: No self-representation\n\nNew features don’t include node’s own features\nNode 1 and 3 become identical after one layer, despite different initial features\nNode 1 (Neighbours: 2, 4):\\(h_1^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \\mathbf{[2, 2, 1]}\\)\nNode 3 (Neighbours: 2, 4):\\(h_3^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \\mathbf{[2, 2, 1]}\\)\n\nSolution: Add self-loops\nAdd identity: \\(\\hat{A} = A + I\\)\nNode 1: \\(h_1^1 = h_1^0 + h_2^0 + h_4^0 = [1,0,1] + [1,1,0] + [1,1,1] = \\mathbf{[3, 2, 2]}\\)\nNode 3: \\(h_3^1 = h_2^0 + h_3^0 + h_4^0 = [1,1,0] + [0,1,1] + [1,1,1] = \\mathbf{[2, 3, 2]}\\)\nNow, they are different due to self-loops"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#problem-2-degree-scaling",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#problem-2-degree-scaling",
+    "title": "Graph Neural Networks",
+    "section": "Problem 2: Degree scaling",
+    "text": "Problem 2: Degree scaling\n\nHigh-degree nodes get larger values; low-degree nodes get smaller values\nNode 5 (Self + 6):\\(h_5^1 = h_5^0 + h_6^0 = [0, 0, 1] + [0, 1, 0] = \\mathbf{[0, 1, 1]}\\)\nNode 6 (Self + 5, 7, 8):\\(h_6^1 = h_6^0 + h_5^0 + h_7^0 + h_8^0 = [0, 1, 0] + [0, 0, 1] + [1, 0, 0] + [1, 1, 0] = \\mathbf{[2, 2, 1]}\\)\nSolution: Normalise by degree\nSymmetric normalisation: \\(\\hat{D}^{-\\frac{1}{2}}\\hat{A}\\hat{D}^{-\\frac{1}{2}}\\), where \\(\\hat{D}\\) is degree matrix of \\(\\hat{A}\\)\n\\(\\tilde{d}_5 = 2, \\tilde{d}_6 = 4, \\tilde{d}_7 = 3, \\tilde{d}_8 = 3\\)\n\\(h_5^1 = \\left( \\frac{1}{\\sqrt{\\tilde{d}_5 \\cdot \\tilde{d}_5}} \\right) h_5^0 + \\left( \\frac{1}{\\sqrt{\\tilde{d}_5 \\cdot \\tilde{d}_6}} \\right) h_6^0 = \\frac{1}{2}[0, 0, 1] + \\frac{1}{\\sqrt{8}}[0, 1, 0] \\approx \\mathbf{[0, 0.35, 0.5]}\\)\n\\(h_6^1 = 0.25[0, 1, 0] + 0.35[0, 0, 1] + 0.28[1, 0, 0] + 0.28[1, 1, 0] \\approx \\mathbf{[0.56, 0.53, 0.35]}\\)"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#final-gcn-propagation-rule",
@@ -1257,46 +1327,102 @@
     "text": "Final GCN Propagation Rule\n\\[f(H^{(l)}, A) = \\sigma\\left( \\hat{D}^{-\\frac{1}{2}}\\hat{A}\\hat{D}^{-\\frac{1}{2}}H^{(l)}W^{(l)}\\right)\\]\nwhere:\n\n\\(\\hat{A} = A + I\\) (adjacency + self-loops)\n\\(I\\) = identity matrix\n\\(\\hat{D}\\) = diagonal degree matrix of \\(\\hat{A}\\)\n\\(W^{(l)}\\) = learnable weight matrix for layer \\(l\\)\n\\(\\sigma\\) = activation function"
   },
   {
-    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#graphsage-sample-and-aggregate",
-    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#graphsage-sample-and-aggregate",
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#why-graphsage-sameple-and-aggregate",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#why-graphsage-sameple-and-aggregate",
     "title": "Graph Neural Networks",
-    "section": "GraphSAGE (Sample and Aggregate)",
-    "text": "GraphSAGE (Sample and Aggregate)\n\n\n\nInductive learning: generalises to unseen nodes/graphs\nNeighborhood sampling for scalability (mini-batches)\nAggregators: mean, pool (MLP+max), LSTM\nConcatenate self-representation with aggregated neighbors\nNormalise embeddings; learn weights per layer\n\n\n\n\n\nInductive representation learning on large graphs"
+    "section": "Why GraphSAGE (Sameple and Aggregate)?",
+    "text": "Why GraphSAGE (Sameple and Aggregate)?\n\nGCNs are transductive: requires full graph structure; can’t generalise to unseen nodes/graphs\nGraphSAGE is inductive: learns aggregation functions that can be applied to unseen nodes/graphs\nGraphSAGE is more scalable: neighborhood sampling to generate mini-batches, rather than processing the entire graph at once\nGraphSAGE allows for learnable aggregators: mean, pooling (MLP + max), LSTM; where GCN uses fixed mean aggregation\nGraphSAGE learns weights per layer; where GCN uses fixed weights from adjacency matrix\nGraphSAGE treats self-representation and neighbours differently: concatenating."
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#graphsage-aggregators",
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#graphsage-aggregators",
     "title": "Graph Neural Networks",
     "section": "GraphSAGE Aggregators",
-    "text": "GraphSAGE Aggregators\n\n\n\nMean aggregator: elementwise mean over neighbors\nPool aggregator: transform neighbor features, then max-pool\nLSTM aggregator: sequence model over randomly ordered neighbors"
+    "text": "GraphSAGE Aggregators\n\n\n\nMean aggregator: elementwise mean over neighbors\nPool aggregator: transform neighbor features using a MLP, then max-pool\nLSTM aggregator: sequence model over randomly ordered neighbors"
   },
   {
-    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#gat",
-    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#gat",
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#example-of-graphsage-update-rules",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#example-of-graphsage-update-rules",
     "title": "Graph Neural Networks",
-    "section": "GAT",
-    "text": "GAT\n\n\n\nLearn attention weights over neighbors; masked self-attention\nReplaces fixed normalization in GCN with learned coefficients\nMulti-head attention: concatenate intermediate heads; average at output\nImproves interpretability via attention visualization; handles heterophily better"
+    "section": "Example of GraphSAGE update rules",
+    "text": "Example of GraphSAGE update rules\n\n\n\n\nStep 1: Initial Features (\\(H^0\\))\nNode 6: \\(h_6^0 = [0, 1]\\)\nNeighbours (5, 7, 8): \\(h_5^0 = [0, 0]\\), \\(h_7^0 = [1, 0]\\), \\(h_8^0 = [1, 1]\\)"
   },
   {
-    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#gcn-vs-gat-aggregation",
-    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#gcn-vs-gat-aggregation",
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#step-2-aggregate-the-neighbours",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#step-2-aggregate-the-neighbours",
     "title": "Graph Neural Networks",
-    "section": "GCN vs GAT Aggregation",
-    "text": "GCN vs GAT Aggregation"
+    "section": "Step 2: Aggregate the Neighbours",
+    "text": "Step 2: Aggregate the Neighbours\n\n\n\n\\[\\text{AGG}_{\\text{neigh}} = \\text{mean}([0, 0], [1, 0], [1, 1]) = [0.66, 0.33]\\]"
   },
   {
-    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#gat-multi-head-attention",
-    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#gat-multi-head-attention",
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#step-3-concatenation",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#step-3-concatenation",
     "title": "Graph Neural Networks",
-    "section": "GAT: Multi-head Attention",
-    "text": "GAT: Multi-head Attention\n\n\n\nConcatenate intermediate heads; average at final layer"
+    "section": "Step 3: Concatenation",
+    "text": "Step 3: Concatenation\n\n\n\n\nJoin the self-vector and the neighbour-vector (increase dimension from 2 to 4) \\[\\text{CONCAT}(h_6^0, \\text{AGG}_{neigh}) = [ \\underbrace{0, 1}_{\\text{Self}}, \\underbrace{0.66, 0.33}_{\\text{Neighbours}} ]\\]"
   },
   {
-    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#implementation-in-pytorch",
-    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#implementation-in-pytorch",
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#step-4-linear-transformation-wk",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#step-4-linear-transformation-wk",
     "title": "Graph Neural Networks",
-    "section": "Implementation in PyTorch",
-    "text": "Implementation in PyTorch"
+    "section": "Step 4: Linear Transformation (\\(W^k\\))",
+    "text": "Step 4: Linear Transformation (\\(W^k\\))\n\nBring the dimension back, from 4 to 2\nSuppose \\(W^1\\) is a \\(2 \\times 4\\) matrix \\[h_6^1 = \\sigma \\left( \\begin{pmatrix} w_{11} & w_{12} & w_{13} & w_{14} \\\\ w_{21} & w_{22} & w_{23} & w_{24} \\end{pmatrix} \\cdot \\begin{bmatrix} 0 \\\\ 1 \\\\ 0.66 \\\\ 0.33 \\end{bmatrix} \\right)\\]"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#why-concatenation-works",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#why-concatenation-works",
+    "title": "Graph Neural Networks",
+    "section": "Why concatenation works?",
+    "text": "Why concatenation works?\n\nIdentity Preservation: in GCN, if Node 6 has 100 neighbours, its own features only contribute \\(1\\%\\) to the next layer. In GraphSAGE, the self-features always occupy a dedicated portion of the input to the next layer (as the first half of the concat vector).\nFlexible Weighting: weight matrix \\(W\\) can learn to weight “self” differently than “neighbours”.\n\nNote: \\(W\\) is learned per layer from training, not fixed.\nIt might learn that your own interests are more important for friend prediction than your neighbours’ interests."
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#when-to-use-gcn-or-graphsage",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#when-to-use-gcn-or-graphsage",
+    "title": "Graph Neural Networks",
+    "section": "When to use GCN or GraphSAGE?",
+    "text": "When to use GCN or GraphSAGE?\n\nUse GCN for small, static, or fully known graphs where node information does not change rapidly.\nUse GraphSAGE for large, dynamic, or streaming graphs, where you need to generate embeddings for unseen or new nodes without retraining the entire model."
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#why-gat",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#why-gat",
+    "title": "Graph Neural Networks",
+    "section": "Why GAT?",
+    "text": "Why GAT?\n\nTreating neighhours differently: GCN use fixed aggregation (mean, sum, etc.) that treats all neighbors equally. GAT learns to assign different importance to different neighbors using attention mechanisms.\nWeight Calculation: GCN uses fixed, structural weights (based on graph Laplacian). GAT learns these weights dynamically during training\nBetter Performance: GAT generally outperforms GCN on node classification task. GATs are particularly effective when the graph structure is complex or sparse.\nHigher Computational Complexity: GAT is more resource-intensive and slower to train; GCN is faster and more situable for large-scale graphs."
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#what-is-attention-in-gat",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#what-is-attention-in-gat",
+    "title": "Graph Neural Networks",
+    "section": "What is ATTENTION in GAT?",
+    "text": "What is ATTENTION in GAT?\n\nAttention weight \\(\\alpha_{i,j}\\) measures the importance of neighbor \\(j\\) to node \\(i\\)\n\n\\(h_i^{(l+1)} = \\sigma \\left( \\sum_{j \\in \\mathcal{N}_i} \\alpha_{ij}^{(l)} \\mathbf{W}^{(l)} h_j^{(l)} \\right)\\)"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#attention-weight",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#attention-weight",
+    "title": "Graph Neural Networks",
+    "section": "Attention weight",
+    "text": "Attention weight\n\n\n\n\nA clear explanation: https://epichka.com/blog/2023/gat-paper-explained/"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#masked-attention",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#masked-attention",
+    "title": "Graph Neural Networks",
+    "section": "Masked Attention",
+    "text": "Masked Attention\n\nOnly weights for neighbors are computed, others masked"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#multi-head-attention-to-stabilise-learning",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#multi-head-attention-to-stabilise-learning",
+    "title": "Graph Neural Networks",
+    "section": "Multi-head Attention to stabilise learning",
+    "text": "Multi-head Attention to stabilise learning\n\nTo mitigate randomness in calculating attention weights, e.g. random initialisation\n\n\\[h_i^{(l+1)} = \\sigma \\left( \\frac{1}{K} \\sum_{k=1}^{K} \\sum_{j \\in \\mathcal{N}_i} \\alpha_{ij}^{k} \\mathbf{W}^{k} h_j^{(l)} \\right)\\]\n\n\n\nConcatenate intermediate heads; average at final layer"
+  },
+  {
+    "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#attention-visualisation-for-interpretability",
+    "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#attention-visualisation-for-interpretability",
+    "title": "Graph Neural Networks",
+    "section": "Attention visualisation for interpretability",
+    "text": "Attention visualisation for interpretability\n\nTo understand which neighbors are most influential for a node\n\n\n\n\nhttps://www.dgl.ai/blog/2019/02/17/gat.html"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#gcn-convolutional-layer",
@@ -1317,7 +1443,7 @@
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#case-study-zacharys-karate-club",
     "title": "Graph Neural Networks",
     "section": "Case Study: Zachary’s Karate Club",
-    "text": "Case Study: Zachary’s Karate Club\n\n\nHistorical Context (1970-1972):\n\nObserved local karate club\nConflict between administrator “John A” and instructor “Mr. Hi”\nClub split into two groups\nPredict which members join which group"
+    "text": "Case Study: Zachary’s Karate Club\nContext (1970-1972):\n\nObserved local karate club\nConflict between administrator “John A” and instructor “Mr. Hi” led to club split into two groups\nBased on this graph, aim to predict which members join which group"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#semi-supervised-learning-setup",
@@ -1345,14 +1471,14 @@
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#pytorch-geometric",
     "title": "Graph Neural Networks",
     "section": "PyTorch Geometric",
-    "text": "PyTorch Geometric\n\n\nPyTorch Geometric (PyG):\n\nDedicated library for graph deep learning\nEasy, fast, and simple implementation\nBuilt for PyTorch users\nActive development and community\n\nFeatures:\n\nPre-built GCN layers\nVarious graph datasets\nEfficient sparse operations\n\n\nfrom torch_geometric.nn import GCNConv\n\nclass GCN(torch.nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.conv1 = GCNConv(num_features, 16)\n        self.conv2 = GCNConv(16, num_classes)\n        \n    def forward(self, x, edge_index):\n        x = self.conv1(x, edge_index)\n        x = F.relu(x)\n        x = self.conv2(x, edge_index)\n        return F.log_softmax(x, dim=1)"
+    "text": "PyTorch Geometric\n\n\nPyTorch Geometric (PyG):\n\nDedicated library for graph deep learning\nEasy, fast, and simple implementation\nActive development and community\n\nFeatures:\n\nPre-built GCN layers\nVarious graph datasets\nEfficient sparse operations\n\n\nfrom torch_geometric.nn import GCNConv\n\nclass GCN(torch.nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.conv1 = GCNConv(num_features, 16)\n        self.conv2 = GCNConv(16, num_classes)\n        \n    def forward(self, x, edge_index):\n        x = self.conv1(x, edge_index)\n        x = F.relu(x)\n        x = self.conv2(x, edge_index)\n        return F.log_softmax(x, dim=1)"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#key-takeaways",
     "href": "sessions/W06_graph_neural_networks/graph_neural_networks.html#key-takeaways",
     "title": "Graph Neural Networks",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nGCNs extend neural networks to non-Euclidean graph data\nAggregate and transform neighbourhood information\nAddress self-representation and degree scaling issues\nSemi-supervised learning on graphs is powerful\nApplications: social networks, molecules, knowledge graphs\n\nCritical Question: How powerful are GCNs really?\nRead: How powerful are Graph Convolutions?"
+    "text": "Key Takeaways\n\nGCNs extend neural networks to non-Euclidean graph data\nAggregate and transform neighbourhood information\nAddress self-representation and degree scaling issues\nSemi-supervised learning on graphs is powerful\nApplications: social networks, molecules, knowledge graphs\n\nQ: How powerful are GCNs really?\nRead: How powerful are Graph Convolutions?"
   },
   {
     "objectID": "sessions/W06_graph_neural_networks/graph_neural_networks.html#resources",
@@ -2458,7 +2584,7 @@
     "href": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow_practical.html#cross-validation-and-grid-search",
     "title": "Practical 3: Supervised learning workflow",
     "section": "Cross-validation and grid search",
-    "text": "Cross-validation and grid search\nCross-validation and grid search are techniques to tune hyperparameters and evaluate model performance more robustly.\nIn k-fold cross-validation, the training data is split into k folds, and the model is trained on k-1 folds and validated on the remaining fold. This process is repeated k times, with each fold used as the validation set once. The average performance across all folds is used to evaluate the model.\nIn grid search, a set of hyperparameter values is defined, and the model is trained and evaluated for each combination of hyperparameters using cross-validation. The combination that yields the best average performance across all folds is selected as the optimal hyperparameter set.\nEstimating the computing time of cross-validation with grid search is key to planning the experiment, especially with large datasets or complex models. The total number of models to train is equal to the number of hyperparameter combinations multiplied by the number of folds in cross-validation. For example, if we have 3 hyperparameters with 4, 3, and 3 possible values, respectively, and we use 5-fold cross-validation, the total number of models to train is \\(4 \\times 3 \\times 3 \\times 5 = 180\\).\nThe time for training a single model is estimated as below:\n\nimport time\nmodel = RandomForestRegressor(random_state=42)\nstart_time = time.time()\nmodel.fit(X_train, y_train)\nend_time = time.time()\ntraining_time = end_time - start_time\nprint(f'Training time: {training_time:.3f} seconds')\n\nTraining time: 0.189 seconds\n\n\nThis training took around 0.28 seconds on my desktop, so the total time for cross-validation with grid search would be approximately \\(180 \\times 0.28 = 50.4\\) seconds, less than 1 minute.\nWe will start with defining the hyperparameters to tune and their possible values. The first value of max_depth and min_samples_leaf is their default value in RandomForestRegressor, respectively. See link.\n\n# 5-fold CV to tune RandomForestRegressor\n\n# the code below is a duplicate of the above code for data preparation\n\n# import pandas as pd\n# from sklearn.model_selection import train_test_split, GridSearchCV\n# from sklearn.ensemble import RandomForestRegressor\n# from sklearn.metrics import r2_score\n\n# df_lfb_daily = pd.read_csv(\"https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_daily_data.csv\")\n\n# feature_cols = ['TX', 'TN', 'TG', 'SS', 'SD','RR','QQ', 'PP','HU','CC', 'IsWeekend', 'IsBankHoliday', 'weekday']\n# X = df_lfb_daily[feature_cols]\n# y = df_lfb_daily['IncidentCount']\n# X = pd.get_dummies(X, columns=['weekday'], drop_first=True)\n\n# # split data\n# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nparam_grid = {\n  'max_depth': [None, 5, 10, 20],\n  'min_samples_leaf': [1, 2, 4],\n  'max_features': ['sqrt', 'log2', 0.5]\n}\n\nWe will then use GridSearchCV function from sklearn.model_selection to perform grid search with 5-fold cross-validation to find the optimal hyperparameters. This function is very handy, as it automatically handles the cross-validation and hyperparameter tuning. Moreover, we will fit the grid search object on the training data just like how we fit a model. The power of interface design.\nAfter fitting, we can access the best hyperparameters and the best cross-validated \\(R^2\\) using the best_params_ and best_score_ attributes, respectively. Then, we will retrain the final model using the optimal hyperparameters on the entire training data and evaluate its performance on both the training and testing data.\n\nstart_time = time.time()\ngrid = GridSearchCV(\n  estimator=RandomForestRegressor(random_state=42),\n  param_grid=param_grid,\n  cv=5,\n  scoring='r2',\n  n_jobs=-1, # n_jobs=-1 use all available cores\n  return_train_score=True\n)\n\ngrid.fit(X_train, y_train)\n\n# print best hyperparameters and best CV R-squared\nprint(\"Best hyperparameters:\", grid.best_params_)\nprint(f\"Best CV R-squared: {grid.best_score_:.3f}\")\n\nend_time = time.time()\ntraining_time = end_time - start_time\nprint(f'CV training time: {training_time:.3f} seconds')\n\n# retrain with optimal hyperparameters\nbest_params = grid.best_params_\nbest_model = RandomForestRegressor(random_state=42, **best_params)\nbest_model.fit(X_train, y_train)\n\n# r2 on training and testing data\ntrain_r2 = r2_score(y_train, best_model.predict(X_train))\nprint(f\"Train R-squared: {train_r2:.3f}\")\ntest_r2 = r2_score(y_test, best_model.predict(X_test))\nprint(f\"Test R-squared: {test_r2:.3f}\")\n\nBest hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1}\nBest CV R-squared: 0.368\nCV training time: 10.669 seconds\nTrain R-squared: 0.860\nTest R-squared: 0.200\n\n\nThe GridSearchCV took around 3.66 seconds on my desktop, which is much faster than the estimated time. This is because the n_jobs=-1 argument allows parallel processing and using all processors, which speeds up the computation significantly.\nThe best hyperparameters found are as follows: - max_depth: 10 - max_features: ‘sqrt’ - min_samples_leaf: 1\nAnd the \\(R^2\\) on the training, testing, and cross-validated data are as follows:\n\nTraining data: 0.860\nTesting data: 0.200\nCV: 0.368\n\nThe \\(R^2\\) on the training data has decreased from 0.92 to 0.86, while the \\(R^2\\) on the testing data has increased from 0.18 to 0.20, indicating that the overfitting issue has been mitigated to some extent. Note that the cross-validated \\(R^2\\) is higher than the testing \\(R^2\\), which indicates that the model is overfitting during cross validation and the best way to evaluate the model is using the unseen testing data."
+    "text": "Cross-validation and grid search\nCross-validation and grid search are techniques to tune hyperparameters and evaluate model performance more robustly.\nIn k-fold cross-validation, the training data is split into k folds, and the model is trained on k-1 folds and validated on the remaining fold. This process is repeated k times, with each fold used as the validation set once. The average performance across all folds is used to evaluate the model.\nIn grid search, a set of hyperparameter values is defined, and the model is trained and evaluated for each combination of hyperparameters using cross-validation. The combination that yields the best average performance across all folds is selected as the optimal hyperparameter set.\nEstimating the computing time of cross-validation with grid search is key to planning the experiment, especially with large datasets or complex models. The total number of models to train is equal to the number of hyperparameter combinations multiplied by the number of folds in cross-validation. For example, if we have 3 hyperparameters with 4, 3, and 3 possible values, respectively, and we use 5-fold cross-validation, the total number of models to train is \\(4 \\times 3 \\times 3 \\times 5 = 180\\).\nThe time for training a single model is estimated as below:\n\nimport time\nmodel = RandomForestRegressor(random_state=42)\nstart_time = time.time()\nmodel.fit(X_train, y_train)\nend_time = time.time()\ntraining_time = end_time - start_time\nprint(f'Training time: {training_time:.3f} seconds')\n\nTraining time: 0.189 seconds\n\n\nThis training took around 0.28 seconds on my desktop, so the total time for cross-validation with grid search would be approximately \\(180 \\times 0.28 = 50.4\\) seconds, less than 1 minute.\nWe will start with defining the hyperparameters to tune and their possible values. The first value of max_depth and min_samples_leaf is their default value in RandomForestRegressor, respectively. See link.\n\n# 5-fold CV to tune RandomForestRegressor\n\n# the code below is a duplicate of the above code for data preparation\n\n# import pandas as pd\n# from sklearn.model_selection import train_test_split, GridSearchCV\n# from sklearn.ensemble import RandomForestRegressor\n# from sklearn.metrics import r2_score\n\n# df_lfb_daily = pd.read_csv(\"https://raw.githubusercontent.com/huanfachen/DSSS_2025/refs/heads/main/data/LFB_2023_daily_data.csv\")\n\n# feature_cols = ['TX', 'TN', 'TG', 'SS', 'SD','RR','QQ', 'PP','HU','CC', 'IsWeekend', 'IsBankHoliday', 'weekday']\n# X = df_lfb_daily[feature_cols]\n# y = df_lfb_daily['IncidentCount']\n# X = pd.get_dummies(X, columns=['weekday'], drop_first=True)\n\n# # split data\n# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nparam_grid = {\n  'max_depth': [None, 5, 10, 20],\n  'min_samples_leaf': [1, 2, 4],\n  'max_features': ['sqrt', 'log2', 0.5]\n}\n\nWe will then use GridSearchCV function from sklearn.model_selection to perform grid search with 5-fold cross-validation to find the optimal hyperparameters. This function is very handy, as it automatically handles the cross-validation and hyperparameter tuning. Moreover, we will fit the grid search object on the training data just like how we fit a model. The power of interface design.\nAfter fitting, we can access the best hyperparameters and the best cross-validated \\(R^2\\) using the best_params_ and best_score_ attributes, respectively. Then, we will retrain the final model using the optimal hyperparameters on the entire training data and evaluate its performance on both the training and testing data.\n\nstart_time = time.time()\ngrid = GridSearchCV(\n  estimator=RandomForestRegressor(random_state=42),\n  param_grid=param_grid,\n  cv=5,\n  scoring='r2',\n  n_jobs=-1, # n_jobs=-1 use all available cores\n  return_train_score=True\n)\n\ngrid.fit(X_train, y_train)\n\n# print best hyperparameters and best CV R-squared\nprint(\"Best hyperparameters:\", grid.best_params_)\nprint(f\"Best CV R-squared: {grid.best_score_:.3f}\")\n\nend_time = time.time()\ntraining_time = end_time - start_time\nprint(f'CV training time: {training_time:.3f} seconds')\n\n# retrain with optimal hyperparameters\nbest_params = grid.best_params_\nbest_model = RandomForestRegressor(random_state=42, **best_params)\nbest_model.fit(X_train, y_train)\n\n# r2 on training and testing data\ntrain_r2 = r2_score(y_train, best_model.predict(X_train))\nprint(f\"Train R-squared: {train_r2:.3f}\")\ntest_r2 = r2_score(y_test, best_model.predict(X_test))\nprint(f\"Test R-squared: {test_r2:.3f}\")\n\nBest hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1}\nBest CV R-squared: 0.368\nCV training time: 10.679 seconds\nTrain R-squared: 0.860\nTest R-squared: 0.200\n\n\nThe GridSearchCV took around 3.66 seconds on my desktop, which is much faster than the estimated time. This is because the n_jobs=-1 argument allows parallel processing and using all processors, which speeds up the computation significantly.\nThe best hyperparameters found are as follows: - max_depth: 10 - max_features: ‘sqrt’ - min_samples_leaf: 1\nAnd the \\(R^2\\) on the training, testing, and cross-validated data are as follows:\n\nTraining data: 0.860\nTesting data: 0.200\nCV: 0.368\n\nThe \\(R^2\\) on the training data has decreased from 0.92 to 0.86, while the \\(R^2\\) on the testing data has increased from 0.18 to 0.20, indicating that the overfitting issue has been mitigated to some extent. Note that the cross-validated \\(R^2\\) is higher than the testing \\(R^2\\), which indicates that the model is overfitting during cross validation and the best way to evaluate the model is using the unseen testing data."
   },
   {
     "objectID": "sessions/W03_supervised_learning_workflow/supervised_learning_workflow_practical.html#temporal-train-test-split",
@@ -4161,14 +4287,14 @@
     "href": "sessions/W05_neural_networks/neural_networks_practical.html#set-up-tensorflow",
     "title": "Practical 5: Neural Networks using TensorFlow",
     "section": "Set up TensorFlow",
-    "text": "Set up TensorFlow\nImport TensorFlow into your programme to get started:\n\nimport numpy as np\nimport tensorflow as tf\nimport matplotlib.pyplot as plt\n\nprint(\"TensorFlow version:\", tf.__version__)\n\n2026-02-11 15:46:56.957998: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\n2026-02-11 15:46:57.003984: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.\nTo enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.\n2026-02-11 15:46:58.684851: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\n\n\nTensorFlow version: 2.20.0"
+    "text": "Set up TensorFlow\nImport TensorFlow into your programme to get started:\n\nimport numpy as np\nimport tensorflow as tf\nimport matplotlib.pyplot as plt\n\nprint(\"TensorFlow version:\", tf.__version__)\n\n2026-02-19 19:19:13.951925: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\n2026-02-19 19:19:13.999084: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.\nTo enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.\n2026-02-19 19:19:15.767515: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.\n\n\nTensorFlow version: 2.20.0"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks_practical.html#key-data-type-tensors",
     "href": "sessions/W05_neural_networks/neural_networks_practical.html#key-data-type-tensors",
     "title": "Practical 5: Neural Networks using TensorFlow",
     "section": "Key data type: tensors",
-    "text": "Key data type: tensors\nTensorFlow API centers around “Tensors” (essentially multi-dimensional arrays of matrices), which are similar to numpy ndarray.\n\nTensors\nCan construct constant tensors with tf.constant.\n\ntf.constant([[1., 2., 3.], [4., 5., 6.]]) # 2x3 matrix\n\n2026-02-11 15:46:59.302797: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)\n\n\n&lt;tf.Tensor: shape=(2, 3), dtype=float32, numpy=\narray([[1., 2., 3.],\n       [4., 5., 6.]], dtype=float32)&gt;\n\n\n\ntf.constant(42) # scalar\n\n&lt;tf.Tensor: shape=(), dtype=int32, numpy=42&gt;\n\n\nTensors have a shape and data type (dtype).\n\nt = tf.constant([[1., 2., 3.], [4., 5., 6.]])\nt.shape\n\nTensorShape([2, 3])\n\n\n\nt.dtype\n\ntf.float32\n\n\n\n\nIndexing\nTensor indexing is very similar to numpy.\n\nt[:, 1:]\n\n&lt;tf.Tensor: shape=(2, 2), dtype=float32, numpy=\narray([[2., 3.],\n       [5., 6.]], dtype=float32)&gt;\n\n\n\nt[..., 1,  tf.newaxis]\n\n&lt;tf.Tensor: shape=(2, 1), dtype=float32, numpy=\narray([[2.],\n       [5.]], dtype=float32)&gt;\n\n\n\n\nOperations\nVariety of tensor operations are possible.\n\nt + 10\n\n&lt;tf.Tensor: shape=(2, 3), dtype=float32, numpy=\narray([[11., 12., 13.],\n       [14., 15., 16.]], dtype=float32)&gt;\n\n\n\n# square\ntf.square(t)\n\n&lt;tf.Tensor: shape=(2, 3), dtype=float32, numpy=\narray([[ 1.,  4.,  9.],\n       [16., 25., 36.]], dtype=float32)&gt;\n\n\n\n# matrix multiplication\nt @ tf.transpose(t) \n\n&lt;tf.Tensor: shape=(2, 2), dtype=float32, numpy=\narray([[14., 32.],\n       [32., 77.]], dtype=float32)&gt;"
+    "text": "Key data type: tensors\nTensorFlow API centers around “Tensors” (essentially multi-dimensional arrays of matrices), which are similar to numpy ndarray.\n\nTensors\nCan construct constant tensors with tf.constant.\n\ntf.constant([[1., 2., 3.], [4., 5., 6.]]) # 2x3 matrix\n\n2026-02-19 19:19:16.377729: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)\n\n\n&lt;tf.Tensor: shape=(2, 3), dtype=float32, numpy=\narray([[1., 2., 3.],\n       [4., 5., 6.]], dtype=float32)&gt;\n\n\n\ntf.constant(42) # scalar\n\n&lt;tf.Tensor: shape=(), dtype=int32, numpy=42&gt;\n\n\nTensors have a shape and data type (dtype).\n\nt = tf.constant([[1., 2., 3.], [4., 5., 6.]])\nt.shape\n\nTensorShape([2, 3])\n\n\n\nt.dtype\n\ntf.float32\n\n\n\n\nIndexing\nTensor indexing is very similar to numpy.\n\nt[:, 1:]\n\n&lt;tf.Tensor: shape=(2, 2), dtype=float32, numpy=\narray([[2., 3.],\n       [5., 6.]], dtype=float32)&gt;\n\n\n\nt[..., 1,  tf.newaxis]\n\n&lt;tf.Tensor: shape=(2, 1), dtype=float32, numpy=\narray([[2.],\n       [5.]], dtype=float32)&gt;\n\n\n\n\nOperations\nVariety of tensor operations are possible.\n\nt + 10\n\n&lt;tf.Tensor: shape=(2, 3), dtype=float32, numpy=\narray([[11., 12., 13.],\n       [14., 15., 16.]], dtype=float32)&gt;\n\n\n\n# square\ntf.square(t)\n\n&lt;tf.Tensor: shape=(2, 3), dtype=float32, numpy=\narray([[ 1.,  4.,  9.],\n       [16., 25., 36.]], dtype=float32)&gt;\n\n\n\n# matrix multiplication\nt @ tf.transpose(t) \n\n&lt;tf.Tensor: shape=(2, 2), dtype=float32, numpy=\narray([[14., 32.],\n       [32., 77.]], dtype=float32)&gt;"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks_practical.html#tensors-and-numpy-ndarray",
@@ -4196,21 +4322,21 @@
     "href": "sessions/W05_neural_networks/neural_networks_practical.html#load-a-dataset",
     "title": "Practical 5: Neural Networks using TensorFlow",
     "section": "Load a dataset",
-    "text": "Load a dataset\nLoad and prepare the MNIST dataset. Convert the sample data from integers to floating-point numbers:\n\nmnist = tf.keras.datasets.mnist\n\n(x_train, y_train), (x_test, y_test) = mnist.load_data()\n# normalisation - convert the sample data (range of 1-125) to floating numbers\nx_train, x_test = x_train / 255.0, x_test / 255.0\n\n\nDownloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz\n\n\n       0/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step\n\n\n\n\n\n# function for visualising digits\ndef plot_num(number):\n\n  item_index = np.where(y_train[:1000]==number)\n  subset=x_train[item_index]\n\n  egs=5\n  fig, axs = plt.subplots(1,egs, figsize=(20,10))\n\n  for i in range(0,egs):\n    axs[i].imshow(subset[i])\n\nfor x in range(0,10):\n  plot_num(x)"
+    "text": "Load a dataset\nLoad and prepare the MNIST dataset. Convert the sample data from integers to floating-point numbers:\n\nmnist = tf.keras.datasets.mnist\n\n(x_train, y_train), (x_test, y_test) = mnist.load_data()\n# normalisation - convert the sample data (range of 1-125) to floating numbers\nx_train, x_test = x_train / 255.0, x_test / 255.0\n\n\nDownloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz\n\n\n       0/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0s/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n 2138112/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n 5275648/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n10362880/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n11460608/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step\n\n\n\n\n\n# function for visualising digits\ndef plot_num(number):\n\n  item_index = np.where(y_train[:1000]==number)\n  subset=x_train[item_index]\n\n  egs=5\n  fig, axs = plt.subplots(1,egs, figsize=(20,10))\n\n  for i in range(0,egs):\n    axs[i].imshow(subset[i])\n\nfor x in range(0,10):\n  plot_num(x)"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks_practical.html#build-a-machine-learning-model",
     "href": "sessions/W05_neural_networks/neural_networks_practical.html#build-a-machine-learning-model",
     "title": "Practical 5: Neural Networks using TensorFlow",
     "section": "Build a machine learning model",
-    "text": "Build a machine learning model\nBuild a tf.keras.Sequential model by stacking layers.\n\nmodel = tf.keras.models.Sequential([\n  # input layer (28*28), which is flattened before being fed into the neural network\n  tf.keras.layers.Flatten(input_shape=(num_feature_one_dimension, num_feature_one_dimension)),\n  # First fully-connected hidden layer.\n  tf.keras.layers.Dense(n_hidden_1, activation='relu'),\n  # Second fully-connected hidden layer.\n  tf.keras.layers.Dense(n_hidden_2, activation='relu'),\n  # output layer\n  tf.keras.layers.Dense(num_classes)\n])\n\n/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/keras/src/layers/reshaping/flatten.py:37: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.\n  super().__init__(**kwargs)\n\n\nFor each example, the model returns a vector of logits or log-odds scores, one for each class.\n\npredictions = model(x_train[:1]).numpy()\npredictions\n\narray([[-0.17363295,  0.04555093,  0.5187655 , -0.14111601, -0.0150369 ,\n        -0.10781226,  0.562938  ,  0.20370097, -0.02609817,  0.07026525]],\n      dtype=float32)\n\n\nThe tf.nn.softmax function converts these logits to probabilities for each class:\n\ntf.nn.softmax(predictions).numpy()\n\narray([[0.07408035, 0.0922345 , 0.14804982, 0.07652881, 0.08681214,\n        0.07912043, 0.15473613, 0.10803814, 0.08585718, 0.09454241]],\n      dtype=float32)\n\n\nNote: It is possible to bake the tf.nn.softmax function into the activation function for the last layer of the network. While this can make the model output more directly interpretable, this approach is discouraged as it’s impossible to provide an exact and numerically stable loss calculation for all models when using a softmax output.\nDefine a loss function for training using losses.SparseCategoricalCrossentropy, which takes a vector of logits and a True index and returns a scalar loss for each example.\n\nloss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)\n\nThis loss is equal to the negative log probability of the true class: The loss is zero if the model is sure of the correct class.\nThis untrained model gives probabilities close to random (1/10 for each class), so the initial loss should be close to -tf.math.log(1/10) ~= 2.3.\n\nloss_fn(y_train[:1], predictions).numpy()\n\nnp.float32(2.5367842)\n\n\nBefore you start training, configure and compile the model using Keras Model.compile. Set the optimizer class to adam, set the loss to the loss_fn function you defined earlier, and specify a metric to be evaluated for the model by setting the metrics parameter to accuracy.\n\nmodel.compile(optimizer='adam',\n              loss=loss_fn,\n              metrics=['accuracy'])"
+    "text": "Build a machine learning model\nBuild a tf.keras.Sequential model by stacking layers.\n\nmodel = tf.keras.models.Sequential([\n  # input layer (28*28), which is flattened before being fed into the neural network\n  tf.keras.layers.Flatten(input_shape=(num_feature_one_dimension, num_feature_one_dimension)),\n  # First fully-connected hidden layer.\n  tf.keras.layers.Dense(n_hidden_1, activation='relu'),\n  # Second fully-connected hidden layer.\n  tf.keras.layers.Dense(n_hidden_2, activation='relu'),\n  # output layer\n  tf.keras.layers.Dense(num_classes)\n])\n\n/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/site-packages/keras/src/layers/reshaping/flatten.py:37: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.\n  super().__init__(**kwargs)\n\n\nFor each example, the model returns a vector of logits or log-odds scores, one for each class.\n\npredictions = model(x_train[:1]).numpy()\npredictions\n\narray([[-0.2259522 , -0.16173507,  0.0023114 ,  0.57885736,  0.21490344,\n        -0.2775937 , -0.3816071 ,  0.01182281, -0.26180676,  0.02138212]],\n      dtype=float32)\n\n\nThe tf.nn.softmax function converts these logits to probabilities for each class:\n\ntf.nn.softmax(predictions).numpy()\n\narray([[0.0804351 , 0.08576988, 0.10106   , 0.17987466, 0.12499908,\n        0.07638675, 0.06884074, 0.10202581, 0.07760223, 0.10300577]],\n      dtype=float32)\n\n\nNote: It is possible to bake the tf.nn.softmax function into the activation function for the last layer of the network. While this can make the model output more directly interpretable, this approach is discouraged as it’s impossible to provide an exact and numerically stable loss calculation for all models when using a softmax output.\nDefine a loss function for training using losses.SparseCategoricalCrossentropy, which takes a vector of logits and a True index and returns a scalar loss for each example.\n\nloss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)\n\nThis loss is equal to the negative log probability of the true class: The loss is zero if the model is sure of the correct class.\nThis untrained model gives probabilities close to random (1/10 for each class), so the initial loss should be close to -tf.math.log(1/10) ~= 2.3.\n\nloss_fn(y_train[:1], predictions).numpy()\n\nnp.float32(2.5719461)\n\n\nBefore you start training, configure and compile the model using Keras Model.compile. Set the optimizer class to adam, set the loss to the loss_fn function you defined earlier, and specify a metric to be evaluated for the model by setting the metrics parameter to accuracy.\n\nmodel.compile(optimizer='adam',\n              loss=loss_fn,\n              metrics=['accuracy'])"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks_practical.html#train-and-evaluate-your-model",
     "href": "sessions/W05_neural_networks/neural_networks_practical.html#train-and-evaluate-your-model",
     "title": "Practical 5: Neural Networks using TensorFlow",
     "section": "Train and evaluate your model",
-    "text": "Train and evaluate your model\nUse the Model.fit method to adjust your model parameters and minimise the loss.\nThe Model.fit method trains the model for a fixed number of epochs (iterations on a dataset). In this example, we will train the model for 10 epochs.\nIn the Model.fit method, the verbose parameter controls how much output is printed during training:\n\nverbose=1: Default. An animated progress bar for every single epoch (very noisy).\nverbose=0: Silent. No output.\nverbose=2: One line per epoch; shows the final stats for the epoch once it’s finished; much cleaner.\n\n\nmodel.fit(x_train, y_train, epochs=10, verbose=2)\n\nEpoch 1/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9326 - loss: 0.2258\nEpoch 2/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9705 - loss: 0.0947\nEpoch 3/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9791 - loss: 0.0657\nEpoch 4/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9833 - loss: 0.0502\nEpoch 5/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9871 - loss: 0.0395\nEpoch 6/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9888 - loss: 0.0340\nEpoch 7/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9913 - loss: 0.0261\nEpoch 8/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9916 - loss: 0.0242\nEpoch 9/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9933 - loss: 0.0200\nEpoch 10/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9937 - loss: 0.0189\n\n\n&lt;keras.src.callbacks.history.History at 0x7f6b783b8e20&gt;\n\n\nThe Model.evaluate method checks the models performance, usually on a Validation set or Test set.\n\nmodel.evaluate(x_test,  y_test, verbose=2)\n\n313/313 - 0s - 1ms/step - accuracy: 0.9766 - loss: 0.1082\n\n\n[0.10824563354253769, 0.9765999913215637]\n\n\nThe image classifier is now trained to ~98% accuracy on this dataset. To learn more, read the TensorFlow tutorials.\nIf you want your model to return a probability, you can wrap the trained model, and attach the softmax to it:\n\nprobability_model = tf.keras.Sequential([\n  model,\n  tf.keras.layers.Softmax()\n])\n\nTo check a random data point and prediction:\n\n#probability_model(x_test[:1])\npredictions=probability_model.predict(x_test)\n\nindex=20\n\nprint(np.argmax(predictions[index]))\nplt.imshow(x_test[index])\n\n\n  1/313 ━━━━━━━━━━━━━━━━━━━━ 10s 34ms/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n 64/313 ━━━━━━━━━━━━━━━━━━━━ 0s 798us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n130/313 ━━━━━━━━━━━━━━━━━━━━ 0s 783us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n193/313 ━━━━━━━━━━━━━━━━━━━━ 0s 787us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n258/313 ━━━━━━━━━━━━━━━━━━━━ 0s 785us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n313/313 ━━━━━━━━━━━━━━━━━━━━ 0s 861us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n313/313 ━━━━━━━━━━━━━━━━━━━━ 0s 895us/step\n\n9"
+    "text": "Train and evaluate your model\nUse the Model.fit method to adjust your model parameters and minimise the loss.\nThe Model.fit method trains the model for a fixed number of epochs (iterations on a dataset). In this example, we will train the model for 10 epochs.\nIn the Model.fit method, the verbose parameter controls how much output is printed during training:\n\nverbose=1: Default. An animated progress bar for every single epoch (very noisy).\nverbose=0: Silent. No output.\nverbose=2: One line per epoch; shows the final stats for the epoch once it’s finished; much cleaner.\n\n\nmodel.fit(x_train, y_train, epochs=10, verbose=2)\n\nEpoch 1/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9329 - loss: 0.2242\nEpoch 2/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9718 - loss: 0.0944\nEpoch 3/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9784 - loss: 0.0676\nEpoch 4/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9837 - loss: 0.0507\nEpoch 5/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9867 - loss: 0.0409\nEpoch 6/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9894 - loss: 0.0321\nEpoch 7/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9907 - loss: 0.0284\nEpoch 8/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9928 - loss: 0.0232\nEpoch 9/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9931 - loss: 0.0205\nEpoch 10/10\n1875/1875 - 3s - 2ms/step - accuracy: 0.9935 - loss: 0.0200\n\n\n&lt;keras.src.callbacks.history.History at 0x7f3848e65ba0&gt;\n\n\nThe Model.evaluate method checks the models performance, usually on a Validation set or Test set.\n\nmodel.evaluate(x_test,  y_test, verbose=2)\n\n313/313 - 0s - 1ms/step - accuracy: 0.9790 - loss: 0.0880\n\n\n[0.0880497395992279, 0.9789999723434448]\n\n\nThe image classifier is now trained to ~98% accuracy on this dataset. To learn more, read the TensorFlow tutorials.\nIf you want your model to return a probability, you can wrap the trained model, and attach the softmax to it:\n\nprobability_model = tf.keras.Sequential([\n  model,\n  tf.keras.layers.Softmax()\n])\n\nTo check a random data point and prediction:\n\n#probability_model(x_test[:1])\npredictions=probability_model.predict(x_test)\n\nindex=20\n\nprint(np.argmax(predictions[index]))\nplt.imshow(x_test[index])\n\n\n  1/313 ━━━━━━━━━━━━━━━━━━━━ 10s 32ms/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n 68/313 ━━━━━━━━━━━━━━━━━━━━ 0s 754us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n135/313 ━━━━━━━━━━━━━━━━━━━━ 0s 755us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n204/313 ━━━━━━━━━━━━━━━━━━━━ 0s 746us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n275/313 ━━━━━━━━━━━━━━━━━━━━ 0s 737us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n313/313 ━━━━━━━━━━━━━━━━━━━━ 0s 811us/step\n\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\n313/313 ━━━━━━━━━━━━━━━━━━━━ 0s 846us/step\n\n9"
   },
   {
     "objectID": "sessions/W05_neural_networks/neural_networks_practical.html#conclusion",
@@ -4280,7 +4406,7 @@
     "href": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-correlated-features",
     "title": "Model Interpretation and Feature Selection",
     "section": "Example: Correlated Features",
-    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.994\n\nModel 2 (4 features): y = 1.25 + 28.27*X1 + 73.96*X2 + 24.19*X3 + -5.98*X4\nR² = 0.986"
+    "text": "Example: Correlated Features\n\nCorrelation among features might make coefficients completely uninterpretable\n\n\n\nCorrelations (should be &lt; 0.1):\n[[ 1.         -0.12070741 -0.04863585]\n [-0.12070741  1.         -0.12376394]\n [-0.04863585 -0.12376394  1.        ]]\n\nModel 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3\nR² = 0.985\n\nCorrelation X3-X4: 0.992\n\nModel 2 (4 features): y = 1.25 + 28.35*X1 + 73.86*X2 + 30.94*X3 + -13.95*X4\nR² = 0.986"
   },
   {
     "objectID": "sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html#example-linear-regression-with-penalisation",

@@ -189,10 +189,9 @@
   </style>
 <meta property="og:title" content="Graph Neural Networks – Data Science for Spatial Systems">
 <meta property="og:description" content="Extending neural networks to graph-structured data">
-<meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/W06_graph_neural_networks/images/GraphSAGE_cover.jpg">
+<meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/W06_graph_neural_networks/img/logo/full_sm.png">
 <meta property="og:site_name" content="Foundations">
 <meta property="og:locale" content="en_GB">
-<meta property="og:image:alt" content="GraphSAGE overview">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -214,6 +213,22 @@
 
 
 </section>
+<section id="recap-neural-networks-or-mlp" class="slide level2">
+<h2>Recap: Neural Networks (or MLP)</h2>
+<div style="text-align:center;">
+<p><img src="images/nn_basic_arch.png" alt="ANN architecture" style="max-width:80%;"></p>
+</div>
+</section>
+<section id="recap-convolutional-neural-networks-cnn" class="slide level2">
+<h2>Recap: Convolutional Neural Networks (CNN)</h2>
+<ul>
+<li>Local filter</li>
+<li>Translation invariance</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/cnn.png" alt="CNN architecture" style="max-width:80%;"></p>
+</div>
+</section>
 <section>
 <section id="graph-neural-networks" class="title-slide slide level1 center">
 <h1>Graph Neural Networks</h1>
@@ -223,30 +238,21 @@
 <h2>Principles</h2>
 <ul>
 <li>A deep learning framework for graph-structured data</li>
-<li>It generalises traditional neural networks to handle graph data by leveraging the relationships between nodes in a graph.</li>
+<li>It generalises traditional neural networks to handle graph data by leveraging the relationships between nodes in a graph</li>
 <li>Message passing: nodes aggregate neighbor features over the graph</li>
-<li><em>Spatial</em> vs <em>spectral</em> views of convolution on graphs</li>
-<li>Transductive vs inductive learning; sampling enables scalability</li>
-<li>Learnable transformations per layer; nonlinearity and normalization matter</li>
 <li>Variants differ in how neighbors are aggregated and weighted</li>
 </ul>
 </section>
-<section id="five-major-gnn-architectures" class="slide level2">
-<h2>Five Major GNN Architectures</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="major-gnn-architectures" class="slide level2">
+<h2>Major GNN Architectures</h2>
 <ul>
-<li><strong>DeepWalk</strong>: unsupervised node embeddings via random walks (word2vec-like)</li>
 <li><strong>GCN</strong>: shared filters; normalised neighborhood aggregation (spectral → spatial)</li>
 <li><strong>GraphSAGE</strong>: inductive sampling + learnable aggregators (mean/pool/LSTM)</li>
 <li><strong>GAT</strong>: attention over neighbors; learns edge weights; multi-head for capacity</li>
+<li></li>
+<li><strong>DeepWalk</strong>: unsupervised node embeddings via random walks (word2vec-like)</li>
 <li><strong>ChebNet</strong>: spectral filtering via Chebyshev polynomials; localized convolutions</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/Graph_Representation_Learning.png" alt="Graph Representation Learning overview" style="max-width:90%;"></p>
-</div>
-</div></div>
 </section>
 <section id="graph-convolutional-networks-gcn" class="slide level2">
 <h2>Graph Convolutional Networks (GCN)</h2>
@@ -259,10 +265,10 @@
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li>Graph = organized data representation</li>
+<li>Graph = organised data representation</li>
 <li>Consists of vertices (nodes) V and edges E</li>
 <li>Edges can be weighted or binary</li>
-<li>Directed or undirected graphs</li>
+<li>Edges can be directed or undirected</li>
 </ul>
 <p>Example graph:</p>
 <p><span class="math display">\[V = \{A, B, C, D, E, F, G\}\]</span> <span class="math display">\[E = \{(A,B), (B,C), (C,E), ...\}\]</span></p>
@@ -286,6 +292,12 @@
 </section>
 <section id="why-gcns" class="slide level2">
 <h2>Why GCNs?</h2>
+<div style="text-align:center;">
+<p><img src="images/Graph_Representation_Learning.png" alt="Graph Representation Learning overview" style="max-width:90%;"></p>
+</div>
+</section>
+<section id="why-gcns-1" class="slide level2">
+<h2>Why GCNs?</h2>
 <ul>
 <li>Most real-world datasets come as graphs or networks:
 <ul>
@@ -294,7 +306,11 @@
 <li>The World Wide Web</li>
 </ul></li>
 <li>Learning on graphs enables domain-specific insights</li>
-<li>Conventional CNNs assume compositional structure on Euclidean space</li>
+<li>Conventional CNNs assume compositional structure on Euclidean space
+<ul>
+<li>2D grids (images)</li>
+<li>1D sequences (text, audio)</li>
+</ul></li>
 </ul>
 </section>
 <section id="cnns-vs-gcns" class="slide level2">
@@ -316,18 +332,22 @@
 </section>
 <section id="applications-of-gcns" class="slide level2">
 <h2>Applications of GCNs</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <div style="text-align:center;">
-<img src="images/GCN_FB_Link_Prediction_Social_Nets.jpg" alt="Facebook Link Prediction" style="max-width:70%;">
+<img src="images/GCN_FB_Link_Prediction_Social_Nets.jpg" alt="Facebook Link Prediction" style="max-width:60%;">
 <div style="font-size:0.8em; color: #555; margin-top:4px;">
 <pre><code>Facebook Link Prediction for Suggesting Friends using Social Networks</code></pre>
 </div>
 </div>
+</div><div class="column" style="width:50%;">
 <ul>
 <li>Friend prediction algorithms</li>
 <li>Social network analysis</li>
 <li>Protein interaction prediction</li>
 <li>Knowledge graph completion</li>
 </ul>
+</div></div>
 </section>
 <section id="what-are-gcns" class="slide level2">
 <h2>What are GCNs?</h2>
@@ -338,26 +358,124 @@
 </ul>
 <p><strong>Two Styles:</strong></p>
 <ul>
-<li><strong>Spectral GCNs</strong>: Graph signal processing perspective</li>
-<li><strong>Spatial GCNs</strong>: Aggregate feature information from neighbours (more flexible)</li>
+<li>Spectral GCNs: Graph signal processing perspective; Flourier transform on graphs; frequency domain</li>
+<li><strong>Spatial GCNs</strong>: Aggregate feature information from neighbours; more flexible (OUR FOCUS!)</li>
 </ul>
 </section>
 <section id="how-gcns-work-friend-prediction" class="slide level2">
-<h2>How GCNs Work: Friend Prediction</h2>
+<h2>How GCNs Work? Friend Prediction</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Problem:</strong> Predict future friendships</p>
+<p><strong>Task:</strong> Predict future friendships</p>
 <ul>
-<li>Graph where edges = friendships</li>
-<li>Common friends → higher likelihood</li>
+<li>Edges = friendships</li>
+<li>More common friends → higher likelihood</li>
 <li><span class="math inline">\((1,3)\)</span> have 2 common friends</li>
 <li><span class="math inline">\((1,5)\)</span> have 0 common friends</li>
+<li>So, <span class="math inline">\((1,3)\)</span> is more likely to become friends than <span class="math inline">\((1,5)\)</span></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div style="text-align:center;">
 <p><img src="images/friends_graph.png" alt="Friends graph example" style="max-width:100%;"></p>
 </div>
 </div></div>
+</section>
+<section id="try-it-again---friend-prediction" class="slide level2">
+<h2>Try it again - Friend Prediction</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Problem:</strong> Predict future friendships</p>
+<ul>
+<li><span class="math inline">\((1,11)\)</span> have 1 common friends and distance of 2</li>
+<li><span class="math inline">\((3,11)\)</span> have 0 common friends and distance of 4</li>
+<li>So, <span class="math inline">\((1,11)\)</span> is more likely to become friends than <span class="math inline">\((3,11)\)</span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div style="text-align:center;">
+<p><img src="images/friends_graph2.png" alt="Friends graph example 2" style="max-width:100%;"></p>
+</div>
+</div></div>
+</section>
+<section id="how-to-implement-this-idea-mathmatically" class="slide level2">
+<h2>How to implement this idea MATHMATICALLY?</h2>
+<ul>
+<li>Using <em>filtering</em>, from CNN?</li>
+<li>In CNN, we apply a <em>filter</em> on an image to get representation of next layer</li>
+<li>In a graph, we apply a <em>filter</em> to create the next layer representation, by aggregating the features of neighbours</li>
+<li><strong>Note</strong>: in each layer, the graph structure is fixed, but the features of each node are updated.</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/gcn_architecture.png" alt="GCN Architecture" style="max-width:40%;"></p>
+</div>
+</section>
+<section id="adjacency-matrix-feature-matrix" class="slide level2">
+<h2>Adjacency matrix &amp; feature matrix</h2>
+<div style="text-align:center;">
+<p><img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;"></p>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Adjacency matrix <span class="math display">\[
+A = \begin{pmatrix}
+0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0
+\end{pmatrix}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<p>Feature matrix (Randomly initialised. Can be anything like age, hobby) <span class="math display">\[
+H^0 = \left( \begin{array}{ccc}
+1 &amp; 0 &amp; 1 \\
+1 &amp; 1 &amp; 0 \\
+0 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 \\
+0 &amp; 0 &amp; 1 \\
+0 &amp; 1 &amp; 0 \\
+1 &amp; 0 &amp; 0 \\
+1 &amp; 1 &amp; 0
+\end{array} \right)
+\]</span></p>
+</div></div>
+</section>
+<section id="update-rule-for-a-node-in-a-new-layer" class="slide level2">
+<h2>Update rule for a node in a new layer</h2>
+<ul>
+<li>Iteratively, calculate new features for each node in a new layer by aggregating from neighhours in the previous layer</li>
+<li>Each layer represent ‘friends’ information at different ‘hops’ <span class="math display">\[
+h_v^i = \sum_{u \in \mathcal{N}(v)} h_u^{i-1}
+\]</span></li>
+</ul>
+<p>where <span class="math inline">\(\mathcal{N}(v)\)</span> is the set of immediate neighbours of <span class="math inline">\(v\)</span>, excluding <span class="math inline">\(v\)</span> itself.</p>
+</section>
+<section id="layer-1-h1-a-h0" class="slide level2">
+<h2>Layer 1: <span class="math inline">\(H^1 = A H^0\)</span></h2>
+<div style="text-align:center;">
+<p><img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;"></p>
+</div>
+<ul>
+<li>Node 1 (Neighbours: 2, 4):<span class="math inline">\(h_1^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}\)</span></li>
+<li>Node 3 (Neighbours: 2, 4):<span class="math inline">\(h_3^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}\)</span></li>
+<li>Node 5 (Neighbour: 6):<span class="math inline">\(h_5^1 = h_6^0 = \mathbf{[0, 1, 0]}\)</span></li>
+<li><em>Note</em>: Node 1 and 3 have <strong>identifical</strong> features after one layer, due to same set of neighbours.</li>
+<li><span class="math inline">\((1,3)\)</span> is more similar than <span class="math inline">\((1,5)\)</span></li>
+</ul>
+</section>
+<section id="layer-2-h2-a-h1.-friend-of-friend" class="slide level2">
+<h2>Layer 2: <span class="math inline">\(H^2 = A H^1\)</span>. Friend-of-friend</h2>
+<div style="text-align:center;">
+<p><img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;"></p>
+</div>
+<ul>
+<li>Node 1 (Neighbours: 2, 4):<span class="math inline">\(h_1^2 = h_2^1 + h_4^1 = [1, 1, 2] + [1, 1, 2] = \mathbf{[2, 2, 4]}\)</span></li>
+<li>Node 3 (Neighbours: 2, 4):<span class="math inline">\(h_3^2 = h_2^1 + h_4^1\)</span><span class="math inline">\(h_3^2 = [1, 1, 2] + [1, 1, 2] = \mathbf{[2, 2, 4]}\)</span></li>
+<li>Node 5 (Neighbour: 6):<span class="math inline">\(h_5^2 = h_6^1\)</span><span class="math inline">\(h_6^1 = h_5^0 + h_7^0 + h_8^0 = [2, 1, 1] = \mathbf{[2, 1, 1]}\)</span></li>
+<li><span class="math inline">\((1,3)\)</span> is more similar than <span class="math inline">\((1,5)\)</span></li>
+</ul>
 </section>
 <section id="gcn-mathematical-formulation" class="slide level2">
 <h2>GCN Mathematical Formulation</h2>
@@ -368,36 +486,40 @@
 <p>where:</p>
 <ul>
 <li><span class="math inline">\(A\)</span> = N × N adjacency matrix</li>
-<li><span class="math inline">\(X\)</span> = input feature matrix (N × F)</li>
-<li><span class="math inline">\(σ\)</span> = ReLU activation function</li>
+<li><span class="math inline">\(W^{(l)}\)</span> = learnable weight matrix for layer <span class="math inline">\(l\)</span></li>
 <li><span class="math inline">\(H^{0} = X\)</span> (initial features)</li>
-<li>Each layer aggregates neighborhood features</li>
+<li><span class="math inline">\(X\)</span> = input feature matrix (N × F, F = number of features)</li>
+<li><span class="math inline">\(σ\)</span> = ReLU activation function</li>
+<li>Each layer aggregates neighborhood features from previous layer</li>
 </ul>
 </section>
-<section id="problems-with-simple-formulation" class="slide level2">
-<h2>Problems with Simple Formulation</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Problem 1: No self-representation</strong></p>
+<section id="problem-1-no-self-representation" class="slide level2">
+<h2>Problem 1: No self-representation</h2>
 <ul>
 <li>New features don’t include node’s own features</li>
-<li>Solution: Add self-loops</li>
-</ul>
-<p><strong>Problem 2: Degree scaling</strong></p>
-<ul>
-<li>High-degree nodes get larger values</li>
-<li>Low-degree nodes get smaller values</li>
-<li>Solution: Normalize by degree</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>Fixes:</strong></p>
-<ul>
+<li>Node 1 and 3 become identical after one layer, despite different initial features</li>
+<li>Node 1 (Neighbours: 2, 4):<span class="math inline">\(h_1^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}\)</span></li>
+<li>Node 3 (Neighbours: 2, 4):<span class="math inline">\(h_3^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}\)</span></li>
+<li></li>
+<li><strong>Solution: Add self-loops</strong></li>
 <li>Add identity: <span class="math inline">\(\hat{A} = A + I\)</span></li>
-<li>Symmetric normalization:</li>
+<li>Node 1: <span class="math inline">\(h_1^1 = h_1^0 + h_2^0 + h_4^0 = [1,0,1] + [1,1,0] + [1,1,1] = \mathbf{[3, 2, 2]}\)</span></li>
+<li>Node 3: <span class="math inline">\(h_3^1 = h_2^0 + h_3^0 + h_4^0 = [1,1,0] + [0,1,1] + [1,1,1] = \mathbf{[2, 3, 2]}\)</span></li>
+<li>Now, they are different due to self-loops</li>
 </ul>
-<p><span class="math display">\[\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}\]</span></p>
-<p>where <span class="math inline">\(\hat{D}\)</span> is degree matrix of <span class="math inline">\(\hat{A}\)</span></p>
-</div></div>
+</section>
+<section id="problem-2-degree-scaling" class="slide level2">
+<h2>Problem 2: Degree scaling</h2>
+<ul>
+<li>High-degree nodes get larger values; low-degree nodes get smaller values</li>
+<li>Node 5 (Self + 6):<span class="math inline">\(h_5^1 = h_5^0 + h_6^0 = [0, 0, 1] + [0, 1, 0] = \mathbf{[0, 1, 1]}\)</span></li>
+<li>Node 6 (Self + 5, 7, 8):<span class="math inline">\(h_6^1 = h_6^0 + h_5^0 + h_7^0 + h_8^0 = [0, 1, 0] + [0, 0, 1] + [1, 0, 0] + [1, 1, 0] = \mathbf{[2, 2, 1]}\)</span></li>
+<li><strong>Solution: Normalise by degree</strong></li>
+<li>Symmetric normalisation: <span class="math inline">\(\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}\)</span>, where <span class="math inline">\(\hat{D}\)</span> is degree matrix of <span class="math inline">\(\hat{A}\)</span></li>
+<li><span class="math inline">\(\tilde{d}_5 = 2, \tilde{d}_6 = 4, \tilde{d}_7 = 3, \tilde{d}_8 = 3\)</span></li>
+<li><span class="math inline">\(h_5^1 = \left( \frac{1}{\sqrt{\tilde{d}_5 \cdot \tilde{d}_5}} \right) h_5^0 + \left( \frac{1}{\sqrt{\tilde{d}_5 \cdot \tilde{d}_6}} \right) h_6^0 = \frac{1}{2}[0, 0, 1] + \frac{1}{\sqrt{8}}[0, 1, 0] \approx \mathbf{[0, 0.35, 0.5]}\)</span></li>
+<li><span class="math inline">\(h_6^1 = 0.25[0, 1, 0] + 0.35[0, 0, 1] + 0.28[1, 0, 0] + 0.28[1, 1, 0] \approx \mathbf{[0.56, 0.53, 0.35]}\)</span></li>
+</ul>
 </section>
 <section id="final-gcn-propagation-rule" class="slide level2">
 <h2>Final GCN Propagation Rule</h2>
@@ -416,25 +538,16 @@
 <h1>GraphSAGE</h1>
 
 </section>
-<section id="graphsage-sample-and-aggregate" class="slide level2">
-<h2>GraphSAGE (Sample and Aggregate)</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="why-graphsage-sameple-and-aggregate" class="slide level2">
+<h2>Why GraphSAGE (Sameple and Aggregate)?</h2>
 <ul>
-<li>Inductive learning: generalises to unseen nodes/graphs</li>
-<li>Neighborhood sampling for scalability (mini-batches)</li>
-<li>Aggregators: mean, pool (MLP+max), LSTM</li>
-<li>Concatenate self-representation with aggregated neighbors</li>
-<li>Normalise embeddings; learn weights per layer</li>
+<li>GCNs are <strong>transductive</strong>: requires full graph structure; can’t generalise to unseen nodes/graphs</li>
+<li>GraphSAGE is <strong>inductive</strong>: learns aggregation functions that can be applied to unseen nodes/graphs</li>
+<li>GraphSAGE is more <strong>scalable</strong>: neighborhood sampling to generate <strong>mini-batches</strong>, rather than processing the entire graph at once</li>
+<li>GraphSAGE allows for <strong>learnable aggregators</strong>: mean, pooling (MLP + max), LSTM; where GCN uses fixed mean aggregation</li>
+<li>GraphSAGE <strong>learns weights per layer</strong>; where GCN uses fixed weights from adjacency matrix</li>
+<li>GraphSAGE treats self-representation and neighbours differently: <strong>concatenating</strong>.</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<div style="text-align:center;">
-<img src="images/GraphSAGE_cover.jpg" alt="GraphSAGE overview" style="max-width:90%;">
-<div style="font-size:0.8em; color: #555; margin-top:4px;">
-<pre><code>Inductive representation learning on large graphs</code></pre>
-</div>
-</div>
-</div></div>
 </section>
 <section id="graphsage-aggregators" class="slide level2">
 <h2>GraphSAGE Aggregators</h2>
@@ -442,53 +555,138 @@
 <div class="column" style="width:50%;">
 <ul>
 <li>Mean aggregator: elementwise mean over neighbors</li>
-<li>Pool aggregator: transform neighbor features, then max-pool</li>
+<li>Pool aggregator: transform neighbor features using a MLP, then max-pool</li>
 <li>LSTM aggregator: sequence model over randomly ordered neighbors</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div style="text-align:center;">
-<p><img src="images/ma.png" alt="Mean aggregator" style="max-width:80%;"></p>
+<p><img src="images/pooling_recurrent_aggregators.jpg" alt="pool and LSTM aggregator" style="max-width:80%;"></p>
 </div>
 </div></div>
+</section>
+<section id="example-of-graphsage-update-rules" class="slide level2">
+<h2>Example of GraphSAGE update rules</h2>
+<div style="text-align:center;">
+<p><img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;"></p>
+</div>
+<ul>
+<li>Step 1: Initial Features (<span class="math inline">\(H^0\)</span>)</li>
+<li>Node 6: <span class="math inline">\(h_6^0 = [0, 1]\)</span></li>
+<li>Neighbours (5, 7, 8): <span class="math inline">\(h_5^0 = [0, 0]\)</span>, <span class="math inline">\(h_7^0 = [1, 0]\)</span>, <span class="math inline">\(h_8^0 = [1, 1]\)</span></li>
+</ul>
+</section>
+<section id="step-2-aggregate-the-neighbours" class="slide level2">
+<h2>Step 2: Aggregate the Neighbours</h2>
+<div style="text-align:center;">
+<p><img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;"></p>
+</div>
+<p><span class="math display">\[\text{AGG}_{\text{neigh}} = \text{mean}([0, 0], [1, 0], [1, 1]) = [0.66, 0.33]\]</span></p>
+</section>
+<section id="step-3-concatenation" class="slide level2">
+<h2>Step 3: Concatenation</h2>
+<div style="text-align:center;">
+<p><img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;"></p>
+</div>
+<ul>
+<li>Join the self-vector and the neighbour-vector (increase dimension from 2 to 4) <span class="math display">\[\text{CONCAT}(h_6^0, \text{AGG}_{neigh}) = [ \underbrace{0, 1}_{\text{Self}}, \underbrace{0.66, 0.33}_{\text{Neighbours}} ]\]</span></li>
+</ul>
+</section>
+<section id="step-4-linear-transformation-wk" class="slide level2">
+<h2>Step 4: Linear Transformation (<span class="math inline">\(W^k\)</span>)</h2>
+<ul>
+<li>Bring the dimension back, from 4 to 2</li>
+<li>Suppose <span class="math inline">\(W^1\)</span> is a <span class="math inline">\(2 \times 4\)</span> matrix <span class="math display">\[h_6^1 = \sigma \left( \begin{pmatrix} w_{11} &amp; w_{12} &amp; w_{13} &amp; w_{14} \\ w_{21} &amp; w_{22} &amp; w_{23} &amp; w_{24} \end{pmatrix} \cdot \begin{bmatrix} 0 \\ 1 \\ 0.66 \\ 0.33 \end{bmatrix} \right)\]</span></li>
+</ul>
+</section>
+<section id="why-concatenation-works" class="slide level2">
+<h2>Why concatenation works?</h2>
+<ul>
+<li><strong>Identity Preservation</strong>: in GCN, if Node 6 has 100 neighbours, its own features only contribute <span class="math inline">\(1\%\)</span> to the next layer. In GraphSAGE, the self-features always occupy a <strong>dedicated</strong> portion of the input to the next layer (as the first half of the concat vector).</li>
+<li><strong>Flexible Weighting</strong>: weight matrix <span class="math inline">\(W\)</span> can learn to weight “self” differently than “neighbours”.
+<ul>
+<li>Note: <span class="math inline">\(W\)</span> is learned per layer from training, not fixed.</li>
+<li>It might learn that your own interests are more important for friend prediction than your neighbours’ interests.</li>
+</ul></li>
+</ul>
+</section>
+<section id="when-to-use-gcn-or-graphsage" class="slide level2">
+<h2>When to use GCN or GraphSAGE?</h2>
+<ul>
+<li>Use GCN for small, static, or fully known graphs where node information does not change rapidly.</li>
+<li>Use GraphSAGE for <em>large</em>, <em>dynamic</em>, or <em>streaming</em> graphs, where you need to generate embeddings for unseen or new nodes without retraining the entire model.</li>
+</ul>
 </section></section>
 <section>
 <section id="graph-attention-networks-gat" class="title-slide slide level1 center">
 <h1>Graph Attention Networks (GAT)</h1>
 
 </section>
-<section id="gat" class="slide level2">
-<h2>GAT</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="why-gat" class="slide level2">
+<h2>Why GAT?</h2>
 <ul>
-<li>Learn attention weights over neighbors; masked self-attention</li>
-<li>Replaces fixed normalization in GCN with learned coefficients</li>
-<li>Multi-head attention: concatenate intermediate heads; average at output</li>
-<li>Improves interpretability via attention visualization; handles heterophily better</li>
+<li><strong>Treating neighhours differently</strong>: GCN use fixed aggregation (mean, sum, etc.) that treats all neighbors equally. GAT learns to assign different importance to different neighbors using attention mechanisms.</li>
+<li><strong>Weight Calculation</strong>: GCN uses fixed, structural weights (based on graph Laplacian). GAT learns these weights dynamically during training</li>
+<li><strong>Better Performance</strong>: GAT generally outperforms GCN on node classification task. GATs are particularly effective when the graph structure is complex or sparse.</li>
+<li><strong>Higher Computational Complexity</strong>: GAT is more resource-intensive and slower to train; GCN is faster and more situable for large-scale graphs.</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/GAT_Cover.jpg" alt="GAT overview" style="max-width:90%;"></p>
-</div>
-</div></div>
 </section>
-<section id="gcn-vs-gat-aggregation" class="slide level2">
-<h2>GCN vs GAT Aggregation</h2>
+<section id="what-is-attention-in-gat" class="slide level2">
+<h2>What is ATTENTION in GAT?</h2>
+<ul>
+<li>Attention weight <span class="math inline">\(\alpha_{i,j}\)</span> measures the importance of neighbor <span class="math inline">\(j\)</span> to node <span class="math inline">\(i\)</span></li>
+</ul>
+<p><span class="math inline">\(h_i^{(l+1)} = \sigma \left( \sum_{j \in \mathcal{N}_i} \alpha_{ij}^{(l)} \mathbf{W}^{(l)} h_j^{(l)} \right)\)</span></p>
 <div style="text-align:center;">
-<p><img src="images/GCN_vs_GAT.jpg" alt="GCN vs GAT" style="max-width:90%;"></p>
+<p><img src="images/GCN_vs_GAT.jpg" alt="GCN vs GAT" style="max-width:70%;"></p>
 </div>
 </section>
-<section id="gat-multi-head-attention" class="slide level2">
-<h2>GAT: Multi-head Attention</h2>
+<section id="attention-weight" class="slide level2">
+<h2>Attention weight</h2>
 <div style="text-align:center;">
-<img src="images/MultiHead_Attention.jpeg" alt="Multi-head attention in GAT" style="max-width:70%;">
+<p><img src="images/attention_weight.png" alt="attention weight" style="max-width:90%;"></p>
+</div>
+<ul>
+<li>A clear explanation: <a href="https://epichka.com/blog/2023/gat-paper-explained/">https://epichka.com/blog/2023/gat-paper-explained/</a></li>
+</ul>
+</section>
+<section id="masked-attention" class="slide level2">
+<h2>Masked Attention</h2>
+<ul>
+<li>Only weights for neighbors are computed, others masked</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/masked_attention.png" alt="masked attention" style="max-width:90%;"></p>
+</div>
+</section>
+<section id="multi-head-attention-to-stabilise-learning" class="slide level2">
+<h2>Multi-head Attention to stabilise learning</h2>
+<ul>
+<li>To mitigate randomness in calculating attention weights, e.g.&nbsp;random initialisation</li>
+</ul>
+<p><span class="math display">\[h_i^{(l+1)} = \sigma \left( \frac{1}{K} \sum_{k=1}^{K} \sum_{j \in \mathcal{N}_i} \alpha_{ij}^{k} \mathbf{W}^{k} h_j^{(l)} \right)\]</span></p>
+<div style="text-align:center;">
+<img src="images/MultiHead_Attention.jpeg" alt="Multi-head attention in GAT" style="max-width:50%;">
 <div style="font-size:0.8em; color: #555; margin-top:4px;">
 <pre><code>Concatenate intermediate heads; average at final layer</code></pre>
 </div>
 </div>
 </section>
-<section id="implementation-in-pytorch" class="slide level2">
-<h2>Implementation in PyTorch</h2>
+<section id="attention-visualisation-for-interpretability" class="slide level2">
+<h2>Attention visualisation for interpretability</h2>
+<ul>
+<li>To understand which neighbors are most influential for a node</li>
+</ul>
+<div style="text-align:center;">
+<img src="images/cora-attention.png" alt="Attention Visualisation" style="max-width:70%;">
+<div style="font-size:0.8em; color: #555; margin-top:4px;">
+<pre><code>https://www.dgl.ai/blog/2019/02/17/gat.html</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="implementing-gcn-in-pytorch" class="title-slide slide level1 center">
+<h1>Implementing GCN in PyTorch</h1>
+
 </section>
 <section id="gcn-convolutional-layer" class="slide level2">
 <h2>GCN Convolutional Layer</h2>
@@ -525,20 +723,15 @@
 </section>
 <section id="case-study-zacharys-karate-club" class="slide level2">
 <h2>Case Study: Zachary’s Karate Club</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Historical Context (1970-1972):</strong></p>
+<p><strong>Context (1970-1972):</strong></p>
 <ul>
 <li>Observed local karate club</li>
-<li>Conflict between administrator “John A” and instructor “Mr.&nbsp;Hi”</li>
-<li>Club split into two groups</li>
-<li>Predict which members join which group</li>
+<li>Conflict between administrator “John A” and instructor “Mr.&nbsp;Hi” led to club split into two groups</li>
+<li>Based on this graph, <strong>aim to predict which members join which group</strong></li>
 </ul>
-</div><div class="column" style="width:50%;">
 <div style="text-align:center;">
-<p><img src="images/karate_club.png" alt="Karate club network" style="max-width:100%;"></p>
+<p><img src="images/karate_club.png" alt="Karate club network" style="max-width:150%;"></p>
 </div>
-</div></div>
 </section>
 <section id="semi-supervised-learning-setup" class="slide level2">
 <h2>Semi-Supervised Learning Setup</h2>
@@ -586,12 +779,11 @@
 <section id="pytorch-geometric" class="slide level2">
 <h2>PyTorch Geometric</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:40%;">
 <p><strong>PyTorch Geometric (PyG):</strong></p>
 <ul>
 <li>Dedicated library for graph deep learning</li>
 <li>Easy, fast, and simple implementation</li>
-<li>Built for PyTorch users</li>
 <li>Active development and community</li>
 </ul>
 <p><strong>Features:</strong></p>
@@ -600,7 +792,7 @@
 <li>Various graph datasets</li>
 <li>Efficient sparse operations</li>
 </ul>
-</div><div class="column" style="width:50%;">
+</div><div class="column" style="width:60%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> GCNConv</span>
 <span id="cb9-2"><a></a></span>
 <span id="cb9-3"><a></a><span class="kw">class</span> GCN(torch.nn.Module):</span>
@@ -625,7 +817,7 @@
 <li>Semi-supervised learning on graphs is powerful</li>
 <li>Applications: social networks, molecules, knowledge graphs</li>
 </ul>
-<p><strong>Critical Question:</strong> How powerful are GCNs really?</p>
+<p><strong>Q:</strong> How powerful are GCNs really?</p>
 <p>Read: <a href="https://www.inference.vc/how-powerful-are-graph-convolutions-review-of-kipf-welling-2016-2/">How powerful are Graph Convolutions?</a></p>
 </section>
 <section id="resources" class="slide level2">
