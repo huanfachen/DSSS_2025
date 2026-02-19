@@ -13,38 +13,38 @@ format:
     preview-links: auto
 ---
 
+## Recap: Neural Networks (or MLP)
+
+<div style="text-align:center;">
+  <img src="images/nn_basic_arch.png" alt="ANN architecture" style="max-width:80%;">
+</div>
+
+## Recap: Convolutional Neural Networks (CNN)
+
+- Local filter
+- Translation invariance
+
+<div style="text-align:center;">
+  <img src="images/cnn.png" alt="CNN architecture" style="max-width:80%;">
+</div>
+
 # Graph Neural Networks
 
 ## Principles
 
 - A deep learning framework for graph-structured data
-- It generalises traditional neural networks to handle graph data by leveraging the relationships between nodes in a graph.
+- It generalises traditional neural networks to handle graph data by leveraging the relationships between nodes in a graph
 - Message passing: nodes aggregate neighbor features over the graph
-- *Spatial* vs *spectral* views of convolution on graphs
-- Transductive vs inductive learning; sampling enables scalability
-- Learnable transformations per layer; nonlinearity and normalization matter
 - Variants differ in how neighbors are aggregated and weighted
 
-## Five Major GNN Architectures
+## Major GNN Architectures
 
-:::: columns
-
-::: {.column width="50%"}
-
-- **DeepWalk**: unsupervised node embeddings via random walks (word2vec-like)
 - **GCN**: shared filters; normalised neighborhood aggregation (spectral → spatial)
 - **GraphSAGE**: inductive sampling + learnable aggregators (mean/pool/LSTM)
 - **GAT**: attention over neighbors; learns edge weights; multi-head for capacity
+- 
+- **DeepWalk**: unsupervised node embeddings via random walks (word2vec-like)
 - **ChebNet**: spectral filtering via Chebyshev polynomials; localized convolutions
-
-:::
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/Graph_Representation_Learning.png" alt="Graph Representation Learning overview" style="max-width:90%;">
-</div>
-:::
-::::
 
 ## Graph Convolutional Networks (GCN)
 
@@ -58,10 +58,10 @@ format:
 
 ::: {.column width="50%"}
 
-- Graph = organized data representation
+- Graph = organised data representation
 - Consists of vertices (nodes) V and edges E
 - Edges can be weighted or binary
-- Directed or undirected graphs
+- Edges can be directed or undirected
 
 Example graph:
 
@@ -90,12 +90,20 @@ $$E = \{(A,B), (B,C), (C,E), ...\}$$
 
 ## Why GCNs?
 
+<div style="text-align:center;">
+  <img src="images/Graph_Representation_Learning.png" alt="Graph Representation Learning overview" style="max-width:90%;">
+</div>
+
+## Why GCNs?
+
 - Most real-world datasets come as graphs or networks:
   - Social networks
   - Protein-interaction networks
   - The World Wide Web
 - Learning on graphs enables domain-specific insights
 - Conventional CNNs assume compositional structure on Euclidean space
+  - 2D grids (images)
+  - 1D sequences (text, audio)
 
 ## CNNs vs GCNs
 
@@ -122,17 +130,25 @@ $$E = \{(A,B), (B,C), (C,E), ...\}$$
 
 ## Applications of GCNs
 
+:::: columns
+
+::: {.column width="50%"}
 <div style="text-align:center;">
-  <img src="images/GCN_FB_Link_Prediction_Social_Nets.jpg" alt="Facebook Link Prediction" style="max-width:70%;">
+  <img src="images/GCN_FB_Link_Prediction_Social_Nets.jpg" alt="Facebook Link Prediction" style="max-width:60%;">
   <div style="font-size:0.8em; color: #555; margin-top:4px;">
     Facebook Link Prediction for Suggesting Friends using Social Networks
   </div>
 </div>
+:::
 
+::: {.column width="50%"}
 - Friend prediction algorithms
 - Social network analysis
 - Protein interaction prediction
 - Knowledge graph completion
+:::
+
+::::
 
 ## What are GCNs?
 
@@ -142,22 +158,22 @@ $$E = \{(A,B), (B,C), (C,E), ...\}$$
 
 **Two Styles:**
 
-- **Spectral GCNs**: Graph signal processing perspective
-- **Spatial GCNs**: Aggregate feature information from neighbours (more flexible)
+- Spectral GCNs: Graph signal processing perspective; Flourier transform on graphs; frequency domain
+- **Spatial GCNs**: Aggregate feature information from neighbours; more flexible (OUR FOCUS!)
 
-## How GCNs Work: Friend Prediction
+## How GCNs Work? Friend Prediction
 
 :::: columns
 
 ::: {.column width="50%"}
 
-**Problem:** Predict future friendships
+**Task:** Predict future friendships
 
-- Graph where edges = friendships
-- Common friends → higher likelihood
+- Edges = friendships
+- More common friends → higher likelihood
 - $(1,3)$ have 2 common friends
 - $(1,5)$ have 0 common friends
-
+- So, $(1,3)$ is more likely to become friends than $(1,5)$
 :::
 
 ::: {.column width="50%"}
@@ -166,6 +182,112 @@ $$E = \{(A,B), (B,C), (C,E), ...\}$$
 </div>
 :::
 ::::
+
+## Try it again - Friend Prediction
+
+:::: columns
+
+::: {.column width="50%"}
+
+**Problem:** Predict future friendships
+
+- $(1,11)$ have 1 common friends and distance of 2
+- $(3,11)$ have 0 common friends and distance of 4
+- So, $(1,11)$ is more likely to become friends than $(3,11)$
+:::
+
+::: {.column width="50%"}
+<div style="text-align:center;">
+  <img src="images/friends_graph2.png" alt="Friends graph example 2" style="max-width:100%;">
+</div>
+:::
+::::
+
+## How to implement this idea MATHMATICALLY?
+
+- Using *filtering*, from CNN?
+- In CNN, we apply a *filter* on an image to get representation of next layer
+- In a graph, we apply a *filter* to create the next layer representation, by aggregating the features of neighbours
+- **Note**: in each layer, the graph structure is fixed, but the features of each node are updated.
+
+<div style="text-align:center;">
+  <img src="images/gcn_architecture.png" alt="GCN Architecture" style="max-width:40%;">
+</div>
+
+## Adjacency matrix & feature matrix
+
+<div style="text-align:center;">
+  <img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;">
+</div>
+
+:::: columns
+
+::: {.column width="50%"}
+Adjacency matrix
+$$
+A = \begin{pmatrix}
+0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 \\
+0 & 0 & 0 & 0 & 0 & 1 & 1 & 0
+\end{pmatrix}
+$$
+:::
+
+::: {.column width="50%"}
+Feature matrix (Randomly initialised. Can be anything like age, hobby)
+$$
+H^0 = \left( \begin{array}{ccc}
+1 & 0 & 1 \\ 
+1 & 1 & 0 \\
+0 & 1 & 1 \\
+1 & 1 & 1 \\
+0 & 0 & 1 \\
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+1 & 1 & 0
+\end{array} \right)
+$$
+:::
+
+::::
+
+## Update rule for a node in a new layer
+
+- Iteratively, calculate new features for each node in a new layer by aggregating from neighhours in the previous layer
+- Each layer represent 'friends' information at different 'hops'
+$$
+h_v^i = \sum_{u \in \mathcal{N}(v)} h_u^{i-1}
+$$
+
+where $\mathcal{N}(v)$ is the set of immediate neighbours of $v$, excluding $v$ itself.
+
+## Layer 1: $H^1 = A H^0$
+
+<div style="text-align:center;">
+  <img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;">
+</div>
+
+- Node 1 (Neighbours: 2, 4):$h_1^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}$
+- Node 3 (Neighbours: 2, 4):$h_3^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}$
+- Node 5 (Neighbour: 6):$h_5^1 = h_6^0 = \mathbf{[0, 1, 0]}$
+- *Note*: Node 1 and 3 have **identifical** features after one layer, due to same set of neighbours.
+- $(1,3)$ is more similar than $(1,5)$
+
+## Layer 2: $H^2 = A H^1$. Friend-of-friend
+
+<div style="text-align:center;">
+  <img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;">
+</div>
+
+- Node 1 (Neighbours: 2, 4):$h_1^2 = h_2^1 + h_4^1 = [1, 1, 2] + [1, 1, 2] = \mathbf{[2, 2, 4]}$
+- Node 3 (Neighbours: 2, 4):$h_3^2 = h_2^1 + h_4^1$$h_3^2 = [1, 1, 2] + [1, 1, 2] = \mathbf{[2, 2, 4]}$
+- Node 5 (Neighbour: 6):$h_5^2 = h_6^1$$h_6^1 = h_5^0 + h_7^0 + h_8^0 = [2, 1, 1] = \mathbf{[2, 1, 1]}$
+- $(1,3)$ is more similar than $(1,5)$
 
 ## GCN Mathematical Formulation
 
@@ -180,43 +302,35 @@ $$f(H^{i}, A) = σ(AH^{i}W^{i})$$
 where:
 
 - $A$ = N × N adjacency matrix
-- $X$ = input feature matrix (N × F)
-- $σ$ = ReLU activation function
+- $W^{(l)}$ = learnable weight matrix for layer $l$
 - $H^{0} = X$ (initial features)
-- Each layer aggregates neighborhood features
+- $X$ = input feature matrix (N × F, F = number of features)
+- $σ$ = ReLU activation function
+- Each layer aggregates neighborhood features from previous layer 
 
-## Problems with Simple Formulation
-
-:::: columns
-
-::: {.column width="50%"}
-
-**Problem 1: No self-representation**
+## Problem 1: No self-representation
 
 - New features don't include node's own features
-- Solution: Add self-loops
-
-**Problem 2: Degree scaling**
-
-- High-degree nodes get larger values
-- Low-degree nodes get smaller values
-- Solution: Normalize by degree
-
-:::
-
-::: {.column width="50%"}
-
-**Fixes:**
-
+- Node 1 and 3 become identical after one layer, despite different initial features
+- Node 1 (Neighbours: 2, 4):$h_1^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}$
+- Node 3 (Neighbours: 2, 4):$h_3^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}$
+- 
+- **Solution: Add self-loops**
 - Add identity: $\hat{A} = A + I$
-- Symmetric normalization:
+- Node 1: $h_1^1 = h_1^0 + h_2^0 + h_4^0 = [1,0,1] + [1,1,0] + [1,1,1] = \mathbf{[3, 2, 2]}$
+- Node 3: $h_3^1 = h_2^0 + h_3^0 + h_4^0 = [1,1,0] + [0,1,1] + [1,1,1] = \mathbf{[2, 3, 2]}$
+- Now, they are different due to self-loops
 
-$$\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$$
+## Problem 2: Degree scaling 
 
-where $\hat{D}$ is degree matrix of $\hat{A}$
-
-:::
-::::
+- High-degree nodes get larger values; low-degree nodes get smaller values
+- Node 5 (Self + 6):$h_5^1 = h_5^0 + h_6^0 = [0, 0, 1] + [0, 1, 0] = \mathbf{[0, 1, 1]}$
+- Node 6 (Self + 5, 7, 8):$h_6^1 = h_6^0 + h_5^0 + h_7^0 + h_8^0 = [0, 1, 0] + [0, 0, 1] + [1, 0, 0] + [1, 1, 0] = \mathbf{[2, 2, 1]}$
+- **Solution: Normalise by degree**
+- Symmetric normalisation: $\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$, where $\hat{D}$ is degree matrix of $\hat{A}$
+- $\tilde{d}_5 = 2, \tilde{d}_6 = 4, \tilde{d}_7 = 3, \tilde{d}_8 = 3$
+- $h_5^1 = \left( \frac{1}{\sqrt{\tilde{d}_5 \cdot \tilde{d}_5}} \right) h_5^0 + \left( \frac{1}{\sqrt{\tilde{d}_5 \cdot \tilde{d}_6}} \right) h_6^0 = \frac{1}{2}[0, 0, 1] + \frac{1}{\sqrt{8}}[0, 1, 0] \approx \mathbf{[0, 0.35, 0.5]}$
+- $h_6^1 = 0.25[0, 1, 0] + 0.35[0, 0, 1] + 0.28[1, 0, 0] + 0.28[1, 1, 0] \approx \mathbf{[0.56, 0.53, 0.35]}$
 
 ## Final GCN Propagation Rule
 
@@ -232,29 +346,14 @@ where:
 
 # GraphSAGE
 
-## GraphSAGE (Sample and Aggregate)
+## Why GraphSAGE (Sameple and Aggregate)?
 
-:::: columns
-
-::: {.column width="50%"}
-
-- Inductive learning: generalises to unseen nodes/graphs
-- Neighborhood sampling for scalability (mini-batches)
-- Aggregators: mean, pool (MLP+max), LSTM
-- Concatenate self-representation with aggregated neighbors
-- Normalise embeddings; learn weights per layer
-
-:::
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/GraphSAGE_cover.jpg" alt="GraphSAGE overview" style="max-width:90%;">
-  <div style="font-size:0.8em; color: #555; margin-top:4px;">
-    Inductive representation learning on large graphs
-  </div>
-</div>
-:::
-::::
+- GCNs are **transductive**: requires full graph structure; can't generalise to unseen nodes/graphs
+- GraphSAGE is **inductive**: learns aggregation functions that can be applied to unseen nodes/graphs
+- GraphSAGE is more **scalable**: neighborhood sampling to generate **mini-batches**, rather than processing the entire graph at once
+- GraphSAGE allows for **learnable aggregators**: mean, pooling (MLP + max), LSTM; where GCN uses fixed mean aggregation
+- GraphSAGE **learns weights per layer**; where GCN uses fixed weights from adjacency matrix
+- GraphSAGE treats self-representation and neighbours differently: **concatenating**.
 
 ## GraphSAGE Aggregators
 
@@ -262,56 +361,123 @@ where:
 
 ::: {.column width="50%"}
 - Mean aggregator: elementwise mean over neighbors
-- Pool aggregator: transform neighbor features, then max-pool
+- Pool aggregator: transform neighbor features using a MLP, then max-pool
 - LSTM aggregator: sequence model over randomly ordered neighbors
 
 :::
 
 ::: {.column width="50%"}
 <div style="text-align:center;">
-  <img src="images/ma.png" alt="Mean aggregator" style="max-width:80%;">
+  <img src="images/pooling_recurrent_aggregators.jpg" alt="pool and LSTM aggregator" style="max-width:80%;">
 </div>
 :::
 ::::
+
+## Example of GraphSAGE update rules
+
+<div style="text-align:center;">
+  <img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;">
+</div>
+
+- Step 1: Initial Features ($H^0$)
+- Node 6: $h_6^0 = [0, 1]$
+- Neighbours (5, 7, 8): $h_5^0 = [0, 0]$, $h_7^0 = [1, 0]$, $h_8^0 = [1, 1]$
+
+## Step 2: Aggregate the Neighbours
+
+<div style="text-align:center;">
+  <img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;">
+</div>
+
+$$\text{AGG}_{\text{neigh}} = \text{mean}([0, 0], [1, 0], [1, 1]) = [0.66, 0.33]$$
+
+## Step 3: Concatenation
+
+<div style="text-align:center;">
+  <img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:40%;">
+</div>
+
+- Join the self-vector and the neighbour-vector (increase dimension from 2 to 4)
+$$\text{CONCAT}(h_6^0, \text{AGG}_{neigh}) = [ \underbrace{0, 1}_{\text{Self}}, \underbrace{0.66, 0.33}_{\text{Neighbours}} ]$$
+
+## Step 4: Linear Transformation ($W^k$)
+
+- Bring the dimension back, from 4 to 2
+- Suppose $W^1$ is a $2 \times 4$ matrix
+$$h_6^1 = \sigma \left( \begin{pmatrix} w_{11} & w_{12} & w_{13} & w_{14} \\ w_{21} & w_{22} & w_{23} & w_{24} \end{pmatrix} \cdot \begin{bmatrix} 0 \\ 1 \\ 0.66 \\ 0.33 \end{bmatrix} \right)$$
+
+## Why concatenation works?
+
+- **Identity Preservation**: in GCN, if Node 6 has 100 neighbours, its own features only contribute $1\%$ to the next layer. In GraphSAGE, the self-features always occupy a **dedicated** portion of the input to the next layer (as the first half of the concat vector).
+- **Flexible Weighting**: weight matrix $W$ can learn to weight "self" differently than "neighbours".
+  - Note: $W$ is learned per layer from training, not fixed.
+  - It might learn that your own interests are more important for friend prediction than your neighbours' interests.
+
+## When to use GCN or GraphSAGE?
+
+- Use GCN for small, static, or fully known graphs where node information does not change rapidly.
+- Use GraphSAGE for *large*, *dynamic*, or *streaming* graphs, where you need to generate embeddings for unseen or new nodes without retraining the entire model.
 
 # Graph Attention Networks (GAT)
 
-## GAT
+## Why GAT?
 
-:::: columns
+- **Treating neighhours differently**: GCN use fixed aggregation (mean, sum, etc.) that treats all neighbors equally. GAT learns to assign different importance to different neighbors using attention mechanisms.
+- **Weight Calculation**: GCN uses fixed, structural weights (based on graph Laplacian). GAT learns these weights dynamically during training
+- **Better Performance**: GAT generally outperforms GCN on node classification task. GATs are particularly effective when the graph structure is complex or sparse.
+- **Higher Computational Complexity**: GAT is more resource-intensive and slower to train; GCN is faster and more situable for large-scale graphs.
 
-::: {.column width="50%"}
+## What is ATTENTION in GAT?
 
-- Learn attention weights over neighbors; masked self-attention
-- Replaces fixed normalization in GCN with learned coefficients
-- Multi-head attention: concatenate intermediate heads; average at output
-- Improves interpretability via attention visualization; handles heterophily better
+- Attention weight $\alpha_{i,j}$ measures the importance of neighbor $j$ to node $i$
 
-:::
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/GAT_Cover.jpg" alt="GAT overview" style="max-width:90%;">
-</div>
-:::
-::::
-
-## GCN vs GAT Aggregation
+$h_i^{(l+1)} = \sigma \left( \sum_{j \in \mathcal{N}_i} \alpha_{ij}^{(l)} \mathbf{W}^{(l)} h_j^{(l)} \right)$
 
 <div style="text-align:center;">
-  <img src="images/GCN_vs_GAT.jpg" alt="GCN vs GAT" style="max-width:90%;">
+  <img src="images/GCN_vs_GAT.jpg" alt="GCN vs GAT" style="max-width:70%;">
 </div>
 
-## GAT: Multi-head Attention
+## Attention weight
 
 <div style="text-align:center;">
-  <img src="images/MultiHead_Attention.jpeg" alt="Multi-head attention in GAT" style="max-width:70%;">
+  <img src="images/attention_weight.png" alt="attention weight" style="max-width:90%;">
+</div>
+
+- A clear explanation: [https://epichka.com/blog/2023/gat-paper-explained/](https://epichka.com/blog/2023/gat-paper-explained/)
+
+## Masked Attention
+
+- Only weights for neighbors are computed, others masked
+
+<div style="text-align:center;">
+  <img src="images/masked_attention.png" alt="masked attention" style="max-width:90%;">
+</div>
+
+## Multi-head Attention to stabilise learning
+
+- To mitigate randomness in calculating attention weights, e.g. random initialisation
+
+$$h_i^{(l+1)} = \sigma \left( \frac{1}{K} \sum_{k=1}^{K} \sum_{j \in \mathcal{N}_i} \alpha_{ij}^{k} \mathbf{W}^{k} h_j^{(l)} \right)$$
+
+<div style="text-align:center;">
+  <img src="images/MultiHead_Attention.jpeg" alt="Multi-head attention in GAT" style="max-width:50%;">
   <div style="font-size:0.8em; color: #555; margin-top:4px;">
     Concatenate intermediate heads; average at final layer
   </div>
 </div>
 
-## Implementation in PyTorch
+## Attention visualisation for interpretability
+
+- To understand which neighbors are most influential for a node
+
+<div style="text-align:center;">
+  <img src="images/cora-attention.png" alt="Attention Visualisation" style="max-width:70%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    https://www.dgl.ai/blog/2019/02/17/gat.html
+  </div>
+</div>
+
+# Implementing GCN in PyTorch
 
 ## GCN Convolutional Layer
 
@@ -351,25 +517,15 @@ class Net(torch.nn.Module):
 
 ## Case Study: Zachary's Karate Club
 
-:::: columns
-
-::: {.column width="50%"}
-
-**Historical Context (1970-1972):**
+**Context (1970-1972):**
 
 - Observed local karate club
-- Conflict between administrator "John A" and instructor "Mr. Hi"
-- Club split into two groups
-- Predict which members join which group
+- Conflict between administrator "John A" and instructor "Mr. Hi" led to club split into two groups
+- Based on this graph, **aim to predict which members join which group**
 
-:::
-
-::: {.column width="50%"}
 <div style="text-align:center;">
-  <img src="images/karate_club.png" alt="Karate club network" style="max-width:100%;">
+  <img src="images/karate_club.png" alt="Karate club network" style="max-width:150%;">
 </div>
-:::
-::::
 
 ## Semi-Supervised Learning Setup
 
@@ -420,13 +576,12 @@ for epoch in range(200):
 
 :::: columns
 
-::: {.column width="50%"}
+::: {.column width="40%"}
 
 **PyTorch Geometric (PyG):**
 
 - Dedicated library for graph deep learning
 - Easy, fast, and simple implementation
-- Built for PyTorch users
 - Active development and community
 
 **Features:**
@@ -437,7 +592,7 @@ for epoch in range(200):
 
 :::
 
-::: {.column width="50%"}
+::: {.column width="60%"}
 
 ```python
 from torch_geometric.nn import GCNConv
@@ -466,7 +621,7 @@ class GCN(torch.nn.Module):
 - Semi-supervised learning on graphs is powerful
 - Applications: social networks, molecules, knowledge graphs
 
-**Critical Question:** How powerful are GCNs really?
+**Q:** How powerful are GCNs really?
 
 Read: [How powerful are Graph Convolutions?](https://www.inference.vc/how-powerful-are-graph-convolutions-review-of-kipf-welling-2016-2/)
 
