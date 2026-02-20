@@ -16,7 +16,7 @@ format:
 ## Recap: Neural Networks (or MLP)
 
 <div style="text-align:center;">
-  <img src="images/nn_basic_arch.png" alt="ANN architecture" style="max-width:80%;">
+  <img src="images/nn_basic_arch.png" alt="ANN architecture" style="max-width:70%;">
 </div>
 
 ## Recap: Convolutional Neural Networks (CNN)
@@ -27,6 +27,12 @@ format:
 <div style="text-align:center;">
   <img src="images/cnn.png" alt="CNN architecture" style="max-width:80%;">
 </div>
+
+<div style="text-align:center;">
+  <img src="images/2dconv_animation.gif" alt="2D convolution animation" style="max-width:60%;">
+</div>
+
+[source: Arden Dertat](https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)
 
 # Graph Neural Networks
 
@@ -42,9 +48,9 @@ format:
 - **GCN**: shared filters; normalised neighborhood aggregation (spectral → spatial)
 - **GraphSAGE**: inductive sampling + learnable aggregators (mean/pool/LSTM)
 - **GAT**: attention over neighbors; learns edge weights; multi-head for capacity
-- 
+- *Not today's focus, but worth mentioning*
 - **DeepWalk**: unsupervised node embeddings via random walks (word2vec-like)
-- **ChebNet**: spectral filtering via Chebyshev polynomials; localized convolutions
+- **ChebNet**: spectral filtering via Chebyshev polynomials; localised convolutions
 
 ## Graph Convolutional Networks (GCN)
 
@@ -295,8 +301,6 @@ Layer-wise propagation:
 
 $$H^{i} = f(H^{i-1}, A)$$
 
-Simple example:
-
 $$f(H^{i}, A) = σ(AH^{i}W^{i})$$
 
 where:
@@ -314,7 +318,10 @@ where:
 - Node 1 and 3 become identical after one layer, despite different initial features
 - Node 1 (Neighbours: 2, 4):$h_1^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}$
 - Node 3 (Neighbours: 2, 4):$h_3^1 = h_2^0 + h_4^0 = [1, 1, 0] + [1, 1, 1] = \mathbf{[2, 2, 1]}$
-- 
+<div style="text-align:center;">
+  <img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:20%;">
+</div>
+
 - **Solution: Add self-loops**
 - Add identity: $\hat{A} = A + I$
 - Node 1: $h_1^1 = h_1^0 + h_2^0 + h_4^0 = [1,0,1] + [1,1,0] + [1,1,1] = \mathbf{[3, 2, 2]}$
@@ -326,6 +333,10 @@ where:
 - High-degree nodes get larger values; low-degree nodes get smaller values
 - Node 5 (Self + 6):$h_5^1 = h_5^0 + h_6^0 = [0, 0, 1] + [0, 1, 0] = \mathbf{[0, 1, 1]}$
 - Node 6 (Self + 5, 7, 8):$h_6^1 = h_6^0 + h_5^0 + h_7^0 + h_8^0 = [0, 1, 0] + [0, 0, 1] + [1, 0, 0] + [1, 1, 0] = \mathbf{[2, 2, 1]}$
+<div style="text-align:center;">
+  <img src="images/friends_graph.png" alt="Friends graph example 1" style="max-width:20%;">
+</div>
+
 - **Solution: Normalise by degree**
 - Symmetric normalisation: $\hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}$, where $\hat{D}$ is degree matrix of $\hat{A}$
 - $\tilde{d}_5 = 2, \tilde{d}_6 = 4, \tilde{d}_7 = 3, \tilde{d}_8 = 3$
@@ -344,12 +355,179 @@ where:
 - $W^{(l)}$ = learnable weight matrix for layer $l$
 - $\sigma$ = activation function
 
+# Implementing GCN in PyTorch
+
+## GCN Convolutional Layer
+
+```python
+class GCNConv(nn.Module):
+    def __init__(self, A, in_channels, out_channels):
+        super(GCNConv, self).__init__()
+        self.A_hat = A + torch.eye(A.size(0))
+        self.D     = torch.diag(torch.sum(A,1))
+        self.D     = self.D.inverse().sqrt()
+        self.A_hat = torch.mm(torch.mm(self.D, self.A_hat), self.D)
+        self.W     = nn.Parameter(torch.rand(in_channels,out_channels))
+    
+    def forward(self, X):
+        out = torch.relu(torch.mm(torch.mm(self.A_hat, X), self.W))
+        return out
+```
+
+## GCN Network Architecture
+
+```python
+class Net(torch.nn.Module):
+    def __init__(self, A, nfeat, nhid, nout):
+        super(Net, self).__init__()
+        self.conv1 = GCNConv(A, nfeat, nhid)
+        self.conv2 = GCNConv(A, nhid, nout)
+        
+    def forward(self, X):
+        H  = self.conv1(X)
+        H2 = self.conv2(H)
+        return H2
+```
+<div style="text-align:center;">
+  <img src="images/GCN_illustration.png" alt="Karate club network" style="max-width:60%;">
+</div>
+
+## Case Study: Zachary's Karate Club
+
+**Context (1970-1972):**
+
+- Observed local karate club
+- Conflict between administrator "John A" and instructor "Mr. Hi" led to club split into two groups
+- Based on this graph, **aim to predict which members join which group**
+
+<div style="text-align:center;">
+  <img src="images/karate_club.png" alt="Karate club network" style="max-width:150%;">
+</div>
+
+## Semi-Supervised Learning Setup
+
+- **Labels known** for only 2 nodes: John A (0) and Mr. Hi (1)
+- **Predict labels** for all other members based on graph structure
+- Use graph connectivity to propagate information
+
+```python
+# Only nodes 0 and 33 are labeled
+target = torch.tensor([0,-1,-1,-1,...,-1,-1,1])
+
+# Feature matrix (one-hot encoding)
+X = torch.eye(A.size(0))
+
+# 'A' is the adjacency matrix of the karate club graph. It contains 1 at position (i,j) if there is an edge between node i and j, and 0 otherwise.
+
+```
+
+## Training the Model
+
+```python
+
+X=torch.eye(A.size(0))  # Identity matrix as initial X features
+
+# Here we are creating a network with 10 features in hidden layer and 2 in output layer (John A's group vs Mr. Hi's group)
+
+# Initialise network
+model = Net(A, X.size(0), 10, 2)
+
+# Loss and optimizer
+criterion = torch.nn.CrossEntropyLoss(ignore_index=-1)
+optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+
+# Training loop
+for epoch in range(200):
+    optimizer.zero_grad()
+    loss = criterion(model(X), target)
+    loss.backward()
+    optimizer.step()
+```
+
+## Training the model
+
+- What parameters are trained? Weight matrix W and a bias vector for each layer (*intercept*)
+  - Layer 1 (conv1): A matrix of size (nfeat, nhid)
+  - Layer 2 (conv2): A matrix of size (nhid, nout)
+
+$$f(H^{(l)}, A) = \sigma\left( \hat{D}^{-\frac{1}{2}}\hat{A}\hat{D}^{-\frac{1}{2}}H^{(l)}W^{(l)}\right)$$
+
+<div style="text-align:center;">
+  <img src="images/GCN_illustration.png" alt="Karate club network" style="max-width:40%;">
+</div>
+
+
+## Training Visualisation
+
+<div style="text-align:center;">
+  <img src="images/train_karate_animation.gif" alt="Training animation" style="max-width:70%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Node embeddings learned during training
+  </div>
+</div>
+
+- Model successfully separates two groups
+- Close to actual predictions (except node 9)
+- Semi-supervised learning works!
+
+## PyTorch Geometric
+
+:::: columns
+
+::: {.column width="40%"}
+
+**PyTorch Geometric (PyG):**
+
+- Dedicated library for graph deep learning
+- Easy, fast, and simple implementation
+- Active development and community
+
+**Features:**
+
+- Pre-built GCN layers
+- Various graph datasets
+- Efficient sparse operations
+
+:::
+
+::: {.column width="60%"}
+
+```python
+from torch_geometric.nn import GCNConv
+
+class GCN(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.conv1 = GCNConv(num_features, 16)
+        self.conv2 = GCNConv(16, num_classes)
+        
+    def forward(self, x, edge_index):
+        x = self.conv1(x, edge_index)
+        x = F.relu(x)
+        x = self.conv2(x, edge_index)
+        return F.log_softmax(x, dim=1)
+```
+
+:::
+::::
+
+
 # GraphSAGE
 
-## Why GraphSAGE (Sameple and Aggregate)?
+## Why GraphSAGE (Sample and Aggregate)?
 
 - GCNs are **transductive**: requires full graph structure; can't generalise to unseen nodes/graphs
 - GraphSAGE is **inductive**: learns aggregation functions that can be applied to unseen nodes/graphs
+
+<div style="text-align:center;">
+  <img src="images/transductive_inductive_learning_on_graph.jpg" alt="transductive_vs_inductive" style="max-width:50%;">
+  <div style="font-size:0.8em; color: #555; margin-top:4px;">
+    Transductive vs inductive learning on graph. Source: https://www.mdpi.com/2220-9964/10/2/97
+  </div>
+</div>
+
+## Why GraphSAGE (Sample and Aggregate)?
+
 - GraphSAGE is more **scalable**: neighborhood sampling to generate **mini-batches**, rather than processing the entire graph at once
 - GraphSAGE allows for **learnable aggregators**: mean, pooling (MLP + max), LSTM; where GCN uses fixed mean aggregation
 - GraphSAGE **learns weights per layer**; where GCN uses fixed weights from adjacency matrix
@@ -477,141 +655,6 @@ $$h_i^{(l+1)} = \sigma \left( \frac{1}{K} \sum_{k=1}^{K} \sum_{j \in \mathcal{N}
   </div>
 </div>
 
-# Implementing GCN in PyTorch
-
-## GCN Convolutional Layer
-
-```python
-class GCNConv(nn.Module):
-    def __init__(self, A, in_channels, out_channels):
-        super(GCNConv, self).__init__()
-        self.A_hat = A + torch.eye(A.size(0))
-        self.D     = torch.diag(torch.sum(A,1))
-        self.D     = self.D.inverse().sqrt()
-        self.A_hat = torch.mm(torch.mm(self.D, self.A_hat), self.D)
-        self.W     = nn.Parameter(torch.rand(in_channels,out_channels))
-    
-    def forward(self, X):
-        out = torch.relu(torch.mm(torch.mm(self.A_hat, X), self.W))
-        return out
-```
-
-## GCN Network Architecture
-
-```python
-class Net(torch.nn.Module):
-    def __init__(self, A, nfeat, nhid, nout):
-        super(Net, self).__init__()
-        self.conv1 = GCNConv(A, nfeat, nhid)
-        self.conv2 = GCNConv(A, nhid, nout)
-        
-    def forward(self, X):
-        H  = self.conv1(X)
-        H2 = self.conv2(H)
-        return H2
-```
-
-- Stack multiple GCN layers
-- Learn hierarchical representations
-- Output layer for classification/regression
-
-## Case Study: Zachary's Karate Club
-
-**Context (1970-1972):**
-
-- Observed local karate club
-- Conflict between administrator "John A" and instructor "Mr. Hi" led to club split into two groups
-- Based on this graph, **aim to predict which members join which group**
-
-<div style="text-align:center;">
-  <img src="images/karate_club.png" alt="Karate club network" style="max-width:150%;">
-</div>
-
-## Semi-Supervised Learning Setup
-
-- **Labels known** for only 2 nodes: John A (0) and Mr. Hi (1)
-- **Predict labels** for all other members based on graph structure
-- Use graph connectivity to propagate information
-
-```python
-# Only nodes 0 and 33 are labeled
-target = torch.tensor([0,-1,-1,-1,...,-1,-1,1])
-
-# Feature matrix (one-hot encoding)
-X = torch.eye(A.size(0))
-```
-
-## Training the Model
-
-```python
-# Initialize network
-model = Net(A, X.size(0), 10, 2)
-
-# Loss and optimizer
-criterion = torch.nn.CrossEntropyLoss(ignore_index=-1)
-optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
-
-# Training loop
-for epoch in range(200):
-    optimizer.zero_grad()
-    loss = criterion(model(X), target)
-    loss.backward()
-    optimizer.step()
-```
-
-## Training Visualization
-
-<div style="text-align:center;">
-  <img src="images/train_karate_animation.gif" alt="Training animation" style="max-width:70%;">
-  <div style="font-size:0.8em; color: #555; margin-top:4px;">
-    Node embeddings learned during training
-  </div>
-</div>
-
-- Model successfully separates two groups
-- Close to actual predictions (except node 9)
-- Semi-supervised learning works!
-
-## PyTorch Geometric
-
-:::: columns
-
-::: {.column width="40%"}
-
-**PyTorch Geometric (PyG):**
-
-- Dedicated library for graph deep learning
-- Easy, fast, and simple implementation
-- Active development and community
-
-**Features:**
-
-- Pre-built GCN layers
-- Various graph datasets
-- Efficient sparse operations
-
-:::
-
-::: {.column width="60%"}
-
-```python
-from torch_geometric.nn import GCNConv
-
-class GCN(torch.nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = GCNConv(num_features, 16)
-        self.conv2 = GCNConv(16, num_classes)
-        
-    def forward(self, x, edge_index):
-        x = self.conv1(x, edge_index)
-        x = F.relu(x)
-        x = self.conv2(x, edge_index)
-        return F.log_softmax(x, dim=1)
-```
-
-:::
-::::
 
 ## Key Takeaways
 
