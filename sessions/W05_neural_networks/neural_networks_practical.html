@@ -421,17 +421,15 @@ window.Quarto = {
 <section id="set-up-tensorflow" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-tensorflow">Set up TensorFlow</h2>
 <p>Import TensorFlow into your programme to get started:</p>
-<div id="a8bc8c56" class="cell" data-execution_count="1">
+<div id="0d12ae0d" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"TensorFlow version:"</span>, tf.__version__)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2026-02-23 21:43:33.658002: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
-2026-02-23 21:43:33.703471: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2026-02-23 21:43:35.347624: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.</code></pre>
+<pre><code>2026-02-24 07:05:49.840224: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>TensorFlow version: 2.20.0</code></pre>
@@ -444,10 +442,10 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <section id="tensors" class="level3">
 <h3 class="anchored" data-anchor-id="tensors">Tensors</h3>
 <p>Can construct constant tensors with <code>tf.constant</code>.</p>
-<div id="0e3ddb8b" class="cell" data-execution_count="2">
+<div id="00ab3185" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tf.constant([[<span class="fl">1.</span>, <span class="fl">2.</span>, <span class="fl">3.</span>], [<span class="fl">4.</span>, <span class="fl">5.</span>, <span class="fl">6.</span>]]) <span class="co"># 2x3 matrix</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2026-02-23 21:43:35.960691: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)</code></pre>
+<pre><code>2026-02-24 07:05:52.142813: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>&lt;tf.Tensor: shape=(2, 3), dtype=float32, numpy=
@@ -455,21 +453,21 @@ array([[1., 2., 3.],
        [4., 5., 6.]], dtype=float32)&gt;</code></pre>
 </div>
 </div>
-<div id="8991e1fd" class="cell" data-execution_count="3">
+<div id="3db114dd" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tf.constant(<span class="dv">42</span>) <span class="co"># scalar</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>&lt;tf.Tensor: shape=(), dtype=int32, numpy=42&gt;</code></pre>
 </div>
 </div>
 <p>Tensors have a shape and data type (dtype).</p>
-<div id="83164b64" class="cell" data-execution_count="4">
+<div id="ad1c87b9" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> tf.constant([[<span class="fl">1.</span>, <span class="fl">2.</span>, <span class="fl">3.</span>], [<span class="fl">4.</span>, <span class="fl">5.</span>, <span class="fl">6.</span>]])</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>t.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>TensorShape([2, 3])</code></pre>
 </div>
 </div>
-<div id="db43eabd" class="cell" data-execution_count="5">
+<div id="175eedf5" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>t.dtype</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>tf.float32</code></pre>
@@ -479,7 +477,7 @@ array([[1., 2., 3.],
 <section id="indexing" class="level3">
 <h3 class="anchored" data-anchor-id="indexing">Indexing</h3>
 <p>Tensor indexing is very similar to numpy.</p>
-<div id="b8dde456" class="cell" data-execution_count="6">
+<div id="0544af1c" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>t[:, <span class="dv">1</span>:]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>&lt;tf.Tensor: shape=(2, 2), dtype=float32, numpy=
@@ -487,7 +485,7 @@ array([[2., 3.],
        [5., 6.]], dtype=float32)&gt;</code></pre>
 </div>
 </div>
-<div id="e4294743" class="cell" data-execution_count="7">
+<div id="b3599886" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>t[..., <span class="dv">1</span>,  tf.newaxis]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>&lt;tf.Tensor: shape=(2, 1), dtype=float32, numpy=
@@ -499,7 +497,7 @@ array([[2.],
 <section id="operations" class="level3">
 <h3 class="anchored" data-anchor-id="operations">Operations</h3>
 <p>Variety of tensor operations are possible.</p>
-<div id="f1481268" class="cell" data-execution_count="8">
+<div id="e66890e7" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">+</span> <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>&lt;tf.Tensor: shape=(2, 3), dtype=float32, numpy=
@@ -507,7 +505,7 @@ array([[11., 12., 13.],
        [14., 15., 16.]], dtype=float32)&gt;</code></pre>
 </div>
 </div>
-<div id="96ac50a3" class="cell" data-execution_count="9">
+<div id="49f0fed4" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># square</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>tf.square(t)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
@@ -516,7 +514,7 @@ array([[ 1.,  4.,  9.],
        [16., 25., 36.]], dtype=float32)&gt;</code></pre>
 </div>
 </div>
-<div id="8fb8750a" class="cell" data-execution_count="10">
+<div id="5c169e76" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># matrix multiplication</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">@</span> tf.transpose(t) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
@@ -531,7 +529,7 @@ array([[14., 32.],
 <h2 class="anchored" data-anchor-id="tensors-and-numpy-ndarray">Tensors and numpy ndarray</h2>
 <p>Tensors and ndarray are highly compatible, and we can create a tensor from ndarray.</p>
 <p>For the difference between tensors and ndarrays, see <a href="https://www.tensorflow.org/guide/tensor#tensors-vs-numpy-arrays">tensors documentation</a> and <a href="https://www.geeksforgeeks.org/deep-learning/pytorch-tensor-vs-numpy-array/">the geeksforgeeks post</a>. I found the latter one more interesting and easier to understand.</p>
-<div id="025a6e15" class="cell" data-execution_count="11">
+<div id="da5353f5" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.array([<span class="fl">2.</span>, <span class="fl">4.</span>, <span class="fl">5.</span>])</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>tf.constant(a)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
@@ -539,7 +537,7 @@ array([[14., 32.],
 </div>
 </div>
 <p>Can convert tensor to ndarray.</p>
-<div id="28da67b5" class="cell" data-execution_count="12">
+<div id="ef9d20bf" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>t.numpy()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>array([[1., 2., 3.],
@@ -547,20 +545,20 @@ array([[14., 32.],
 </div>
 </div>
 <p>Can apply numpy operations to tensors and vice versa.</p>
-<div id="9e40b857" class="cell" data-execution_count="13">
+<div id="4dc45d0f" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>np.array(t)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>array([[1., 2., 3.],
        [4., 5., 6.]], dtype=float32)</code></pre>
 </div>
 </div>
-<div id="cdbc7c4d" class="cell" data-execution_count="14">
+<div id="162c26d5" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>tf.square(a)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>&lt;tf.Tensor: shape=(3,), dtype=float64, numpy=array([ 4., 16., 25.])&gt;</code></pre>
 </div>
 </div>
-<div id="83dd6141" class="cell" data-execution_count="15">
+<div id="677a4249" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>np.square(t)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>array([[ 1.,  4.,  9.],
@@ -577,29 +575,29 @@ array([[14., 32.],
 <p><span class="math display">\[
 f(w_1, w_2) = 3w_1^2 + 2w_1w_2
 \]</span></p>
-<div id="7bf4aa95" class="cell" data-execution_count="16">
+<div id="fa5454bd" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(w1, w2):</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">3</span> <span class="op">*</span> w1 <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> w1 <span class="op">*</span> w2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="ed569231" class="cell" data-execution_count="17">
+<div id="26fea4b1" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># example of w1 and w2</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>w1, w2 <span class="op">=</span> <span class="fl">5.0</span>, <span class="fl">3.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="computing-gradients-analytically" class="level3">
 <h3 class="anchored" data-anchor-id="computing-gradients-analytically">Computing gradients analytically</h3>
-<div id="8fdb6a70" class="cell" data-execution_count="18">
+<div id="a03d6f1b" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> df_dw1(w1, w2):</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">6</span> <span class="op">*</span> w1 <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> w2</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> df_dw2(w1, w2):</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> w1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="2fbc228f" class="cell" data-execution_count="19">
+<div id="848ec0d4" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df_dw1(w1, w2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>36.0</code></pre>
 </div>
 </div>
-<div id="9e13088a" class="cell" data-execution_count="20">
+<div id="0c8eea1d" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df_dw2(w1, w2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>10.0</code></pre>
@@ -610,14 +608,14 @@ f(w_1, w_2) = 3w_1^2 + 2w_1w_2
 <section id="computing-gradients-numerically" class="level3">
 <h3 class="anchored" data-anchor-id="computing-gradients-numerically">Computing gradients numerically</h3>
 <p>Compute the gradient by finite differences.</p>
-<div id="e4f595b2" class="cell" data-execution_count="21">
+<div id="d1c376f8" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> <span class="fl">1e-6</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>(f(w1 <span class="op">+</span> eps, w2) <span class="op">-</span> f(w1, w2)) <span class="op">/</span> eps</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>36.000003007075065</code></pre>
 </div>
 </div>
-<div id="cb44cf2a" class="cell" data-execution_count="22">
+<div id="300ea473" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>(f(w1, w2 <span class="op">+</span> eps) <span class="op">-</span> f(w1, w2)) <span class="op">/</span> eps</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>10.000000003174137</code></pre>
@@ -628,14 +626,14 @@ f(w_1, w_2) = 3w_1^2 + 2w_1w_2
 <section id="computing-gradients-with-autodiff" class="level3">
 <h3 class="anchored" data-anchor-id="computing-gradients-with-autodiff">Computing gradients with Autodiff</h3>
 <p>Autodiff builds derivatives of each stage of the computational graph so that gradients can be computed automatically and efficiently.</p>
-<div id="d6b85006" class="cell" data-execution_count="23">
+<div id="2e003ef7" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>w1, w2 <span class="op">=</span> tf.Variable(<span class="fl">5.</span>), tf.Variable(<span class="fl">3.</span>)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> tf.GradientTape() <span class="im">as</span> tape:</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> f(w1, w2)</span>
 <span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>gradients <span class="op">=</span> tape.gradient(z, [w1, w2])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="c47d8920" class="cell" data-execution_count="24">
+<div id="1b708fcd" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>gradients</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="24">
 <pre><code>[&lt;tf.Tensor: shape=(), dtype=float32, numpy=36.0&gt;,
@@ -658,7 +656,7 @@ f(w_1, w_2) = 3w_1^2 + 2w_1w_2
 <p>In this example, each image will be converted to float32, normalized to [0, 1] and flattened to a 1-D array of 784 features (28*28).</p>
 <p><img src="http://neuralnetworksanddeeplearning.com/images/mnist_100_digits.png" alt="mnist" style="width: 400px;"></p>
 <p>More info on MNIST can be found <a href="http://yann.lecun.com/exdb/mnist/">here</a>.</p>
-<div id="9fa7d312" class="cell" data-execution_count="25">
+<div id="e6ab3eae" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MNIST dataset parameters.</span></span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>num_classes <span class="op">=</span> <span class="dv">10</span> <span class="co"># total classes (0-9 digits).</span></span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>num_feature_one_dimension <span class="op">=</span> <span class="dv">28</span> <span class="co"># img shape: 28*28</span></span>
@@ -678,7 +676,7 @@ f(w_1, w_2) = 3w_1^2 + 2w_1w_2
 <section id="load-a-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="load-a-dataset">Load a dataset</h2>
 <p>Load and prepare the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a>. Convert the sample data from integers to floating-point numbers:</p>
-<div id="fdead408" class="cell" data-execution_count="26">
+<div id="c59716fe" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> tf.keras.datasets.mnist</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>(x_train, y_train), (x_test, y_test) <span class="op">=</span> mnist.load_data()</span>
@@ -691,18 +689,18 @@ f(w_1, w_2) = 3w_1^2 + 2w_1w_2
 
 <span class="ansi-bold">       0/11490434</span> <span class="ansi-white-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 0s/step
 
-<span class="ansi-bold">   98304/11490434</span> <span class="ansi-white-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">5s</span> 1us/step
+<span class="ansi-bold"> 2834432/11490434</span> <span class="ansi-green-fg">━━━━</span><span class="ansi-white-fg">━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 0us/step
 
-<span class="ansi-bold">  647168/11490434</span> <span class="ansi-green-fg">━</span><span class="ansi-white-fg">━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">1s</span> 0us/step
+<span class="ansi-bold"> 4202496/11490434</span> <span class="ansi-green-fg">━━━━━━━</span><span class="ansi-white-fg">━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 0us/step
 
-<span class="ansi-bold"> 4268032/11490434</span> <span class="ansi-green-fg">━━━━━━━</span><span class="ansi-white-fg">━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 0us/step
+<span class="ansi-bold">11083776/11490434</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━</span><span class="ansi-white-fg">━</span> <span class="ansi-bold">0s</span> 0us/step
 
 <span class="ansi-bold">11490434/11490434</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 0us/step
 </pre>
 </div>
 </div>
 </div>
-<div id="acec45ea" class="cell" data-execution_count="27">
+<div id="35cdfe0f" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function for visualising digits</span></span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_num(number):</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -792,7 +790,7 @@ f(w_1, w_2) = 3w_1^2 + 2w_1w_2
 <section id="build-a-machine-learning-model" class="level2">
 <h2 class="anchored" data-anchor-id="build-a-machine-learning-model">Build a machine learning model</h2>
 <p>Build a <code>tf.keras.Sequential</code> model by stacking layers.</p>
-<div id="cc2f7d16" class="cell" data-execution_count="28">
+<div id="15aa0fd3" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.models.Sequential([</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># input layer (28*28), which is flattened before being fed into the neural network</span></span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  tf.keras.layers.Flatten(input_shape<span class="op">=</span>(num_feature_one_dimension, num_feature_one_dimension)),</span>
@@ -809,39 +807,39 @@ f(w_1, w_2) = 3w_1^2 + 2w_1w_2
 </div>
 </div>
 <p>For each example, the model returns a vector of <a href="https://developers.google.com/machine-learning/glossary#logits">logits</a> or <a href="https://developers.google.com/machine-learning/glossary#log-odds">log-odds</a> scores, one for each class.</p>
-<div id="2dde08f3" class="cell" data-execution_count="29">
+<div id="876c3d4d" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model(x_train[:<span class="dv">1</span>]).numpy()</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>predictions</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="29">
-<pre><code>array([[-0.18908565, -0.16817917,  0.00899881,  0.04826306, -0.02197253,
-         0.06319315,  0.17290132, -0.197062  , -0.14929521,  0.21831547]],
+<pre><code>array([[-0.21612209, -0.3273214 ,  0.13210769,  0.07165647, -0.02741206,
+        -0.17329681, -0.6047768 ,  0.20678392,  0.17103939,  0.02474876]],
       dtype=float32)</code></pre>
 </div>
 </div>
 <p>The <code>tf.nn.softmax</code> function converts these logits to <em>probabilities</em> for each class:</p>
-<div id="f89677e7" class="cell" data-execution_count="30">
+<div id="b93ec76d" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>tf.nn.softmax(predictions).numpy()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="30">
-<pre><code>array([[0.08369144, 0.08545955, 0.10202533, 0.10611097, 0.0989139 ,
-        0.10770711, 0.12019598, 0.08302654, 0.0870887 , 0.12578043]],
+<pre><code>array([[0.08441857, 0.07553439, 0.11958376, 0.11256895, 0.10195152,
+        0.08811235, 0.05723311, 0.12885572, 0.12433118, 0.10741053]],
       dtype=float32)</code></pre>
 </div>
 </div>
 <p>Note: It is possible to bake the <code>tf.nn.softmax</code> function into the activation function for the last layer of the network. While this can make the model output more directly interpretable, this approach is discouraged as it’s impossible to provide an exact and numerically stable loss calculation for all models when using a softmax output.</p>
 <p>Define a loss function for training using <code>losses.SparseCategoricalCrossentropy</code>, which takes a vector of logits and a <code>True</code> index and returns a scalar loss for each example.</p>
-<div id="e5c0b05d" class="cell" data-execution_count="31">
+<div id="89d4e88b" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> tf.keras.losses.SparseCategoricalCrossentropy(from_logits<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>This loss is equal to the negative log probability of the true class: The loss is zero if the model is sure of the correct class.</p>
 <p>This untrained model gives probabilities close to random (1/10 for each class), so the initial loss should be close to <code>-tf.math.log(1/10) ~= 2.3</code>.</p>
-<div id="34c1b9f4" class="cell" data-execution_count="32">
+<div id="370a3fe8" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>loss_fn(y_train[:<span class="dv">1</span>], predictions).numpy()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="32">
-<pre><code>np.float32(2.2283397)</code></pre>
+<pre><code>np.float32(2.4291427)</code></pre>
 </div>
 </div>
 <p>Before you start training, configure and compile the model using Keras <code>Model.compile</code>. Set the <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers"><code>optimizer</code></a> class to <code>adam</code>, set the <code>loss</code> to the <code>loss_fn</code> function you defined earlier, and specify a metric to be evaluated for the model by setting the <code>metrics</code> parameter to <code>accuracy</code>.</p>
-<div id="6df93758" class="cell" data-execution_count="33">
+<div id="18f0d443" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>              loss<span class="op">=</span>loss_fn,</span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>              metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -857,54 +855,54 @@ f(w_1, w_2) = 3w_1^2 + 2w_1w_2
 <li><code>verbose=0</code>: Silent. No output.</li>
 <li><code>verbose=2</code>: One line per epoch; shows the final stats for the epoch once it’s finished; much cleaner.</li>
 </ul>
-<div id="1d58767f" class="cell" data-execution_count="34">
+<div id="52bccee6" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>model.fit(x_train, y_train, epochs<span class="op">=</span><span class="dv">10</span>, verbose<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Epoch 1/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9346 - loss: 0.2192
+1875/1875 - 3s - 2ms/step - accuracy: 0.9335 - loss: 0.2198
 Epoch 2/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9707 - loss: 0.0938
+1875/1875 - 3s - 2ms/step - accuracy: 0.9715 - loss: 0.0925
 Epoch 3/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9796 - loss: 0.0651
+1875/1875 - 3s - 2ms/step - accuracy: 0.9798 - loss: 0.0642
 Epoch 4/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9840 - loss: 0.0510
+1875/1875 - 3s - 2ms/step - accuracy: 0.9837 - loss: 0.0485
 Epoch 5/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9874 - loss: 0.0395
+1875/1875 - 3s - 2ms/step - accuracy: 0.9875 - loss: 0.0383
 Epoch 6/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9894 - loss: 0.0311
+1875/1875 - 3s - 2ms/step - accuracy: 0.9888 - loss: 0.0326
 Epoch 7/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9906 - loss: 0.0266
+1875/1875 - 3s - 2ms/step - accuracy: 0.9912 - loss: 0.0261
 Epoch 8/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9923 - loss: 0.0227
+1875/1875 - 3s - 2ms/step - accuracy: 0.9927 - loss: 0.0233
 Epoch 9/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9923 - loss: 0.0218
+1875/1875 - 3s - 2ms/step - accuracy: 0.9933 - loss: 0.0194
 Epoch 10/10
-1875/1875 - 3s - 2ms/step - accuracy: 0.9941 - loss: 0.0178</code></pre>
+1875/1875 - 3s - 2ms/step - accuracy: 0.9934 - loss: 0.0199</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="34">
-<pre><code>&lt;keras.src.callbacks.history.History at 0x7f7ff17d5b70&gt;</code></pre>
+<pre><code>&lt;keras.src.callbacks.history.History at 0x7f579caf5c90&gt;</code></pre>
 </div>
 </div>
 <p>The <code>Model.evaluate</code> method checks the models performance, usually on a <a href="https://developers.google.com/machine-learning/glossary#validation-set">Validation set</a> or <a href="https://developers.google.com/machine-learning/glossary#test-set">Test set</a>.</p>
-<div id="478ef0a1" class="cell" data-execution_count="35">
+<div id="b6a9614f" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>model.evaluate(x_test,  y_test, verbose<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>313/313 - 0s - 1ms/step - accuracy: 0.9820 - loss: 0.0832</code></pre>
+<pre><code>313/313 - 0s - 1ms/step - accuracy: 0.9778 - loss: 0.0911</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="35">
-<pre><code>[0.08317017555236816, 0.9819999933242798]</code></pre>
+<pre><code>[0.09105459600687027, 0.9778000116348267]</code></pre>
 </div>
 </div>
 <p>The image classifier is now trained to ~98% accuracy on this dataset. To learn more, read the <a href="https://www.tensorflow.org/tutorials/">TensorFlow tutorials</a>.</p>
 <p>If you want your model to return a probability, you can wrap the trained model, and attach the softmax to it:</p>
-<div id="59912022" class="cell" data-execution_count="36">
+<div id="7683cf7f" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>probability_model <span class="op">=</span> tf.keras.Sequential([</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  model,</span>
 <span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  tf.keras.layers.Softmax()</span>
 <span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>To check a random data point and prediction:</p>
-<div id="d7f74837" class="cell" data-execution_count="37">
+<div id="50475b8b" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co">#probability_model(x_test[:1])</span></span>
 <span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>predictions<span class="op">=</span>probability_model.predict(x_test)</span>
 <span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -914,19 +912,19 @@ Epoch 10/10
 <span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>plt.imshow(x_test[index])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-bold">  1/313</span> <span class="ansi-white-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">10s</span> 34ms/step
+<pre><span class="ansi-bold">  1/313</span> <span class="ansi-white-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">10s</span> 33ms/step
 
-<span class="ansi-bold"> 62/313</span> <span class="ansi-green-fg">━━━</span><span class="ansi-white-fg">━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 829us/step
+<span class="ansi-bold"> 63/313</span> <span class="ansi-green-fg">━━━━</span><span class="ansi-white-fg">━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 810us/step
 
-<span class="ansi-bold">127/313</span> <span class="ansi-green-fg">━━━━━━━━</span><span class="ansi-white-fg">━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 799us/step
+<span class="ansi-bold">126/313</span> <span class="ansi-green-fg">━━━━━━━━</span><span class="ansi-white-fg">━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 806us/step
 
-<span class="ansi-bold">191/313</span> <span class="ansi-green-fg">━━━━━━━━━━━━</span><span class="ansi-white-fg">━━━━━━━━</span> <span class="ansi-bold">0s</span> 793us/step
+<span class="ansi-bold">190/313</span> <span class="ansi-green-fg">━━━━━━━━━━━━</span><span class="ansi-white-fg">━━━━━━━━</span> <span class="ansi-bold">0s</span> 800us/step
 
-<span class="ansi-bold">255/313</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━</span><span class="ansi-white-fg">━━━━</span> <span class="ansi-bold">0s</span> 793us/step
+<span class="ansi-bold">251/313</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━</span><span class="ansi-white-fg">━━━━</span> <span class="ansi-bold">0s</span> 807us/step
 
-<span class="ansi-bold">313/313</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 869us/step
+<span class="ansi-bold">313/313</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 882us/step
 
-<span class="ansi-bold">313/313</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 905us/step
+<span class="ansi-bold">313/313</span> <span class="ansi-green-fg">━━━━━━━━━━━━━━━━━━━━</span> <span class="ansi-bold">0s</span> 917us/step
 
 9
 </pre>
