@@ -14,7 +14,9 @@ filters:
 
 ## About the Dataset
 
-Today we will be using the 'Cora' Dataset. The Cora dataset consists of Machine Learning papers. These papers are classified into one of the following seven classes:
+Today we will be using the 'Cora' Dataset ([link](https://ieee-dataport.org/documents/cora)). The Cora dataset consists of 2708 Machine Learning papers, and the citation network consists of 5429 links. Each publication in the dataset is described by a 0/1-valued word vector indicating the absence/presence of the corresponding word from the dictionary. The dictionary consists of 1433 unique words.
+
+These papers are classified into one of the following seven classes:
 
 - Case_Based
 - Genetic_Algorithms
@@ -24,17 +26,17 @@ Today we will be using the 'Cora' Dataset. The Cora dataset consists of Machine 
 - Rule_Learning
 - Theory
 
-The papers were selected in a way such that in the final corpus every paper cites or is cited by at least one other paper. There are 2708 papers in the whole corpus.
+The papers were selected in a way such that in the final corpus every paper cites or is cited by at least one other paper.
 
 **We will be using it for predicting the class to which a given paper belongs**
 
 ## Working
 
-Most of the working is same as for the PyTorch version, except that we will be using an adjacency list representation instead of adjacency matrix. Advantage of using adjacency list is that all the edges can be stored in $O(|E|)$ where $|E|$ is the number of edges, whereas in adjacency matrix it is $O(|V|^2)$ where $|V|$ is number of vertices. So if the number of edges is much less than the number of vertices squared then adjacency list can save a lot of memory and time.
+Most of the working is same as for the PyTorch version, except that we will be using an adjacency list representation instead of adjacency matrix. The advantage of using adjacency list is that all the edges can be stored in $O(|E|)$ where $|E|$ is the number of edges, whereas in adjacency matrix it is $O(|V|^2)$ where $|V|$ is number of vertices. So if the number of edges is much less than the number of vertices squared then adjacency list can save a lot of memory and time.
 
-But if we switch from adjacency matrix to adjacency list then the formulas involving the Adjacency Matrix will also have to be changed. Luckily it turns out that the formulas can be changed pretty easily.
+If we switch from adjacency matrix to adjacency list then the formulas involving the Adjacency Matrix will also have to be changed. Luckily, it turns out that the formulas can be changed pretty easily.
 
-![Formula](graph_nets/GCN/img/formula.png)
+![Formula](images/formula.png)
 
 **Here $\text{aggregate}(A,X)(i)$ gives the $i$'th row of the target**
 
@@ -140,15 +142,15 @@ print('Accuracy: {:.4f}'.format(acc))
 
 ## Introduction
 
-In the previous sections, we covered GCN and DeepWalk, which are methods to generate node embeddings. The basic idea behind node embedding approaches is to use dimensionality reduction techniques to distill the high-dimensional information about a node's neighborhood into a dense vector embedding. These node embeddings can then be fed to downstream machine learning systems and aid in tasks such as node classification, clustering, and link prediction. Let us move on to a slightly different problem. Now, we need the embeddings for each node of a graph where new nodes are continuously being added. A possible way to do this would be to rerun the entire model (GCN or DeepWalk) on the new graph, but it is computationally expensive. Today we will be covering GraphSAGE, a method that will allow us to get embeddings for such graphs in a much easier way. Unlike embedding approaches that are based on matrix factorization, GraphSAGE leverage node features (e.g., text attributes, node profile information, node degrees) in order to learn an embedding function that generalizes to unseen nodes.
+GCN is a method for generating node embeddings in graphs, and the basic idea behind node embedding approaches is to use dimensionality reduction techniques to distill the high-dimensional information about a node's neighborhood into a dense vector embedding. These node embeddings can then be fed to downstream machine learning systems and aid in tasks such as node classification, clustering, and link prediction. Let us move on to a slightly different problem. Now, we need the embeddings for each node of a graph where new nodes are continuously being added. A possible way to do this would be to rerun the entire model (GCN or DeepWalk) on the new graph, but it is computationally expensive. GraphSAGE provides a new approach that allows us to get embeddings for such graphs in a much easier way. Unlike embedding approaches that are based on matrix factorisation, GraphSAGE leverage node features (e.g., text attributes, node profile information, node degrees) in order to learn an embedding function that generalises to unseen nodes.
 
 GraphSAGE is capable of learning structural information about a node's role in a graph, despite the fact that it is inherently based on features.
 
 ## The Start
 
-In the (GCN or DeepWalk) model, the graph was fixed beforehand, let's say the 'Zachary karate club', some model was trained on it, and then we could make predictions about a person X, if he/she went to a particular part of the club after separation.
+In the GCN model, the graph was fixed beforehand, let's say the 'Zachary karate club', some model was trained on it, and then we could make predictions about a person X, if he/she went to a particular part of the club after separation.
 
-![Zachary Karate Club](graph_nets/GraphSAGE/img/karate_club.png)
+![Zachary Karate Club](images/karate_club.png)
 
 In this problem, the nodes in this graph were fixed from the beginning, and all the predictions were also to be made on these fixed nodes. In contrast to this, take an example where 'Youtube' videos are the nodes and assume there is an edge between related videos, and say we need to classify these videos depending on the content. If we take the same model as in the previous dataset, we can classify all these videos, but whenever a new video is added to 'YouTube', we will have to retrain the model on the entire new dataset again to classify it. This is not feasible as there will be too many videos or nodes being added everytime for us to retrain.
 
@@ -158,37 +160,37 @@ To solve this issue, what we can do is not to learn embeddings for each node but
 
 The idea is to generate embeddings, based on the neighbourhood of a given node. In other words, the embedding of a node will depend upon the embedding of the nodes it is connected to. Like in the graph below, the node 1 and 2 are likely to be more similar than node 1 and 5.
 
-![Simple Graph](graph_nets/GraphSAGE/img/example_graph_1.png)
+![Simple Graph](images/example_graph_1.png)
 
 How can this idea be formulated?
 
 First, we assign random values to the embeddings, and on each step, we will set the value of the embedding as the average of embeddings for all the nodes it is directly connected. The following example shows the working on a simple linear graph.
 
-![Mean Embeddings](graph_nets/GraphSAGE/img/animation.gif)
+![Mean Embeddings](images/animation.gif)
 
 This is a straightforward idea, which can be generalized by representing it in the following way:
 
-![Simple Neighbours](graph_nets/GraphSAGE/img/simple_neighbours.png)
+![Simple Neighbours](images/simple_neighbours.png)
 
 Here The Black Box joining A with B, C, D represents some function of A, B, C, D. (In the above animation, it was the mean function). We can replace this box by any function like say sum or max. This function is known as the aggregator function.
 
 Now let's try to make it more general by using not only the neighbours of a node but also the neighbours of the neighbours. The first question is how to make use of neighbours of neighbours. The way which we will be using here is to first generate each node's embedding in the first step by using only its neighbours just like we did above, and then in the second step, we will use these embeddings to generate the new embeddings. Take a look at the following:
 
-![One Layer Aggregation](graph_nets/GraphSAGE/img/aggregation_1.png)
+![One Layer Aggregation](images/aggregation_1.png)
 
 The numbers written along with the nodes are the value of embedding at the time, $T=0$.
 
 Values of embedding after one step are as follows:
 
-![Animation Aggregation Layer 1](graph_nets/GraphSAGE/img/animation_2_bw.gif)
+![Animation Aggregation Layer 1](images/animation_2_bw.gif)
 
 So after one iteration, the values are as follows:
 
-![Second Layer Aggregation](graph_nets/GraphSAGE/img/aggregation_2.png)
+![Second Layer Aggregation](images/aggregation_2.png)
 
 Repeating the same procedure on this new graph, we get (try verifying yourself):
 
-![Third Layer Aggregation](graph_nets/GraphSAGE/img/aggregation_3.png)
+![Third Layer Aggregation](images/aggregation_3.png)
 
 Let's try to do some analysis of the aggregation. Represent by $A^{(0)}$ the initial value of embedding of A (i.e. 0.1), by $A^{(1)}$ the value after one layer (i.e. 0.25) similarly $A^{(2)}$, $B^{(0)}$, $B^{(1)}$ and all other values.
 
@@ -222,7 +224,7 @@ $$A^{(k)} = F(A^{(k-1)}, N(A)^{(k-1)} )$$
 
 This process can be visualized as:
 
-![Sampling](graph_nets/GraphSAGE/img/showing_1.png)
+![Sampling](images/showing_1.png)
 
 This method is quite effective in generating node embeddings. But there is an issue if a new node is added to the graph how can get its embeddings? This is an issue that cannot be tackled with this type of model. Clearly, something new is needed, but what?
 
@@ -230,7 +232,7 @@ One alternative that we can try is to replace the function F by multiple functio
 
 So our embedding generator would be like this:
 
-![Sampling 2](graph_nets/GraphSAGE/img/showing_2.png)
+![Sampling 2](images/showing_2.png)
 
 ## Notation
 
@@ -273,13 +275,13 @@ Where $\sigma$ is some non-linear function (e.g. RELU, sigmoid, etc.) and $W^{(k
 
 One more thing we will add is to normalize the value of h after each iteration, i.e., divide them by their L2 norm, and hence our complete algorithm becomes:
 
-![GraphSAGE Algorithm](graph_nets/GraphSAGE/img/graphsage_algorithm.png)
+![GraphSAGE Algorithm](images/graphsage_algorithm.png)
 
 ## Loss Function
 
 To get the model learning, we need the loss function. For the general unsupervised learning problem, the following loss problem serves pretty well:
 
-![Loss](graph_nets/GraphSAGE/img/Loss_function.png)
+![Loss](images/Loss_function.png)
 
 This graph-based loss function encourages nearby nodes to have similar representations, while enforcing that the representations of disparate nodes are highly distinct.
 
@@ -293,13 +295,13 @@ One of the critical differences between GCN and Graphsage is the generalisation 
 
 Mean aggregator is as simple as you thought it would be. In mean aggregator we simply take the elementwise mean of the vectors in $\{h_{u}^{k-1} \forall u \in N(v)\}$. In other words, we can average embeddings of all nodes in the neighbourhood to construct the neighbourhood embedding.
 
-![Mean Aggregator](graph_nets/GraphSAGE/img/ma.png)
+![Mean Aggregator](images/ma.png)
 
 ### Pool Aggregator
 
 Until now, we were using a weighted average type of approach. But we could also use pooling type of approach; for example, we can do elementwise min or max pooling. So this would be another option where we are taking the messages from our neighbours, transforming them and applying some pooling technique (max-pooling or min pooling).
 
-![Pool Aggregator](graph_nets/GraphSAGE/img/pa.png)
+![Pool Aggregator](images/pa.png)
 
 In the above equation, max denotes the elementwise max operator, and $\sigma$ is a nonlinear activation function (yes you are right it can be ReLU). Please note that the function applied before the max-pooling can be an arbitrarily deep multi-layer perceptron, but in the original paper, simple single-layer architectures are preferred.
 
@@ -311,15 +313,15 @@ We could also use a deep neural network like LSTM to learn how to aggregate the 
 
 One interesting property of GraphSAGE is that we can train our model on one subset of the graph and apply this model on another subset of this graph. The reason we can do this is that we can do parameter sharing, i.e. those processing boxes are the same everywhere ($W$ and $B$ are shared across all the computational graphs or architectures). So when a new architecture comes into play, we can borrow the parameters ($W$ and $B$), do a forward pass, and we get our prediction.
 
-![Sharing Parameters](graph_nets/GraphSAGE/img/sharing_param.png)
+![Sharing Parameters](images/sharing_param.png)
 
 This property of GraphSAGE is advantageous in the prediction of protein interaction. For example, we can train our model on protein interaction graph from model organism A (left-hand side in the figure below) and generate embedding on newly collected data from other model organism say B (right-hand side in the figure).
 
-![Protein Interaction](graph_nets/GraphSAGE/img/protein.png)
+![Protein Interaction](images/protein.png)
 
 We know that our old methods like DeepWalk were not able to generalise to a new unseen graph. So if any new node gets added to the graph, we had to train our model from scratch, but since our new method is generalised to the unseen graphs, so to predict the embeddings of the new node we have to make the computational graph of the new node, transfer the parameters to the unseen part of the graph and we can make predictions.
 
-![New Node](graph_nets/GraphSAGE/img/new_node.png)
+![New Node](images/new_node.png)
 
 We can use this property in social-network (like Facebook). Consider the first graph in the above figure, users in a social-network are represented by the nodes of the graph. Initially, we would train our model on this graph. After some time suppose another user is added in the network, now we don't have to train our model from scratch on the second graph, we will create the computational graph of the new node, borrow the parameters from the already trained model and then we can find the embeddings of the newly added user.
 
@@ -344,8 +346,7 @@ from collections import defaultdict
 
 ```{python}
 """
-Simple supervised GraphSAGE model as well as examples running the model
-on the Cora and Pubmed datasets.
+Simple supervised GraphSAGE model as well as examples running the model on the Cora and Pubmed datasets.
 """
 
 class MeanAggregator(nn.Module):
@@ -470,30 +471,50 @@ class SupervisedGraphSage(nn.Module):
 ### Load and Run
 
 ```{python}
+# def load_cora():
+#     num_nodes = 2708
+#     num_feats = 1433
+#     feat_data = np.zeros((num_nodes, num_feats))
+#     labels = np.empty((num_nodes,1), dtype=np.int64)
+#     node_map = {}
+#     label_map = {}
+#     with open("./cora/cora.content") as fp:
+#         for i,line in enumerate(fp):
+#             info = line.strip().split()
+#             feat_data[i,:] = [float(x) for x in info[1:-1]]
+#             node_map[info[0]] = i
+#             if not info[-1] in label_map:
+#                 label_map[info[-1]] = len(label_map)
+#             labels[i] = label_map[info[-1]]
+
+#     adj_lists = defaultdict(set)
+#     with open("./cora/cora.cites") as fp:
+#         for i,line in enumerate(fp):
+#             info = line.strip().split()
+#             paper1 = node_map[info[0]]
+#             paper2 = node_map[info[1]]
+#             adj_lists[paper1].add(paper2)
+#             adj_lists[paper2].add(paper1)
+#     return feat_data, labels, adj_lists
+
 def load_cora():
-    num_nodes = 2708
-    num_feats = 1433
-    feat_data = np.zeros((num_nodes, num_feats))
-    labels = np.empty((num_nodes,1), dtype=np.int64)
-    node_map = {}
-    label_map = {}
-    with open("./cora/cora.content") as fp:
-        for i,line in enumerate(fp):
-            info = line.strip().split()
-            feat_data[i,:] = [float(x) for x in info[1:-1]]
-            node_map[info[0]] = i
-            if not info[-1] in label_map:
-                label_map[info[-1]] = len(label_map)
-            labels[i] = label_map[info[-1]]
+    dataset = Planetoid(root='/tmp/Cora', name='Cora')
+    data = dataset[0]
+    # data contains the following attributes:
+    # data.x -> feature matrix (stored as a sparse matrix)
+    # data.y -> labels
+    # data.edge_index -> adj_lists (stored as a coordinate list/COO matrix)
+    feat_data = data.x.numpy()
+    labels = data.y.numpy().reshape(-1, 1)
 
     adj_lists = defaultdict(set)
-    with open("./cora/cora.cites") as fp:
-        for i,line in enumerate(fp):
-            info = line.strip().split()
-            paper1 = node_map[info[0]]
-            paper2 = node_map[info[1]]
-            adj_lists[paper1].add(paper2)
-            adj_lists[paper2].add(paper1)
+    edges = data.edge_index.numpy()
+    
+    for i in range(edges.shape[1]):
+        u, v = edges[0, i], edges[1, i]
+        adj_lists[u].add(v)
+        adj_lists[v].add(u)
+
     return feat_data, labels, adj_lists
 
 def run_cora():
