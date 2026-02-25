@@ -10,11 +10,32 @@ filters:
 
 <a href="https://colab.research.google.com/github/huanfachen/DSSS_25/blob/main/sessions/W06_neural_networks/graph_neural_networks_practical.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# Part 1: Implementing GCN in PyTorch Geometric
+# Introduction
 
-## About the Dataset
+In this practical, we will use [PyTorch](https://www.pytorch.org/) to:
 
-Today we will be using the 'Cora' Dataset ([link](https://ieee-dataport.org/documents/cora)). The Cora dataset consists of 2708 Machine Learning papers, and the citation network consists of 5429 links. Each publication in the dataset is described by a 0/1-valued word vector indicating the absence/presence of the corresponding word from the dictionary. The dictionary consists of 1433 unique words.
+1. Build a Graph Convolutional Network (GCN) for node classification on the Cora dataset;
+2. Build a GraphSAGE model for node classification on the Cora dataset.
+
+## Setting up Google Colab
+
+As installing and configuring tensorflow on laptop can be a pain, we recommend using Google Colab for this practical. Click [here](https://colab.research.google.com/github/huanfachen/DSSS_25/blob/main/sessions/W06_graph_neural_networks/graph_neural_networks_practical.ipynb) to run this practical on Google Colab, which requires a Google account.
+
+Resource limit of Google Colab under free plan:
+
+- Memory: up to 12 GB.
+- Maximum duration of running a notebook: notebooks can run for at most **12 hours**, depending on availability and your usage patterns. (The notebook will die after at most 12 hours)
+- GPU duration: dynamic, up to a few hours. If you use GPU regularly, runtime durations will become shorter and shorter and disconnections more frequent.
+
+*Very Important* - we will use the GPU on Google Colab to accelerate the model training. To do this, go to 'Runtime' -> 'Change runtime type' -> Select 'T4 GPU' -> Save. See below.
+
+![](https://github.com/huanfachen/DSSS/blob/main/Figures/Colab_GPU_setting.jpg?raw=true)
+
+If you are following along in your own development environment, rather than Colab, see the [install guide](https://www.pytorch.org/get-started/locally/) for setting up PyTorch for development. You would need to install two packages of ```torch``` and ```torch_geometric```.
+
+## Cora Dataset
+
+We will be using the 'Cora' Dataset ([link](https://ieee-dataport.org/documents/cora)). The Cora dataset consists of 2708 Machine Learning papers, and the citation network consists of 5429 links. Each publication in the dataset is described by a 0/1-valued word vector indicating the absence/presence of the corresponding word from the dictionary. The dictionary consists of 1433 unique words.
 
 These papers are classified into one of the following seven classes:
 
@@ -28,11 +49,173 @@ These papers are classified into one of the following seven classes:
 
 The papers were selected in a way such that in the final corpus every paper cites or is cited by at least one other paper.
 
-**We will be using it for predicting the class to which a given paper belongs**
+# GCN for Karate Club Dataset
 
-## Working
+First, we will re-visit the Karate Club dataset and implement GCN for it using PyTorch Geometric. This example is based on the '[Semi Supervised Graph Learning Model](https://arxiv.org/abs/1609.02907)' proposed in the paper by <b>Thomas Kipf & Max Welling</b>.
 
-Most of the working is same as for the PyTorch version, except that we will be using an adjacency list representation instead of adjacency matrix. The advantage of using adjacency list is that all the edges can be stored in $O(|E|)$ where $|E|$ is the number of edges, whereas in adjacency matrix it is $O(|V|^2)$ where $|V|$ is number of vertices. So if the number of edges is much less than the number of vertices squared then adjacency list can save a lot of memory and time.
+During the period from 1970-1972, Wayne W. Zachary observed the people belonging to a local karate club. He represented these people as nodes in a graph and added an edge between a pair of people if they interacted with each other. This graph is shown below.
+
+![karate_club](images/karate_club.png)
+
+During the study, an interesting event happened. A conflict arose between the administrator "John A" and instructor "Mr. Hi", which led to the split of the club into two. Half of the members formed a new club around Mr. Hi; members from the other part found a new instructor or gave up karate. 
+
+Using the graph that he had found earlier, he tried to predict which member will go to which half. And surprisingly he was able to predict the decision of all the members except for node 9 who went with Mr. Hi instead of John A. Zachary used the maximum flow – minimum cut Ford–Fulkerson algorithm for this. We will be using a different algorithm today; hence, ignore the Ford-Fulkerson algorithm!
+
+Here, we will be using the Semi-Supervised Graph Learning Method. Semi-Supervised means that we have labels for only some of the nodes, and we have to find the labels for other nodes. We have the labels for only the nodes belonging to 'John A' and 'Mr. Hi', we have not been provided with labels for any other member, and we have to predict that only on the basis of the graph given to us.
+
+In this example, we have the label for admin (node 1) and instructor (node 34), so only these two contain the class label (0 and 1) all other are set to -1, which means that the predicted value of these nodes will be ignored in the computation of loss function.
+
+To use the GCN, we need to know the feature matrix. As we don't have any feature of each node, for simplicity, we will be using the one-hot encoding corresponding to the index of the node.
+
+The complete code is as below. Please note that we commented out the part of plotting the animination using celluloid, as it requires a few addditional libaries. You can uncomment it if you want to see the animation of the training process. We will focus on the the change of the loss function and the accuracy of the model for predicting the labels of all nodes during training.
+
+```{python}
+#### Loading Required Libraries ####
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import matplotlib.pyplot as plt
+# get_ipython().run_line_magic('matplotlib', 'notebook')
+
+# import imageio
+# from celluloid import Camera
+# from IPython.display import HTML
+
+# plt.rcParams['animation.ffmpeg_path'] = '/usr/local/bin/ffmpeg'
+
+
+#### The Convolutional Layer ####
+# First we will be creating the GCNConv class, which will serve as the Layer creation class.
+# Every instance of this class will be getting Adjacency Matrix as input and will be outputing
+# 'RELU(A_hat * X * W)', which the Net class will use.
+
+class GCNConv(nn.Module):
+    def __init__(self, A, in_channels, out_channels):
+        super(GCNConv, self).__init__()
+        self.A_hat = A+torch.eye(A.size(0))
+        self.D     = torch.diag(torch.sum(self.A_hat,1))
+        self.D     = self.D.inverse().sqrt()
+        self.A_hat = torch.mm(torch.mm(self.D, self.A_hat), self.D)
+        self.W     = nn.Parameter(torch.rand(in_channels,out_channels, requires_grad=True))
+    
+    def forward(self, X):
+        out = torch.relu(torch.mm(torch.mm(self.A_hat, X), self.W))
+        return out
+
+class Net(torch.nn.Module):
+    def __init__(self,A, nfeat, nhid, nout):
+        super(Net, self).__init__()
+        self.conv1 = GCNConv(A,nfeat, nhid)
+        self.conv2 = GCNConv(A,nhid, nout)
+        
+    def forward(self,X):
+        H  = self.conv1(X)
+        H2 = self.conv2(H)
+        return H2
+
+
+# 'A' is the adjacency matrix, it contains 1 at a position (i,j), if there is a edge between the node i and node j.
+A=torch.Tensor([[0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,0],
+                [1,0,1,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,1,0,0,0],
+                [1,1,0,1,0,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,0],
+                [1,1,1,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1],
+                [0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+                [0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+                [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+                [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,1,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
+                [0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1],
+                [0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,1,1],
+                [0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,1,1],
+                [0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1,0,0,1,0,1,0,1,1,0,0,0,0,0,1,1,1,0,1],
+                [0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,0,0,1,1,1,0,1,1,0,0,1,1,1,1,1,1,1,0]
+                ])
+
+# actual label
+label = [0, 0, 0, 0 ,0 ,0 ,0, 0, 1, 1, 0 ,0, 0, 0, 1 ,1 ,0 ,0 ,1, 0, 1, 0 ,1 ,1, 1, 1, 1 ,1 ,1, 1, 1, 1, 1, 1 ]
+
+# label for admin(node 1) and instructor(node 34) so only these two contain the known class label (0 and 1)
+# all others are set to -1, meaning predicted value of these nodes is ignored in the loss function.
+target=torch.tensor([0,-1,-1,-1, -1, -1, -1, -1,-1,-1,-1,-1, -1, -1, -1, -1,-1,-1,-1,-1, -1, -1, -1, -1,-1,-1,-1,-1, -1, -1, -1, -1,-1,1])
+
+# X is the feature matrix.
+# Using the one-hot encoding corresponding to the index of the node.
+X=torch.eye(A.size(0))
+
+# Network with 10 features in the hidden layer and 2 in output layer.
+T=Net(A, X.size(0), 10, 2)
+
+
+#### Training ####
+
+criterion = torch.nn.CrossEntropyLoss(ignore_index=-1)
+optimizer = optim.SGD(T.parameters(), lr=0.01, momentum=0.9)
+
+loss=criterion(T(X),target)
+
+#### Plot animation using celluloid ####
+# fig = plt.figure()
+# camera = Camera(fig)
+
+# We will train for 200 steps and print the cross entropy loss at every 20 steps. The smaller loss means better performance of the model.
+# Note that the model is trained to minimise the cross entropy loss.
+
+
+
+for i in range(200):
+    optimizer.zero_grad()
+    loss=criterion(T(X), target)
+    loss.backward()
+    optimizer.step()
+    l=(T(X));
+
+    # plt.scatter(l.detach().numpy()[:,0],l.detach().numpy()[:,1],c=[0, 0, 0, 0 ,0 ,0 ,0, 0, 1, 1, 0 ,0, 0, 0, 1 ,1 ,0 ,0 ,1, 0, 1, 0 ,1 ,1, 1, 1, 1 ,1 ,1, 1, 1, 1, 1, 1 ])
+    # for i in range(l.shape[0]):
+    #     text_plot = plt.text(l[i,0], l[i,1], str(i+1))
+
+    # camera.snap()
+
+    if i%20==0:
+        print("Cross Entropy Loss: =", loss.item())
+        # print the predictive accuracy by comparing the predicted label with the actual label for all the nodes.
+        pred_label = torch.argmax(l, dim=1)
+        correct = (pred_label == label).sum().item()
+        print("Accuracy: ", correct/l.shape[0])
+
+# animation = camera.animate(blit=False, interval=150)
+# animation.save('./train_karate_animation.mp4', writer='ffmpeg', fps=60)
+# HTML(animation.to_html5_video())
+
+```
+
+The results show that the loss is decreasing and the model is getting better at predicting the labels of the nodes.
+
+# GCN for Cora data 
+
+In this part, we will implement GCN for the Cora dataset, which is much larger and complicated than the Karate Club dataset. 
+
+Most of the working is same as for the PyTorch version, except that we will be using an adjacency list representation instead of adjacency matrix. Using adjacency list is better than a sparse adjacency matrix, as all the edges can be stored in $O(|E|)$ where $|E|$ is the number of edges, whereas in adjacency matrix it is $O(|V|^2)$ where $|V|$ is number of vertices. So if the number of edges is much less than the number of vertices squared then adjacency list can save a lot of memory and time.
 
 If we switch from adjacency matrix to adjacency list then the formulas involving the Adjacency Matrix will also have to be changed. Luckily, it turns out that the formulas can be changed pretty easily.
 
@@ -131,14 +314,23 @@ for epoch in range(200):
 ```{python}
 model.eval()
 _, pred = model(data).max(dim=1)
+
+# accuracy on training set
+correct_train = float (pred[data.train_mask].eq(data.y[data.train_mask]).sum().item())
+acc_train = correct_train / data.train_mask.sum().item()
+print('Accuracy on training set: {:.4f}'.format(acc_train))
+
+# accuracy on test set
 correct = float (pred[data.test_mask].eq(data.y[data.test_mask]).sum().item())
 acc = correct / data.test_mask.sum().item()
-print('Accuracy: {:.4f}'.format(acc))
+print('Accuracy on test set: {:.4f}'.format(acc))
+
+
 ```
 
----
+Here, the testing accuracy is 0.787, which means that the model can accurately predict the labels of the nodes in the test set with 78.7% accuracy.
 
-# Part 2: GraphSAGE (SAmple and aggreGatE): Inductive Learning on Graphs
+# GraphSAGE (SAmple and aggreGatE): Inductive Learning on Graphs
 
 ## Introduction
 
@@ -319,7 +511,7 @@ This property of GraphSAGE is advantageous in the prediction of protein interact
 
 ![Protein Interaction](images/protein.png)
 
-We know that our old methods like DeepWalk were not able to generalise to a new unseen graph. So if any new node gets added to the graph, we had to train our model from scratch, but since our new method is generalised to the unseen graphs, so to predict the embeddings of the new node we have to make the computational graph of the new node, transfer the parameters to the unseen part of the graph and we can make predictions.
+We know that GCN is not able to generalise to a new unseen graph. So, if any new node gets added to the graph, we had to train our model from scratch, but since our new method is generalised to the unseen graphs, so to predict the embeddings of the new node we have to make the computational graph of the new node, transfer the parameters to the unseen part of the graph and we can make predictions.
 
 ![New Node](images/new_node.png)
 
@@ -338,11 +530,17 @@ import torch.nn.functional as F
 import numpy as np
 import time
 import random
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, accuracy_score
 from collections import defaultdict
 ```
 
 ### GraphSAGE Classes
+
+Here, we define the classes for the mean aggregator, encoder and supervised GraphSAGE model. 
+
+* The mean aggregator class is responsible for aggregating the embeddings of the neighbours of a node using the mean function.
+* The encoder class is responsible for encoding a node's embedding using the 'convolutional' GraphSAGE approach. 
+* The supervised GraphSAGE class combines the encoder with a linear layer to perform classification.
 
 ```{python}
 """
@@ -413,6 +611,7 @@ class Encoder(nn.Module):
             feature_transform=False): 
         super(Encoder, self).__init__()
 
+        # the graph structure
         self.features = features
         self.feat_dim = feature_dim
         self.adj_lists = adj_lists
@@ -470,33 +669,18 @@ class SupervisedGraphSage(nn.Module):
 
 ### Load and Run
 
+We will define a function to import and transform the Cora dataset and another function that runs the whole workflow. Please note, in each Encoder layer, we are not using the entire graph structure but only the part of the graph that is relevant to the nodes in the current batch of training nodes. In the testing phase, the trained model can be applied to predict the labels of the test set, which is unseen in the training process. This is the inductive property of GraphSAGE and its advantage over GCN.
+
+Note that the GraphSAGE model consists of three layers (not including features), with the following input/output dimensions:
+
+| Component | Level | Input Dimension | Output Dimension |
+|-----------|-------|-----------------|------------------|
+| Features | Raw Data | - | 1433 |
+| Encoder 1 | 1-Hop Neighbours | 1433 | 128 |
+| Encoder 2 | 2-Hop Neighbours | 128 | 128 |
+| GraphSAGE | Classification | 128 | 7 (Classes) |
+
 ```{python}
-# def load_cora():
-#     num_nodes = 2708
-#     num_feats = 1433
-#     feat_data = np.zeros((num_nodes, num_feats))
-#     labels = np.empty((num_nodes,1), dtype=np.int64)
-#     node_map = {}
-#     label_map = {}
-#     with open("./cora/cora.content") as fp:
-#         for i,line in enumerate(fp):
-#             info = line.strip().split()
-#             feat_data[i,:] = [float(x) for x in info[1:-1]]
-#             node_map[info[0]] = i
-#             if not info[-1] in label_map:
-#                 label_map[info[-1]] = len(label_map)
-#             labels[i] = label_map[info[-1]]
-
-#     adj_lists = defaultdict(set)
-#     with open("./cora/cora.cites") as fp:
-#         for i,line in enumerate(fp):
-#             info = line.strip().split()
-#             paper1 = node_map[info[0]]
-#             paper2 = node_map[info[1]]
-#             adj_lists[paper1].add(paper2)
-#             adj_lists[paper2].add(paper1)
-#     return feat_data, labels, adj_lists
-
 def load_cora():
     dataset = Planetoid(root='/tmp/Cora', name='Cora')
     data = dataset[0]
@@ -521,36 +705,48 @@ def run_cora():
     np.random.seed(1)
     random.seed(1)
     
-    num_nodes = 2708
+    # number of nodes 2708
+    # feat_data: contains 2708 rows (papers) and 1433 columns (words). The value of the entry (i, j) is 1 if the word j is present in the paper i and 0 otherwise.
     feat_data, labels, adj_lists = load_cora()
+    num_nodes = feat_data.shape[0]
     
-    features = nn.Embedding(2708, 1433)
+    # Instead of a simple matrix, the features are wrapped in an Embedding layer nn.Embedding. 
+    # Setting requires_grad=False means the original paper attributes are fixed and won't be changed by the optimiser; only the aggregation weights will be learned.
+    features = nn.Embedding(feat_data.shape[0], feat_data.shape[1])
     features.weight = nn.Parameter(torch.FloatTensor(feat_data),
                                    requires_grad=False)
 
+    # Layer 1: The First Neighbourhood Hop
+    # MeanAggregator (agg1): defines how to combine information. It takes the features of all neighbours and calculates their average.
+    # Encoder (enc1): the first "hop." It takes the raw features (size 1433) and compresses them into a more meaningful representation (size 128) by using the aggregator and the adj_lists.
+    # num_samples = 5: GraphSAGE doesn't always look at every neighbour, which can be computationally expensive. Here, it randomly picks 5 neighbours at each layer to sample from. If a node has fewer than num_samples, the algorithm typically uses sampling with replacement.
     agg1 = MeanAggregator(features, cuda=True)
     
-    enc1 = Encoder(features, 1433, 128, adj_lists, agg1, gcn=True,
+    enc1 = Encoder(features, feat_data.shape[0], feat_data.shape[1], adj_lists, agg1, gcn=True,
                           cuda=False)
+    enc1.num_samples = 5
+
+    # Layer 2: The Second Neighbourhood Hop
     agg2 = MeanAggregator(lambda nodes : enc1(nodes).t(),
                           cuda=False)
     enc2 = Encoder(lambda nodes : enc1(nodes).t(),
-                   enc1.embed_dim, 128, adj_lists, agg2, 
+                   enc1.embed_dim, feat_data.shape[1], adj_lists, agg2, 
                    base_model=enc1, gcn=True, cuda=False)
-    
-    enc1.num_samples = 5
     enc2.num_samples = 5
 
+    # Final Layer for predicting the class (out of 7)
     graphsage = SupervisedGraphSage(7, enc2)
+
+    # randomly shuffle the node index and using the first 1500 nodes for testing and 2708-1500=1208 nodes for training.
     rand_indices = np.random.permutation(num_nodes)
-    test = rand_indices[:1000]
-    val = rand_indices[1000:1500]
+    test = rand_indices[:1500]
     train = list(rand_indices[1500:])
 
     optimizer = torch.optim.SGD(filter(lambda p : p.requires_grad,
                                        graphsage.parameters()), lr=0.7)
     times = []
     
+    # We train this model in 100 batches. In each batch, only a subset of the training nodes (256 nodes) are used to calculate the loss and update the weights. This is common in large-scale graph learning in order to speed up the training process, as using all the training nodes in each batch can be computationally expensive.
     for batch in range(100):
         batch_nodes = train[:256]
         random.shuffle(train)
@@ -564,22 +760,28 @@ def run_cora():
         times.append(end_time-start_time)
         print (batch, loss.item())
 
-    val_output = graphsage.forward(val)
-    
-    print ("Validation F1:", f1_score(labels[val],
-                            val_output.data.numpy().argmax(axis=1),
-                            average="micro"))
-    
     print ("Average batch time:", np.mean(times))
 
+    # accuracy on testing data
+    test_output = graphsage.forward(test)
+    
+    pred = test_output.data.numpy().argmax(axis=1)
+    accuracy = accuracy_score(labels[test], pred)
+    print ("Test Accuracy:", accuracy)
 
 if __name__ == "__main__":
     run_cora()
 ```
 
+So, what do you think about the accuracy of the model? Do you think it is good enough in predicting the labels of new nodes?
+
+## Conclusion
+
+We've trained several GCN and GraphSAGE models for making predictions of node classification on two datasets. The code can be easily adapted to other graph datasets, as the classes defined here are quite general. What you need to do is to rewrite the load_* and run_* functions (like load_cora and run_cora) to load your dataset and train the model on it.
+
 ## References
 
-- https://cs.stanford.edu/people/jure/pubs/graphsage-nips17.pdf
+- This notebook is heavily based on the [graph_nets Github repo](https://github.com/dsgiitr/graph_nets). Highly recommended.
 - [Graph Node Embedding Algorithms (Stanford - Fall 2019) by Jure Leskovec](https://www.youtube.com/watch?v=7JELX6DiUxQ)
 - [Jure Leskovec: "Large-scale Graph Representation Learning"](https://www.youtube.com/watch?v=oQL4E1gK3VU)
 - [Jure Leskovec "Deep Learning on Graphs"](https://www.youtube.com/watch?v=MIAbDNAxChI)
