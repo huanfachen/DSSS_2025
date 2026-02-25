@@ -55,7 +55,7 @@ First, we will re-visit the Karate Club dataset and implement GCN for it using P
 
 During the period from 1970-1972, Wayne W. Zachary observed the people belonging to a local karate club. He represented these people as nodes in a graph and added an edge between a pair of people if they interacted with each other. This graph is shown below.
 
-![karate_club](images/karate_club.png)
+<img src="images/karate_club.png" alt="karate_club" />
 
 During the study, an interesting event happened. A conflict arose between the administrator "John A" and instructor "Mr. Hi", which led to the split of the club into two. Half of the members formed a new club around Mr. Hi; members from the other part found a new instructor or gave up karate. 
 
@@ -220,7 +220,7 @@ Most of the working is same as for the PyTorch version, except that we will be u
 
 If we switch from adjacency matrix to adjacency list then the formulas involving the Adjacency Matrix will also have to be changed. Luckily, it turns out that the formulas can be changed pretty easily.
 
-![Formula](images/formula.png)
+<img src="images/formula.png" alt="Formula" />
 
 **Here $\text{aggregate}(A,X)(i)$ gives the $i$'th row of the target**
 
@@ -343,7 +343,7 @@ GraphSAGE is capable of learning structural information about a node's role in a
 
 In the GCN model, the graph was fixed beforehand, let's say the 'Zachary karate club', some model was trained on it, and then we could make predictions about a person X, if he/she went to a particular part of the club after separation.
 
-![Zachary Karate Club](images/karate_club.png)
+<img src="images/karate_club.png" alt="Zachary Karate Club" />
 
 In this problem, the nodes in this graph were fixed from the beginning, and all the predictions were also to be made on these fixed nodes. In contrast to this, take an example where 'Youtube' videos are the nodes and assume there is an edge between related videos, and say we need to classify these videos depending on the content. If we take the same model as in the previous dataset, we can classify all these videos, but whenever a new video is added to 'YouTube', we will have to retrain the model on the entire new dataset again to classify it. This is not feasible as there will be too many videos or nodes being added everytime for us to retrain.
 
@@ -353,37 +353,37 @@ To solve this issue, what we can do is not to learn embeddings for each node but
 
 The idea is to generate embeddings, based on the neighbourhood of a given node. In other words, the embedding of a node will depend upon the embedding of the nodes it is connected to. Like in the graph below, the node 1 and 2 are likely to be more similar than node 1 and 5.
 
-![Simple Graph](images/example_graph_1.png)
+<img src="images/example_graph_1.png" alt="Simple Graph" />
 
 How can this idea be formulated?
 
 First, we assign random values to the embeddings, and on each step, we will set the value of the embedding as the average of embeddings for all the nodes it is directly connected. The following example shows the working on a simple linear graph.
 
-![Mean Embeddings](images/animation.gif)
+<img src="images/animation.gif" alt="Mean Embeddings" />
 
 This is a straightforward idea, which can be generalized by representing it in the following way:
 
-![Simple Neighbours](images/simple_neighbours.png)
+<img src="images/simple_neighbours.png" alt="Simple Neighbours" />
 
 Here The Black Box joining A with B, C, D represents some function of A, B, C, D. (In the above animation, it was the mean function). We can replace this box by any function like say sum or max. This function is known as the aggregator function.
 
 Now let's try to make it more general by using not only the neighbours of a node but also the neighbours of the neighbours. The first question is how to make use of neighbours of neighbours. The way which we will be using here is to first generate each node's embedding in the first step by using only its neighbours just like we did above, and then in the second step, we will use these embeddings to generate the new embeddings. Take a look at the following:
 
-![One Layer Aggregation](images/aggregation_1.png)
+<img src="images/aggregation_1.png" alt="One Layer Aggregation" />
 
 The numbers written along with the nodes are the value of embedding at the time, $T=0$.
 
 Values of embedding after one step are as follows:
 
-![Animation Aggregation Layer 1](images/animation_2_bw.gif)
+<img src="images/animation_2_bw.gif" alt="Animation Aggregation Layer 1" />
 
 So after one iteration, the values are as follows:
 
-![Second Layer Aggregation](images/aggregation_2.png)
+<img src="images/aggregation_2.png" alt="Second Layer Aggregation" />
 
 Repeating the same procedure on this new graph, we get (try verifying yourself):
 
-![Third Layer Aggregation](images/aggregation_3.png)
+<img src="images/aggregation_3.png" alt="Third Layer Aggregation" />
 
 Let's try to do some analysis of the aggregation. Represent by $A^{(0)}$ the initial value of embedding of A (i.e. 0.1), by $A^{(1)}$ the value after one layer (i.e. 0.25) similarly $A^{(2)}$, $B^{(0)}$, $B^{(1)}$ and all other values.
 
@@ -417,7 +417,7 @@ $$A^{(k)} = F(A^{(k-1)}, N(A)^{(k-1)} )$$
 
 This process can be visualized as:
 
-![Sampling](images/showing_1.png)
+<img src="images/showing_1.png" alt="Sampling" />
 
 This method is quite effective in generating node embeddings. But there is an issue if a new node is added to the graph how can get its embeddings? This is an issue that cannot be tackled with this type of model. Clearly, something new is needed, but what?
 
@@ -425,7 +425,7 @@ One alternative that we can try is to replace the function F by multiple functio
 
 So our embedding generator would be like this:
 
-![Sampling 2](images/showing_2.png)
+<img src="images/showing_2.png" alt="Sampling 2" />
 
 ## Notation
 
@@ -468,13 +468,13 @@ Where $\sigma$ is some non-linear function (e.g. RELU, sigmoid, etc.) and $W^{(k
 
 One more thing we will add is to normalize the value of h after each iteration, i.e., divide them by their L2 norm, and hence our complete algorithm becomes:
 
-![GraphSAGE Algorithm](images/graphsage_algorithm.png)
+<img src="images/graphsage_algorithm.png" alt="GraphSAGE Algorithm" />
 
 ## Loss Function
 
 To get the model learning, we need the loss function. For the general unsupervised learning problem, the following loss problem serves pretty well:
 
-![Loss](images/Loss_function.png)
+<img src="images/Loss_function.png" alt="Loss" />
 
 This graph-based loss function encourages nearby nodes to have similar representations, while enforcing that the representations of disparate nodes are highly distinct.
 
@@ -488,13 +488,13 @@ One of the critical differences between GCN and Graphsage is the generalisation 
 
 Mean aggregator is as simple as you thought it would be. In mean aggregator we simply take the elementwise mean of the vectors in $\{h_{u}^{k-1} \forall u \in N(v)\}$. In other words, we can average embeddings of all nodes in the neighbourhood to construct the neighbourhood embedding.
 
-![Mean Aggregator](images/ma.png)
+<img src="images/ma.png" alt="Mean Aggregator" />
 
 ### Pool Aggregator
 
 Until now, we were using a weighted average type of approach. But we could also use pooling type of approach; for example, we can do elementwise min or max pooling. So this would be another option where we are taking the messages from our neighbours, transforming them and applying some pooling technique (max-pooling or min pooling).
 
-![Pool Aggregator](images/pa.png)
+<img src="images/pa.png" alt="Pool Aggregator" />
 
 In the above equation, max denotes the elementwise max operator, and $\sigma$ is a nonlinear activation function (yes you are right it can be ReLU). Please note that the function applied before the max-pooling can be an arbitrarily deep multi-layer perceptron, but in the original paper, simple single-layer architectures are preferred.
 
@@ -506,15 +506,15 @@ We could also use a deep neural network like LSTM to learn how to aggregate the 
 
 One interesting property of GraphSAGE is that we can train our model on one subset of the graph and apply this model on another subset of this graph. The reason we can do this is that we can do parameter sharing, i.e. those processing boxes are the same everywhere ($W$ and $B$ are shared across all the computational graphs or architectures). So when a new architecture comes into play, we can borrow the parameters ($W$ and $B$), do a forward pass, and we get our prediction.
 
-![Sharing Parameters](images/sharing_param.png)
+<img src="images/sharing_param.png" alt="Sharing Parameters" />
 
 This property of GraphSAGE is advantageous in the prediction of protein interaction. For example, we can train our model on protein interaction graph from model organism A (left-hand side in the figure below) and generate embedding on newly collected data from other model organism say B (right-hand side in the figure).
 
-![Protein Interaction](images/protein.png)
+<img src="images/protein.png" alt="Protein Interaction" />
 
 We know that GCN is not able to generalise to a new unseen graph. So, if any new node gets added to the graph, we had to train our model from scratch, but since our new method is generalised to the unseen graphs, so to predict the embeddings of the new node we have to make the computational graph of the new node, transfer the parameters to the unseen part of the graph and we can make predictions.
 
-![New Node](images/new_node.png)
+<img src="images/new_node.png" alt="New Node" />
 
 We can use this property in social-network (like Facebook). Consider the first graph in the above figure, users in a social-network are represented by the nodes of the graph. Initially, we would train our model on this graph. After some time suppose another user is added in the network, now we don't have to train our model from scratch on the second graph, we will create the computational graph of the new node, borrow the parameters from the already trained model and then we can find the embeddings of the newly added user.
 
