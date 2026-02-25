@@ -8,7 +8,7 @@ filters:
   - quarto
 ---
 
-<a href="https://colab.research.google.com/github/huanfachen/DSSS_25/blob/main/sessions/W06_neural_networks/graph_neural_networks_practical.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+<a href="https://colab.research.google.com/github/huanfachen/DSSS_25/blob/main/sessions/W06_graph_neural_networks/graph_neural_networks_practical.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 # Introduction
 
