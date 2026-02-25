@@ -382,19 +382,14 @@ window.Quarto = {
 <h1>GCN for Karate Club Dataset</h1>
 <p>First, we will re-visit the Karate Club dataset and implement GCN for it using PyTorch Geometric. This example is based on the ‘<a href="https://arxiv.org/abs/1609.02907">Semi Supervised Graph Learning Model</a>’ proposed in the paper by <b>Thomas Kipf &amp; Max Welling</b>.</p>
 <p>During the period from 1970-1972, Wayne W. Zachary observed the people belonging to a local karate club. He represented these people as nodes in a graph and added an edge between a pair of people if they interacted with each other. This graph is shown below.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/karate_club.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="karate_club"><img src="images/karate_club.png" class="img-fluid figure-img" alt="karate_club"></a></p>
-<figcaption>karate_club</figcaption>
-</figure>
-</div>
+<p><img src="images/karate_club.png" alt="karate_club"></p>
 <p>During the study, an interesting event happened. A conflict arose between the administrator “John A” and instructor “Mr.&nbsp;Hi”, which led to the split of the club into two. Half of the members formed a new club around Mr.&nbsp;Hi; members from the other part found a new instructor or gave up karate.</p>
 <p>Using the graph that he had found earlier, he tried to predict which member will go to which half. And surprisingly he was able to predict the decision of all the members except for node 9 who went with Mr.&nbsp;Hi instead of John A. Zachary used the maximum flow – minimum cut Ford–Fulkerson algorithm for this. We will be using a different algorithm today; hence, ignore the Ford-Fulkerson algorithm!</p>
 <p>Here, we will be using the Semi-Supervised Graph Learning Method. Semi-Supervised means that we have labels for only some of the nodes, and we have to find the labels for other nodes. We have the labels for only the nodes belonging to ‘John A’ and ‘Mr.&nbsp;Hi’, we have not been provided with labels for any other member, and we have to predict that only on the basis of the graph given to us.</p>
 <p>In this example, we have the label for admin (node 1) and instructor (node 34), so only these two contain the class label (0 and 1) all other are set to -1, which means that the predicted value of these nodes will be ignored in the computation of loss function.</p>
 <p>To use the GCN, we need to know the feature matrix. As we don’t have any feature of each node, for simplicity, we will be using the one-hot encoding corresponding to the index of the node.</p>
 <p>The complete code is as below. Please note that we commented out the part of plotting the animination using celluloid, as it requires a few addditional libaries. You can uncomment it if you want to see the animation of the training process. We will focus on the the change of the loss function and the accuracy of the model for predicting the labels of all nodes during training.</p>
-<div id="82867699" class="cell" data-execution_count="1">
+<div id="ca2a90e0" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#### Loading Required Libraries ####</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
@@ -533,25 +528,25 @@ window.Quarto = {
 <span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="co"># animation.save('./train_karate_animation.mp4', writer='ffmpeg', fps=60)</span></span>
 <span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="co"># HTML(animation.to_html5_video())</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cross Entropy Loss: = 0.8428745865821838
+<pre><code>Cross Entropy Loss: = 0.9967700242996216
 Accuracy:  0.5294117647058824
-Cross Entropy Loss: = 0.6927328705787659
-Accuracy:  0.5294117647058824
-Cross Entropy Loss: = 0.6242784261703491
-Accuracy:  0.6176470588235294
-Cross Entropy Loss: = 0.5587363243103027
-Accuracy:  0.9705882352941176
-Cross Entropy Loss: = 0.47750192880630493
-Accuracy:  0.9705882352941176
-Cross Entropy Loss: = 0.38146400451660156
-Accuracy:  0.9705882352941176
-Cross Entropy Loss: = 0.2846856713294983
+Cross Entropy Loss: = 0.6702967286109924
+Accuracy:  0.47058823529411764
+Cross Entropy Loss: = 0.5528724789619446
+Accuracy:  0.9411764705882353
+Cross Entropy Loss: = 0.45627066493034363
 Accuracy:  1.0
-Cross Entropy Loss: = 0.2033417969942093
+Cross Entropy Loss: = 0.3538319170475006
 Accuracy:  1.0
-Cross Entropy Loss: = 0.1447199583053589
+Cross Entropy Loss: = 0.25781548023223877
 Accuracy:  1.0
-Cross Entropy Loss: = 0.10635486245155334
+Cross Entropy Loss: = 0.18229544162750244
+Accuracy:  1.0
+Cross Entropy Loss: = 0.13128821551799774
+Accuracy:  1.0
+Cross Entropy Loss: = 0.0976073145866394
+Accuracy:  1.0
+Cross Entropy Loss: = 0.07518447935581207
 Accuracy:  1.0</code></pre>
 </div>
 </div>
@@ -562,21 +557,16 @@ Accuracy:  1.0</code></pre>
 <p>In this part, we will implement GCN for the Cora dataset, which is much larger and complicated than the Karate Club dataset.</p>
 <p>Most of the working is same as for the PyTorch version, except that we will be using an adjacency list representation instead of adjacency matrix. Using adjacency list is better than a sparse adjacency matrix, as all the edges can be stored in <span class="math inline">\(O(|E|)\)</span> where <span class="math inline">\(|E|\)</span> is the number of edges, whereas in adjacency matrix it is <span class="math inline">\(O(|V|^2)\)</span> where <span class="math inline">\(|V|\)</span> is number of vertices. So if the number of edges is much less than the number of vertices squared then adjacency list can save a lot of memory and time.</p>
 <p>If we switch from adjacency matrix to adjacency list then the formulas involving the Adjacency Matrix will also have to be changed. Luckily, it turns out that the formulas can be changed pretty easily.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/formula.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Formula"><img src="images/formula.png" class="img-fluid figure-img" alt="Formula"></a></p>
-<figcaption>Formula</figcaption>
-</figure>
-</div>
+<p><img src="images/formula.png" alt="Formula"></p>
 <p><strong>Here <span class="math inline">\(\text{aggregate}(A,X)(i)\)</span> gives the <span class="math inline">\(i\)</span>’th row of the target</strong></p>
 <section id="imports" class="level2">
 <h2 class="anchored" data-anchor-id="imports">Imports</h2>
-<div id="d3d0987e" class="cell" data-execution_count="2">
+<div id="e052eb9c" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_geometric.datasets <span class="im">import</span> Planetoid</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="loading-the-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="loading-the-dataset">Loading the Dataset</h3>
-<div id="4b412b02" class="cell" data-execution_count="3">
+<div id="bea80e27" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> Planetoid(root<span class="op">=</span><span class="st">'/tmp/Cora'</span>, name<span class="op">=</span><span class="st">'Cora'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Downloading https://github.com/kimiyoung/planetoid/raw/master/data/ind.cora.x
@@ -595,7 +585,7 @@ Done!</code></pre>
 <section id="the-graph-convolution-layer" class="level3">
 <h3 class="anchored" data-anchor-id="the-graph-convolution-layer">The Graph Convolution Layer</h3>
 <p>The graph convolution class handles the task of taking the adjacency list and feature matrix and outputting the required input for next layer, which can be another graph convolutional layer or maybe some other class.</p>
-<div id="88671b1f" class="cell" data-execution_count="4">
+<div id="3150111c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> MessagePassing</span>
@@ -622,7 +612,7 @@ Done!</code></pre>
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> aggr_out</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The ‘Net’ class is the one where all the layers are combined together.</p>
-<div id="39e7e785" class="cell" data-execution_count="5">
+<div id="498e1e73" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,nfeat, nhid, nclass, dropout):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(Net, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
@@ -640,7 +630,7 @@ Done!</code></pre>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="e27e9427" class="cell" data-execution_count="6">
+<div id="56b2095b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nfeat<span class="op">=</span>dataset.num_node_features</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>nhid<span class="op">=</span><span class="dv">16</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>nclass<span class="op">=</span>dataset.num_classes</span>
@@ -650,7 +640,7 @@ Done!</code></pre>
 </section>
 <section id="training" class="level2">
 <h2 class="anchored" data-anchor-id="training">Training</h2>
-<div id="254c8f13" class="cell" data-execution_count="7">
+<div id="8c789770" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">'cuda'</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">'cpu'</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Net(nfeat, nhid, nclass, dropout).to(device)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> dataset[<span class="dv">0</span>].to(device)</span>
@@ -664,7 +654,7 @@ Done!</code></pre>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    optimizer.step()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="af4535a6" class="cell" data-execution_count="8">
+<div id="f99c851f" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>_, pred <span class="op">=</span> model(data).<span class="bu">max</span>(dim<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -679,7 +669,7 @@ Done!</code></pre>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Accuracy on test set: </span><span class="sc">{:.4f}</span><span class="st">'</span>.<span class="bu">format</span>(acc))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Accuracy on training set: 1.0000
-Accuracy on test set: 0.7890</code></pre>
+Accuracy on test set: 0.8050</code></pre>
 </div>
 </div>
 <p>Here, the testing accuracy is 0.787, which means that the model can accurately predict the labels of the nodes in the test set with 78.7% accuracy.</p>
@@ -695,69 +685,29 @@ Accuracy on test set: 0.7890</code></pre>
 <section id="the-start" class="level2">
 <h2 class="anchored" data-anchor-id="the-start">The Start</h2>
 <p>In the GCN model, the graph was fixed beforehand, let’s say the ‘Zachary karate club’, some model was trained on it, and then we could make predictions about a person X, if he/she went to a particular part of the club after separation.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/karate_club.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Zachary Karate Club"><img src="images/karate_club.png" class="img-fluid figure-img" alt="Zachary Karate Club"></a></p>
-<figcaption>Zachary Karate Club</figcaption>
-</figure>
-</div>
+<p><img src="images/karate_club.png" alt="Zachary Karate Club"></p>
 <p>In this problem, the nodes in this graph were fixed from the beginning, and all the predictions were also to be made on these fixed nodes. In contrast to this, take an example where ‘Youtube’ videos are the nodes and assume there is an edge between related videos, and say we need to classify these videos depending on the content. If we take the same model as in the previous dataset, we can classify all these videos, but whenever a new video is added to ‘YouTube’, we will have to retrain the model on the entire new dataset again to classify it. This is not feasible as there will be too many videos or nodes being added everytime for us to retrain.</p>
 <p>To solve this issue, what we can do is not to learn embeddings for each node but to learn a function which, given the features and edges joining this node, will give the embeddings for the node.</p>
 </section>
 <section id="aggregating-neighbours" class="level2">
 <h2 class="anchored" data-anchor-id="aggregating-neighbours">Aggregating Neighbours</h2>
 <p>The idea is to generate embeddings, based on the neighbourhood of a given node. In other words, the embedding of a node will depend upon the embedding of the nodes it is connected to. Like in the graph below, the node 1 and 2 are likely to be more similar than node 1 and 5.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/example_graph_1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Simple Graph"><img src="images/example_graph_1.png" class="img-fluid figure-img" alt="Simple Graph"></a></p>
-<figcaption>Simple Graph</figcaption>
-</figure>
-</div>
+<p><img src="images/example_graph_1.png" alt="Simple Graph"></p>
 <p>How can this idea be formulated?</p>
 <p>First, we assign random values to the embeddings, and on each step, we will set the value of the embedding as the average of embeddings for all the nodes it is directly connected. The following example shows the working on a simple linear graph.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/animation.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Mean Embeddings"><img src="images/animation.gif" class="img-fluid figure-img" alt="Mean Embeddings"></a></p>
-<figcaption>Mean Embeddings</figcaption>
-</figure>
-</div>
+<p><img src="images/animation.gif" alt="Mean Embeddings"></p>
 <p>This is a straightforward idea, which can be generalized by representing it in the following way:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/simple_neighbours.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Simple Neighbours"><img src="images/simple_neighbours.png" class="img-fluid figure-img" alt="Simple Neighbours"></a></p>
-<figcaption>Simple Neighbours</figcaption>
-</figure>
-</div>
+<p><img src="images/simple_neighbours.png" alt="Simple Neighbours"></p>
 <p>Here The Black Box joining A with B, C, D represents some function of A, B, C, D. (In the above animation, it was the mean function). We can replace this box by any function like say sum or max. This function is known as the aggregator function.</p>
 <p>Now let’s try to make it more general by using not only the neighbours of a node but also the neighbours of the neighbours. The first question is how to make use of neighbours of neighbours. The way which we will be using here is to first generate each node’s embedding in the first step by using only its neighbours just like we did above, and then in the second step, we will use these embeddings to generate the new embeddings. Take a look at the following:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/aggregation_1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="One Layer Aggregation"><img src="images/aggregation_1.png" class="img-fluid figure-img" alt="One Layer Aggregation"></a></p>
-<figcaption>One Layer Aggregation</figcaption>
-</figure>
-</div>
+<p><img src="images/aggregation_1.png" alt="One Layer Aggregation"></p>
 <p>The numbers written along with the nodes are the value of embedding at the time, <span class="math inline">\(T=0\)</span>.</p>
 <p>Values of embedding after one step are as follows:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/animation_2_bw.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Animation Aggregation Layer 1"><img src="images/animation_2_bw.gif" class="img-fluid figure-img" alt="Animation Aggregation Layer 1"></a></p>
-<figcaption>Animation Aggregation Layer 1</figcaption>
-</figure>
-</div>
+<p><img src="images/animation_2_bw.gif" alt="Animation Aggregation Layer 1"></p>
 <p>So after one iteration, the values are as follows:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/aggregation_2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Second Layer Aggregation"><img src="images/aggregation_2.png" class="img-fluid figure-img" alt="Second Layer Aggregation"></a></p>
-<figcaption>Second Layer Aggregation</figcaption>
-</figure>
-</div>
+<p><img src="images/aggregation_2.png" alt="Second Layer Aggregation"></p>
 <p>Repeating the same procedure on this new graph, we get (try verifying yourself):</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/aggregation_3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Third Layer Aggregation"><img src="images/aggregation_3.png" class="img-fluid figure-img" alt="Third Layer Aggregation"></a></p>
-<figcaption>Third Layer Aggregation</figcaption>
-</figure>
-</div>
+<p><img src="images/aggregation_3.png" alt="Third Layer Aggregation"></p>
 <p>Let’s try to do some analysis of the aggregation. Represent by <span class="math inline">\(A^{(0)}\)</span> the initial value of embedding of A (i.e.&nbsp;0.1), by <span class="math inline">\(A^{(1)}\)</span> the value after one layer (i.e.&nbsp;0.25) similarly <span class="math inline">\(A^{(2)}\)</span>, <span class="math inline">\(B^{(0)}\)</span>, <span class="math inline">\(B^{(1)}\)</span> and all other values.</p>
 <p>Clearly:</p>
 <p><span class="math display">\[A^{(1)} = \frac{(A^{(0)} + B^{(0)} + C^{(0)} + D^{(0)})}{4}\]</span></p>
@@ -774,21 +724,11 @@ Accuracy on test set: 0.7890</code></pre>
 <p>If we denote by <span class="math inline">\(N(v)\)</span> the set of neighbours of <span class="math inline">\(v\)</span>, so <span class="math inline">\(N(A)=\{B, C, D\}\)</span> and <span class="math inline">\(N(A)^{(k)}=\{B^{(k)}, C^{(k)}, D^{(k)}\}\)</span>, the above equation can be simplified as:</p>
 <p><span class="math display">\[A^{(k)} = F(A^{(k-1)}, N(A)^{(k-1)} )\]</span></p>
 <p>This process can be visualized as:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/showing_1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="Sampling"><img src="images/showing_1.png" class="img-fluid figure-img" alt="Sampling"></a></p>
-<figcaption>Sampling</figcaption>
-</figure>
-</div>
+<p><img src="images/showing_1.png" alt="Sampling"></p>
 <p>This method is quite effective in generating node embeddings. But there is an issue if a new node is added to the graph how can get its embeddings? This is an issue that cannot be tackled with this type of model. Clearly, something new is needed, but what?</p>
 <p>One alternative that we can try is to replace the function F by multiple functions such that in the first layer it is F1, in second layer F2 and so on, and then fixing the number of layers that we want, let’s say k.</p>
 <p>So our embedding generator would be like this:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/showing_2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Sampling 2"><img src="images/showing_2.png" class="img-fluid figure-img" alt="Sampling 2"></a></p>
-<figcaption>Sampling 2</figcaption>
-</figure>
-</div>
+<p><img src="images/showing_2.png" alt="Sampling 2"></p>
 </section>
 <section id="notation" class="level2">
 <h2 class="anchored" data-anchor-id="notation">Notation</h2>
@@ -818,23 +758,13 @@ Accuracy on test set: 0.7890</code></pre>
 <p><span class="math display">\[h_{v}^{k}=\sigma[W^{(k)}.CONCAT(h_{v}^{k-1},AGGREGATE_{k}( \{h_{u}^{k-1} \forall u \in N(v)\}))]\]</span></p>
 <p>Where <span class="math inline">\(\sigma\)</span> is some non-linear function (e.g.&nbsp;RELU, sigmoid, etc.) and <span class="math inline">\(W^{(k)}\)</span> is the weight matrix, each layer will have one such matrix. If you looked closely, you would have seen that there is no trainable parameters till now in our model. The <span class="math inline">\(W\)</span> matrix has been added to have something that the model can learn.</p>
 <p>One more thing we will add is to normalize the value of h after each iteration, i.e., divide them by their L2 norm, and hence our complete algorithm becomes:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/graphsage_algorithm.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="GraphSAGE Algorithm"><img src="images/graphsage_algorithm.png" class="img-fluid figure-img" alt="GraphSAGE Algorithm"></a></p>
-<figcaption>GraphSAGE Algorithm</figcaption>
-</figure>
-</div>
+<p><img src="images/graphsage_algorithm.png" alt="GraphSAGE Algorithm"></p>
 </section>
 </section>
 <section id="loss-function" class="level2">
 <h2 class="anchored" data-anchor-id="loss-function">Loss Function</h2>
 <p>To get the model learning, we need the loss function. For the general unsupervised learning problem, the following loss problem serves pretty well:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/Loss_function.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Loss"><img src="images/Loss_function.png" class="img-fluid figure-img" alt="Loss"></a></p>
-<figcaption>Loss</figcaption>
-</figure>
-</div>
+<p><img src="images/Loss_function.png" alt="Loss"></p>
 <p>This graph-based loss function encourages nearby nodes to have similar representations, while enforcing that the representations of disparate nodes are highly distinct.</p>
 <p>For supervised learning, either we can learn the embeddings first and then use those embeddings for the downstream task or combine both the part of learning embeddings and the part of applying these embeddings in the task into a single end to end models and then use the loss for the final part, and backpropagate to learn the embeddings while solving the task simultaneously.</p>
 </section>
@@ -844,22 +774,12 @@ Accuracy on test set: 0.7890</code></pre>
 <section id="mean-aggregator" class="level3">
 <h3 class="anchored" data-anchor-id="mean-aggregator">Mean Aggregator</h3>
 <p>Mean aggregator is as simple as you thought it would be. In mean aggregator we simply take the elementwise mean of the vectors in <span class="math inline">\(\{h_{u}^{k-1} \forall u \in N(v)\}\)</span>. In other words, we can average embeddings of all nodes in the neighbourhood to construct the neighbourhood embedding.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/ma.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16" title="Mean Aggregator"><img src="images/ma.png" class="img-fluid figure-img" alt="Mean Aggregator"></a></p>
-<figcaption>Mean Aggregator</figcaption>
-</figure>
-</div>
+<p><img src="images/ma.png" alt="Mean Aggregator"></p>
 </section>
 <section id="pool-aggregator" class="level3">
 <h3 class="anchored" data-anchor-id="pool-aggregator">Pool Aggregator</h3>
 <p>Until now, we were using a weighted average type of approach. But we could also use pooling type of approach; for example, we can do elementwise min or max pooling. So this would be another option where we are taking the messages from our neighbours, transforming them and applying some pooling technique (max-pooling or min pooling).</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/pa.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Pool Aggregator"><img src="images/pa.png" class="img-fluid figure-img" alt="Pool Aggregator"></a></p>
-<figcaption>Pool Aggregator</figcaption>
-</figure>
-</div>
+<p><img src="images/pa.png" alt="Pool Aggregator"></p>
 <p>In the above equation, max denotes the elementwise max operator, and <span class="math inline">\(\sigma\)</span> is a nonlinear activation function (yes you are right it can be ReLU). Please note that the function applied before the max-pooling can be an arbitrarily deep multi-layer perceptron, but in the original paper, simple single-layer architectures are preferred.</p>
 </section>
 <section id="lstm-aggregator" class="level3">
@@ -870,33 +790,18 @@ Accuracy on test set: 0.7890</code></pre>
 <section id="inductive-capability" class="level2">
 <h2 class="anchored" data-anchor-id="inductive-capability">Inductive Capability</h2>
 <p>One interesting property of GraphSAGE is that we can train our model on one subset of the graph and apply this model on another subset of this graph. The reason we can do this is that we can do parameter sharing, i.e.&nbsp;those processing boxes are the same everywhere (<span class="math inline">\(W\)</span> and <span class="math inline">\(B\)</span> are shared across all the computational graphs or architectures). So when a new architecture comes into play, we can borrow the parameters (<span class="math inline">\(W\)</span> and <span class="math inline">\(B\)</span>), do a forward pass, and we get our prediction.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/sharing_param.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18" title="Sharing Parameters"><img src="images/sharing_param.png" class="img-fluid figure-img" alt="Sharing Parameters"></a></p>
-<figcaption>Sharing Parameters</figcaption>
-</figure>
-</div>
+<p><img src="images/sharing_param.png" alt="Sharing Parameters"></p>
 <p>This property of GraphSAGE is advantageous in the prediction of protein interaction. For example, we can train our model on protein interaction graph from model organism A (left-hand side in the figure below) and generate embedding on newly collected data from other model organism say B (right-hand side in the figure).</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/protein.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19" title="Protein Interaction"><img src="images/protein.png" class="img-fluid figure-img" alt="Protein Interaction"></a></p>
-<figcaption>Protein Interaction</figcaption>
-</figure>
-</div>
+<p><img src="images/protein.png" alt="Protein Interaction"></p>
 <p>We know that GCN is not able to generalise to a new unseen graph. So, if any new node gets added to the graph, we had to train our model from scratch, but since our new method is generalised to the unseen graphs, so to predict the embeddings of the new node we have to make the computational graph of the new node, transfer the parameters to the unseen part of the graph and we can make predictions.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/new_node.png" class="lightbox" data-gallery="quarto-lightbox-gallery-20" title="New Node"><img src="images/new_node.png" class="img-fluid figure-img" alt="New Node"></a></p>
-<figcaption>New Node</figcaption>
-</figure>
-</div>
+<p><img src="images/new_node.png" alt="New Node"></p>
 <p>We can use this property in social-network (like Facebook). Consider the first graph in the above figure, users in a social-network are represented by the nodes of the graph. Initially, we would train our model on this graph. After some time suppose another user is added in the network, now we don’t have to train our model from scratch on the second graph, we will create the computational graph of the new node, borrow the parameters from the already trained model and then we can find the embeddings of the newly added user.</p>
 </section>
 <section id="implementation-in-pytorch" class="level2">
 <h2 class="anchored" data-anchor-id="implementation-in-pytorch">Implementation in PyTorch</h2>
 <section id="imports-1" class="level3">
 <h3 class="anchored" data-anchor-id="imports-1">Imports</h3>
-<div id="6039922c" class="cell" data-execution_count="9">
+<div id="05f5d96d" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.nn <span class="im">import</span> init</span>
@@ -917,7 +822,7 @@ Accuracy on test set: 0.7890</code></pre>
 <li>The encoder class is responsible for encoding a node’s embedding using the ‘convolutional’ GraphSAGE approach.</li>
 <li>The supervised GraphSAGE class combines the encoder with a linear layer to perform classification.</li>
 </ul>
-<div id="a43aa578" class="cell" data-execution_count="10">
+<div id="5f5beea4" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">Simple supervised GraphSAGE model as well as examples running the model on the Cora and Pubmed datasets.</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
@@ -950,7 +855,7 @@ Accuracy on test set: 0.7890</code></pre>
 <span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>        _set <span class="op">=</span> <span class="bu">set</span></span>
 <span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> num_sample <span class="kw">is</span> <span class="va">None</span>:</span>
 <span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>            _sample <span class="op">=</span> random.sample</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>            samp_neighs <span class="op">=</span> [_set(_sample(to_neigh, </span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>            samp_neighs <span class="op">=</span> [_set(_sample(<span class="bu">list</span>(to_neigh), </span>
 <span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>                            num_sample,</span>
 <span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>                            )) <span class="cf">if</span> <span class="bu">len</span>(to_neigh) <span class="op">&gt;=</span> num_sample <span class="cf">else</span> to_neigh <span class="cf">for</span> to_neigh <span class="kw">in</span> to_neighs]</span>
 <span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
@@ -1082,7 +987,7 @@ Accuracy on test set: 0.7890</code></pre>
 </tr>
 </tbody>
 </table>
-<div id="2068c774" class="cell" data-execution_count="11">
+<div id="6ac9e3cd" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_cora():</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    dataset <span class="op">=</span> Planetoid(root<span class="op">=</span><span class="st">'/tmp/Cora'</span>, name<span class="op">=</span><span class="st">'Cora'</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> dataset[<span class="dv">0</span>]</span>
@@ -1174,119 +1079,116 @@ Accuracy on test set: 0.7890</code></pre>
 <span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
 <span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a>    run_cora()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0 1.9335110187530518
-1 1.9149291515350342
-2 1.8877891302108765
-3 1.8495954275131226</code></pre>
+<pre><code>0 1.9475315809249878
+1 1.9272218942642212
+2 1.9009239673614502
+3 1.868775725364685</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_3675/3312286732.py:84: FutureWarning: `nn.init.xavier_uniform` is now deprecated in favor of `nn.init.xavier_uniform_`.
+<pre><code>/tmp/ipykernel_3636/1581853469.py:84: FutureWarning: `nn.init.xavier_uniform` is now deprecated in favor of `nn.init.xavier_uniform_`.
   init.xavier_uniform(self.weight)
-/tmp/ipykernel_3675/3312286732.py:113: FutureWarning: `nn.init.xavier_uniform` is now deprecated in favor of `nn.init.xavier_uniform_`.
-  init.xavier_uniform(self.weight)
-/tmp/ipykernel_3675/3312286732.py:33: DeprecationWarning: Sampling from a set deprecated
-since Python 3.9 and will be removed in a subsequent version.
-  samp_neighs = [_set(_sample(to_neigh,</code></pre>
+/tmp/ipykernel_3636/1581853469.py:113: FutureWarning: `nn.init.xavier_uniform` is now deprecated in favor of `nn.init.xavier_uniform_`.
+  init.xavier_uniform(self.weight)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>4 1.8001039028167725
-5 1.7704659700393677
-6 1.7104241847991943
-7 1.729561686515808
-8 1.644196629524231
-9 1.599103569984436
-10 1.4837820529937744
-11 1.4480561017990112
-12 1.4531757831573486
-13 1.2877002954483032
-14 1.3707138299942017
-15 1.3019740581512451
-16 1.2507548332214355
-17 1.1407525539398193
-18 1.1605660915374756
-19 1.0841140747070312
-20 1.0560635328292847
-21 1.0094364881515503
-22 0.9391950368881226
-23 0.8793214559555054
-24 0.8332667350769043
-25 0.8052027821540833
-26 0.7171604633331299
-27 0.7349916696548462
-28 0.6301756501197815
-29 0.5825901031494141
-30 0.6460464000701904
-31 0.6480044722557068
-32 0.7160317897796631
-33 0.9715743660926819
-34 1.0092519521713257
-35 0.9465829730033875
-36 0.6544417142868042
-37 0.5487310290336609
-38 0.5518037676811218
-39 0.49671730399131775
-40 0.527938961982727
-41 0.5009824633598328
-42 0.5229251980781555
-43 0.4132029414176941
-44 0.3677917718887329
-45 0.39672011137008667
-46 0.4675528109073639
-47 0.43952476978302
-48 0.3906429409980774
-49 0.36675482988357544
-50 0.34581947326660156
-51 0.37001833319664
-52 0.40510502457618713
-53 0.29675060510635376
-54 0.34904274344444275
-55 0.42689958214759827
-56 0.43328481912612915
-57 0.46492087841033936
-58 0.46685633063316345
-59 0.4564588963985443
-60 0.3271465301513672
-61 0.2221759855747223
-62 0.2746075391769409
-63 0.2917070686817169
-64 0.2792153060436249
-65 0.24198180437088013
-66 0.25823739171028137
-67 0.28134989738464355
-68 0.31394121050834656
-69 0.2646212577819824
-70 0.27026674151420593
-71 0.22307927906513214
-72 0.2620317041873932
-73 0.2087847739458084
-74 0.21919453144073486
-75 0.2325400412082672
-76 0.24525736272335052
-77 0.28637397289276123
-78 0.28194382786750793
-79 0.21244381368160248
-80 0.28272002935409546
-81 0.23962877690792084
-82 0.20997323095798492
-83 0.2025436908006668
-84 0.21300481259822845
-85 0.27177801728248596
-86 0.23280416429042816
-87 0.2660435438156128
-88 0.254767507314682
-89 0.2875239849090576
-90 0.269124299287796
-91 0.32169631123542786
-92 0.39224186539649963
-93 0.33037129044532776
-94 0.253597229719162
-95 0.18185943365097046
-96 0.18781766295433044
-97 0.19530950486660004
-98 0.16090397536754608
-99 0.2316029667854309
-Average batch time: 0.030726099014282228
-Test Accuracy: 0.8606666666666667</code></pre>
+<pre><code>4 1.8257386684417725
+5 1.7995991706848145
+6 1.7373499870300293
+7 1.7378584146499634
+8 1.6651962995529175
+9 1.6028728485107422
+10 1.5052012205123901
+11 1.454744577407837
+12 1.4447327852249146
+13 1.2744860649108887
+14 1.3475077152252197
+15 1.2582814693450928
+16 1.2119793891906738
+17 1.094234824180603
+18 1.1134569644927979
+19 1.0347774028778076
+20 0.9807831645011902
+21 0.9568230509757996
+22 0.8856473565101624
+23 0.8022874593734741
+24 0.7751493453979492
+25 0.773960292339325
+26 0.6907038688659668
+27 0.7092718482017517
+28 0.6723703145980835
+29 0.822919487953186
+30 0.7947745323181152
+31 0.7739313244819641
+32 0.5844804644584656
+33 0.5306153297424316
+34 0.5985372066497803
+35 0.5242692232131958
+36 0.5796743035316467
+37 0.4955514371395111
+38 0.5121232867240906
+39 0.4633055031299591
+40 0.48301687836647034
+41 0.45638400316238403
+42 0.49088603258132935
+43 0.3848693370819092
+44 0.3475637137889862
+45 0.37437617778778076
+46 0.4526008069515228
+47 0.44511231780052185
+48 0.4314599335193634
+49 0.4260764420032501
+50 0.39762648940086365
+51 0.4326729476451874
+52 0.4598274528980255
+53 0.28760164976119995
+54 0.34848710894584656
+55 0.3811074495315552
+56 0.3759804666042328
+57 0.31263288855552673
+58 0.3378550112247467
+59 0.33152201771736145
+60 0.2844441831111908
+61 0.2062675803899765
+62 0.260403037071228
+63 0.2935618460178375
+64 0.2668985426425934
+65 0.22096681594848633
+66 0.2396268993616104
+67 0.2655453681945801
+68 0.2981150150299072
+69 0.2695450186729431
+70 0.26840293407440186
+71 0.23047806322574615
+72 0.2568889558315277
+73 0.21868784725666046
+74 0.22562260925769806
+75 0.22451241314411163
+76 0.2321939766407013
+77 0.2792876958847046
+78 0.2642802894115448
+79 0.20701098442077637
+80 0.27619636058807373
+81 0.22637714445590973
+82 0.19515059888362885
+83 0.19570764899253845
+84 0.20244836807250977
+85 0.2570994198322296
+86 0.21256740391254425
+87 0.2505364418029785
+88 0.24319155514240265
+89 0.27833378314971924
+90 0.2904602885246277
+91 0.34370213747024536
+92 0.4465266168117523
+93 0.41005274653434753
+94 0.26825639605522156
+95 0.18674339354038239
+96 0.18741674721240997
+97 0.1897326111793518
+98 0.1548592746257782
+99 0.22445611655712128
+Average batch time: 0.030150837898254394
+Test Accuracy: 0.8713333333333333</code></pre>
 </div>
 </div>
 <p>So, what do you think about the accuracy of the model? Do you think it is good enough in predicting the labels of new nodes?</p>
