@@ -341,7 +341,7 @@ window.Quarto = {
 </header>
 
 
-<p><a href="https://colab.research.google.com/github/huanfachen/DSSS_25/blob/main/sessions/W06_neural_networks/graph_neural_networks_practical.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
+<p><a href="https://colab.research.google.com/github/huanfachen/DSSS_25/blob/main/sessions/W06_graph_neural_networks/graph_neural_networks_practical.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>In this practical, we will use <a href="https://www.pytorch.org/">PyTorch</a> to:</p>
@@ -394,7 +394,7 @@ window.Quarto = {
 <p>In this example, we have the label for admin (node 1) and instructor (node 34), so only these two contain the class label (0 and 1) all other are set to -1, which means that the predicted value of these nodes will be ignored in the computation of loss function.</p>
 <p>To use the GCN, we need to know the feature matrix. As we don’t have any feature of each node, for simplicity, we will be using the one-hot encoding corresponding to the index of the node.</p>
 <p>The complete code is as below. Please note that we commented out the part of plotting the animination using celluloid, as it requires a few addditional libaries. You can uncomment it if you want to see the animation of the training process. We will focus on the the change of the loss function and the accuracy of the model for predicting the labels of all nodes during training.</p>
-<div id="383aae47" class="cell" data-execution_count="1">
+<div id="82867699" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#### Loading Required Libraries ####</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
@@ -533,25 +533,25 @@ window.Quarto = {
 <span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="co"># animation.save('./train_karate_animation.mp4', writer='ffmpeg', fps=60)</span></span>
 <span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="co"># HTML(animation.to_html5_video())</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Cross Entropy Loss: = 0.6655827164649963
-Accuracy:  0.5588235294117647
-Cross Entropy Loss: = 0.6113182306289673
-Accuracy:  0.7058823529411765
-Cross Entropy Loss: = 0.5234717130661011
-Accuracy:  0.8235294117647058
-Cross Entropy Loss: = 0.4231340289115906
-Accuracy:  0.8823529411764706
-Cross Entropy Loss: = 0.3199761211872101
+<pre><code>Cross Entropy Loss: = 0.8428745865821838
+Accuracy:  0.5294117647058824
+Cross Entropy Loss: = 0.6927328705787659
+Accuracy:  0.5294117647058824
+Cross Entropy Loss: = 0.6242784261703491
+Accuracy:  0.6176470588235294
+Cross Entropy Loss: = 0.5587363243103027
 Accuracy:  0.9705882352941176
-Cross Entropy Loss: = 0.23023052513599396
+Cross Entropy Loss: = 0.47750192880630493
 Accuracy:  0.9705882352941176
-Cross Entropy Loss: = 0.1630363166332245
+Cross Entropy Loss: = 0.38146400451660156
 Accuracy:  0.9705882352941176
-Cross Entropy Loss: = 0.11774113029241562
+Cross Entropy Loss: = 0.2846856713294983
 Accuracy:  1.0
-Cross Entropy Loss: = 0.08810146152973175
+Cross Entropy Loss: = 0.2033417969942093
 Accuracy:  1.0
-Cross Entropy Loss: = 0.06842853128910065
+Cross Entropy Loss: = 0.1447199583053589
+Accuracy:  1.0
+Cross Entropy Loss: = 0.10635486245155334
 Accuracy:  1.0</code></pre>
 </div>
 </div>
@@ -571,12 +571,12 @@ Accuracy:  1.0</code></pre>
 <p><strong>Here <span class="math inline">\(\text{aggregate}(A,X)(i)\)</span> gives the <span class="math inline">\(i\)</span>’th row of the target</strong></p>
 <section id="imports" class="level2">
 <h2 class="anchored" data-anchor-id="imports">Imports</h2>
-<div id="1e9ac282" class="cell" data-execution_count="2">
+<div id="d3d0987e" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_geometric.datasets <span class="im">import</span> Planetoid</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="loading-the-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="loading-the-dataset">Loading the Dataset</h3>
-<div id="15fb49c6" class="cell" data-execution_count="3">
+<div id="4b412b02" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> Planetoid(root<span class="op">=</span><span class="st">'/tmp/Cora'</span>, name<span class="op">=</span><span class="st">'Cora'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Downloading https://github.com/kimiyoung/planetoid/raw/master/data/ind.cora.x
@@ -595,7 +595,7 @@ Done!</code></pre>
 <section id="the-graph-convolution-layer" class="level3">
 <h3 class="anchored" data-anchor-id="the-graph-convolution-layer">The Graph Convolution Layer</h3>
 <p>The graph convolution class handles the task of taking the adjacency list and feature matrix and outputting the required input for next layer, which can be another graph convolutional layer or maybe some other class.</p>
-<div id="29d9ae6b" class="cell" data-execution_count="4">
+<div id="88671b1f" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> MessagePassing</span>
@@ -622,7 +622,7 @@ Done!</code></pre>
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> aggr_out</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The ‘Net’ class is the one where all the layers are combined together.</p>
-<div id="49756d07" class="cell" data-execution_count="5">
+<div id="39e7e785" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Net(torch.nn.Module):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,nfeat, nhid, nclass, dropout):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(Net, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
@@ -640,7 +640,7 @@ Done!</code></pre>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="9bfdfd50" class="cell" data-execution_count="6">
+<div id="e27e9427" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nfeat<span class="op">=</span>dataset.num_node_features</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>nhid<span class="op">=</span><span class="dv">16</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>nclass<span class="op">=</span>dataset.num_classes</span>
@@ -650,7 +650,7 @@ Done!</code></pre>
 </section>
 <section id="training" class="level2">
 <h2 class="anchored" data-anchor-id="training">Training</h2>
-<div id="25422e37" class="cell" data-execution_count="7">
+<div id="254c8f13" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">'cuda'</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">'cpu'</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Net(nfeat, nhid, nclass, dropout).to(device)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> dataset[<span class="dv">0</span>].to(device)</span>
@@ -664,7 +664,7 @@ Done!</code></pre>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    optimizer.step()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="59e1cebb" class="cell" data-execution_count="8">
+<div id="af4535a6" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>_, pred <span class="op">=</span> model(data).<span class="bu">max</span>(dim<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -679,7 +679,7 @@ Done!</code></pre>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Accuracy on test set: </span><span class="sc">{:.4f}</span><span class="st">'</span>.<span class="bu">format</span>(acc))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Accuracy on training set: 1.0000
-Accuracy on test set: 0.8090</code></pre>
+Accuracy on test set: 0.7890</code></pre>
 </div>
 </div>
 <p>Here, the testing accuracy is 0.787, which means that the model can accurately predict the labels of the nodes in the test set with 78.7% accuracy.</p>
@@ -896,7 +896,7 @@ Accuracy on test set: 0.8090</code></pre>
 <h2 class="anchored" data-anchor-id="implementation-in-pytorch">Implementation in PyTorch</h2>
 <section id="imports-1" class="level3">
 <h3 class="anchored" data-anchor-id="imports-1">Imports</h3>
-<div id="b2581481" class="cell" data-execution_count="9">
+<div id="6039922c" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.nn <span class="im">import</span> init</span>
@@ -917,7 +917,7 @@ Accuracy on test set: 0.8090</code></pre>
 <li>The encoder class is responsible for encoding a node’s embedding using the ‘convolutional’ GraphSAGE approach.</li>
 <li>The supervised GraphSAGE class combines the encoder with a linear layer to perform classification.</li>
 </ul>
-<div id="5b33b509" class="cell" data-execution_count="10">
+<div id="a43aa578" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">Simple supervised GraphSAGE model as well as examples running the model on the Cora and Pubmed datasets.</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
@@ -1082,7 +1082,7 @@ Accuracy on test set: 0.8090</code></pre>
 </tr>
 </tbody>
 </table>
-<div id="ee8ab67a" class="cell" data-execution_count="11">
+<div id="2068c774" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_cora():</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    dataset <span class="op">=</span> Planetoid(root<span class="op">=</span><span class="st">'/tmp/Cora'</span>, name<span class="op">=</span><span class="st">'Cora'</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> dataset[<span class="dv">0</span>]</span>
@@ -1174,119 +1174,119 @@ Accuracy on test set: 0.8090</code></pre>
 <span id="cb14-89"><a href="#cb14-89" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
 <span id="cb14-90"><a href="#cb14-90" aria-hidden="true" tabindex="-1"></a>    run_cora()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0 1.9426220655441284
-1 1.921636700630188
-2 1.8939825296401978
-3 1.86704421043396</code></pre>
+<pre><code>0 1.9335110187530518
+1 1.9149291515350342
+2 1.8877891302108765
+3 1.8495954275131226</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_3646/3312286732.py:84: FutureWarning: `nn.init.xavier_uniform` is now deprecated in favor of `nn.init.xavier_uniform_`.
+<pre><code>/tmp/ipykernel_3675/3312286732.py:84: FutureWarning: `nn.init.xavier_uniform` is now deprecated in favor of `nn.init.xavier_uniform_`.
   init.xavier_uniform(self.weight)
-/tmp/ipykernel_3646/3312286732.py:113: FutureWarning: `nn.init.xavier_uniform` is now deprecated in favor of `nn.init.xavier_uniform_`.
+/tmp/ipykernel_3675/3312286732.py:113: FutureWarning: `nn.init.xavier_uniform` is now deprecated in favor of `nn.init.xavier_uniform_`.
   init.xavier_uniform(self.weight)
-/tmp/ipykernel_3646/3312286732.py:33: DeprecationWarning: Sampling from a set deprecated
+/tmp/ipykernel_3675/3312286732.py:33: DeprecationWarning: Sampling from a set deprecated
 since Python 3.9 and will be removed in a subsequent version.
   samp_neighs = [_set(_sample(to_neigh,</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>4 1.8252291679382324
-5 1.7937402725219727
-6 1.7447725534439087
-7 1.7477028369903564
-8 1.6642860174179077
-9 1.6084039211273193
-10 1.4913579225540161
-11 1.4525905847549438
-12 1.4450063705444336
-13 1.276689052581787
-14 1.3340027332305908
-15 1.2644658088684082
-16 1.2059605121612549
-17 1.0918054580688477
-18 1.1107064485549927
-19 1.0259156227111816
-20 0.9743222594261169
-21 0.9676514863967896
-22 0.8964970111846924
-23 0.8356612324714661
-24 0.8111568689346313
-25 0.867133617401123
-26 0.7367029190063477
-27 0.7534664869308472
-28 0.6398580074310303
-29 0.6653111577033997
-30 0.6685318350791931
-31 0.6426520347595215
-32 0.5622425079345703
-33 0.5555821657180786
-34 0.6273581385612488
-35 0.5756140947341919
-36 0.6113442778587341
-37 0.5502157211303711
-38 0.5425729155540466
-39 0.4667207896709442
-40 0.48832234740257263
-41 0.461134135723114
-42 0.48042911291122437
-43 0.36243897676467896
-44 0.33530715107917786
-45 0.36304771900177
-46 0.4228663444519043
-47 0.3958147466182709
-48 0.35595929622650146
-49 0.32439395785331726
-50 0.3004065752029419
-51 0.3044974207878113
-52 0.3824402689933777
-53 0.3093956708908081
-54 0.3932267129421234
-55 0.54083651304245
-56 0.6153435111045837
-57 0.9247631430625916
-58 0.399650514125824
-59 0.34649646282196045
-60 0.2952191233634949
-61 0.20908649265766144
-62 0.26356279850006104
-63 0.29381224513053894
-64 0.25844889879226685
-65 0.22918672859668732
-66 0.2492927610874176
-67 0.2512412369251251
-68 0.30587416887283325
-69 0.25664985179901123
-70 0.2545333504676819
-71 0.21124199032783508
-72 0.23993414640426636
-73 0.19500096142292023
-74 0.20978425443172455
-75 0.22355441749095917
-76 0.23609256744384766
-77 0.2896323800086975
-78 0.27755632996559143
-79 0.21970057487487793
-80 0.2941741347312927
-81 0.2511954605579376
-82 0.20060914754867554
-83 0.19679458439350128
-84 0.19623838365077972
-85 0.2545887529850006
-86 0.22205138206481934
-87 0.24630671739578247
-88 0.22543691098690033
-89 0.2615688145160675
-90 0.2253452092409134
-91 0.21174052357673645
-92 0.28000083565711975
-93 0.186481773853302
-94 0.19637702405452728
-95 0.14272966980934143
-96 0.1835719347000122
-97 0.1775335818529129
-98 0.14741866290569305
-99 0.2135084867477417
-Average batch time: 0.030836524963378905
-Test Accuracy: 0.8773333333333333</code></pre>
+<pre><code>4 1.8001039028167725
+5 1.7704659700393677
+6 1.7104241847991943
+7 1.729561686515808
+8 1.644196629524231
+9 1.599103569984436
+10 1.4837820529937744
+11 1.4480561017990112
+12 1.4531757831573486
+13 1.2877002954483032
+14 1.3707138299942017
+15 1.3019740581512451
+16 1.2507548332214355
+17 1.1407525539398193
+18 1.1605660915374756
+19 1.0841140747070312
+20 1.0560635328292847
+21 1.0094364881515503
+22 0.9391950368881226
+23 0.8793214559555054
+24 0.8332667350769043
+25 0.8052027821540833
+26 0.7171604633331299
+27 0.7349916696548462
+28 0.6301756501197815
+29 0.5825901031494141
+30 0.6460464000701904
+31 0.6480044722557068
+32 0.7160317897796631
+33 0.9715743660926819
+34 1.0092519521713257
+35 0.9465829730033875
+36 0.6544417142868042
+37 0.5487310290336609
+38 0.5518037676811218
+39 0.49671730399131775
+40 0.527938961982727
+41 0.5009824633598328
+42 0.5229251980781555
+43 0.4132029414176941
+44 0.3677917718887329
+45 0.39672011137008667
+46 0.4675528109073639
+47 0.43952476978302
+48 0.3906429409980774
+49 0.36675482988357544
+50 0.34581947326660156
+51 0.37001833319664
+52 0.40510502457618713
+53 0.29675060510635376
+54 0.34904274344444275
+55 0.42689958214759827
+56 0.43328481912612915
+57 0.46492087841033936
+58 0.46685633063316345
+59 0.4564588963985443
+60 0.3271465301513672
+61 0.2221759855747223
+62 0.2746075391769409
+63 0.2917070686817169
+64 0.2792153060436249
+65 0.24198180437088013
+66 0.25823739171028137
+67 0.28134989738464355
+68 0.31394121050834656
+69 0.2646212577819824
+70 0.27026674151420593
+71 0.22307927906513214
+72 0.2620317041873932
+73 0.2087847739458084
+74 0.21919453144073486
+75 0.2325400412082672
+76 0.24525736272335052
+77 0.28637397289276123
+78 0.28194382786750793
+79 0.21244381368160248
+80 0.28272002935409546
+81 0.23962877690792084
+82 0.20997323095798492
+83 0.2025436908006668
+84 0.21300481259822845
+85 0.27177801728248596
+86 0.23280416429042816
+87 0.2660435438156128
+88 0.254767507314682
+89 0.2875239849090576
+90 0.269124299287796
+91 0.32169631123542786
+92 0.39224186539649963
+93 0.33037129044532776
+94 0.253597229719162
+95 0.18185943365097046
+96 0.18781766295433044
+97 0.19530950486660004
+98 0.16090397536754608
+99 0.2316029667854309
+Average batch time: 0.030726099014282228
+Test Accuracy: 0.8606666666666667</code></pre>
 </div>
 </div>
 <p>So, what do you think about the accuracy of the model? Do you think it is good enough in predicting the labels of new nodes?</p>
