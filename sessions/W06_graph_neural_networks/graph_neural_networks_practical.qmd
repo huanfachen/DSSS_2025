@@ -76,6 +76,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score
 # get_ipython().run_line_magic('matplotlib', 'notebook')
 
 # import imageio
@@ -200,8 +201,8 @@ for i in range(200):
         print("Cross Entropy Loss: =", loss.item())
         # print the predictive accuracy by comparing the predicted label with the actual label for all the nodes.
         pred_label = torch.argmax(l, dim=1)
-        correct = (pred_label == label).sum().item()
-        print("Accuracy: ", correct/l.shape[0])
+        accuracy = accuracy_score(label, pred_label.detach().cpu().numpy())
+        print("Accuracy: ", accuracy)
 
 # animation = camera.animate(blit=False, interval=150)
 # animation.save('./train_karate_animation.mp4', writer='ffmpeg', fps=60)
