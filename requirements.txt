@@ -6,7 +6,7 @@ matplotlib
 tabulate
 scikit-learn
 seaborn
-xgboost
+xgboost==2.1.*
 tensorflow
 torch
 torch_geometric
