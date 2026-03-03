@@ -349,7 +349,7 @@
 
 - Correlation among features might make coefficients completely uninterpretable
 
-::: {#169f6b2a .cell execution_count=1}
+::: {#9193baac .cell execution_count=1}
 
 ::: {.cell-output .cell-output-stdout}
 ```
@@ -363,8 +363,8 @@ R² = 0.985
 
 Correlation X3-X4: 0.993
 
-Model 2 (4 features): y = 1.24 + 28.30*X1 + 73.99*X2 + 17.95*X3 + 0.95*X4
-R² = 0.985
+Model 2 (4 features): y = 1.00 + 28.26*X1 + 73.88*X2 + 9.14*X3 + 10.68*X4
+R² = 0.986
 ```
 :::
 :::
@@ -377,7 +377,7 @@ R² = 0.985
 - On the same data, Lasso regression will pick one of the correlated features (X3 or X4)
 - but it doesn't mean the dropped feature is unimportant!
 
-::: {#f9843a7d .cell execution_count=2}
+::: {#d43023ed .cell execution_count=2}
 
 ::: {.cell-output .cell-output-stdout}
 ```
@@ -647,7 +647,7 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <section id="shap-example" class="slide level2">
 <h2>SHAP example</h2>
 <ul>
-<li>Y variable: median house value for California districts (in $100,000) | MedInc | Median income in block group | | HouseAge | Median house age in block group | | AveRooms | Average number of rooms per household | | AveBedrms | Average number of bedrooms per household | | Population | Block group population | | AveOccup | Average number of household members | | Latitude | Block group latitude | | Longitude | Block group longitude |</li>
+<li>Y variable: median house value for California districts (in $100,000) | Feature | Description | |———|————-| | MedInc | Median income in block group | | HouseAge | Median house age in block group | | AveRooms | Average number of rooms per household | | AveBedrms | Average number of bedrooms per household | | Population | Block group population | | AveOccup | Average number of household members | | Latitude | Block group latitude | | Longitude | Block group longitude |</li>
 <li>Spatial unit: A block group typically has a population of 600 to 3,000 people; similar to output area in UK</li>
 <li>Source: https://www.dcc.fc.up.pt/~ltorgo/Regression/cal_housing.html</li>
 </ul>
@@ -671,7 +671,7 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <h2>SHAP force plots</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>shap.plots.force(shap_values[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
-<p><img src="images/SHAP_force_plot.png" style="max-width:150%;"></p>
+<p><img src="images/SHAP_force_plot.png" style="max-width:10%;"></p>
 </div>
 </section>
 <section id="shap-force-plots-for-multiple-samples" class="slide level2">
