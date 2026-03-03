@@ -453,6 +453,7 @@ SHAP assumes the prediction of a data point is the sum of effects of each featur
 ## SHAP example
 
 - Y variable: median house value for California districts (in $100,000)
+
 | Feature | Description |
 |---------|-------------|
 | MedInc | Median income in block group |
