@@ -1,5 +1,5 @@
 ---
-title: "Model Interpretation and Feature Selection"
+title: "Model Interpretation"
 # subtitle: ""
 author: 
   - name: "Huanfa Chen"
@@ -17,21 +17,71 @@ format:
 TODO: update feature selection part
 ```
 
-# Model Interpretation (post-hoc)
+## Recap: Neural Networks (or MLP)
 
-- This is not inference or estimating variable relationships
-- This is not causality
-- Still useful for feature selection and understanding model behaviour
+<div style="text-align:center;">
+  <img src="images/nn_basic_arch.png" alt="ANN architecture" style="max-width:70%;">
+</div>
 
-## Types of Explanations
+## Recap: Convolutional Neural Networks (CNN)
+
+- Local filter
+- Translation invariance
+
+<div style="text-align:center;">
+  <img src="images/cnn.png" alt="CNN architecture" style="max-width:70%;">
+</div>
+
+<div style="text-align:center;">
+  <img src="images/2dconv_animation.gif" alt="2D convolution animation" style="max-width:40%;">
+</div>
+
+[source: Arden Dertat](https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)
+
+## Recap: Graph Neural Networks (GNN)
+
+<div style="text-align:center;">
+  <img src="images/gcn_architecture.png" alt="GCN Architecture" style="max-width:80%;">
+</div>
+
+## From this week ...
+
+- No new algorithms
+- More on how to apply and interpret models
+- **W07: Model interpretation techniques**
+- W08: Feature selection methods
+- W09: Testing ML codes
+- W10: Handling imbalanced data
+
+# Model Interpretation (Post-hoc Explanability)
+
+- It involves taking [a pre-trained model]{style="color: blue;"} and using [a separate method]{style="color: blue;"} to explain its decisions
+- It belongs to a broader field of *Interpretable Machine Learning* and *Explainable AI (XAI)*
+- It differs from *interpretable models* (e.g., linear regression, decision trees) which are designed to be inherently interpretable
+
+## What Post-hoc Explanability isn't ...
+
+- This is NOT inference or estimating variable relationships
+- This is NOT causality
+- Still useful for feature selection and understanding black-box model behaviours
+
+## Explaining the Model != Explaining the Data
+
+- Model inspection only tells you about the model
+- The model might not accurately reflect the data
+- Don't explain a model with low accuracy
+
+# Two types of Post-hoc Explanations
 
 ## Explain model globally
-- How does the output depend on the input?
-- Often: some form of marginals (e.g., `feature importance`)
+- [How does the model depend on each feature?]{style="color: blue;"}
+- Often in some form of marginals (e.g., `feature importance`)
+- Note that there many types of "feature importance"  and they can give very different results!
+- Always ask one question: "what is the definition of feature importance?"
 
 ## Explain model locally
-- Why did it classify this point this way?
-- Explanation could look like a "global" one but be different for each point
+- Why did it classify this data point this way?
+- Explanation will be different for each point
 - *"What is the minimum change to classify it differently?"*
 
 ## Methods
@@ -40,10 +90,10 @@ TODO: update feature selection part
 
 ::: {.column width="50%"}
 **Global:**
-- Coefficients / feature importances
-- Drop-feature importance
-- [Permutation importance]{style="color: blue;"}
-- Partial dependence plots
+- Coefficients (:x:)
+- Drop-feature importance (:x:)
+- [Permutation importance]{style="color: blue;"} (:heavy_check_mark:)
+- Partial dependence plots (:heavy_check_mark:)
 :::
 
 ::: {.column width="50%"}
@@ -53,12 +103,6 @@ TODO: update feature selection part
 :::
 
 ::::
-
-## Explaining the Model != Explaining the Data
-
-- Model inspection only tells you about the model
-- The model might not accurately reflect the data
-- Don't explain a model with low accuracy
 
 ## "Features Important to the Model"?
 
@@ -72,7 +116,7 @@ Use with care!
 - Large absolute coef value != important feature
 - Relative importance only meaningful after scaling
 - Correlation among features might make coefficients completely uninterpretable
-- L1 regularization will pick one at random from a correlated group
+- L1 regularisation will pick one at random from a correlated group
 - Any penalty will invalidate usual interpretation of linear coefficients
 
 ## Example: Correlated Features
