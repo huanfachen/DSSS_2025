@@ -24,14 +24,14 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
 # RESTORE CACHE HERE ---
-      - name: Restore _freeze
-        uses: actions/cache@v3
-        with:
-          path: _freeze
-          # The 'key' changes if any qmd or ipynb file changes
-          key: ${{ runner.os }}-quarto-${{ hashFiles('**/*.qmd', '**/*.ipynb', '**/*.md') }}
-          restore-keys: |
-            ${{ runner.os }}-quarto-
+      # - name: Restore _freeze
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: _freeze
+      #     # The 'key' changes if any qmd or ipynb file changes
+      #     key: ${{ runner.os }}-quarto-${{ hashFiles('**/*.qmd', '**/*.ipynb', '**/*.md') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-quarto-
 
       # - name: Set up R
       #   uses: r-lib/actions/setup-r@v2
