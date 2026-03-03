@@ -13,10 +13,6 @@ format:
     preview-links: auto
 ---
 
-```{notes}
-TODO: update feature selection part
-```
-
 ## Recap: Neural Networks (or MLP)
 
 <div style="text-align:center;">
@@ -248,7 +244,7 @@ def drop_feature_importance(est, X, y):
 
 Idea: measure marginal influence of a feature by permuting it and measuring the drop in accuracy
 <div style="text-align:center;">
-  <img src="images/permutation_importance.png" alt="permutation importance" style="max-width:60%;">
+  <img src="images/permutation_importance_illustration.png" alt="permutation importance" style="max-width:60%;">
 </div>
 
 ## Permutation Importance
@@ -345,7 +341,8 @@ plot_partial_dependence(
 from sklearn.inspection import plot_partial_dependence
 for i in range(3):
     fig, axs = plot_partial_dependence(gbrt, X_train, range(4), n_cols=4,
-                                       feature_names=iris.feature_names, grid_resolution=50, label=i)
+                                       feature_names=iris.feature_names, 
+                                       grid_resolution=50, label=i)
 ```
 
 <div style="text-align:center;">
@@ -356,7 +353,7 @@ for i in range(3):
 
 - Build sparse linear local model around each data point
 - Explain prediction for each point locally
-- Paper: "Why Should I Trust You?" Explaining the Predictions of Any Classifier
+- *Paper: "Why Should I Trust You?" Explaining the Predictions of Any Classifier*
 - Implementation: ELI5, https://github.com/marcotcr/lime
 
 <div style="text-align:center;">
@@ -388,7 +385,7 @@ for i in range(3):
 
 ## Shapley value (cont.)
 
-- To compute payout for cat-ban, we need to check the following combinations (with & without cat-ban), and take the difference in predicted price. The payout of cat-bin is the (weighted) average of these differences across all combinations.
+- To compute payout for *cat-ban*, we need to check all combinations (with & without cat-ban), and take the difference in predicted price. This payout is (weighted) average of these differences across all combinations.
 - If a feature is not in the coalition, we replace it with some baseline (e.g. mean).
   - park-nearby, area-50, floor-2nd
   - park-nearby, area-50
@@ -399,12 +396,12 @@ for i in range(3):
   - floor-2nd
   - {} (empty coalition)
 
-## Shapley value (game theory)
+## Shapley value (Let's try again)
 
 - Assume 4 players, to compute Shapley value for player 1:
   - Consider all subsets of players not including player 1: {}, {2}, {3}, {4}, {2,3}, {2,4}, {3,4}
-  - For each subset S, compute marginal contribution of player 1: v(S ∪ {1}) - v(S)
-  - Weight each marginal contribution by the number of ways to arrange players in S and N \ S \ {1}
+  - For each subset S, compute marginal contribution of player 1: $v(S ∪ {1}) - v(S)$
+  - Weight each marginal contribution by the number of ways to arrange players in S and N \\ S \\ {1}
   - Sum weighted contributions to get φ₁(v)
 
 ## Shapley value
@@ -414,13 +411,12 @@ for i in range(3):
 - The temperature & humidity had the largest positive contributions.
 
 <div style="text-align:center;">
-  <img src="images/bike_rental_shapley.png" style="max-width:50%;">
+  <img src="images/shapely_values_bike_rental.png" style="max-width:50%;">
 </div>
 
 ## Shapley value (game theory)
 
 - Shapley value is the only attribution method that satisfies following properties
-
 - *Efficiency*: sum of attributions = difference between actual output and average output
 - *Symmetry*: if two features contribute equally, they get same attribution
 - *Dummy*: if a feature does not affect the output, its attribution is zero
@@ -431,9 +427,9 @@ for i in range(3):
 - SHAP (SHapley Additive exPlanations) is a unified framework for explaining ML predictions, based on Shapley values
 - Shapely values were proposed in 1953
 - In 2017, Lundberg and Lee proposed SHAP for explaining ML models.
- - assume the explanation as a linear model of binary variables indicating presence/absence of features
- - allows local / per sample explanations, and global explanations (by averaging)
- - introduced effecient estimation of KernelSHAP and TreeSHAP
+  - assume the explanation as a linear model of binary variables indicating presence/absence of features
+  - allows local / per sample explanations, and global explanations (by averaging)
+  - introduced effecient estimation of KernelSHAP and TreeSHAP
 
 ## SHAP
 
@@ -457,16 +453,15 @@ SHAP assumes the prediction of a data point is the sum of effects of each featur
 ## SHAP example
 
 - Y variable: median house value for California districts (in $100,000)
-- 8 features 
-    - MedInc        median income in block group
-    - HouseAge      median house age in block group
-    - AveRooms      average number of rooms per household
-    - AveBedrms     average number of bedrooms per household
-    - Population    block group population
-    - AveOccup      average number of household members
-    - Latitude      block group latitude
-    - Longitude     block group longitude
-- Spatial unit: A block group is the smallest geographical unit for which the U.S. Census Bureau publishes sample data; typically with a population of 600 to 3,000 people.
+| MedInc | Median income in block group |
+| HouseAge | Median house age in block group |
+| AveRooms | Average number of rooms per household |
+| AveBedrms | Average number of bedrooms per household |
+| Population | Block group population |
+| AveOccup | Average number of household members |
+| Latitude | Block group latitude |
+| Longitude | Block group longitude |
+- Spatial unit: A block group typically has a population of 600 to 3,000 people; similar to output area in UK
 - Source: https://www.dcc.fc.up.pt/~ltorgo/Regression/cal_housing.html
 
 ## SHAP waterfall plot
@@ -484,7 +479,7 @@ shap.plots.waterfall(shap_values[0])
 ```
 
 <div style="text-align:center;">
-  <img src="images/shap_waterfall.png" style="max-width:50%;">
+  <img src="images/SHAP_waterfall.png" style="max-width:50%;">
 </div>
 
 ## SHAP force plots
@@ -493,7 +488,7 @@ shap.plots.waterfall(shap_values[0])
 shap.plots.force(shap_values[0])
 ```
 <div style="text-align:center;">
-  <img src="images/SHAP_force_plot.png" style="max-width:50%;">
+  <img src="images/SHAP_force_plot.png" style="max-width:150%;">
 </div>
 
 ## SHAP force plots for multiple samples
@@ -503,7 +498,7 @@ shap.plots.force(shap_values[:500])
 ```
 
 <div style="text-align:center;">
-  <img src="images/SHAP_force_plot_500_values.png" style="max-width:50%;">
+  <img src="images/SHAP_force_plot_500_values.png" style="max-width:100%;">
 </div>
 
 - Use with caution!
@@ -515,12 +510,12 @@ shap.plots.beeswarm(shap_values)
 ```
 
 <div style="text-align:center;">
-  <img src="images/SHAP_beeswarm.png" style="max-width:50%;">
+  <img src="images/SHAP_beeswarm.png" style="max-width:100%;">
 </div>
 
 ## SHAP Feature Importance
 
-- the mean absolute values of SHAP can be averaged across samples to get global feature importance
+- Defined as the mean absolute values of SHAP across all samples
 ```python
 shap.plots.bar(shap_values)
 ```
@@ -532,10 +527,10 @@ shap.plots.bar(shap_values)
 ## GeoShapley
 
 - Explains any model that takes tabular data + spatial features (e.g., coordinates)
+- Source: https://github.com/Ziqi-Li/geoshapley
 
 <div style="text-align:center;">
-  <img src="images/SHAP_feature_importance.png" style="max-width:40%;">
-  Source: https://github.com/Ziqi-Li/geoshapley
+  <img src="images/GeoShapley_beeswarm.png" style="max-width:40%;">
 </div>
 
 ## Key Takeaways
