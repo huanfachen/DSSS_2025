@@ -53,11 +53,11 @@ TODO: update feature selection part
 - W09: Testing ML codes
 - W10: Handling imbalanced data
 
-# Model Interpretation (Post-hoc Explanability)
+## Model Interpretation (Post-hoc Explanability)
 
 - It involves taking [a pre-trained model]{style="color: blue;"} and using [a separate method]{style="color: blue;"} to explain its decisions
 - It belongs to a broader field of *Interpretable Machine Learning* and *Explainable AI (XAI)*
-- It differs from *interpretable models* (e.g., linear regression, decision trees) which are designed to be inherently interpretable
+- It differs from *interpretable models* (e.g., linear regression, decision trees), which are designed to be inherently interpretable
 
 ## What Post-hoc Explanability isn't ...
 
@@ -90,26 +90,46 @@ TODO: update feature selection part
 
 ::: {.column width="50%"}
 **Global:**
+
 - Coefficients (:x:)
+- Sklearn feature importance (:x:)
 - Drop-feature importance (:x:)
 - [Permutation importance]{style="color: blue;"} (:heavy_check_mark:)
-- Partial dependence plots (:heavy_check_mark:)
+- [Partial dependence plots]{style="color: blue;"} (:heavy_check_mark:)
+
 :::
 
 ::: {.column width="50%"}
 **Local:**
-- LIME
-- SHAP values
+
+- [LIME]{style="color: blue;"} (:heavy_check_mark:)
+- [SHAP values]{style="color: blue;"} (:heavy_check_mark:)
+
 :::
 
 ::::
 
-## "Features Important to the Model"?
+<!-- ## Linear Model Coefficients
 
-- Naive: `coef_` for linear models (abs value or norm for multi-class)
-- `feature_importances_` for tree-based models
+- $$y = 7.82x_1 + 2.15x_2 + 9.31x_3 + 1.64x_4 + 5.88x_5 + 3.47 $$
+- The coefficient 7.82 for $x_1$ tells how y changes with a unit change in $x_1$, holding other features constant
+- However, coefficients do not indicate relative feature importance
+- We can't say $x_3$ is more important than $x_1$ just because 9.31 > 7.82 
+- Use with care!
 
-Use with care!
+## Trap #1
+
+- Only compare the coefficients after features are standardised (with mean=0 and std=1)
+- Suppose you are modelling house prices
+- Variable A: Square footage (range: 500 to 5,000), coef = 100
+- Variable B: Number of bedrooms (range: 1 to 5), coef = 10,000
+- Without standardisation, can't compare coef of A and B
+
+## Trap #2
+
+- Even after standardisation ...
+- If features are correlated, coefficients can be inflated or unstable
+
 
 ## Linear Model Coefficients
 
@@ -217,14 +237,21 @@ def drop_feature_importance(est, X, y):
     return np.array(scores)
 ``` -->
 
+<!-- 
 - It refits a new model for each feature removal
 - Doesn't really explain model (refits for each feature)
 - Can't deal with correlated features well
 - Be cautious!
-
+ -->
+ 
 ## Permutation Importance
 
-Idea: measure marginal influence of one feature by permuting it
+Idea: measure marginal influence of a feature by permuting it and measuring the drop in accuracy
+<div style="text-align:center;">
+  <img src="images/permutation_importance.png" alt="permutation importance" style="max-width:60%;">
+</div>
+
+## Permutation Importance
 
 $$I_i^\text{perm} = \text{Acc}(f, X, y) - \mathbb{E}_{x_i}\left[\text{Acc}(f(x_i, X_{-i}), y)\right]$$
 
@@ -240,188 +267,51 @@ def permutation_importance(est, X, y, n_repeat=100):
 ```
 
 - Stay with the same trained model
-- Applied on validation set given trained estimator
+- Model agnostic (works for any ML model)
 - Can deal with correlated features better
-- Can run slow (n_features * n_repeats model evaluations)
+- Can maintain the distribution of a feature
+- Can run slow (need to re-evaluate models many times: n_features * n_repeats model evaluations)
 
-## LIME
+## Alternatives of permutation importance
 
-- Build sparse linear local model around each data point
-- Explain prediction for each point locally
-- Paper: "Why Should I Trust You?" Explaining the Predictions of Any Classifier
-- Implementation: ELI5, https://github.com/marcotcr/lime
+- Drop-feature importance (*not recommended*)
+- Idea: to measure importance of x1 for y=f(x1, x2, x3), it drops x1 and refits y=g(x2, x3), and then compare accuracy of f() and g()
+- It refits a new model for each feature removal
+- Doesn't really explain model (refits for each feature)
+- Can't deal with correlated features well
 
-<div style="text-align:center;">
-  <img src="images/lime_paper.png" style="max-width:60%;">
-</div>
+## Alternatives of permutation importance
 
-## SHAP
+- sklearn tree-based feature importance 
+- Only applicable to tree-based models in sklearn
+- For a tree: FI = total reduction of the criterion (e.g., Gini, MSE) brought by that feature
+- For a forest: average FI over all trees
 
-- Build around idea of Shapley values (from game theory)
-- Very roughly: does drop-out importance for every subset of features
-- Intractable, sampling approximations exists
-- Fast implementation for linear and tree-based models
-- Also work for deep learning models (DeepSHAP)
-- Awesome vis and tools: https://github.com/slundberg/shap
-- Allows local / per sample explanations, and global explanations (by averaging)
+## Problems with sklearn tree-based feature importance
 
-## Shapley value (game theory)
-
-- A fair way to distribute "payout" among players N={1, ..., p}
-- Define characteristic function v(S) giving payout for any subset of players S ⊆ N
-- Shapley value for player i:
-$$\phi_i(v) = \sum_{S \subseteq N \setminus \{i\}} \frac{|S|! (p - |S| - 1)!}{p!} [v(S \cup \{i\}) - v(S)]$$
-
-## Shapley value (game theory)
-
-- Assume 4 players, to compute Shapley value for player 1:
-  - Consider all subsets of players not including player 1: {}, {2}, {3}, {4}, {2,3}, {2,4}, {3,4}
-  - For each subset S, compute marginal contribution of player 1: v(S ∪ {1}) - v(S)
-  - Weight each marginal contribution by the number of ways to arrange players in S and N \ S \ {1}
-  - Sum weighted contributions to get φ₁(v)
-
-## Shapley value (game theory)
-
-- Shapley value is the only attribution method that satisfies following properties
-
-- *Efficiency*: sum of attributions = difference between actual output and average output
-- *Symmetry*: if two features contribute equally, they get same attribution
-- *Dummy*: if a feature does not affect the output, its attribution is zero
-- *Additivity*: for two models, attributions add up. (Think about a random forest with many trees, the Shapley values of the forest is the avereage of SHAP values of each tree)
-
-## SHAP (Shapley values applied to ML model explanations)
-
-- SHAP is an application of Shapley values to explain ML model predictions
- - Treat features as players in a game
- - model prediction over average as the payout
- - Define v(S) that uses dataset mean for missing featuers
-- SHAP value for feature i:
-
-$f(x)-E[f(X)]=\sum_{j=1}^{p}\phi_j(x)$
-
-## Three methods for SHAP estimation
-
-- KernelSHAP: model-agnostic, uses sampling to estimate SHAP values
-- TreeSHAP: efficient exact computation for tree-based models
-- Permutation SHAP: approximate method using permutations, similar to permutation importance
-
-## Case Study
-
-## Toy Data
+- Biased towards high-cardinality features (cardinality = number of unique values)
+- Can be misleading when features are correlated
+- Not recommended
 
 ```python
-X.shape
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor()
+model.fit(X_train, y_train)
+importances = model.feature_importances_ # sklearn tree-based feature importance
+PI = permutation_importance(model, X_train, y_train, n_repeats=10,
+                                random_state=0) # permutation importance
 ```
-```
-(100000, 8)
-```
-
-:::: columns
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/toy_data_scatter.png" style="max-width:100%;">
-</div>
-:::
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/covariance.png" style="max-width:100%;">
-</div>
-:::
-
-::::
-
-## Models on Lots of Data
-
-```python
-lasso = LassoCV().fit(X_train, y_train)
-lasso.score(X_test, y_test)
-```
-0.545
-
-```python
-ridge = RidgeCV().fit(X_train, y_train)
-ridge.score(X_test, y_test)
-```
-0.545
-
-```python
-lr = LinearRegression().fit(X_train, y_train)
-lr.score(X_test, y_test)
-```
-0.545
-
-```python
-param_grid = {'max_leaf_nodes': range(5, 40, 5)}
-grid = GridSearchCV(DecisionTreeRegressor(), param_grid, cv=10, n_jobs=3)
-grid.fit(X_train, y_train)
-grid.score(X_test, y_test)
-```
-0.545
-
-```python
-rf = RandomForestRegressor(min_samples_leaf=5).fit(X_train, y_train)
-rf.score(X_test, y_test)
-```
-0.542
-
-## Coefficients and Default Feature Importance
-
-<div style="text-align:center;">
-  <img src="images/standard_importances.png" style="max-width:100%;">
-</div>
-
-## Permutation Importances
-
-:::: columns
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/standard_importances.png" style="max-width:100%;">
-</div>
-:::
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/permutation_importance_big.png" style="max-width:100%;">
-</div>
-:::
-
-::::
-
-## SHAP Values
-
-:::: columns
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/standard_importances.png" style="max-width:100%;">
-</div>
-:::
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/shap_big.png" style="max-width:100%;">
-</div>
-:::
-
-::::
-
-## More Model Inspection
 
 ## Partial Dependence Plots
 
-- Marginal dependence of prediction on one (or two features)
+- Marginal dependence of prediction on one (or two) features across differnt values
 
 $$f_i^{\text{pdp}}(x_i) = \mathbb{E}_{X_{-i}}\left[f(x_i, x_{-i})\right]$$
 
 - Idea: Get marginal predictions given feature
-- How? "integrate out" other features using validation data
-- Fast methods available for tree-based models (doesn't require validation data)
-- Nonsensical for linear models
+- How? "Integrate out" other features using validation data
 
-## Partial Dependence
+## PDP
 
 ```python
 from sklearn.inspection import plot_partial_dependence
@@ -462,325 +352,199 @@ for i in range(3):
   <img src="images/feat_impo_part_dep_class.png" style="max-width:50%;">
 </div>
 
-## PDP Caveats
+## LIME
 
-:::: columns
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/pdp_failure.png" style="max-width:100%;">
-</div>
-:::
-
-::: {.column width="50%"}
-<div style="text-align:center;">
-  <img src="images/pdp_failure_data.png" style="max-width:100%;">
-</div>
-:::
-
-::::
-
-## Ice Box
-
-- Like partial dependence plots, without the `.mean(axis=0)`
+- Build sparse linear local model around each data point
+- Explain prediction for each point locally
+- Paper: "Why Should I Trust You?" Explaining the Predictions of Any Classifier
+- Implementation: ELI5, https://github.com/marcotcr/lime
 
 <div style="text-align:center;">
-  <img src="images/ice_cross.png" style="max-width:60%;">
+  <img src="images/lime_paper.png" style="max-width:50%;">
 </div>
 
-- https://pdpbox.readthedocs.io/en/latest/
-- https://github.com/AustinRochford/PyCEbox
-- https://github.com/scikit-learn/scikit-learn/pull/16164
+## SHAP
 
-# Feature Selection
+- Build around idea of Shapley values (from game theory, proposed by Lloyd Shapley in 1953)
+- Shapley values: a fair way to distribute "payout" among N players in a game, based on their marginal contributions across all possible coalitions
 
-## Why Select Features?
+## Shapley value
 
-- Avoid overfitting
-- Faster prediction and training
-- Less storage cost for model and dataset
-- More interpretable model
-
-## Types of Feature Selection
-
-- Unsupervised vs Supervised
-- Univariate vs Multivariate
-- Model-based or not
-
-## Unsupervised Feature Selection
-
-- May discard important information
-- Variance-based: 0 variance or mostly constant
-- Covariance-based: remove correlated features
-- PCA: remove linear subspaces
-
-## Covariance
-
-```python
-from sklearn.preprocessing import scale
-
-boston = load_boston()
-X, y = boston.data, boston.target
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
-X_train_scaled = scale(X_train)
-
-cov = np.cov(X_train_scaled, rowvar=False)
-```
+- A fair way to distribute "payout" among N players in a game
+- Example in housing price: how much does each factor contribute to the house price?
+- What we want to see: park-nearby contributed €30,000; area-50 contributed €10,000; floor-2nd contributed €0; cat-ban contributed -€50,000. But HOW?
 
 <div style="text-align:center;">
-  <img src="images/img_17.png" style="max-width:32%;">
+  <img src="images/house_price_1.jpg" style="max-width:50%;">
 </div>
 
-<!-- ## Hierarchical Clustering of Covariance
+## Shapley value (cont.)
 
-```python
-from scipy.cluster import hierarchy
-order = np.array(hierarchy.dendrogram(
-    hierarchy.ward(cov),no_plot=True)['ivl'], dtype="int")
-```
+- Checking all possible coalition ...
 
 <div style="text-align:center;">
-  <img src="images/img_19.png" style="max-width:90%;">
-</div> -->
-
-## Supervised Feature Selection
-
-## Univariate Statistics
-
-- Pick statistic, check p-values
-- f_regression, f_classsif, chi2 in scikit-learn
-
-```python
-from sklearn.feature_selection import f_regression
-f_values, p_values = f_regression(X, y)
-```
-
-<div style="text-align:center;">
-  <img src="images/img_20.png" style="max-width:60%;">
+  <img src="images/house_price_2.jpg" style="max-width:50%;">
 </div>
 
-## SelectKBest Example
+## Shapley value (cont.)
+
+- To compute payout for cat-ban, we need to check the following combinations (with & without cat-ban), and take the difference in predicted price. The payout of cat-bin is the (weighted) average of these differences across all combinations.
+- If a feature is not in the coalition, we replace it with some baseline (e.g. mean).
+  - park-nearby, area-50, floor-2nd
+  - park-nearby, area-50
+  - park-nearby, floor-2nd
+  - area-50, floor-2nd
+  - park-nearby
+  - area-50
+  - floor-2nd
+  - {} (empty coalition)
+
+## Shapley value (game theory)
+
+- Assume 4 players, to compute Shapley value for player 1:
+  - Consider all subsets of players not including player 1: {}, {2}, {3}, {4}, {2,3}, {2,4}, {3,4}
+  - For each subset S, compute marginal contribution of player 1: v(S ∪ {1}) - v(S)
+  - Weight each marginal contribution by the number of ways to arrange players in S and N \ S \ {1}
+  - Sum weighted contributions to get φ₁(v)
+
+## Shapley value
+
+- Example of Shapley value for bike rental prediction
+- The sum of Shapley values yields the difference of actual and average prediction (422).
+- The temperature & humidity had the largest positive contributions.
+
+<div style="text-align:center;">
+  <img src="images/bike_rental_shapley.png" style="max-width:50%;">
+</div>
+
+## Shapley value (game theory)
+
+- Shapley value is the only attribution method that satisfies following properties
+
+- *Efficiency*: sum of attributions = difference between actual output and average output
+- *Symmetry*: if two features contribute equally, they get same attribution
+- *Dummy*: if a feature does not affect the output, its attribution is zero
+- *Additivity*: for two models, attributions add up. (Think about a random forest with many trees, the Shapley values of the forest is the avereage of SHAP values of each tree)
+
+## From Shapely values to SHAP
+
+- SHAP (SHapley Additive exPlanations) is a unified framework for explaining ML predictions, based on Shapley values
+- Shapely values were proposed in 1953
+- In 2017, Lundberg and Lee proposed SHAP for explaining ML models.
+ - assume the explanation as a linear model of binary variables indicating presence/absence of features
+ - allows local / per sample explanations, and global explanations (by averaging)
+ - introduced effecient estimation of KernelSHAP and TreeSHAP
+
+## SHAP
+
+SHAP assumes the prediction of a data point is the sum of effects of each feature. It defines:
+
+ $$g(z') = \phi_0 + \sum_{i=1}^{M} \phi_i z'_i$$
+
+- $\phi_0$: The base value (the average prediction of the model across the dataset).
+- $\phi_i$: The SHAP value (the contribution of feature $i$).
+- $z'_i \in \{0, 1\}^M$: A binary vector representing whether a feature is *present* or *absent*.
+- $M$: The number of input features.
+
+## Computing SHAP
+
+- The original Shapley values are computationally expensive (exponential in number of features)
+- SHAP introduced efficient estimation methods:
+- **KernelSHAP**: model-agnostic, uses sampling to estimate SHAP values (model agnostic)
+- **Permutation SHAP**: approximate method using permutations, similar to permutation importance
+- **TreeSHAP**: efficient exact computation **for tree-based models**
+
+## SHAP example
+
+- Y variable: median house value for California districts (in $100,000)
+- 8 features 
+    - MedInc        median income in block group
+    - HouseAge      median house age in block group
+    - AveRooms      average number of rooms per household
+    - AveBedrms     average number of bedrooms per household
+    - Population    block group population
+    - AveOccup      average number of household members
+    - Latitude      block group latitude
+    - Longitude     block group longitude
+- Spatial unit: A block group is the smallest geographical unit for which the U.S. Census Bureau publishes sample data; typically with a population of 600 to 3,000 people.
+- Source: https://www.dcc.fc.up.pt/~ltorgo/Regression/cal_housing.html
+
+## SHAP waterfall plot
 
 ```python
-from sklearn.feature_selection import SelectKBest, SelectPercentile, SelectFpr
-from sklearn.linear_model import RidgeCV
+import xgboost
+import shap
 
-select = SelectKBest(k=2, score_func=f_regression)
-select.fit(X_train, y_train)
-print(X_train.shape)
-print(select.transform(X_train).shape)
-```
-```
-(379, 13)
-(379, 2)
-```
+X, y = shap.datasets.california() # 20640 instances, 8 features
+model = xgboost.XGBRegressor().fit(X, y)
 
-```python
-all_features = make_pipeline(StandardScaler(), RidgeCV())
-np.mean(cross_val_score(all_features, X_train, y_train, cv=10))
-```
-0.718
-
-```python
-select_2 = make_pipeline(StandardScaler(),
-                         SelectKBest(k=2, score_func=f_regression), RidgeCV())
-np.mean(cross_val_score(select_2, X_train, y_train, cv=10))
-```
-0.624
-
-## Mutual Information
-
-```python
-from sklearn.feature_selection import mutual_info_regression
-scores = mutual_info_regression(X_train, y_train,
-                                discrete_features=[3])
+explainer = shap.Explainer(model)
+shap_values = explainer(X)
+shap.plots.waterfall(shap_values[0])
 ```
 
 <div style="text-align:center;">
-  <img src="images/img_22.png" style="max-width:90%;">
+  <img src="images/shap_waterfall.png" style="max-width:50%;">
 </div>
 
-## Model-Based Feature Selection
-
-- Get best fit for a particular model
-- Ideally: exhaustive search over all possible combinations
-- But, exhaustive is infeasible (and has multiple testing issues)
-- Use heuristics in practice
-
-## Model Based (Single Fit)
-
-- Build a model, select "features important to model"
-- Usually using Lasso or random forest
-- Multivariate - linear models assume linear relation
+## SHAP force plots
 
 ```python
-from sklearn.linear_model import LassoCV
-X_train_scaled = scale(X_train)
-lasso = LassoCV().fit(X_train_scaled, y_train)
-print(lasso.coef_)
+shap.plots.force(shap_values[0])
 ```
-[-0.881  0.951 -0.082  0.59  -1.69   2.639 -0.146 -2.796  1.695 -1.614
- -2.133  0.729 -3.615]
+<div style="text-align:center;">
+  <img src="images/SHAP_force_plot.png" style="max-width:50%;">
+</div>
+
+## SHAP force plots for multiple samples
+
+```python
+shap.plots.force(shap_values[:500])
+```
 
 <div style="text-align:center;">
-  <img src="images/img_23.png" style="max-width:55%;">
+  <img src="images/SHAP_force_plot_500_values.png" style="max-width:50%;">
 </div>
 
-## Changing Lasso Alpha
+- Use with caution!
+
+## SHAP Summary Plot
 
 ```python
-from sklearn.linear_model import Lasso
-X_train_scaled = scale(X_train)
-lasso = Lasso().fit(X_train_scaled, y_train)
-print(lasso.coef_)
+shap.plots.beeswarm(shap_values)
 ```
-[-0.     0.    -0.     0.    -0.     2.529 -0.    -0.    -0.    -0.228
- -1.701  0.132 -3.606]
 
 <div style="text-align:center;">
-  <img src="images/img_24.png" style="max-width:80%;">
+  <img src="images/SHAP_beeswarm.png" style="max-width:50%;">
 </div>
 
-## SelectFromModel
+## SHAP Feature Importance
 
+- the mean absolute values of SHAP can be averaged across samples to get global feature importance
 ```python
-from sklearn.feature_selection import SelectFromModel
-select_lassocv = SelectFromModel(LassoCV(), threshold=1e-5)
-select_lassocv.fit(X_train, y_train)
-print(select_lassocv.transform(X_train).shape)
+shap.plots.bar(shap_values)
 ```
-```
-(379,11)
-```
-
-```python
-pipe_lassocv = make_pipeline(StandardScaler(), select_lassocv, RidgeCV())
-np.mean(cross_val_score(pipe_lassocv, X_train, y_train, cv=10))
-np.mean(cross_val_score(all_features, X_train, y_train, cv=10))
-```
-```
-0.717
-0.718
-```
-
-```python
-# could grid-search alpha in lasso
-select_lasso = SelectFromModel(Lasso())
-pipe_lasso = make_pipeline(StandardScaler(), select_lasso, RidgeCV())
-np.mean(cross_val_score(pipe_lasso, X_train, y_train, cv=10))
-```
-```
-0.671
-```
-
-<!-- ## Iterative Model-Based Selection
-
-- Fit model, find least important feature, remove, iterate
-- Or: Start with single feature, find most important feature, add, iterate
-
-## Recursive Feature Elimination
-
-- Uses feature importances / coefficients, similar to "SelectFromModel"
-- Iteratively removes features (one by one or in groups)
-- Runtime: (n_features - n_feature_to_keep) / stepsize
-
-## RFE Example
-
-```python
-from sklearn.linear_model import LinearRegression
-from sklearn.feature_selection import RFE
-
-# create ranking among all features by selecting only one
-rfe = RFE(LinearRegression(), n_features_to_select=1)
-rfe.fit(X_train_scaled, y_train)
-rfe.ranking_
-```
-array([ 9,  8, 13, 11,  5,  2, 12,  4,  7,  6,  3, 10,  1])
 
 <div style="text-align:center;">
-  <img src="images/img_27.png" style="max-width:95%;">
+  <img src="images/SHAP_feature_importance.png" style="max-width:50%;">
 </div>
 
-## RFECV
+## GeoShapley
 
-```python
-from sklearn.linear_model import LinearRegression
-from sklearn.feature_selection import RFECV
-rfe = RFECV(LinearRegression(), cv=10)
-rfe.fit(X_train_scaled, y_train)
-print(rfe.support_)
-print(boston.feature_names[rfe.support_])
-```
-```
-[ True  True False  True  True  True False  True  True  True  True  True
-  True]
-['CRIM' 'ZN' 'CHAS' 'NOX' 'RM' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT']
-```
+- Explains any model that takes tabular data + spatial features (e.g., coordinates)
 
-```python
-pipe_rfe_ridgecv = make_pipeline(StandardScaler(),
-                                 RFECV(LinearRegression(), cv=10), RidgeCV())
-np.mean(cross_val_score(pipe_rfe_ridgecv, X_train, y_train, cv=10))
-```
-```
-0.710
-```
+<div style="text-align:center;">
+  <img src="images/SHAP_feature_importance.png" style="max-width:40%;">
+  Source: https://github.com/Ziqi-Li/geoshapley
+</div>
 
-## RFECV with Polynomial Features
+## Key Takeaways
 
-```python
-pipe_rfe_ridgecv = make_pipeline(StandardScaler(),
-                                 RFECV(LinearRegression(), cv=10), RidgeCV())
-np.mean(cross_val_score(pipe_rfe_ridgecv, X_train, y_train, cv=10))
-```
-```
-0.710
-```
-
-```python
-from sklearn.preprocessing import PolynomialFeatures
-pipe_rfe_ridgecv = make_pipeline(StandardScaler(), PolynomialFeatures(),
-                                 RFECV(LinearRegression(), cv=10), RidgeCV())
-np.mean(cross_val_score(pipe_rfe_ridgecv, X_train, y_train, cv=10))
-```
-```
-0.820
-```
-
-## Wrapper Methods
-
-- Can be applied for ANY model
-- Shrink / grow feature set by greedy search
-- Called Forward or Backward selection
-- Run CV / train-val split per feature
-- Complexity: n_features * (n_features + 1) / 2
-- Implemented in mlxtend
-
-## SequentialFeatureSelector
-
-```python
-from mlxtend.feature_selection import SequentialFeatureSelector
-sfs = SequentialFeatureSelector(LinearRegression(), forward=False, k_features=7)
-sfs.fit(X_train_scaled, y_train)
-```
-```
-Features: 7/7
-```
-
-```python
-print(sfs.k_feature_idx_)
-print(boston.feature_names[np.array(sfs.k_feature_idx_)])
-```
-```
-(1, 4, 5, 7, 9, 10, 12)
-['ZN' 'NOX' 'RM' 'DIS' 'TAX' 'PTRATIO' 'LSTAT']
-```
-
-```python
-sfs.k_score_
-```
-```
-0.725
-``` -->
+- Model interpretation is about explaining a trained model, not the data
+- Post-hoc explanations can be global (feature importance, PDP, SHAP) or local (LIME, SHAP)
+- **Permutation importance** is better than drop-feature importance and sklearn tree-based feature importance
+- **SHAP** is a unified framework for explaining ML predictions, based on Shapley values from game theory
+- **SHAP** is different from Shapley values!
+- These methods are model agnostic
 
 ## Questions?
