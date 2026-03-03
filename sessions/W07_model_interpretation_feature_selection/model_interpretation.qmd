@@ -453,6 +453,8 @@ SHAP assumes the prediction of a data point is the sum of effects of each featur
 ## SHAP example
 
 - Y variable: median house value for California districts (in $100,000)
+| Feature | Description |
+|---------|-------------|
 | MedInc | Median income in block group |
 | HouseAge | Median house age in block group |
 | AveRooms | Average number of rooms per household |
@@ -488,7 +490,7 @@ shap.plots.waterfall(shap_values[0])
 shap.plots.force(shap_values[0])
 ```
 <div style="text-align:center;">
-  <img src="images/SHAP_force_plot.png" style="max-width:150%;">
+  <img src="images/SHAP_force_plot.png" style="max-width:10%;">
 </div>
 
 ## SHAP force plots for multiple samples
