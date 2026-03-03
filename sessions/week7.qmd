@@ -34,7 +34,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](W07_model_interpretation_feature_selection/model_interpretation_feature_selection_practical.html)
-2. [Download](W07_model_interpretation_feature_selection/model_interpretation_feature_selection_practical.ipynb)
+1. [Preview](W07_model_interpretation_feature_selection/model_interpretation_practical.html)
+2. [Download](W07_model_interpretation_feature_selection/model_interpretation_practical.ipynb)
 
 ## Further resources
