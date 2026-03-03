@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Huanfa Chen">
-  <title>Data Science for Spatial Systems – Model Interpretation and Feature Selection</title>
+  <title>Data Science for Spatial Systems – Model Interpretation</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -187,7 +187,7 @@
       margin-right: 0; 
     }
   </style>
-<meta property="og:title" content="Model Interpretation and Feature Selection – Data Science for Spatial Systems">
+<meta property="og:title" content="Model Interpretation – Data Science for Spatial Systems">
 <meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/W07_model_interpretation_feature_selection/images/feature_importance.png">
 <meta property="og:site_name" content="Foundations">
 <meta property="og:locale" content="en_GB">
@@ -204,7 +204,7 @@
 <br>
 <br>
 
-<h1 class="title">Model Interpretation and Feature Selection</h1>
+<h1 class="title">Model Interpretation</h1>
 
 
 <p><span style="margin:0px; font-weight:700;" class="author">Huanfa Chen</span> - huanfa.chen@ucl.ac.uk </p>
@@ -217,41 +217,59 @@
 
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {notes} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>TODO: update feature selection part</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
+<section id="recap-neural-networks-or-mlp" class="slide level2">
+<h2>Recap: Neural Networks (or MLP)</h2>
+<div style="text-align:center;">
+<p><img src="images/nn_basic_arch.png" alt="ANN architecture" style="max-width:70%;"></p>
+</div>
+</section>
+<section id="recap-convolutional-neural-networks-cnn" class="slide level2">
+<h2>Recap: Convolutional Neural Networks (CNN)</h2>
+<ul>
+<li>Local filter</li>
+<li>Translation invariance</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/cnn.png" alt="CNN architecture" style="max-width:70%;"></p>
+</div>
+<div style="text-align:center;">
+<p><img src="images/2dconv_animation.gif" alt="2D convolution animation" style="max-width:40%;"></p>
+</div>
+<p><a href="https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2">source: Arden Dertat</a></p>
+</section>
+<section id="recap-graph-neural-networks-gnn" class="slide level2">
+<h2>Recap: Graph Neural Networks (GNN)</h2>
+<div style="text-align:center;">
+<p><img src="images/gcn_architecture.png" alt="GCN Architecture" style="max-width:80%;"></p>
+</div>
+</section>
+<section id="from-this-week" class="slide level2">
+<h2>From this week …</h2>
+<ul>
+<li>No new algorithms</li>
+<li>More on how to apply and interpret models</li>
+<li><strong>W07: Model interpretation techniques</strong></li>
+<li>W08: Feature selection methods</li>
+<li>W09: Testing ML codes</li>
+<li>W10: Handling imbalanced data</li>
+</ul>
+</section>
 <section>
-<section id="model-interpretation-post-hoc" class="title-slide slide level1 center">
-<h1>Model Interpretation (post-hoc)</h1>
+<section id="model-interpretation-post-hoc-explanability" class="title-slide slide level1 center">
+<h1>Model Interpretation (Post-hoc Explanability)</h1>
 <ul>
-<li>This is not inference or estimating variable relationships</li>
-<li>This is not causality</li>
-<li>Still useful for feature selection and understanding model behaviour</li>
+<li>It involves taking <span style="color: blue;">a pre-trained model</span> and using <span style="color: blue;">a separate method</span> to explain its decisions</li>
+<li>It belongs to a broader field of <em>Interpretable Machine Learning</em> and <em>Explainable AI (XAI)</em></li>
+<li>It differs from <em>interpretable models</em> (e.g., linear regression, decision trees) which are designed to be inherently interpretable</li>
 </ul>
 </section>
-<section id="types-of-explanations" class="slide level2">
-<h2>Types of Explanations</h2>
-</section>
-<section id="explain-model-globally" class="slide level2">
-<h2>Explain model globally</h2>
+<section id="what-post-hoc-explanability-isnt" class="slide level2">
+<h2>What Post-hoc Explanability isn’t …</h2>
 <ul>
-<li>How does the output depend on the input?</li>
-<li>Often: some form of marginals (e.g., <code>feature importance</code>)</li>
+<li>This is NOT inference or estimating variable relationships</li>
+<li>This is NOT causality</li>
+<li>Still useful for feature selection and understanding black-box model behaviours</li>
 </ul>
-</section>
-<section id="explain-model-locally" class="slide level2">
-<h2>Explain model locally</h2>
-<ul>
-<li>Why did it classify this point this way?</li>
-<li>Explanation could look like a “global” one but be different for each point</li>
-<li><em>“What is the minimum change to classify it differently?”</em></li>
-</ul>
-</section>
-<section id="methods" class="slide level2">
-<h2>Methods</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Global:</strong> - Coefficients / feature importances - Drop-feature importance - <span style="color: blue;">Permutation importance</span> - Partial dependence plots</p>
-</div><div class="column" style="width:50%;">
-<p><strong>Local:</strong> - LIME - SHAP values</p>
-</div></div>
 </section>
 <section id="explaining-the-model-explaining-the-data" class="slide level2">
 <h2>Explaining the Model != Explaining the Data</h2>
@@ -260,6 +278,37 @@
 <li>The model might not accurately reflect the data</li>
 <li>Don’t explain a model with low accuracy</li>
 </ul>
+</section></section>
+<section>
+<section id="two-types-of-post-hoc-explanations" class="title-slide slide level1 center">
+<h1>Two types of Post-hoc Explanations</h1>
+
+</section>
+<section id="explain-model-globally" class="slide level2">
+<h2>Explain model globally</h2>
+<ul>
+<li><span style="color: blue;">How does the model depend on each feature?</span></li>
+<li>Often in some form of marginals (e.g., <code>feature importance</code>)</li>
+<li>Note that there many types of “feature importance” and they can give very different results!</li>
+<li>Always ask one question: “what is the definition of feature importance?”</li>
+</ul>
+</section>
+<section id="explain-model-locally" class="slide level2">
+<h2>Explain model locally</h2>
+<ul>
+<li>Why did it classify this data point this way?</li>
+<li>Explanation will be different for each point</li>
+<li><em>“What is the minimum change to classify it differently?”</em></li>
+</ul>
+</section>
+<section id="methods" class="slide level2">
+<h2>Methods</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Global:</strong> - Coefficients (<span class="emoji" data-emoji="x">❌</span>) - Drop-feature importance (<span class="emoji" data-emoji="x">❌</span>) - <span style="color: blue;">Permutation importance</span> (<span class="emoji" data-emoji="heavy_check_mark">✔️</span>) - Partial dependence plots (<span class="emoji" data-emoji="heavy_check_mark">✔️</span>)</p>
+</div><div class="column" style="width:50%;">
+<p><strong>Local:</strong> - LIME - SHAP values</p>
+</div></div>
 </section>
 <section id="features-important-to-the-model" class="slide level2">
 <h2>“Features Important to the Model”?</h2>
@@ -275,7 +324,7 @@
 <li>Large absolute coef value != important feature</li>
 <li>Relative importance only meaningful after scaling</li>
 <li>Correlation among features might make coefficients completely uninterpretable</li>
-<li>L1 regularization will pick one at random from a correlated group</li>
+<li>L1 regularisation will pick one at random from a correlated group</li>
 <li>Any penalty will invalidate usual interpretation of linear coefficients</li>
 </ul>
 </section>
@@ -284,7 +333,7 @@
 <ul>
 <li>Correlation among features might make coefficients completely uninterpretable</li>
 </ul>
-<div id="2c71d871" class="cell" data-execution_count="1">
+<div id="59611a33" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stdout">
 <pre><code>Correlations (should be &lt; 0.1):
 [[ 1.         -0.12070741 -0.04863585]
@@ -294,9 +343,9 @@
 Model 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3
 R² = 0.985
 
-Correlation X3-X4: 0.995
+Correlation X3-X4: 0.992
 
-Model 2 (4 features): y = 1.27 + 28.42*X1 + 73.98*X2 + 28.48*X3 + -10.61*X4
+Model 2 (4 features): y = 1.04 + 28.38*X1 + 73.87*X2 + 31.83*X3 + -14.47*X4
 R² = 0.986</code></pre>
 </div>
 </div>
@@ -309,7 +358,7 @@ R² = 0.986</code></pre>
 <li>On the same data, Lasso regression will pick one of the correlated features (X3 or X4)</li>
 <li>but it doesn’t mean the dropped feature is unimportant!</li>
 </ul>
-<div id="e4d3ce4b" class="cell" data-execution_count="2">
+<div id="bee083ab" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>Y = 5.94 + 23.15*X1 + 81.83*X2 + 18.22*X3</code></pre>
 </div>
