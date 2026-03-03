@@ -254,13 +254,12 @@
 <li>W10: Handling imbalanced data</li>
 </ul>
 </section>
-<section>
-<section id="model-interpretation-post-hoc-explanability" class="title-slide slide level1 center">
-<h1>Model Interpretation (Post-hoc Explanability)</h1>
+<section id="model-interpretation-post-hoc-explanability" class="slide level2">
+<h2>Model Interpretation (Post-hoc Explanability)</h2>
 <ul>
 <li>It involves taking <span style="color: blue;">a pre-trained model</span> and using <span style="color: blue;">a separate method</span> to explain its decisions</li>
 <li>It belongs to a broader field of <em>Interpretable Machine Learning</em> and <em>Explainable AI (XAI)</em></li>
-<li>It differs from <em>interpretable models</em> (e.g., linear regression, decision trees) which are designed to be inherently interpretable</li>
+<li>It differs from <em>interpretable models</em> (e.g., linear regression, decision trees), which are designed to be inherently interpretable</li>
 </ul>
 </section>
 <section id="what-post-hoc-explanability-isnt" class="slide level2">
@@ -278,7 +277,7 @@
 <li>The model might not accurately reflect the data</li>
 <li>Don’t explain a model with low accuracy</li>
 </ul>
-</section></section>
+</section>
 <section>
 <section id="two-types-of-post-hoc-explanations" class="title-slide slide level1 center">
 <h1>Two types of Post-hoc Explanations</h1>
@@ -305,37 +304,60 @@
 <h2>Methods</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>Global:</strong> - Coefficients (<span class="emoji" data-emoji="x">❌</span>) - Drop-feature importance (<span class="emoji" data-emoji="x">❌</span>) - <span style="color: blue;">Permutation importance</span> (<span class="emoji" data-emoji="heavy_check_mark">✔️</span>) - Partial dependence plots (<span class="emoji" data-emoji="heavy_check_mark">✔️</span>)</p>
+<p><strong>Global:</strong></p>
+<ul>
+<li>Coefficients (<span class="emoji" data-emoji="x">❌</span>)</li>
+<li>Sklearn feature importance (<span class="emoji" data-emoji="x">❌</span>)</li>
+<li>Drop-feature importance (<span class="emoji" data-emoji="x">❌</span>)</li>
+<li><span style="color: blue;">Permutation importance</span> (<span class="emoji" data-emoji="heavy_check_mark">✔️</span>)</li>
+<li><span style="color: blue;">Partial dependence plots</span> (<span class="emoji" data-emoji="heavy_check_mark">✔️</span>)</li>
+</ul>
 </div><div class="column" style="width:50%;">
-<p><strong>Local:</strong> - LIME - SHAP values</p>
+<p><strong>Local:</strong></p>
+<ul>
+<li><span style="color: blue;">LIME</span> (<span class="emoji" data-emoji="heavy_check_mark">✔️</span>)</li>
+<li><span style="color: blue;">SHAP values</span> (<span class="emoji" data-emoji="heavy_check_mark">✔️</span>)</li>
+</ul>
 </div></div>
-</section>
-<section id="features-important-to-the-model" class="slide level2">
-<h2>“Features Important to the Model”?</h2>
-<ul>
-<li>Naive: <code>coef_</code> for linear models (abs value or norm for multi-class)</li>
-<li><code>feature_importances_</code> for tree-based models</li>
-</ul>
-<p>Use with care!</p>
-</section>
-<section id="linear-model-coefficients" class="slide level2">
-<h2>Linear Model Coefficients</h2>
-<ul>
-<li>Large absolute coef value != important feature</li>
-<li>Relative importance only meaningful after scaling</li>
-<li>Correlation among features might make coefficients completely uninterpretable</li>
-<li>L1 regularisation will pick one at random from a correlated group</li>
-<li>Any penalty will invalidate usual interpretation of linear coefficients</li>
-</ul>
-</section>
-<section id="example-correlated-features" class="slide level2">
-<h2>Example: Correlated Features</h2>
-<ul>
-<li>Correlation among features might make coefficients completely uninterpretable</li>
-</ul>
-<div id="59611a33" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-stdout">
-<pre><code>Correlations (should be &lt; 0.1):
+<!-- ## Linear Model Coefficients
+
+- $$y = 7.82x_1 + 2.15x_2 + 9.31x_3 + 1.64x_4 + 5.88x_5 + 3.47 $$
+- The coefficient 7.82 for $x_1$ tells how y changes with a unit change in $x_1$, holding other features constant
+- However, coefficients do not indicate relative feature importance
+- We can't say $x_3$ is more important than $x_1$ just because 9.31 > 7.82 
+- Use with care!
+
+## Trap #1
+
+- Only compare the coefficients after features are standardised (with mean=0 and std=1)
+- Suppose you are modelling house prices
+- Variable A: Square footage (range: 500 to 5,000), coef = 100
+- Variable B: Number of bedrooms (range: 1 to 5), coef = 10,000
+- Without standardisation, can't compare coef of A and B
+
+## Trap #2
+
+- Even after standardisation ...
+- If features are correlated, coefficients can be inflated or unstable
+
+
+## Linear Model Coefficients
+
+- Large absolute coef value != important feature
+- Relative importance only meaningful after scaling
+- Correlation among features might make coefficients completely uninterpretable
+- L1 regularisation will pick one at random from a correlated group
+- Any penalty will invalidate usual interpretation of linear coefficients
+
+## Example: Correlated Features
+
+- Correlation among features might make coefficients completely uninterpretable
+
+::: {#1c172215 .cell execution_count=1}
+
+::: {.cell-output .cell-output-stdout}
+```
+Correlations (should be < 0.1):
 [[ 1.         -0.12070741 -0.04863585]
  [-0.12070741  1.         -0.12376394]
  [-0.04863585 -0.12376394  1.        ]]
@@ -343,42 +365,44 @@
 Model 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3
 R² = 0.985
 
-Correlation X3-X4: 0.992
+Correlation X3-X4: 0.994
 
-Model 2 (4 features): y = 1.04 + 28.38*X1 + 73.87*X2 + 31.83*X3 + -14.47*X4
-R² = 0.986</code></pre>
-</div>
-</div>
-</section>
-<section id="example-linear-regression-with-penalisation" class="slide level2">
-<h2>Example: linear regression with penalisation</h2>
-<ul>
-<li>Lasso regression performs feature selection by driving some coefficients to zero</li>
-<li><span class="math inline">\(\text{Lasso Regression: } \min_{\beta} \left( \frac{1}{2n} \sum_{i=1}^{n} (y_i - X_i \beta)^2 + \lambda \|\beta\|_1 \right)\)</span></li>
-<li>On the same data, Lasso regression will pick one of the correlated features (X3 or X4)</li>
-<li>but it doesn’t mean the dropped feature is unimportant!</li>
-</ul>
-<div id="bee083ab" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-stdout">
-<pre><code>Y = 5.94 + 23.15*X1 + 81.83*X2 + 18.22*X3</code></pre>
-</div>
-</div>
-</section>
-<section id="feature_importances_-in-sklearn-tree-based-models" class="slide level2">
-<h2>feature_importances_ in sklearn tree-based Models</h2>
-<ul>
-<li>For a tree: FI = total reduction of the criterion (e.g., Gini, MSE) brought by that feature</li>
-<li>For a forest: average FI over all trees</li>
-<li>Problems:
-<ul>
-<li>Biased towards high-cardinality features (cardinality = number of unique values)</li>
-<li>Can be misleading when features are correlated</li>
-</ul></li>
-</ul>
-</section>
-<section id="drop-feature-importance-not-recommended" class="slide level2">
-<h2>Drop Feature Importance (Not recommended)</h2>
-<p><span class="math display">\[I_i^\text{drop} = \text{Acc}(f, X, y) - \text{Acc}(f', X_{-i}, y)\]</span></p>
+Model 2 (4 features): y = 1.20 + 28.27*X1 + 74.02*X2 + 23.04*X3 + -4.73*X4
+R² = 0.986
+```
+:::
+:::
+
+
+## Example: linear regression with penalisation
+
+- Lasso regression performs feature selection by driving some coefficients to zero
+- $\text{Lasso Regression: } \min_{\beta} \left( \frac{1}{2n} \sum_{i=1}^{n} (y_i - X_i \beta)^2 + \lambda \|\beta\|_1 \right)$
+- On the same data, Lasso regression will pick one of the correlated features (X3 or X4)
+- but it doesn't mean the dropped feature is unimportant!
+
+::: {#edd14666 .cell execution_count=2}
+
+::: {.cell-output .cell-output-stdout}
+```
+Y = 5.94 + 23.15*X1 + 81.83*X2 + 18.22*X3
+```
+:::
+:::
+
+
+## feature_importances_ in sklearn tree-based Models
+
+- For a tree: FI = total reduction of the criterion (e.g., Gini, MSE) brought by that feature
+- For a forest: average FI over all trees
+- Problems:
+  - Biased towards high-cardinality features (cardinality = number of unique values)
+  - Can be misleading when features are correlated
+
+## Drop Feature Importance (Not recommended)
+
+$$I_i^\text{drop} = \text{Acc}(f, X, y) - \text{Acc}(f', X_{-i}, y)$$
+
 <!-- ```python
 def drop_feature_importance(est, X, y):
     base_score = np.mean(cross_val_score(est, X, y))
@@ -391,31 +415,114 @@ def drop_feature_importance(est, X, y):
         scores.append(base_score - this_score)
     return np.array(scores)
 ``` -->
-<ul>
-<li>It refits a new model for each feature removal</li>
-<li>Doesn’t really explain model (refits for each feature)</li>
-<li>Can’t deal with correlated features well</li>
-<li>Be cautious!</li>
-</ul>
+<!-- 
+- It refits a new model for each feature removal
+- Doesn't really explain model (refits for each feature)
+- Can't deal with correlated features well
+- Be cautious!
+ -->
 </section>
 <section id="permutation-importance" class="slide level2">
 <h2>Permutation Importance</h2>
-<p>Idea: measure marginal influence of one feature by permuting it</p>
+Idea: measure marginal influence of a feature by permuting it and measuring the drop in accuracy
+<div style="text-align:center;">
+<p><img src="images/permutation_importance.png" alt="permutation importance" style="max-width:60%;"></p>
+</div>
+</section>
+<section id="permutation-importance-1" class="slide level2">
+<h2>Permutation Importance</h2>
 <p><span class="math display">\[I_i^\text{perm} = \text{Acc}(f, X, y) - \mathbb{E}_{x_i}\left[\text{Acc}(f(x_i, X_{-i}), y)\right]\]</span></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> permutation_importance(est, X, y, n_repeat<span class="op">=</span><span class="dv">100</span>):</span>
-<span id="cb4-2"><a></a>  baseline_score <span class="op">=</span> estimator.score(X, y)</span>
-<span id="cb4-3"><a></a>  <span class="cf">for</span> f_idx <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">1</span>]):</span>
-<span id="cb4-4"><a></a>      <span class="cf">for</span> repeat <span class="kw">in</span> <span class="bu">range</span>(n_repeat):</span>
-<span id="cb4-5"><a></a>          X_new <span class="op">=</span> X.copy()</span>
-<span id="cb4-6"><a></a>          X_new[:, f_idx] <span class="op">=</span> np.random.shuffle(X[:, f_idx])</span>
-<span id="cb4-7"><a></a>          feature_score <span class="op">=</span> estimator.score(X_new, y)</span>
-<span id="cb4-8"><a></a>          scores[f_idx, repeat] <span class="op">=</span> baseline_score <span class="op">-</span> feature_score</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> permutation_importance(est, X, y, n_repeat<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb2-2"><a></a>  baseline_score <span class="op">=</span> estimator.score(X, y)</span>
+<span id="cb2-3"><a></a>  <span class="cf">for</span> f_idx <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">1</span>]):</span>
+<span id="cb2-4"><a></a>      <span class="cf">for</span> repeat <span class="kw">in</span> <span class="bu">range</span>(n_repeat):</span>
+<span id="cb2-5"><a></a>          X_new <span class="op">=</span> X.copy()</span>
+<span id="cb2-6"><a></a>          X_new[:, f_idx] <span class="op">=</span> np.random.shuffle(X[:, f_idx])</span>
+<span id="cb2-7"><a></a>          feature_score <span class="op">=</span> estimator.score(X_new, y)</span>
+<span id="cb2-8"><a></a>          scores[f_idx, repeat] <span class="op">=</span> baseline_score <span class="op">-</span> feature_score</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Stay with the same trained model</li>
-<li>Applied on validation set given trained estimator</li>
+<li>Model agnostic (works for any ML model)</li>
 <li>Can deal with correlated features better</li>
-<li>Can run slow (n_features * n_repeats model evaluations)</li>
+<li>Can maintain the distribution of a feature</li>
+<li>Can run slow (need to re-evaluate models many times: n_features * n_repeats model evaluations)</li>
 </ul>
+</section>
+<section id="alternatives-of-permutation-importance" class="slide level2">
+<h2>Alternatives of permutation importance</h2>
+<ul>
+<li>Drop-feature importance (<em>not recommended</em>)</li>
+<li>Idea: to measure importance of x1 for y=f(x1, x2, x3), it drops x1 and refits y=g(x2, x3), and then compare accuracy of f() and g()</li>
+<li>It refits a new model for each feature removal</li>
+<li>Doesn’t really explain model (refits for each feature)</li>
+<li>Can’t deal with correlated features well</li>
+</ul>
+</section>
+<section id="alternatives-of-permutation-importance-1" class="slide level2">
+<h2>Alternatives of permutation importance</h2>
+<ul>
+<li>sklearn tree-based feature importance</li>
+<li>Only applicable to tree-based models in sklearn</li>
+<li>For a tree: FI = total reduction of the criterion (e.g., Gini, MSE) brought by that feature</li>
+<li>For a forest: average FI over all trees</li>
+</ul>
+</section>
+<section id="problems-with-sklearn-tree-based-feature-importance" class="slide level2">
+<h2>Problems with sklearn tree-based feature importance</h2>
+<ul>
+<li>Biased towards high-cardinality features (cardinality = number of unique values)</li>
+<li>Can be misleading when features are correlated</li>
+<li>Not recommended</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
+<span id="cb3-2"><a></a>model <span class="op">=</span> RandomForestRegressor()</span>
+<span id="cb3-3"><a></a>model.fit(X_train, y_train)</span>
+<span id="cb3-4"><a></a>importances <span class="op">=</span> model.feature_importances_ <span class="co"># sklearn tree-based feature importance</span></span>
+<span id="cb3-5"><a></a>PI <span class="op">=</span> permutation_importance(model, X_train, y_train, n_repeats<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb3-6"><a></a>                                random_state<span class="op">=</span><span class="dv">0</span>) <span class="co"># permutation importance</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="partial-dependence-plots" class="slide level2">
+<h2>Partial Dependence Plots</h2>
+<ul>
+<li>Marginal dependence of prediction on one (or two) features across differnt values</li>
+</ul>
+<p><span class="math display">\[f_i^{\text{pdp}}(x_i) = \mathbb{E}_{X_{-i}}\left[f(x_i, x_{-i})\right]\]</span></p>
+<ul>
+<li>Idea: Get marginal predictions given feature</li>
+<li>How? “Integrate out” other features using validation data</li>
+</ul>
+</section>
+<section id="pdp" class="slide level2">
+<h2>PDP</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> plot_partial_dependence</span>
+<span id="cb4-2"><a></a>boston <span class="op">=</span> load_boston()</span>
+<span id="cb4-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(boston.data, boston.target,random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-4"><a></a></span>
+<span id="cb4-5"><a></a>gbrt <span class="op">=</span> GradientBoostingRegressor().fit(X_train, y_train)</span>
+<span id="cb4-6"><a></a></span>
+<span id="cb4-7"><a></a>fig, axs <span class="op">=</span> plot_partial_dependence(gbrt, X_train, np.argsort(gbrt.feature_importances_)[<span class="op">-</span><span class="dv">6</span>:], feature_names<span class="op">=</span>boston.feature_names)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="text-align:center;">
+<p><img src="images/feat_impo_part_dep.png" style="max-width:60%;"></p>
+</div>
+</section>
+<section id="bivariate-partial-dependence-plots" class="slide level2">
+<h2>Bivariate Partial Dependence Plots</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>plot_partial_dependence(</span>
+<span id="cb5-2"><a></a>    gbrt, X_train, [np.argsort(gbrt.feature_importances_)[<span class="op">-</span><span class="dv">2</span>:]],</span>
+<span id="cb5-3"><a></a>    feature_names<span class="op">=</span>boston.feature_names, n_jobs<span class="op">=</span><span class="dv">3</span>, grid_resolution<span class="op">=</span><span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="text-align:center;">
+<p><img src="images/feature_importance.png" style="max-width:80%;"></p>
+</div>
+</section>
+<section id="partial-dependence-for-classification" class="slide level2">
+<h2>Partial Dependence for Classification</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> plot_partial_dependence</span>
+<span id="cb6-2"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb6-3"><a></a>    fig, axs <span class="op">=</span> plot_partial_dependence(gbrt, X_train, <span class="bu">range</span>(<span class="dv">4</span>), n_cols<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb6-4"><a></a>                                       feature_names<span class="op">=</span>iris.feature_names, grid_resolution<span class="op">=</span><span class="dv">50</span>, label<span class="op">=</span>i)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="text-align:center;">
+<p><img src="images/feat_impo_part_dep_class.png" style="max-width:50%;"></p>
+</div>
 </section>
 <section id="lime" class="slide level2">
 <h2>LIME</h2>
@@ -426,30 +533,54 @@ def drop_feature_importance(est, X, y):
 <li>Implementation: ELI5, https://github.com/marcotcr/lime</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/lime_paper.png" style="max-width:60%;"></p>
+<p><img src="images/lime_paper.png" style="max-width:50%;"></p>
 </div>
 </section>
 <section id="shap" class="slide level2">
 <h2>SHAP</h2>
 <ul>
-<li>Build around idea of Shapley values (from game theory)</li>
-<li>Very roughly: does drop-out importance for every subset of features</li>
-<li>Intractable, sampling approximations exists</li>
-<li>Fast implementation for linear and tree-based models</li>
-<li>Also work for deep learning models (DeepSHAP)</li>
-<li>Awesome vis and tools: https://github.com/slundberg/shap</li>
-<li>Allows local / per sample explanations, and global explanations (by averaging)</li>
+<li>Build around idea of Shapley values (from game theory, proposed by Lloyd Shapley in 1953)</li>
+<li>Shapley values: a fair way to distribute “payout” among N players in a game, based on their marginal contributions across all possible coalitions</li>
+</ul>
+</section>
+<section id="shapley-value" class="slide level2">
+<h2>Shapley value</h2>
+<ul>
+<li>A fair way to distribute “payout” among N players in a game</li>
+<li>Example in housing price: how much does each factor contribute to the house price?</li>
+<li>What we want to see: park-nearby contributed €30,000; area-50 contributed €10,000; floor-2nd contributed €0; cat-ban contributed -€50,000. But HOW?</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/house_price_1.jpg" style="max-width:50%;"></p>
+</div>
+</section>
+<section id="shapley-value-cont." class="slide level2">
+<h2>Shapley value (cont.)</h2>
+<ul>
+<li>Checking all possible coalition …</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/house_price_2.jpg" style="max-width:50%;"></p>
+</div>
+</section>
+<section id="shapley-value-cont.-1" class="slide level2">
+<h2>Shapley value (cont.)</h2>
+<ul>
+<li>To compute payout for cat-ban, we need to check the following combinations (with &amp; without cat-ban), and take the difference in predicted price. The payout of cat-bin is the (weighted) average of these differences across all combinations.</li>
+<li>If a feature is not in the coalition, we replace it with some baseline (e.g.&nbsp;mean).
+<ul>
+<li>park-nearby, area-50, floor-2nd</li>
+<li>park-nearby, area-50</li>
+<li>park-nearby, floor-2nd</li>
+<li>area-50, floor-2nd</li>
+<li>park-nearby</li>
+<li>area-50</li>
+<li>floor-2nd</li>
+<li>{} (empty coalition)</li>
+</ul></li>
 </ul>
 </section>
 <section id="shapley-value-game-theory" class="slide level2">
-<h2>Shapley value (game theory)</h2>
-<ul>
-<li>A fair way to distribute “payout” among players N={1, …, p}</li>
-<li>Define characteristic function v(S) giving payout for any subset of players S ⊆ N</li>
-<li>Shapley value for player i: <span class="math display">\[\phi_i(v) = \sum_{S \subseteq N \setminus \{i\}} \frac{|S|! (p - |S| - 1)!}{p!} [v(S \cup \{i\}) - v(S)]\]</span></li>
-</ul>
-</section>
-<section id="shapley-value-game-theory-1" class="slide level2">
 <h2>Shapley value (game theory)</h2>
 <ul>
 <li>Assume 4 players, to compute Shapley value for player 1:
@@ -461,7 +592,18 @@ def drop_feature_importance(est, X, y):
 </ul></li>
 </ul>
 </section>
-<section id="shapley-value-game-theory-2" class="slide level2">
+<section id="shapley-value-1" class="slide level2">
+<h2>Shapley value</h2>
+<ul>
+<li>Example of Shapley value for bike rental prediction</li>
+<li>The sum of Shapley values yields the difference of actual and average prediction (422).</li>
+<li>The temperature &amp; humidity had the largest positive contributions.</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/bike_rental_shapley.png" style="max-width:50%;"></p>
+</div>
+</section>
+<section id="shapley-value-game-theory-1" class="slide level2">
 <h2>Shapley value (game theory)</h2>
 <ul>
 <li><p>Shapley value is the only attribution method that satisfies following properties</p></li>
@@ -471,431 +613,125 @@ def drop_feature_importance(est, X, y):
 <li><p><em>Additivity</em>: for two models, attributions add up. (Think about a random forest with many trees, the Shapley values of the forest is the avereage of SHAP values of each tree)</p></li>
 </ul>
 </section>
-<section id="shap-shapley-values-applied-to-ml-model-explanations" class="slide level2">
-<h2>SHAP (Shapley values applied to ML model explanations)</h2>
+<section id="from-shapely-values-to-shap" class="slide level2">
+<h2>From Shapely values to SHAP</h2>
 <ul>
-<li>SHAP is an application of Shapley values to explain ML model predictions</li>
-<li>Treat features as players in a game</li>
-<li>model prediction over average as the payout</li>
-<li>Define v(S) that uses dataset mean for missing featuers</li>
-<li>SHAP value for feature i:</li>
-</ul>
-<p><span class="math inline">\(f(x)-E[f(X)]=\sum_{j=1}^{p}\phi_j(x)\)</span></p>
-</section>
-<section id="three-methods-for-shap-estimation" class="slide level2">
-<h2>Three methods for SHAP estimation</h2>
-<ul>
-<li>KernelSHAP: model-agnostic, uses sampling to estimate SHAP values</li>
-<li>TreeSHAP: efficient exact computation for tree-based models</li>
-<li>Permutation SHAP: approximate method using permutations, similar to permutation importance</li>
+<li>SHAP (SHapley Additive exPlanations) is a unified framework for explaining ML predictions, based on Shapley values</li>
+<li>Shapely values were proposed in 1953</li>
+<li>In 2017, Lundberg and Lee proposed SHAP for explaining ML models.</li>
+<li>assume the explanation as a linear model of binary variables indicating presence/absence of features</li>
+<li>allows local / per sample explanations, and global explanations (by averaging)</li>
+<li>introduced effecient estimation of KernelSHAP and TreeSHAP</li>
 </ul>
 </section>
-<section id="case-study" class="slide level2">
-<h2>Case Study</h2>
-</section>
-<section id="toy-data" class="slide level2">
-<h2>Toy Data</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>X.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<pre><code>(100000, 8)</code></pre>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/toy_data_scatter.png" style="max-width:100%;"></p>
-</div>
-</div><div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/covariance.png" style="max-width:100%;"></p>
-</div>
-</div></div>
-</section>
-<section id="models-on-lots-of-data" class="slide level2">
-<h2>Models on Lots of Data</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>lasso <span class="op">=</span> LassoCV().fit(X_train, y_train)</span>
-<span id="cb7-2"><a></a>lasso.score(X_test, y_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>0.545</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>ridge <span class="op">=</span> RidgeCV().fit(X_train, y_train)</span>
-<span id="cb8-2"><a></a>ridge.score(X_test, y_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>0.545</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>lr <span class="op">=</span> LinearRegression().fit(X_train, y_train)</span>
-<span id="cb9-2"><a></a>lr.score(X_test, y_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>0.545</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>param_grid <span class="op">=</span> {<span class="st">'max_leaf_nodes'</span>: <span class="bu">range</span>(<span class="dv">5</span>, <span class="dv">40</span>, <span class="dv">5</span>)}</span>
-<span id="cb10-2"><a></a>grid <span class="op">=</span> GridSearchCV(DecisionTreeRegressor(), param_grid, cv<span class="op">=</span><span class="dv">10</span>, n_jobs<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb10-3"><a></a>grid.fit(X_train, y_train)</span>
-<span id="cb10-4"><a></a>grid.score(X_test, y_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>0.545</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>rf <span class="op">=</span> RandomForestRegressor(min_samples_leaf<span class="op">=</span><span class="dv">5</span>).fit(X_train, y_train)</span>
-<span id="cb11-2"><a></a>rf.score(X_test, y_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>0.542</p>
-</section>
-<section id="coefficients-and-default-feature-importance" class="slide level2">
-<h2>Coefficients and Default Feature Importance</h2>
-<div style="text-align:center;">
-<p><img src="images/standard_importances.png" style="max-width:100%;"></p>
-</div>
-</section>
-<section id="permutation-importances" class="slide level2">
-<h2>Permutation Importances</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/standard_importances.png" style="max-width:100%;"></p>
-</div>
-</div><div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/permutation_importance_big.png" style="max-width:100%;"></p>
-</div>
-</div></div>
-</section>
-<section id="shap-values" class="slide level2">
-<h2>SHAP Values</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/standard_importances.png" style="max-width:100%;"></p>
-</div>
-</div><div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/shap_big.png" style="max-width:100%;"></p>
-</div>
-</div></div>
-</section>
-<section id="more-model-inspection" class="slide level2">
-<h2>More Model Inspection</h2>
-</section>
-<section id="partial-dependence-plots" class="slide level2">
-<h2>Partial Dependence Plots</h2>
+<section id="shap-1" class="slide level2">
+<h2>SHAP</h2>
+<p>SHAP assumes the prediction of a data point is the sum of effects of each feature. It defines:</p>
+<p><span class="math display">\[g(z') = \phi_0 + \sum_{i=1}^{M} \phi_i z'_i\]</span></p>
 <ul>
-<li>Marginal dependence of prediction on one (or two features)</li>
-</ul>
-<p><span class="math display">\[f_i^{\text{pdp}}(x_i) = \mathbb{E}_{X_{-i}}\left[f(x_i, x_{-i})\right]\]</span></p>
-<ul>
-<li>Idea: Get marginal predictions given feature</li>
-<li>How? “integrate out” other features using validation data</li>
-<li>Fast methods available for tree-based models (doesn’t require validation data)</li>
-<li>Nonsensical for linear models</li>
+<li><span class="math inline">\(\phi_0\)</span>: The base value (the average prediction of the model across the dataset).</li>
+<li><span class="math inline">\(\phi_i\)</span>: The SHAP value (the contribution of feature <span class="math inline">\(i\)</span>).</li>
+<li><span class="math inline">\(z'_i \in \{0, 1\}^M\)</span>: A binary vector representing whether a feature is <em>present</em> or <em>absent</em>.</li>
+<li><span class="math inline">\(M\)</span>: The number of input features.</li>
 </ul>
 </section>
-<section id="partial-dependence" class="slide level2">
-<h2>Partial Dependence</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> plot_partial_dependence</span>
-<span id="cb12-2"><a></a>boston <span class="op">=</span> load_boston()</span>
-<span id="cb12-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(boston.data, boston.target,random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb12-4"><a></a></span>
-<span id="cb12-5"><a></a>gbrt <span class="op">=</span> GradientBoostingRegressor().fit(X_train, y_train)</span>
-<span id="cb12-6"><a></a></span>
-<span id="cb12-7"><a></a>fig, axs <span class="op">=</span> plot_partial_dependence(gbrt, X_train, np.argsort(gbrt.feature_importances_)[<span class="op">-</span><span class="dv">6</span>:], feature_names<span class="op">=</span>boston.feature_names)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="text-align:center;">
-<p><img src="images/feat_impo_part_dep.png" style="max-width:60%;"></p>
-</div>
-</section>
-<section id="bivariate-partial-dependence-plots" class="slide level2">
-<h2>Bivariate Partial Dependence Plots</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>plot_partial_dependence(</span>
-<span id="cb13-2"><a></a>    gbrt, X_train, [np.argsort(gbrt.feature_importances_)[<span class="op">-</span><span class="dv">2</span>:]],</span>
-<span id="cb13-3"><a></a>    feature_names<span class="op">=</span>boston.feature_names, n_jobs<span class="op">=</span><span class="dv">3</span>, grid_resolution<span class="op">=</span><span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="text-align:center;">
-<p><img src="images/feature_importance.png" style="max-width:80%;"></p>
-</div>
-</section>
-<section id="partial-dependence-for-classification" class="slide level2">
-<h2>Partial Dependence for Classification</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> plot_partial_dependence</span>
-<span id="cb14-2"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb14-3"><a></a>    fig, axs <span class="op">=</span> plot_partial_dependence(gbrt, X_train, <span class="bu">range</span>(<span class="dv">4</span>), n_cols<span class="op">=</span><span class="dv">4</span>,</span>
-<span id="cb14-4"><a></a>                                       feature_names<span class="op">=</span>iris.feature_names, grid_resolution<span class="op">=</span><span class="dv">50</span>, label<span class="op">=</span>i)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="text-align:center;">
-<p><img src="images/feat_impo_part_dep_class.png" style="max-width:50%;"></p>
-</div>
-</section>
-<section id="pdp-caveats" class="slide level2">
-<h2>PDP Caveats</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/pdp_failure.png" style="max-width:100%;"></p>
-</div>
-</div><div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/pdp_failure_data.png" style="max-width:100%;"></p>
-</div>
-</div></div>
-</section>
-<section id="ice-box" class="slide level2">
-<h2>Ice Box</h2>
+<section id="computing-shap" class="slide level2">
+<h2>Computing SHAP</h2>
 <ul>
-<li>Like partial dependence plots, without the <code>.mean(axis=0)</code></li>
-</ul>
-<div style="text-align:center;">
-<p><img src="images/ice_cross.png" style="max-width:60%;"></p>
-</div>
-<ul>
-<li>https://pdpbox.readthedocs.io/en/latest/</li>
-<li>https://github.com/AustinRochford/PyCEbox</li>
-<li>https://github.com/scikit-learn/scikit-learn/pull/16164</li>
-</ul>
-</section></section>
-<section>
-<section id="feature-selection" class="title-slide slide level1 center">
-<h1>Feature Selection</h1>
-
-</section>
-<section id="why-select-features" class="slide level2">
-<h2>Why Select Features?</h2>
-<ul>
-<li>Avoid overfitting</li>
-<li>Faster prediction and training</li>
-<li>Less storage cost for model and dataset</li>
-<li>More interpretable model</li>
+<li>The original Shapley values are computationally expensive (exponential in number of features)</li>
+<li>SHAP introduced efficient estimation methods:</li>
+<li><strong>KernelSHAP</strong>: model-agnostic, uses sampling to estimate SHAP values (model agnostic)</li>
+<li><strong>Permutation SHAP</strong>: approximate method using permutations, similar to permutation importance</li>
+<li><strong>TreeSHAP</strong>: efficient exact computation <strong>for tree-based models</strong></li>
 </ul>
 </section>
-<section id="types-of-feature-selection" class="slide level2">
-<h2>Types of Feature Selection</h2>
+<section id="shap-example" class="slide level2">
+<h2>SHAP example</h2>
 <ul>
-<li>Unsupervised vs Supervised</li>
-<li>Univariate vs Multivariate</li>
-<li>Model-based or not</li>
+<li>Y variable: median house value for California districts (in $100,000)</li>
+<li>8 features
+<ul>
+<li>MedInc median income in block group</li>
+<li>HouseAge median house age in block group</li>
+<li>AveRooms average number of rooms per household</li>
+<li>AveBedrms average number of bedrooms per household</li>
+<li>Population block group population</li>
+<li>AveOccup average number of household members</li>
+<li>Latitude block group latitude</li>
+<li>Longitude block group longitude</li>
+</ul></li>
+<li>Spatial unit: A block group is the smallest geographical unit for which the U.S. Census Bureau publishes sample data; typically with a population of 600 to 3,000 people.</li>
+<li>Source: https://www.dcc.fc.up.pt/~ltorgo/Regression/cal_housing.html</li>
 </ul>
 </section>
-<section id="unsupervised-feature-selection" class="slide level2">
-<h2>Unsupervised Feature Selection</h2>
+<section id="shap-waterfall-plot" class="slide level2">
+<h2>SHAP waterfall plot</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> xgboost</span>
+<span id="cb7-2"><a></a><span class="im">import</span> shap</span>
+<span id="cb7-3"><a></a></span>
+<span id="cb7-4"><a></a>X, y <span class="op">=</span> shap.datasets.california() <span class="co"># 20640 instances, 8 features</span></span>
+<span id="cb7-5"><a></a>model <span class="op">=</span> xgboost.XGBRegressor().fit(X, y)</span>
+<span id="cb7-6"><a></a></span>
+<span id="cb7-7"><a></a>explainer <span class="op">=</span> shap.Explainer(model)</span>
+<span id="cb7-8"><a></a>shap_values <span class="op">=</span> explainer(X)</span>
+<span id="cb7-9"><a></a>shap.plots.waterfall(shap_values[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="text-align:center;">
+<p><img src="images/shap_waterfall.png" style="max-width:50%;"></p>
+</div>
+</section>
+<section id="shap-force-plots" class="slide level2">
+<h2>SHAP force plots</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>shap.plots.force(shap_values[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="text-align:center;">
+<p><img src="images/SHAP_force_plot.png" style="max-width:50%;"></p>
+</div>
+</section>
+<section id="shap-force-plots-for-multiple-samples" class="slide level2">
+<h2>SHAP force plots for multiple samples</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>shap.plots.force(shap_values[:<span class="dv">500</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="text-align:center;">
+<p><img src="images/SHAP_force_plot_500_values.png" style="max-width:50%;"></p>
+</div>
 <ul>
-<li>May discard important information</li>
-<li>Variance-based: 0 variance or mostly constant</li>
-<li>Covariance-based: remove correlated features</li>
-<li>PCA: remove linear subspaces</li>
+<li>Use with caution!</li>
 </ul>
 </section>
-<section id="covariance" class="slide level2">
-<h2>Covariance</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
-<span id="cb15-2"><a></a></span>
-<span id="cb15-3"><a></a>boston <span class="op">=</span> load_boston()</span>
-<span id="cb15-4"><a></a>X, y <span class="op">=</span> boston.data, boston.target</span>
-<span id="cb15-5"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb15-6"><a></a>X_train_scaled <span class="op">=</span> scale(X_train)</span>
-<span id="cb15-7"><a></a></span>
-<span id="cb15-8"><a></a>cov <span class="op">=</span> np.cov(X_train_scaled, rowvar<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="shap-summary-plot" class="slide level2">
+<h2>SHAP Summary Plot</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>shap.plots.beeswarm(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
-<p><img src="images/img_17.png" style="max-width:32%;"></p>
+<p><img src="images/SHAP_beeswarm.png" style="max-width:50%;"></p>
 </div>
-<!-- ## Hierarchical Clustering of Covariance
-
-```python
-from scipy.cluster import hierarchy
-order = np.array(hierarchy.dendrogram(
-    hierarchy.ward(cov),no_plot=True)['ivl'], dtype="int")
-```
-
-<div style="text-align:center;">
-  <img src="images/img_19.png" style="max-width:90%;">
-</div> -->
 </section>
-<section id="supervised-feature-selection" class="slide level2">
-<h2>Supervised Feature Selection</h2>
-</section>
-<section id="univariate-statistics" class="slide level2">
-<h2>Univariate Statistics</h2>
+<section id="shap-feature-importance" class="slide level2">
+<h2>SHAP Feature Importance</h2>
 <ul>
-<li>Pick statistic, check p-values</li>
-<li>f_regression, f_classsif, chi2 in scikit-learn</li>
+<li>the mean absolute values of SHAP can be averaged across samples to get global feature importance</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> f_regression</span>
-<span id="cb16-2"><a></a>f_values, p_values <span class="op">=</span> f_regression(X, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>shap.plots.bar(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
-<p><img src="images/img_20.png" style="max-width:60%;"></p>
+<p><img src="images/SHAP_feature_importance.png" style="max-width:50%;"></p>
 </div>
 </section>
-<section id="selectkbest-example" class="slide level2">
-<h2>SelectKBest Example</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> SelectKBest, SelectPercentile, SelectFpr</span>
-<span id="cb17-2"><a></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> RidgeCV</span>
-<span id="cb17-3"><a></a></span>
-<span id="cb17-4"><a></a>select <span class="op">=</span> SelectKBest(k<span class="op">=</span><span class="dv">2</span>, score_func<span class="op">=</span>f_regression)</span>
-<span id="cb17-5"><a></a>select.fit(X_train, y_train)</span>
-<span id="cb17-6"><a></a><span class="bu">print</span>(X_train.shape)</span>
-<span id="cb17-7"><a></a><span class="bu">print</span>(select.transform(X_train).shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<pre><code>(379, 13)
-(379, 2)</code></pre>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>all_features <span class="op">=</span> make_pipeline(StandardScaler(), RidgeCV())</span>
-<span id="cb19-2"><a></a>np.mean(cross_val_score(all_features, X_train, y_train, cv<span class="op">=</span><span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>0.718</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a>select_2 <span class="op">=</span> make_pipeline(StandardScaler(),</span>
-<span id="cb20-2"><a></a>                         SelectKBest(k<span class="op">=</span><span class="dv">2</span>, score_func<span class="op">=</span>f_regression), RidgeCV())</span>
-<span id="cb20-3"><a></a>np.mean(cross_val_score(select_2, X_train, y_train, cv<span class="op">=</span><span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>0.624</p>
-</section>
-<section id="mutual-information" class="slide level2">
-<h2>Mutual Information</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> mutual_info_regression</span>
-<span id="cb21-2"><a></a>scores <span class="op">=</span> mutual_info_regression(X_train, y_train,</span>
-<span id="cb21-3"><a></a>                                discrete_features<span class="op">=</span>[<span class="dv">3</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div style="text-align:center;">
-<p><img src="images/img_22.png" style="max-width:90%;"></p>
-</div>
-</section>
-<section id="model-based-feature-selection" class="slide level2">
-<h2>Model-Based Feature Selection</h2>
+<section id="geoshapley" class="slide level2">
+<h2>GeoShapley</h2>
 <ul>
-<li>Get best fit for a particular model</li>
-<li>Ideally: exhaustive search over all possible combinations</li>
-<li>But, exhaustive is infeasible (and has multiple testing issues)</li>
-<li>Use heuristics in practice</li>
+<li>Explains any model that takes tabular data + spatial features (e.g., coordinates)</li>
 </ul>
+<div style="text-align:center;">
+<p><img src="images/SHAP_feature_importance.png" style="max-width:40%;"> Source: https://github.com/Ziqi-Li/geoshapley</p>
+</div>
 </section>
-<section id="model-based-single-fit" class="slide level2">
-<h2>Model Based (Single Fit)</h2>
+<section id="key-takeaways" class="slide level2">
+<h2>Key Takeaways</h2>
 <ul>
-<li>Build a model, select “features important to model”</li>
-<li>Usually using Lasso or random forest</li>
-<li>Multivariate - linear models assume linear relation</li>
+<li>Model interpretation is about explaining a trained model, not the data</li>
+<li>Post-hoc explanations can be global (feature importance, PDP, SHAP) or local (LIME, SHAP)</li>
+<li><strong>Permutation importance</strong> is better than drop-feature importance and sklearn tree-based feature importance</li>
+<li><strong>SHAP</strong> is a unified framework for explaining ML predictions, based on Shapley values from game theory</li>
+<li><strong>SHAP</strong> is different from Shapley values!</li>
+<li>These methods are model agnostic</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LassoCV</span>
-<span id="cb22-2"><a></a>X_train_scaled <span class="op">=</span> scale(X_train)</span>
-<span id="cb22-3"><a></a>lasso <span class="op">=</span> LassoCV().fit(X_train_scaled, y_train)</span>
-<span id="cb22-4"><a></a><span class="bu">print</span>(lasso.coef_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>[-0.881 0.951 -0.082 0.59 -1.69 2.639 -0.146 -2.796 1.695 -1.614 -2.133 0.729 -3.615]</p>
-<div style="text-align:center;">
-<p><img src="images/img_23.png" style="max-width:55%;"></p>
-</div>
-</section>
-<section id="changing-lasso-alpha" class="slide level2">
-<h2>Changing Lasso Alpha</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Lasso</span>
-<span id="cb23-2"><a></a>X_train_scaled <span class="op">=</span> scale(X_train)</span>
-<span id="cb23-3"><a></a>lasso <span class="op">=</span> Lasso().fit(X_train_scaled, y_train)</span>
-<span id="cb23-4"><a></a><span class="bu">print</span>(lasso.coef_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>[-0. 0. -0. 0. -0. 2.529 -0. -0. -0. -0.228 -1.701 0.132 -3.606]</p>
-<div style="text-align:center;">
-<p><img src="images/img_24.png" style="max-width:80%;"></p>
-</div>
-</section>
-<section id="selectfrommodel" class="slide level2">
-<h2>SelectFromModel</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> SelectFromModel</span>
-<span id="cb24-2"><a></a>select_lassocv <span class="op">=</span> SelectFromModel(LassoCV(), threshold<span class="op">=</span><span class="fl">1e-5</span>)</span>
-<span id="cb24-3"><a></a>select_lassocv.fit(X_train, y_train)</span>
-<span id="cb24-4"><a></a><span class="bu">print</span>(select_lassocv.transform(X_train).shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<pre><code>(379,11)</code></pre>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a>pipe_lassocv <span class="op">=</span> make_pipeline(StandardScaler(), select_lassocv, RidgeCV())</span>
-<span id="cb26-2"><a></a>np.mean(cross_val_score(pipe_lassocv, X_train, y_train, cv<span class="op">=</span><span class="dv">10</span>))</span>
-<span id="cb26-3"><a></a>np.mean(cross_val_score(all_features, X_train, y_train, cv<span class="op">=</span><span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<pre><code>0.717
-0.718</code></pre>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a><span class="co"># could grid-search alpha in lasso</span></span>
-<span id="cb28-2"><a></a>select_lasso <span class="op">=</span> SelectFromModel(Lasso())</span>
-<span id="cb28-3"><a></a>pipe_lasso <span class="op">=</span> make_pipeline(StandardScaler(), select_lasso, RidgeCV())</span>
-<span id="cb28-4"><a></a>np.mean(cross_val_score(pipe_lasso, X_train, y_train, cv<span class="op">=</span><span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<pre><code>0.671</code></pre>
-<!-- ## Iterative Model-Based Selection
-
-- Fit model, find least important feature, remove, iterate
-- Or: Start with single feature, find most important feature, add, iterate
-
-## Recursive Feature Elimination
-
-- Uses feature importances / coefficients, similar to "SelectFromModel"
-- Iteratively removes features (one by one or in groups)
-- Runtime: (n_features - n_feature_to_keep) / stepsize
-
-## RFE Example
-
-```python
-from sklearn.linear_model import LinearRegression
-from sklearn.feature_selection import RFE
-
-# create ranking among all features by selecting only one
-rfe = RFE(LinearRegression(), n_features_to_select=1)
-rfe.fit(X_train_scaled, y_train)
-rfe.ranking_
-```
-array([ 9,  8, 13, 11,  5,  2, 12,  4,  7,  6,  3, 10,  1])
-
-<div style="text-align:center;">
-  <img src="images/img_27.png" style="max-width:95%;">
-</div>
-
-## RFECV
-
-```python
-from sklearn.linear_model import LinearRegression
-from sklearn.feature_selection import RFECV
-rfe = RFECV(LinearRegression(), cv=10)
-rfe.fit(X_train_scaled, y_train)
-print(rfe.support_)
-print(boston.feature_names[rfe.support_])
-```
-```
-[ True  True False  True  True  True False  True  True  True  True  True
-  True]
-['CRIM' 'ZN' 'CHAS' 'NOX' 'RM' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT']
-```
-
-```python
-pipe_rfe_ridgecv = make_pipeline(StandardScaler(),
-                                 RFECV(LinearRegression(), cv=10), RidgeCV())
-np.mean(cross_val_score(pipe_rfe_ridgecv, X_train, y_train, cv=10))
-```
-```
-0.710
-```
-
-## RFECV with Polynomial Features
-
-```python
-pipe_rfe_ridgecv = make_pipeline(StandardScaler(),
-                                 RFECV(LinearRegression(), cv=10), RidgeCV())
-np.mean(cross_val_score(pipe_rfe_ridgecv, X_train, y_train, cv=10))
-```
-```
-0.710
-```
-
-```python
-from sklearn.preprocessing import PolynomialFeatures
-pipe_rfe_ridgecv = make_pipeline(StandardScaler(), PolynomialFeatures(),
-                                 RFECV(LinearRegression(), cv=10), RidgeCV())
-np.mean(cross_val_score(pipe_rfe_ridgecv, X_train, y_train, cv=10))
-```
-```
-0.820
-```
-
-## Wrapper Methods
-
-- Can be applied for ANY model
-- Shrink / grow feature set by greedy search
-- Called Forward or Backward selection
-- Run CV / train-val split per feature
-- Complexity: n_features * (n_features + 1) / 2
-- Implemented in mlxtend
-
-## SequentialFeatureSelector
-
-```python
-from mlxtend.feature_selection import SequentialFeatureSelector
-sfs = SequentialFeatureSelector(LinearRegression(), forward=False, k_features=7)
-sfs.fit(X_train_scaled, y_train)
-```
-```
-Features: 7/7
-```
-
-```python
-print(sfs.k_feature_idx_)
-print(boston.feature_names[np.array(sfs.k_feature_idx_)])
-```
-```
-(1, 4, 5, 7, 9, 10, 12)
-['ZN' 'NOX' 'RM' 'DIS' 'TAX' 'PTRATIO' 'LSTAT']
-```
-
-```python
-sfs.k_score_
-```
-```
-0.725
-``` -->
 </section>
 <section id="questions" class="slide level2">
 <h2>Questions?</h2>
