@@ -213,10 +213,6 @@
 
 
 </section>
-<section class="slide level2">
-
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {notes} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>TODO: update feature selection part</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
 <section id="recap-neural-networks-or-mlp" class="slide level2">
 <h2>Recap: Neural Networks (or MLP)</h2>
 <div style="text-align:center;">
@@ -353,7 +349,7 @@
 
 - Correlation among features might make coefficients completely uninterpretable
 
-::: {#1c172215 .cell execution_count=1}
+::: {#169f6b2a .cell execution_count=1}
 
 ::: {.cell-output .cell-output-stdout}
 ```
@@ -365,10 +361,10 @@ Correlations (should be < 0.1):
 Model 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3
 R² = 0.985
 
-Correlation X3-X4: 0.994
+Correlation X3-X4: 0.993
 
-Model 2 (4 features): y = 1.20 + 28.27*X1 + 74.02*X2 + 23.04*X3 + -4.73*X4
-R² = 0.986
+Model 2 (4 features): y = 1.24 + 28.30*X1 + 73.99*X2 + 17.95*X3 + 0.95*X4
+R² = 0.985
 ```
 :::
 :::
@@ -381,7 +377,7 @@ R² = 0.986
 - On the same data, Lasso regression will pick one of the correlated features (X3 or X4)
 - but it doesn't mean the dropped feature is unimportant!
 
-::: {#edd14666 .cell execution_count=2}
+::: {#f9843a7d .cell execution_count=2}
 
 ::: {.cell-output .cell-output-stdout}
 ```
@@ -426,20 +422,20 @@ def drop_feature_importance(est, X, y):
 <h2>Permutation Importance</h2>
 Idea: measure marginal influence of a feature by permuting it and measuring the drop in accuracy
 <div style="text-align:center;">
-<p><img src="images/permutation_importance.png" alt="permutation importance" style="max-width:60%;"></p>
+<p><img src="images/permutation_importance_illustration.png" alt="permutation importance" style="max-width:60%;"></p>
 </div>
 </section>
 <section id="permutation-importance-1" class="slide level2">
 <h2>Permutation Importance</h2>
 <p><span class="math display">\[I_i^\text{perm} = \text{Acc}(f, X, y) - \mathbb{E}_{x_i}\left[\text{Acc}(f(x_i, X_{-i}), y)\right]\]</span></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> permutation_importance(est, X, y, n_repeat<span class="op">=</span><span class="dv">100</span>):</span>
-<span id="cb2-2"><a></a>  baseline_score <span class="op">=</span> estimator.score(X, y)</span>
-<span id="cb2-3"><a></a>  <span class="cf">for</span> f_idx <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">1</span>]):</span>
-<span id="cb2-4"><a></a>      <span class="cf">for</span> repeat <span class="kw">in</span> <span class="bu">range</span>(n_repeat):</span>
-<span id="cb2-5"><a></a>          X_new <span class="op">=</span> X.copy()</span>
-<span id="cb2-6"><a></a>          X_new[:, f_idx] <span class="op">=</span> np.random.shuffle(X[:, f_idx])</span>
-<span id="cb2-7"><a></a>          feature_score <span class="op">=</span> estimator.score(X_new, y)</span>
-<span id="cb2-8"><a></a>          scores[f_idx, repeat] <span class="op">=</span> baseline_score <span class="op">-</span> feature_score</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> permutation_importance(est, X, y, n_repeat<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb1-2"><a></a>  baseline_score <span class="op">=</span> estimator.score(X, y)</span>
+<span id="cb1-3"><a></a>  <span class="cf">for</span> f_idx <span class="kw">in</span> <span class="bu">range</span>(X.shape[<span class="dv">1</span>]):</span>
+<span id="cb1-4"><a></a>      <span class="cf">for</span> repeat <span class="kw">in</span> <span class="bu">range</span>(n_repeat):</span>
+<span id="cb1-5"><a></a>          X_new <span class="op">=</span> X.copy()</span>
+<span id="cb1-6"><a></a>          X_new[:, f_idx] <span class="op">=</span> np.random.shuffle(X[:, f_idx])</span>
+<span id="cb1-7"><a></a>          feature_score <span class="op">=</span> estimator.score(X_new, y)</span>
+<span id="cb1-8"><a></a>          scores[f_idx, repeat] <span class="op">=</span> baseline_score <span class="op">-</span> feature_score</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Stay with the same trained model</li>
 <li>Model agnostic (works for any ML model)</li>
@@ -474,12 +470,12 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <li>Can be misleading when features are correlated</li>
 <li>Not recommended</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
-<span id="cb3-2"><a></a>model <span class="op">=</span> RandomForestRegressor()</span>
-<span id="cb3-3"><a></a>model.fit(X_train, y_train)</span>
-<span id="cb3-4"><a></a>importances <span class="op">=</span> model.feature_importances_ <span class="co"># sklearn tree-based feature importance</span></span>
-<span id="cb3-5"><a></a>PI <span class="op">=</span> permutation_importance(model, X_train, y_train, n_repeats<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb3-6"><a></a>                                random_state<span class="op">=</span><span class="dv">0</span>) <span class="co"># permutation importance</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
+<span id="cb2-2"><a></a>model <span class="op">=</span> RandomForestRegressor()</span>
+<span id="cb2-3"><a></a>model.fit(X_train, y_train)</span>
+<span id="cb2-4"><a></a>importances <span class="op">=</span> model.feature_importances_ <span class="co"># sklearn tree-based feature importance</span></span>
+<span id="cb2-5"><a></a>PI <span class="op">=</span> permutation_importance(model, X_train, y_train, n_repeats<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb2-6"><a></a>                                random_state<span class="op">=</span><span class="dv">0</span>) <span class="co"># permutation importance</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="partial-dependence-plots" class="slide level2">
 <h2>Partial Dependence Plots</h2>
@@ -494,32 +490,33 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 </section>
 <section id="pdp" class="slide level2">
 <h2>PDP</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> plot_partial_dependence</span>
-<span id="cb4-2"><a></a>boston <span class="op">=</span> load_boston()</span>
-<span id="cb4-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(boston.data, boston.target,random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb4-4"><a></a></span>
-<span id="cb4-5"><a></a>gbrt <span class="op">=</span> GradientBoostingRegressor().fit(X_train, y_train)</span>
-<span id="cb4-6"><a></a></span>
-<span id="cb4-7"><a></a>fig, axs <span class="op">=</span> plot_partial_dependence(gbrt, X_train, np.argsort(gbrt.feature_importances_)[<span class="op">-</span><span class="dv">6</span>:], feature_names<span class="op">=</span>boston.feature_names)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> plot_partial_dependence</span>
+<span id="cb3-2"><a></a>boston <span class="op">=</span> load_boston()</span>
+<span id="cb3-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(boston.data, boston.target,random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb3-4"><a></a></span>
+<span id="cb3-5"><a></a>gbrt <span class="op">=</span> GradientBoostingRegressor().fit(X_train, y_train)</span>
+<span id="cb3-6"><a></a></span>
+<span id="cb3-7"><a></a>fig, axs <span class="op">=</span> plot_partial_dependence(gbrt, X_train, np.argsort(gbrt.feature_importances_)[<span class="op">-</span><span class="dv">6</span>:], feature_names<span class="op">=</span>boston.feature_names)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/feat_impo_part_dep.png" style="max-width:60%;"></p>
 </div>
 </section>
 <section id="bivariate-partial-dependence-plots" class="slide level2">
 <h2>Bivariate Partial Dependence Plots</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>plot_partial_dependence(</span>
-<span id="cb5-2"><a></a>    gbrt, X_train, [np.argsort(gbrt.feature_importances_)[<span class="op">-</span><span class="dv">2</span>:]],</span>
-<span id="cb5-3"><a></a>    feature_names<span class="op">=</span>boston.feature_names, n_jobs<span class="op">=</span><span class="dv">3</span>, grid_resolution<span class="op">=</span><span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>plot_partial_dependence(</span>
+<span id="cb4-2"><a></a>    gbrt, X_train, [np.argsort(gbrt.feature_importances_)[<span class="op">-</span><span class="dv">2</span>:]],</span>
+<span id="cb4-3"><a></a>    feature_names<span class="op">=</span>boston.feature_names, n_jobs<span class="op">=</span><span class="dv">3</span>, grid_resolution<span class="op">=</span><span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/feature_importance.png" style="max-width:80%;"></p>
 </div>
 </section>
 <section id="partial-dependence-for-classification" class="slide level2">
 <h2>Partial Dependence for Classification</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> plot_partial_dependence</span>
-<span id="cb6-2"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb6-3"><a></a>    fig, axs <span class="op">=</span> plot_partial_dependence(gbrt, X_train, <span class="bu">range</span>(<span class="dv">4</span>), n_cols<span class="op">=</span><span class="dv">4</span>,</span>
-<span id="cb6-4"><a></a>                                       feature_names<span class="op">=</span>iris.feature_names, grid_resolution<span class="op">=</span><span class="dv">50</span>, label<span class="op">=</span>i)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> plot_partial_dependence</span>
+<span id="cb5-2"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb5-3"><a></a>    fig, axs <span class="op">=</span> plot_partial_dependence(gbrt, X_train, <span class="bu">range</span>(<span class="dv">4</span>), n_cols<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb5-4"><a></a>                                       feature_names<span class="op">=</span>iris.feature_names, </span>
+<span id="cb5-5"><a></a>                                       grid_resolution<span class="op">=</span><span class="dv">50</span>, label<span class="op">=</span>i)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/feat_impo_part_dep_class.png" style="max-width:50%;"></p>
 </div>
@@ -529,7 +526,7 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <ul>
 <li>Build sparse linear local model around each data point</li>
 <li>Explain prediction for each point locally</li>
-<li>Paper: “Why Should I Trust You?” Explaining the Predictions of Any Classifier</li>
+<li><em>Paper: “Why Should I Trust You?” Explaining the Predictions of Any Classifier</em></li>
 <li>Implementation: ELI5, https://github.com/marcotcr/lime</li>
 </ul>
 <div style="text-align:center;">
@@ -566,7 +563,7 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <section id="shapley-value-cont.-1" class="slide level2">
 <h2>Shapley value (cont.)</h2>
 <ul>
-<li>To compute payout for cat-ban, we need to check the following combinations (with &amp; without cat-ban), and take the difference in predicted price. The payout of cat-bin is the (weighted) average of these differences across all combinations.</li>
+<li>To compute payout for <em>cat-ban</em>, we need to check all combinations (with &amp; without cat-ban), and take the difference in predicted price. This payout is (weighted) average of these differences across all combinations.</li>
 <li>If a feature is not in the coalition, we replace it with some baseline (e.g.&nbsp;mean).
 <ul>
 <li>park-nearby, area-50, floor-2nd</li>
@@ -580,14 +577,14 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 </ul></li>
 </ul>
 </section>
-<section id="shapley-value-game-theory" class="slide level2">
-<h2>Shapley value (game theory)</h2>
+<section id="shapley-value-lets-try-again" class="slide level2">
+<h2>Shapley value (Let’s try again)</h2>
 <ul>
 <li>Assume 4 players, to compute Shapley value for player 1:
 <ul>
 <li>Consider all subsets of players not including player 1: {}, {2}, {3}, {4}, {2,3}, {2,4}, {3,4}</li>
-<li>For each subset S, compute marginal contribution of player 1: v(S ∪ {1}) - v(S)</li>
-<li>Weight each marginal contribution by the number of ways to arrange players in S and N &nbsp;S &nbsp;{1}</li>
+<li>For each subset S, compute marginal contribution of player 1: <span class="math inline">\(v(S ∪ {1}) - v(S)\)</span></li>
+<li>Weight each marginal contribution by the number of ways to arrange players in S and N \ S \ {1}</li>
 <li>Sum weighted contributions to get φ₁(v)</li>
 </ul></li>
 </ul>
@@ -600,17 +597,17 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <li>The temperature &amp; humidity had the largest positive contributions.</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/bike_rental_shapley.png" style="max-width:50%;"></p>
+<p><img src="images/shapely_values_bike_rental.png" style="max-width:50%;"></p>
 </div>
 </section>
-<section id="shapley-value-game-theory-1" class="slide level2">
+<section id="shapley-value-game-theory" class="slide level2">
 <h2>Shapley value (game theory)</h2>
 <ul>
-<li><p>Shapley value is the only attribution method that satisfies following properties</p></li>
-<li><p><em>Efficiency</em>: sum of attributions = difference between actual output and average output</p></li>
-<li><p><em>Symmetry</em>: if two features contribute equally, they get same attribution</p></li>
-<li><p><em>Dummy</em>: if a feature does not affect the output, its attribution is zero</p></li>
-<li><p><em>Additivity</em>: for two models, attributions add up. (Think about a random forest with many trees, the Shapley values of the forest is the avereage of SHAP values of each tree)</p></li>
+<li>Shapley value is the only attribution method that satisfies following properties</li>
+<li><em>Efficiency</em>: sum of attributions = difference between actual output and average output</li>
+<li><em>Symmetry</em>: if two features contribute equally, they get same attribution</li>
+<li><em>Dummy</em>: if a feature does not affect the output, its attribution is zero</li>
+<li><em>Additivity</em>: for two models, attributions add up. (Think about a random forest with many trees, the Shapley values of the forest is the avereage of SHAP values of each tree)</li>
 </ul>
 </section>
 <section id="from-shapely-values-to-shap" class="slide level2">
@@ -618,10 +615,12 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <ul>
 <li>SHAP (SHapley Additive exPlanations) is a unified framework for explaining ML predictions, based on Shapley values</li>
 <li>Shapely values were proposed in 1953</li>
-<li>In 2017, Lundberg and Lee proposed SHAP for explaining ML models.</li>
+<li>In 2017, Lundberg and Lee proposed SHAP for explaining ML models.
+<ul>
 <li>assume the explanation as a linear model of binary variables indicating presence/absence of features</li>
 <li>allows local / per sample explanations, and global explanations (by averaging)</li>
 <li>introduced effecient estimation of KernelSHAP and TreeSHAP</li>
+</ul></li>
 </ul>
 </section>
 <section id="shap-1" class="slide level2">
@@ -648,49 +647,38 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <section id="shap-example" class="slide level2">
 <h2>SHAP example</h2>
 <ul>
-<li>Y variable: median house value for California districts (in $100,000)</li>
-<li>8 features
-<ul>
-<li>MedInc median income in block group</li>
-<li>HouseAge median house age in block group</li>
-<li>AveRooms average number of rooms per household</li>
-<li>AveBedrms average number of bedrooms per household</li>
-<li>Population block group population</li>
-<li>AveOccup average number of household members</li>
-<li>Latitude block group latitude</li>
-<li>Longitude block group longitude</li>
-</ul></li>
-<li>Spatial unit: A block group is the smallest geographical unit for which the U.S. Census Bureau publishes sample data; typically with a population of 600 to 3,000 people.</li>
+<li>Y variable: median house value for California districts (in $100,000) | MedInc | Median income in block group | | HouseAge | Median house age in block group | | AveRooms | Average number of rooms per household | | AveBedrms | Average number of bedrooms per household | | Population | Block group population | | AveOccup | Average number of household members | | Latitude | Block group latitude | | Longitude | Block group longitude |</li>
+<li>Spatial unit: A block group typically has a population of 600 to 3,000 people; similar to output area in UK</li>
 <li>Source: https://www.dcc.fc.up.pt/~ltorgo/Regression/cal_housing.html</li>
 </ul>
 </section>
 <section id="shap-waterfall-plot" class="slide level2">
 <h2>SHAP waterfall plot</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> xgboost</span>
-<span id="cb7-2"><a></a><span class="im">import</span> shap</span>
-<span id="cb7-3"><a></a></span>
-<span id="cb7-4"><a></a>X, y <span class="op">=</span> shap.datasets.california() <span class="co"># 20640 instances, 8 features</span></span>
-<span id="cb7-5"><a></a>model <span class="op">=</span> xgboost.XGBRegressor().fit(X, y)</span>
-<span id="cb7-6"><a></a></span>
-<span id="cb7-7"><a></a>explainer <span class="op">=</span> shap.Explainer(model)</span>
-<span id="cb7-8"><a></a>shap_values <span class="op">=</span> explainer(X)</span>
-<span id="cb7-9"><a></a>shap.plots.waterfall(shap_values[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">import</span> xgboost</span>
+<span id="cb6-2"><a></a><span class="im">import</span> shap</span>
+<span id="cb6-3"><a></a></span>
+<span id="cb6-4"><a></a>X, y <span class="op">=</span> shap.datasets.california() <span class="co"># 20640 instances, 8 features</span></span>
+<span id="cb6-5"><a></a>model <span class="op">=</span> xgboost.XGBRegressor().fit(X, y)</span>
+<span id="cb6-6"><a></a></span>
+<span id="cb6-7"><a></a>explainer <span class="op">=</span> shap.Explainer(model)</span>
+<span id="cb6-8"><a></a>shap_values <span class="op">=</span> explainer(X)</span>
+<span id="cb6-9"><a></a>shap.plots.waterfall(shap_values[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
-<p><img src="images/shap_waterfall.png" style="max-width:50%;"></p>
+<p><img src="images/SHAP_waterfall.png" style="max-width:50%;"></p>
 </div>
 </section>
 <section id="shap-force-plots" class="slide level2">
 <h2>SHAP force plots</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>shap.plots.force(shap_values[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>shap.plots.force(shap_values[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
-<p><img src="images/SHAP_force_plot.png" style="max-width:50%;"></p>
+<p><img src="images/SHAP_force_plot.png" style="max-width:150%;"></p>
 </div>
 </section>
 <section id="shap-force-plots-for-multiple-samples" class="slide level2">
 <h2>SHAP force plots for multiple samples</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>shap.plots.force(shap_values[:<span class="dv">500</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>shap.plots.force(shap_values[:<span class="dv">500</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
-<p><img src="images/SHAP_force_plot_500_values.png" style="max-width:50%;"></p>
+<p><img src="images/SHAP_force_plot_500_values.png" style="max-width:100%;"></p>
 </div>
 <ul>
 <li>Use with caution!</li>
@@ -698,17 +686,17 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 </section>
 <section id="shap-summary-plot" class="slide level2">
 <h2>SHAP Summary Plot</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>shap.plots.beeswarm(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>shap.plots.beeswarm(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
-<p><img src="images/SHAP_beeswarm.png" style="max-width:50%;"></p>
+<p><img src="images/SHAP_beeswarm.png" style="max-width:100%;"></p>
 </div>
 </section>
 <section id="shap-feature-importance" class="slide level2">
 <h2>SHAP Feature Importance</h2>
 <ul>
-<li>the mean absolute values of SHAP can be averaged across samples to get global feature importance</li>
+<li>Defined as the mean absolute values of SHAP across all samples</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>shap.plots.bar(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>shap.plots.bar(shap_values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/SHAP_feature_importance.png" style="max-width:50%;"></p>
 </div>
@@ -717,9 +705,10 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <h2>GeoShapley</h2>
 <ul>
 <li>Explains any model that takes tabular data + spatial features (e.g., coordinates)</li>
+<li>Source: https://github.com/Ziqi-Li/geoshapley</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/SHAP_feature_importance.png" style="max-width:40%;"> Source: https://github.com/Ziqi-Li/geoshapley</p>
+<p><img src="images/GeoShapley_beeswarm.png" style="max-width:40%;"></p>
 </div>
 </section>
 <section id="key-takeaways" class="slide level2">
