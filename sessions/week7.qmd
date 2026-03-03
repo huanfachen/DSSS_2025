@@ -18,7 +18,7 @@ By the end of this week, you will be able to:
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](W07_model_interpretation_feature_selection/model_interpretation_feature_selection.qmd)
+To access the lecture notes: [Lecture](W07_model_interpretation_feature_selection/model_interpretation.qmd)
 
 ## Quiz
 
