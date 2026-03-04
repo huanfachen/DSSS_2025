@@ -349,7 +349,7 @@
 
 - Correlation among features might make coefficients completely uninterpretable
 
-::: {#9193baac .cell execution_count=1}
+::: {#a24d47bc .cell execution_count=1}
 
 ::: {.cell-output .cell-output-stdout}
 ```
@@ -361,9 +361,9 @@ Correlations (should be < 0.1):
 Model 1 (3 features): y = 1.25 + 28.32*X1 + 73.99*X2 + 18.80*X3
 R² = 0.985
 
-Correlation X3-X4: 0.993
+Correlation X3-X4: 0.994
 
-Model 2 (4 features): y = 1.00 + 28.26*X1 + 73.88*X2 + 9.14*X3 + 10.68*X4
+Model 2 (4 features): y = 1.24 + 28.36*X1 + 73.98*X2 + 22.74*X3 + -4.38*X4
 R² = 0.986
 ```
 :::
@@ -377,7 +377,7 @@ R² = 0.986
 - On the same data, Lasso regression will pick one of the correlated features (X3 or X4)
 - but it doesn't mean the dropped feature is unimportant!
 
-::: {#d43023ed .cell execution_count=2}
+::: {#a96a3d6f .cell execution_count=2}
 
 ::: {.cell-output .cell-output-stdout}
 ```
@@ -647,7 +647,51 @@ Idea: measure marginal influence of a feature by permuting it and measuring the 
 <section id="shap-example" class="slide level2">
 <h2>SHAP example</h2>
 <ul>
-<li>Y variable: median house value for California districts (in $100,000) | Feature | Description | |———|————-| | MedInc | Median income in block group | | HouseAge | Median house age in block group | | AveRooms | Average number of rooms per household | | AveBedrms | Average number of bedrooms per household | | Population | Block group population | | AveOccup | Average number of household members | | Latitude | Block group latitude | | Longitude | Block group longitude |</li>
+<li>Y variable: median house value for California districts (in $100,000)</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MedInc</td>
+<td>Median income in block group</td>
+</tr>
+<tr class="even">
+<td>HouseAge</td>
+<td>Median house age in block group</td>
+</tr>
+<tr class="odd">
+<td>AveRooms</td>
+<td>Average number of rooms per household</td>
+</tr>
+<tr class="even">
+<td>AveBedrms</td>
+<td>Average number of bedrooms per household</td>
+</tr>
+<tr class="odd">
+<td>Population</td>
+<td>Block group population</td>
+</tr>
+<tr class="even">
+<td>AveOccup</td>
+<td>Average number of household members</td>
+</tr>
+<tr class="odd">
+<td>Latitude</td>
+<td>Block group latitude</td>
+</tr>
+<tr class="even">
+<td>Longitude</td>
+<td>Block group longitude</td>
+</tr>
+</tbody>
+</table>
+<ul>
 <li>Spatial unit: A block group typically has a population of 600 to 3,000 people; similar to output area in UK</li>
 <li>Source: https://www.dcc.fc.up.pt/~ltorgo/Regression/cal_housing.html</li>
 </ul>
