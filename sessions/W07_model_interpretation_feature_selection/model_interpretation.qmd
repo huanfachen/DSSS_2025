@@ -491,7 +491,7 @@ shap.plots.waterfall(shap_values[0])
 shap.plots.force(shap_values[0])
 ```
 <div style="text-align:center;">
-  <img src="images/SHAP_force_plot.png" style="max-width:10%;">
+  <img src="images/SHAP_force_plot.png" style="max-width:100%;">
 </div>
 
 ## SHAP force plots for multiple samples
