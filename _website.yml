@@ -64,13 +64,15 @@ website:
             href: sessions/week6.qmd 
         - section: "Part 3: Advanced Topics"
           contents:
-          - text: "7. Model Interpretation & Feature Selection" 
+          - text: "7. Model Interpretation" 
             href: sessions/week7.qmd
-          - text: "8. Imbalanced Data" 
+          - text: "8. Feature Selection" 
             href: sessions/week8.qmd          
-          - text: "9. Machine Learning Ops"
+          - text: "9. Imbalanced Data"
             href: sessions/week9.qmd
           - text: "10. Testing Machine Learning Systems"
             href: sessions/week10.qmd
+          - text: "11. Machine Learning Operations"
+            href: sessions/week11.qmd
         - text: "Bibliography"
           href: references.qmd
