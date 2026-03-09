@@ -83,7 +83,7 @@ This classification is different from unsupervised vs supervised machine learnin
 - For **addressing multicollinearity** in **linear regression**
 - Unsupervised feature selection (y is not involved)
 - Iterative process. In each step, remove one or zero features
-- The VIF of a feature is: $VIF = \frac{1}{1 - R^2}$, where $R^2$ is the coefficient of determination of a regression of that feature on all the other features.
+- The VIF of a feature is: $\text{VIF} = \frac{1}{1 - R^2}$, where $R^2$ is R2 of a regression of that feature on all the other features.
 
 ## VIF
 
@@ -97,35 +97,26 @@ This classification is different from unsupervised vs supervised machine learnin
 
 ## Lasso definition
 
-- Lasso is a linear regression model with L1 regularisation, which can shrink some coefficients to zero. Features with zero coeffcients are effectively removed.
-- L1 norm of a vector: $$\|\mathbf{x}\|_1 = \sum_{i=1}^{n} |x_i|$$
-- α is hyperparameter that controls regularisation. Higher α means more regularisation, which leads to more discarded features.
+- Lasso is a linear regression model with L1 regularisation, which shrinks some coefficients to zero. 
+- Features with zero coeffcients are effectively removed.
+- L1 norm of a vector: $\|\mathbf{x}\|_1 = \sum_{i=1}^{n} |x_i|$
+- α is hyperparameter that controls regularisation. 
+- Higher α means more regularisation, which leads to more discarded features.
 
-```{python}
-#| echo: false
-import pandas as pd
-
-# Create comparison table
-comparison_data = {
-  "": ["Formula", "To minimise"],
-  "OLS": ["y = Xβ", "$\min_{\beta} \left\{ \frac{1}{2n} \sum_{i=1}^{n} (y_i - \mathbf{x}_i^T \beta)^2 \right\}$"],
-  "Lasso": ["y = Xβ", "$\min_{\beta} \left\{ \frac{1}{2n} \sum_{i=1}^{n} (y_i - \mathbf{x}_i^T \beta)^2 + \alpha \|\beta\|_1 \right\}$"]
-}
-
-comparison_df = pd.DataFrame(comparison_data)
-print(comparison_df.to_markdown(index=False))
-```
+|  | OLS | Lasso |
+|---|---|---|
+| Formula | $y = X\beta$ | $y = X\beta$ |
+| To minimise | $\min_{\beta} \left\{ \frac{1}{2n} \sum_{i=1}^{n} (y_i - \mathbf{x}_i^T \beta)^2 \right\}$ | $\min_{\beta} \left\{ \frac{1}{2n} \sum_{i=1}^{n} (y_i - \mathbf{x}_i^T \beta)^2 + \alpha \|\beta\|_1 \right\}$ |
 
 ## Comparing VIF and Lasso
 
-| Aspect | VIF | Lasso |
+|  | VIF | Lasso |
 |--------|-----|-------|
 | **Purpose** | Addresses multicollinearity | Feature selection, including address multicollinearity |
 | **Type** | Unsupervised | Supervised |
 | **When** | Before linear regression | Embedded in linear regression |
 | **Output** | Selected features | Features with non-zero coefficients |
 | **Model Type** | Linear regression | Linear regression |
-| **Interpretation** | VIF > 5-10 indicates multicollinearity | α controls sparsity |
 
 # Mutual information
 
@@ -150,7 +141,7 @@ print(comparison_df.to_markdown(index=False))
 ## MI: median_house_value vs each feature
 
 ```{python}
-#| echo: true
+#| echo: false
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.feature_selection import mutual_info_regression
@@ -168,8 +159,8 @@ mi_df = pd.DataFrame({
   'mi': mi_scores
 }).sort_values('mi', ascending=False)
 
-print("Mutual Information between target and each X variable:")
-print(mi_df.to_string(index=False))
+# print("Mutual Information between target and each X variable:")
+# print(mi_df.to_string(index=False))
 
 # plot MI scores
 plt.figure(figsize=(8, 4))
@@ -204,7 +195,7 @@ plt.show()
 ## Permutation Importance Illustration
 
 <div style="text-align:center;">
-  <img src="images/permutation_importance_illustration.png" style="max-width:70%;">
+  <img src="images/permutation_importance_illustration.png" style="max-width:100%;">
 </div>
 
 ## Permutation importance example
@@ -231,8 +222,8 @@ perm_importance_df = pd.DataFrame({
     'importance': perm_importance.importances_mean
 }).sort_values('importance', ascending=False)
 
-print("Permutation Importance of each feature:")
-print(perm_importance_df.to_string(index=False))
+# print("Permutation Importance of each feature:")
+# print(perm_importance_df.to_string(index=False))
 
 # Plot Permutation Importance
 plt.figure(figsize=(8, 4))
@@ -259,14 +250,14 @@ plt.show()
 ## RFECV illustration
 
 <div style="text-align:center;">
-  <img src="images/RFECV_illustration.png" style="max-width:70%;">
+  <img src="images/RFECV_illustration.png" style="max-width:100%;">
 </div>
 
 ## Advantages & Caveats of RFECV
 
 - Using CV to evaluate model performance with different #features, which is more robust than using training performance
 - Can be applied to any model with feature importance
-- Caveats: it is computationally intensive as it involves CV and different #features
+- **Caveats**: it is computationally intensive as it involves CV and different #features
 
 ## RFECV example
 
@@ -311,8 +302,8 @@ rfecv.fit(X, y)
 # Selected features
 selected_features = X.columns[rfecv.support_]
 print(f"Optimal number of features: {rfecv.n_features_}")
-print("Selected features:")
-print(selected_features.to_list())
+# print("Selected features:")
+# print(selected_features.to_list())
 
 # Plot CV score vs number of selected features
 data = {
