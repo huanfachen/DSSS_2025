@@ -316,7 +316,7 @@
 <li>For <strong>addressing multicollinearity</strong> in <strong>linear regression</strong></li>
 <li>Unsupervised feature selection (y is not involved)</li>
 <li>Iterative process. In each step, remove one or zero features</li>
-<li>The VIF of a feature is: <span class="math inline">\(VIF = \frac{1}{1 - R^2}\)</span>, where <span class="math inline">\(R^2\)</span> is the coefficient of determination of a regression of that feature on all the other features.</li>
+<li>The VIF of a feature is: <span class="math inline">\(\text{VIF} = \frac{1}{1 - R^2}\)</span>, where <span class="math inline">\(R^2\)</span> is R2 of a regression of that feature on all the other features.</li>
 </ul>
 </section>
 <section id="vif-1" class="slide level2">
@@ -336,19 +336,38 @@
 <section id="lasso-definition" class="slide level2">
 <h2>Lasso definition</h2>
 <ul>
-<li>Lasso is a linear regression model with L1 regularisation, which can shrink some coefficients to zero. Features with zero coeffcients are effectively removed.</li>
-<li>L1 norm of a vector: <span class="math display">\[\|\mathbf{x}\|_1 = \sum_{i=1}^{n} |x_i|\]</span></li>
-<li>α is hyperparameter that controls regularisation. Higher α means more regularisation, which leads to more discarded features.</li>
+<li>Lasso is a linear regression model with L1 regularisation, which shrinks some coefficients to zero.</li>
+<li>Features with zero coeffcients are effectively removed.</li>
+<li>L1 norm of a vector: <span class="math inline">\(\|\mathbf{x}\|_1 = \sum_{i=1}^{n} |x_i|\)</span></li>
+<li>α is hyperparameter that controls regularisation.</li>
+<li>Higher α means more regularisation, which leads to more discarded features.</li>
 </ul>
-<div id="a6d2c0f5" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-stdout">
-<pre><code>|             | OLS     | Lasso   |
-|:------------|:--------|:--------|
-| Formula     | y = Xβ  | y = Xβ  |
-| To minimise | $\min_{eta} \left\{                                                                   | $\min_{eta} \left\{                                                                                      |
-|             | rac{1}{2n} \sum_{i=1}^{n} (y_i - \mathbf{x}_i^T eta)^2  | rac{1}{2n} \sum_{i=1}^{n} (y_i - \mathbf{x}_i^T eta)^2 + lpha \|eta\|_1  |</code></pre>
-</div>
-</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>OLS</th>
+<th>Lasso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Formula</td>
+<td><span class="math inline">\(y = X\beta\)</span></td>
+<td><span class="math inline">\(y = X\beta\)</span></td>
+</tr>
+<tr class="even">
+<td>To minimise</td>
+<td><span class="math inline">\(\min_{\beta} \left\{ \frac{1}{2n} \sum_{i=1}^{n} (y_i - \mathbf{x}_i^T \beta)^2 \right\}\)</span></td>
+<td><span class="math inline">\(\min_{\beta} \left\{ \frac{1}{2n} \sum_{i=1}^{n} (y_i - \mathbf{x}_i^T \beta)^2 + \alpha \|\beta\|_1 \right\}\)</span></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="comparing-vif-and-lasso" class="slide level2">
 <h2>Comparing VIF and Lasso</h2>
@@ -360,7 +379,7 @@
 </colgroup>
 <thead>
 <tr class="header">
-<th>Aspect</th>
+<th></th>
 <th>VIF</th>
 <th>Lasso</th>
 </tr>
@@ -390,11 +409,6 @@
 <td><strong>Model Type</strong></td>
 <td>Linear regression</td>
 <td>Linear regression</td>
-</tr>
-<tr class="even">
-<td><strong>Interpretation</strong></td>
-<td>VIF &gt; 5-10 indicates multicollinearity</td>
-<td>α controls sparsity</td>
 </tr>
 </tbody>
 </table>
@@ -430,50 +444,11 @@
 </section>
 <section id="mi-median_house_value-vs-each-feature" class="slide level2">
 <h2>MI: median_house_value vs each feature</h2>
-<div id="40a7f72e" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-3"><a></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> mutual_info_regression</span>
-<span id="cb3-4"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
-<span id="cb3-5"><a></a></span>
-<span id="cb3-6"><a></a><span class="co"># load California housing dataset</span></span>
-<span id="cb3-7"><a></a>housing <span class="op">=</span> fetch_california_housing(as_frame<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-8"><a></a>X <span class="op">=</span> housing.data</span>
-<span id="cb3-9"><a></a>y <span class="op">=</span> housing.target</span>
-<span id="cb3-10"><a></a></span>
-<span id="cb3-11"><a></a><span class="co"># MI scores for all features</span></span>
-<span id="cb3-12"><a></a>mi_scores <span class="op">=</span> mutual_info_regression(X, y, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb3-13"><a></a>mi_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb3-14"><a></a>  <span class="st">'feature'</span>: X.columns,</span>
-<span id="cb3-15"><a></a>  <span class="st">'mi'</span>: mi_scores</span>
-<span id="cb3-16"><a></a>}).sort_values(<span class="st">'mi'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb3-17"><a></a></span>
-<span id="cb3-18"><a></a><span class="bu">print</span>(<span class="st">"Mutual Information between target and each X variable:"</span>)</span>
-<span id="cb3-19"><a></a><span class="bu">print</span>(mi_df.to_string(index<span class="op">=</span><span class="va">False</span>))</span>
-<span id="cb3-20"><a></a></span>
-<span id="cb3-21"><a></a><span class="co"># plot MI scores</span></span>
-<span id="cb3-22"><a></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
-<span id="cb3-23"><a></a>plt.barh(mi_df[<span class="st">'feature'</span>][::<span class="op">-</span><span class="dv">1</span>], mi_df[<span class="st">'mi'</span>][::<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb3-24"><a></a>plt.xlabel(<span class="st">'Mutual Information'</span>)</span>
-<span id="cb3-25"><a></a>plt.title(<span class="st">'MI of median_house_value vs each feature'</span>)</span>
-<span id="cb3-26"><a></a>plt.tight_layout()</span>
-<span id="cb3-27"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Mutual Information between target and each X variable:
-   feature       mi
- Longitude 0.400147
-    MedInc 0.387097
-  Latitude 0.370763
-  AveRooms 0.102874
-  AveOccup 0.072716
-  HouseAge 0.033368
- AveBedrms 0.024149
-Population 0.020878</code></pre>
-</div>
+<div id="b2a47416" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><a href="feature_selection_files/figure-revealjs/cell-3-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="feature_selection_files/figure-revealjs/cell-3-output-2.png" width="758" height="374"></a></p>
+<p><a href="feature_selection_files/figure-revealjs/cell-2-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img data-src="feature_selection_files/figure-revealjs/cell-2-output-1.png" width="758" height="374"></a></p>
 </figure>
 </div>
 </div>
@@ -512,28 +487,16 @@ Population 0.020878</code></pre>
 <section id="permutation-importance-illustration" class="slide level2">
 <h2>Permutation Importance Illustration</h2>
 <div style="text-align:center;">
-<p><img src="images/permutation_importance_illustration.png" style="max-width:70%;"></p>
+<p><img src="images/permutation_importance_illustration.png" style="max-width:100%;"></p>
 </div>
 </section>
 <section id="permutation-importance-example" class="slide level2">
 <h2>Permutation importance example</h2>
-<div id="81ccc768" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-stdout">
-<pre><code>Permutation Importance of each feature:
-   feature  importance
-    MedInc    0.733698
-  Latitude    0.446984
- Longitude    0.334409
-  AveOccup    0.202180
-  HouseAge    0.070712
-  AveRooms    0.028111
- AveBedrms    0.009386
-Population    0.008076</code></pre>
-</div>
+<div id="80318a54" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><a href="feature_selection_files/figure-revealjs/cell-4-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="feature_selection_files/figure-revealjs/cell-4-output-2.png" width="758" height="374"></a></p>
+<p><a href="feature_selection_files/figure-revealjs/cell-3-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="feature_selection_files/figure-revealjs/cell-3-output-1.png" width="758" height="374"></a></p>
 </figure>
 </div>
 </div>
@@ -562,7 +525,7 @@ Population    0.008076</code></pre>
 <section id="rfecv-illustration" class="slide level2">
 <h2>RFECV illustration</h2>
 <div style="text-align:center;">
-<p><img src="images/RFECV_illustration.png" style="max-width:70%;"></p>
+<p><img src="images/RFECV_illustration.png" style="max-width:100%;"></p>
 </div>
 </section>
 <section id="advantages-caveats-of-rfecv" class="slide level2">
@@ -570,36 +533,34 @@ Population    0.008076</code></pre>
 <ul>
 <li>Using CV to evaluate model performance with different #features, which is more robust than using training performance</li>
 <li>Can be applied to any model with feature importance</li>
-<li>Caveats: it is computationally intensive as it involves CV and different #features</li>
+<li><strong>Caveats</strong>: it is computationally intensive as it involves CV and different #features</li>
 </ul>
 </section>
 <section id="rfecv-example" class="slide level2">
 <h2>RFECV example</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>rf <span class="op">=</span> RandomForestRegressor(n_estimators<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">42</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb6-2"><a></a>rfecv <span class="op">=</span> RFECV(</span>
-<span id="cb6-3"><a></a>    estimator<span class="op">=</span>rf,</span>
-<span id="cb6-4"><a></a>    step<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb6-5"><a></a>    cv<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb6-6"><a></a>    scoring<span class="op">=</span><span class="st">'r2'</span>,</span>
-<span id="cb6-7"><a></a>    n_jobs<span class="op">=-</span><span class="dv">1</span></span>
-<span id="cb6-8"><a></a>)</span>
-<span id="cb6-9"><a></a>rfecv.fit(X, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>rf <span class="op">=</span> RandomForestRegressor(n_estimators<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">42</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb2-2"><a></a>rfecv <span class="op">=</span> RFECV(</span>
+<span id="cb2-3"><a></a>    estimator<span class="op">=</span>rf,</span>
+<span id="cb2-4"><a></a>    step<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb2-5"><a></a>    cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb2-6"><a></a>    scoring<span class="op">=</span><span class="st">'r2'</span>,</span>
+<span id="cb2-7"><a></a>    n_jobs<span class="op">=-</span><span class="dv">1</span></span>
+<span id="cb2-8"><a></a>)</span>
+<span id="cb2-9"><a></a>rfecv.fit(X, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="rfecv-example-results" class="slide level2">
 <h2>RFECV example results</h2>
 <ul>
 <li>The optimal #features is 8, as n=8 achieves the highest CV R-squared score.</li>
 </ul>
-<div id="d63d3d2c" class="cell" data-execution_count="4">
+<div id="75643f75" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
-<pre><code>Optimal number of features: 8
-Selected features:
-['MedInc', 'HouseAge', 'AveRooms', 'AveBedrms', 'Population', 'AveOccup', 'Latitude', 'Longitude']</code></pre>
+<pre><code>Optimal number of features: 8</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><a href="feature_selection_files/figure-revealjs/cell-5-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="feature_selection_files/figure-revealjs/cell-5-output-2.png" width="812" height="449"></a></p>
+<p><a href="feature_selection_files/figure-revealjs/cell-4-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="feature_selection_files/figure-revealjs/cell-4-output-2.png" width="812" height="449"></a></p>
 </figure>
 </div>
 </div>
