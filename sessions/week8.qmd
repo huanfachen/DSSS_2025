@@ -7,18 +7,18 @@ title: "Week 8"
 
 ## Introduction
 
-This week will introduce how to deal with imbalanced data in machine learning classifcation tasks.
+This week will introduce how to select features for training machine learning models.
 
 ## Learning Objectives
 
 By the end of this week, you will be able to:
 
-1. Understand the types and issue of imbalanced data.
-2. Understand the classic methods to handle imbalanced data.
+1. Understand feature selection in linear models.
+2. Understand various feature selection methods for machine learning models.
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](W08_imbalanced_data/imbalanced_data.qmd)
+To access the lecture notes: [Lecture](W08_feature_selection/feature_selection.qmd)
 
 ## Quiz
 
@@ -34,7 +34,7 @@ To save a copy of notebook to your own GitHub Repo: follow the GitHub link, clic
 
 To access the practical:
 
-1. [Preview](W08_imbalanced_data/imbalanced_data_practical.html)
-2. [Download](W08_imbalanced_data/imbalanced_data_practical.ipynb)
+1. [Preview](W08_feature_selection/feature_selection_practical.html)
+2. [Download](W08_feature_selection/feature_selection_practical.ipynb)
 
 ## Further resources
