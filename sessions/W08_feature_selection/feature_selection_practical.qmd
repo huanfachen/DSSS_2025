@@ -246,7 +246,8 @@ MI measures non-linear dependency between each predictor and target. We compute 
 ```{python}
 class PrefitImportanceEstimator(BaseEstimator):
     def __init__(self, importances):
-        self.feature_importances_ = np.asarray(importances)
+        self.importances = importances
+        self.feature_importances_ = np.asarray(self.importances)
 
 # X_train_dense is there because X_train_prepared is usually a sparse matrix after one-hot encoding, and mutual_info_regression is safer/easier here with a dense array for this mixed feature setup
 
