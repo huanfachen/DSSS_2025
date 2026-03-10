@@ -13,7 +13,7 @@ This week we will focus on **feature selection** for supervised machine learning
 ## Learning Outcomes
 
 - Understand how to apply VIF and Lasso regression for feature selection of linear models.
-- Understand how to apply mutual information and permutation importance for feature selection of supervised learning models.
+- Understand how to apply mutual information (MI) and permutation importance (PI) for feature selection of supervised learning models.
 - Understand RFECV for recursive feature elimination with cross-validation for selecting features.
 
 # Starting the Practical
@@ -30,7 +30,7 @@ Suggestions for a Better Learning Experience:
 - Avoid whitespace in filenames and dataset column names.
 :::
 
-# Load data and prepare feature matrices
+# Load data and prepare feature dataframes
 
 In this practical, we use the **Ames Housing** dataset, which contains information about residential properties in Ames, Iowa. It consists of **2930** samples and **80** variables. The target variable is house sale price, so this is a **regression** task. The features are a mixture of structural housing attributes, location-related descriptors, quality/condition indicators, and sale metadata. These features are a mix of numeric and categorical types and contain some missing values, which is common in real-world datasets. There is a lot of noise and redundancy (e.g., 'GarageArea' vs 'GarageCars', or 'TotalBsmtSF' vs '1stFlrSF'). 
 
@@ -88,6 +88,8 @@ cat_cols = X_train_raw.select_dtypes(exclude=[np.number]).columns.tolist()
 print(f"Numeric columns: {len(num_cols)}")
 print(f"Categorical columns: {len(cat_cols)}")
 ```
+
+We will use a sklearn Pipeline to preprocess the data, which includes missing value imputation for numeric and categorical features, and one-hot encoding for categorical features. For linear models, we also standardise numeric features to have mean=0 and std=1, which is important for VIF and Lasso. For tree-based models, data standardisation is not necessary, but we will keep the same preprocessing for simplicity.
 
 ```{python}
 # preprocessing for linear models and random forest
@@ -218,6 +220,8 @@ print("Number of Lasso-selected features:", len(lasso_selected_features))
 display(lasso_selected_coef_df)
 ```
 
+To compare the features selected by VIF and Lasso, we will summarise the number of features selected by each method and the overlap between them. Note that VIF and Lasso optimise different goals (collinearity control vs linear sparsity), therefore we do not expect them to select the same features. 
+
 ```{python}
 # summary of VIF vs Lasso selected features
 vif_set = set(vif_selected_features)
@@ -237,12 +241,14 @@ display(summary_vif_lasso)
 
 # Mutual information (MI) for random forest features (20 features)
 
-MI measures non-linear dependency between each predictor and target. We compute MI on the prepared matrix and then use `SelectFromModel` (with precomputed importances) to keep 20 features.
+MI measures non-linear dependency between each predictor and target. We compute MI on the prepared matrix and then use `SelectFromModel` to keep a predefined number of features. `SelectFromModel` is a convenient way to select features based on importance scores, even if the "estimator" is not a fitted model. Here, we create a custom `PrefitImportanceEstimator` that has a `feature_importances_` attribute set to the MI scores, and use it with `SelectFromModel` to select features.
 
 ```{python}
 class PrefitImportanceEstimator(BaseEstimator):
     def __init__(self, importances):
         self.feature_importances_ = np.asarray(importances)
+
+# X_train_dense is there because X_train_prepared is usually a sparse matrix after one-hot encoding, and mutual_info_regression is safer/easier here with a dense array for this mixed feature setup
 
 X_train_dense = X_train_prepared.toarray() if hasattr(X_train_prepared, "toarray") else X_train_prepared
 
@@ -252,7 +258,7 @@ mi_estimator = PrefitImportanceEstimator(mi_scores)
 mi_selector = SelectFromModel(
     estimator=mi_estimator,
     prefit=True,
-    threshold=-np.inf,
+    threshold=-np.inf, # set threshold to -inf to keep all features, and use max_features to select top 20
     max_features=20
 )
 
@@ -311,7 +317,7 @@ print("Number of PI-selected features:", len(pi_selected_features))
 display(pi_df.head(20))
 ```
 
-# RFECV for random forest features (20 features)
+# RFECV
 
 RFECV recursively removes weak features with cross-validation. To keep exactly 20 features, we use the final feature ranking and keep the top 20 ranked variables.
 
@@ -377,6 +383,8 @@ performance_df = pd.DataFrame(performance_rows).sort_values("R2", ascending=Fals
 display(performance_df)
 ```
 
+Can you see the trade-off between performance and model complexity, when using all features vs a smaller subset of features?
+
 # Summary
 
 In this practical, we used Ames Housing data to compare feature selection for linear and tree-based models:
@@ -385,12 +393,6 @@ In this practical, we used Ames Housing data to compare feature selection for li
 - **Lasso** selected features by coefficient shrinkage for linear regression.
 - **MI**, **PI**, and **RFECV** selected 20 features each for random forest modelling.
 - We compared random forest performance using all features and each selected subset.
-
-# Exercises
-
-1. Compare the overlap among MI, PI, and RFECV feature subsets.
-2. Change random forest hyperparameters and observe whether selected subsets still perform similarly.
-3. Test whether combining two selectors (e.g. MI + RFECV intersection) improves generalisation.
 
 # References and recommendations
 
