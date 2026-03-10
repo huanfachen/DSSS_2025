@@ -13,7 +13,7 @@ format:
     preview-links: auto
 ---
 
-```{notes}
+<!-- ```{notes}
 TODO: update feature selection part
 
 Outline
@@ -24,7 +24,7 @@ Outline
 - Feature selection for linear models: Lasso
 - Feature selection for machine learning models: mutual information, feature importance, RFECV
 
-```
+``` -->
 
 ## Recap
 
@@ -126,12 +126,16 @@ This classification is different from unsupervised vs supervised machine learnin
 - $I(X; Y) = H(X) - H(X|Y)$, where $H(X)$ is the entropy (uncertainty) of X, and $H(X|Y)$ is the conditional entropy of X given Y.
 - Entropy of a variable X: $H(X) = -\sum_{x} P(x) \log P(x)$, where $P(x)$ is the probability of X taking value x.
 
+<div style="text-align:center;">
+  <img src="images/example_entropy.png" style="max-width:50%;">
+</div>
+
 ## MI properties
 
+- MI is similar to Pearson correlation, but more general, as it can capture non-linear relatiionships.
 - MI is **non-negative**. MI=0 means X and Y are independent; higher MI means stronger relationship between X and Y.
 - MI is **Symmetric**: $I(X; Y) = I(Y; X)$.
-- MI is **model-dependent**.
-- MI can capture non-linear relationships, which is more general than Pearson correlation.
+- MI is **model-independent**: similar to Pearson correlation.
 
 ## MI example: California Housing
 

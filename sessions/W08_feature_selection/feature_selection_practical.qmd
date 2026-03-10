@@ -1,0 +1,400 @@
+---
+title: 'Practical 8: Feature Selection'
+format:
+  html: default
+  ipynb: default
+filters:
+  - qna
+  - quarto
+---
+
+This week we will focus on **feature selection** for supervised machine learning models. We will use the California housing dataset from `sklearn` and apply selected feature selection methods to identify the most relevant features for the model before or after training a linear model or random forest model.
+
+## Learning Outcomes
+
+- Understand how to apply VIF and Lasso regression for feature selection of linear models.
+- Understand how to apply mutual information and permutation importance for feature selection of supervised learning models.
+- Understand RFECV for recursive feature elimination with cross-validation for selecting features.
+
+# Starting the Practical
+
+The process for this week is similar with previous weeks: download the notebook to your `DSSS` folder (or wherever you keep your course materials), switch over to `JupyterLab` (running in Podman/Docker), and work through each section.
+
+If you want to save the completed notebook to your Github repo, remember to `add`, `commit`, and `push` your work.
+
+:::{.callout-note}
+Suggestions for a Better Learning Experience:
+
+- Keep software language set to English for easier debugging and searching.
+- Back up your work using cloud storage and/or Git.
+- Avoid whitespace in filenames and dataset column names.
+:::
+
+# Load data and prepare feature matrices
+
+In this practical, we use the **Ames Housing** dataset, which contains information about residential properties in Ames, Iowa. It consists of **2930** samples and **80** variables. The target variable is house sale price, so this is a **regression** task. The features are a mixture of structural housing attributes, location-related descriptors, quality/condition indicators, and sale metadata. These features are a mix of numeric and categorical types and contain some missing values, which is common in real-world datasets. There is a lot of noise and redundancy (e.g., 'GarageArea' vs 'GarageCars', or 'TotalBsmtSF' vs '1stFlrSF'). 
+
+```{python}
+# If needed, uncomment and run this line once:
+# %pip install statsmodels
+
+import warnings
+warnings.filterwarnings('ignore')
+
+import numpy as np
+import pandas as pd
+
+from sklearn.datasets import fetch_openml
+from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.base import BaseEstimator
+
+from sklearn.linear_model import LassoCV
+from sklearn.feature_selection import SelectFromModel, RFECV
+from sklearn.feature_selection import mutual_info_regression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.inspection import permutation_importance
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from statsmodels.tools.tools import add_constant
+```
+
+```{python}
+# load Ames Housing dataset
+ames = fetch_openml(name="house_prices", version=1, as_frame=True)
+X_raw = ames.data.copy()
+y = ames.target.astype(float).copy()
+
+print(f"Dataset shape: {X_raw.shape[0]} rows × {X_raw.shape[1]} columns")
+print(f"Target: {ames.target_names[0]}")
+print("Feature type counts:")
+print(X_raw.dtypes.value_counts())
+print(f"Missing values in predictors: {int(X_raw.isna().sum().sum())}")
+```
+
+```{python}
+# split once and reuse for all methods
+X_train_raw, X_test_raw, y_train, y_test = train_test_split(
+    X_raw, y, test_size=0.2, random_state=42
+)
+
+num_cols = X_train_raw.select_dtypes(include=[np.number]).columns.tolist()
+cat_cols = X_train_raw.select_dtypes(exclude=[np.number]).columns.tolist()
+
+print(f"Numeric columns: {len(num_cols)}")
+print(f"Categorical columns: {len(cat_cols)}")
+```
+
+```{python}
+# preprocessing for linear models and random forest
+numeric_pipe = Pipeline([
+    ("imputer", SimpleImputer(strategy="median")),
+    ("scaler", StandardScaler())
+])
+
+categorical_pipe = Pipeline([
+    ("imputer", SimpleImputer(strategy="most_frequent")),
+    ("onehot", OneHotEncoder(handle_unknown="ignore"))
+])
+
+preprocessor = ColumnTransformer([
+    ("num", numeric_pipe, num_cols),
+    ("cat", categorical_pipe, cat_cols)
+])
+
+X_train_prepared = preprocessor.fit_transform(X_train_raw)
+X_test_prepared = preprocessor.transform(X_test_raw)
+
+feature_names = preprocessor.get_feature_names_out()
+print("Prepared train shape:", X_train_prepared.shape)
+print("Prepared test shape:", X_test_prepared.shape)
+```
+
+# VIF for linear regression 
+
+VIF addresses multicollinearity among features. We compute VIF for each feature and drop features with VIF above a threshold (e.g. 10). We repeat this process until all remaining features have VIF below the threshold.
+
+```{python}
+
+# drop columns with VIF until all VIFs are below the threshold
+# This function is adjusted from: https://stackoverflow.com/a/51329496/4667568
+
+def drop_column_using_vif_(df, thresh=10.0):
+    '''
+    Calculates VIF each feature in a pandas dataframe, and repeatedly drop the columns with the highest VIF
+    A constant must be added to variance_inflation_factor or the results will be incorrect
+
+    :param df: the pandas dataframe containing only the predictor features, not the response variable
+    :param thresh: (default 5) the threshould VIF value. If the VIF of a variable is greater than thresh, it should be removed from the dataframe
+    :return: dataframe with multicollinear features removed
+    '''
+    while True:
+        # adding a constatnt item to the data. add_constant is a function from statsmodels (see the import above)
+        df_with_const = add_constant(df)
+
+        vif_df = pd.Series([variance_inflation_factor(df_with_const.values, i) 
+               for i in range(df_with_const.shape[1])], name= "VIF",
+              index=df_with_const.columns).to_frame()
+
+        # drop the const
+        vif_df = vif_df.drop('const')
+        
+        # if the largest VIF is above the thresh, remove a variable with the largest VIF
+        # If there are multiple variabels with VIF>thresh, only one of them is removed. This is because we want to keep as many variables as possible
+        if vif_df.VIF.max() > thresh:
+            # If there are multiple variables with the maximum VIF, choose the first one
+            index_to_drop = vif_df.index[vif_df.VIF == vif_df.VIF.max()].tolist()[0]
+            print('Dropping: {}'.format(index_to_drop))
+            df = df.drop(columns = index_to_drop)
+        else:
+            # No VIF is above threshold. Exit the loop
+            break
+
+    return df
+```
+
+```{python}
+# use all prepared features for VIF
+X_vif_train = X_train_prepared.toarray() if hasattr(X_train_prepared, "toarray") else X_train_prepared
+X_vif_train = pd.DataFrame(X_vif_train, columns=feature_names)
+
+# keep columns with some variation
+X_vif_train = X_vif_train.loc[:, X_vif_train.nunique() > 1]
+
+vif_threshold = 10.0
+
+# drop high-VIF columns using the helper function above
+X_vif_selected = drop_column_using_vif_(X_vif_train.copy(), thresh=vif_threshold)
+vif_selected_features = X_vif_selected.columns.tolist()
+
+# final VIF table for selected features
+X_vif_selected_with_const = add_constant(X_vif_selected, has_constant="add")
+vif_table = pd.Series(
+    [
+        variance_inflation_factor(X_vif_selected_with_const.values, i)
+        for i in range(X_vif_selected_with_const.shape[1])
+    ],
+    index=X_vif_selected_with_const.columns,
+    name="VIF"
+).drop("const").sort_values(ascending=False).reset_index()
+vif_table.columns = ["feature", "VIF"]
+
+print("VIF threshold:", vif_threshold)
+print("Number of VIF-selected features:", len(vif_selected_features))
+display(vif_table)
+```
+
+# Lasso for linear regression
+
+Lasso performs embedded feature selection via coefficient shrinkage. We fit `LassoCV` and keep features with non-zero coefficients.
+
+```{python}
+lasso = LassoCV(cv=5, random_state=42, max_iter=20000)
+lasso.fit(X_train_prepared, y_train)
+
+lasso_mask = ~np.isclose(lasso.coef_, 0.0)
+lasso_selected_features = feature_names[lasso_mask].tolist()
+
+lasso_coef_df = pd.DataFrame({
+    "feature": feature_names,
+    "coefficient": lasso.coef_,
+    "abs_coefficient": np.abs(lasso.coef_)
+}).sort_values("abs_coefficient", ascending=False)
+
+lasso_selected_coef_df = pd.DataFrame({
+    "feature": feature_names,
+    "coefficient": lasso.coef_,
+    "abs_coefficient": np.abs(lasso.coef_)
+})
+lasso_selected_coef_df = lasso_selected_coef_df[~np.isclose(lasso_selected_coef_df["coefficient"], 0.0)]
+lasso_selected_coef_df = lasso_selected_coef_df.sort_values("abs_coefficient", ascending=False)
+
+print("Lasso alpha:", lasso.alpha_)
+print("Number of Lasso-selected features:", len(lasso_selected_features))
+display(lasso_selected_coef_df)
+```
+
+```{python}
+# summary of VIF vs Lasso selected features
+vif_set = set(vif_selected_features)
+lasso_set = set(lasso_selected_features)
+
+summary_vif_lasso = pd.DataFrame({
+    "method": ["VIF", "Lasso (non-zero coef)", "Overlap"],
+    "n_features": [
+        len(vif_set),
+        len(lasso_set),
+        len(vif_set.intersection(lasso_set))
+    ]
+})
+
+display(summary_vif_lasso)
+```
+
+# Mutual information (MI) for random forest features (20 features)
+
+MI measures non-linear dependency between each predictor and target. We compute MI on the prepared matrix and then use `SelectFromModel` (with precomputed importances) to keep 20 features.
+
+```{python}
+class PrefitImportanceEstimator(BaseEstimator):
+    def __init__(self, importances):
+        self.feature_importances_ = np.asarray(importances)
+
+X_train_dense = X_train_prepared.toarray() if hasattr(X_train_prepared, "toarray") else X_train_prepared
+
+mi_scores = mutual_info_regression(X_train_dense, y_train, random_state=42)
+
+mi_estimator = PrefitImportanceEstimator(mi_scores)
+mi_selector = SelectFromModel(
+    estimator=mi_estimator,
+    prefit=True,
+    threshold=-np.inf,
+    max_features=20
+)
+
+mi_mask = mi_selector.get_support()
+mi_selected_features = feature_names[mi_mask].tolist()
+
+mi_df = pd.DataFrame({
+    "feature": feature_names,
+    "mi_score": mi_scores
+}).sort_values("mi_score", ascending=False)
+
+print("Number of MI-selected features:", len(mi_selected_features))
+display(mi_df.head(20))
+```
+
+# Permutation importance (PI) for selecting top 20 features inrandom forest
+
+PI measures the drop in model performance when one feature is shuffled. We fit a random forest on all prepared features, compute permutation importance, and keep the top 20 features.
+
+```{python}
+rf_full = RandomForestRegressor(
+    n_estimators=500,
+    random_state=42,
+    n_jobs=-1
+)
+rf_full.fit(X_train_prepared, y_train)
+
+perm = permutation_importance(
+    rf_full,
+    X_test_prepared,
+    y_test,
+    scoring="r2",
+    n_repeats=10,
+    random_state=42,
+    n_jobs=-1
+)
+
+perm_estimator = PrefitImportanceEstimator(perm.importances_mean)
+pi_selector = SelectFromModel(
+    estimator=perm_estimator,
+    prefit=True,
+    threshold=-np.inf,
+    max_features=20
+)
+
+pi_mask = pi_selector.get_support()
+pi_selected_features = feature_names[pi_mask].tolist()
+
+pi_df = pd.DataFrame({
+    "feature": feature_names,
+    "pi_mean": perm.importances_mean,
+    "pi_std": perm.importances_std
+}).sort_values("pi_mean", ascending=False)
+
+print("Number of PI-selected features:", len(pi_selected_features))
+display(pi_df.head(20))
+```
+
+# RFECV for random forest features (20 features)
+
+RFECV recursively removes weak features with cross-validation. To keep exactly 20 features, we use the final feature ranking and keep the top 20 ranked variables.
+
+```{python}
+rfecv = RFECV(
+    estimator=RandomForestRegressor(n_estimators=300, random_state=42, n_jobs=-1),
+    step=20,
+    cv=5,
+    scoring="r2",
+    min_features_to_select=20,
+    n_jobs=-1
+)
+rfecv.fit(X_train_prepared, y_train)
+
+ranking = rfecv.ranking_
+top20_idx = np.argsort(ranking)[:20]
+rfecv_mask = np.zeros_like(ranking, dtype=bool)
+rfecv_mask[top20_idx] = True
+rfecv_selected_features = feature_names[rfecv_mask].tolist()
+
+rfecv_df = pd.DataFrame({
+    "feature": feature_names,
+    "ranking": ranking
+}).sort_values("ranking", ascending=True)
+
+print("RFECV optimal n_features_:", rfecv.n_features_)
+print("Number of RFECV-selected features used here:", len(rfecv_selected_features))
+display(rfecv_df.head(20))
+```
+
+# Model performance: all features vs selected features
+
+For MI/PI/RFECV, we now compare random forest performance using all prepared features versus each selected 20-feature subset.
+
+```{python}
+def evaluate_rf_subset(mask, label):
+    model = RandomForestRegressor(
+        n_estimators=500,
+        random_state=42,
+        n_jobs=-1
+    )
+    model.fit(X_train_prepared[:, mask], y_train)
+    pred = model.predict(X_test_prepared[:, mask])
+    return {
+        "feature_set": label,
+        "n_features": int(mask.sum()),
+        "R2": r2_score(y_test, pred),
+        "MAE": mean_absolute_error(y_test, pred),
+        "RMSE": np.sqrt(mean_squared_error(y_test, pred))
+    }
+
+
+all_mask = np.ones(len(feature_names), dtype=bool)
+
+performance_rows = [
+    evaluate_rf_subset(all_mask, "All features"),
+    evaluate_rf_subset(mi_mask, "MI selected (20)"),
+    evaluate_rf_subset(pi_mask, "PI selected (20)"),
+    evaluate_rf_subset(rfecv_mask, "RFECV selected (20)")
+]
+
+performance_df = pd.DataFrame(performance_rows).sort_values("R2", ascending=False)
+display(performance_df)
+```
+
+# Summary
+
+In this practical, we used Ames Housing data to compare feature selection for linear and tree-based models:
+
+- **VIF** reduced multicollinearity among numeric predictors.
+- **Lasso** selected features by coefficient shrinkage for linear regression.
+- **MI**, **PI**, and **RFECV** selected 20 features each for random forest modelling.
+- We compared random forest performance using all features and each selected subset.
+
+# Exercises
+
+1. Compare the overlap among MI, PI, and RFECV feature subsets.
+2. Change random forest hyperparameters and observe whether selected subsets still perform similarly.
+3. Test whether combining two selectors (e.g. MI + RFECV intersection) improves generalisation.
+
+# References and recommendations
+
+1. [scikit-learn: Ames Housing via fetch_openml](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_openml.html)
+2. [statsmodels VIF](https://www.statsmodels.org/stable/generated/statsmodels.stats.outliers_influence.variance_inflation_factor.html)
+3. [scikit-learn: SelectFromModel](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectFromModel.html)
+4. [scikit-learn: RFECV](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFECV.html)
