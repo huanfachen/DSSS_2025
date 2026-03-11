@@ -216,15 +216,18 @@
 </section>
 <section class="slide level2">
 
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {notes} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>TODO: update feature selection part</span>
-<span id="cb1-2"><a></a></span>
-<span id="cb1-3"><a></a>Outline</span>
-<span id="cb1-4"><a></a>- Why selecting features?</span>
-<span id="cb1-5"><a></a>- Feature selection methods</span>
-<span id="cb1-6"><a></a>  - Unsupervised feature selection (based on only the features, not the target): variance, covariance, PCA</span>
-<span id="cb1-7"><a></a>  - Supervised feature selection (based on their relationship with the target variable): univariate statistics, mutual information, model-based selection, wrapper methods</span>
-<span id="cb1-8"><a></a>- Feature selection for linear models: Lasso</span>
-<span id="cb1-9"><a></a>- Feature selection for machine learning models: mutual information, feature importance, RFECV</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<!-- ```{notes}
+TODO: update feature selection part
+
+Outline
+- Why selecting features?
+- Feature selection methods
+  - Unsupervised feature selection (based on only the features, not the target): variance, covariance, PCA
+  - Supervised feature selection (based on their relationship with the target variable): univariate statistics, mutual information, model-based selection, wrapper methods
+- Feature selection for linear models: Lasso
+- Feature selection for machine learning models: mutual information, feature importance, RFECV
+
+``` -->
 </section>
 <section id="recap" class="slide level2">
 <h2>Recap</h2>
@@ -425,14 +428,17 @@
 <li><span class="math inline">\(I(X; Y) = H(X) - H(X|Y)\)</span>, where <span class="math inline">\(H(X)\)</span> is the entropy (uncertainty) of X, and <span class="math inline">\(H(X|Y)\)</span> is the conditional entropy of X given Y.</li>
 <li>Entropy of a variable X: <span class="math inline">\(H(X) = -\sum_{x} P(x) \log P(x)\)</span>, where <span class="math inline">\(P(x)\)</span> is the probability of X taking value x.</li>
 </ul>
+<div style="text-align:center;">
+<p><img src="images/example_entropy.png" style="max-width:50%;"></p>
+</div>
 </section>
 <section id="mi-properties" class="slide level2">
 <h2>MI properties</h2>
 <ul>
+<li>MI is similar to Pearson correlation, but more general, as it can capture non-linear relatiionships.</li>
 <li>MI is <strong>non-negative</strong>. MI=0 means X and Y are independent; higher MI means stronger relationship between X and Y.</li>
 <li>MI is <strong>Symmetric</strong>: <span class="math inline">\(I(X; Y) = I(Y; X)\)</span>.</li>
-<li>MI is <strong>model-dependent</strong>.</li>
-<li>MI can capture non-linear relationships, which is more general than Pearson correlation.</li>
+<li>MI is <strong>model-independent</strong>: similar to Pearson correlation.</li>
 </ul>
 </section>
 <section id="mi-example-california-housing" class="slide level2">
@@ -444,7 +450,7 @@
 </section>
 <section id="mi-median_house_value-vs-each-feature" class="slide level2">
 <h2>MI: median_house_value vs each feature</h2>
-<div id="b2a47416" class="cell" data-execution_count="1">
+<div id="27b9e844" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -492,7 +498,7 @@
 </section>
 <section id="permutation-importance-example" class="slide level2">
 <h2>Permutation importance example</h2>
-<div id="80318a54" class="cell" data-execution_count="2">
+<div id="cfe90a82" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -538,22 +544,22 @@
 </section>
 <section id="rfecv-example" class="slide level2">
 <h2>RFECV example</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>rf <span class="op">=</span> RandomForestRegressor(n_estimators<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">42</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb2-2"><a></a>rfecv <span class="op">=</span> RFECV(</span>
-<span id="cb2-3"><a></a>    estimator<span class="op">=</span>rf,</span>
-<span id="cb2-4"><a></a>    step<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb2-5"><a></a>    cv<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb2-6"><a></a>    scoring<span class="op">=</span><span class="st">'r2'</span>,</span>
-<span id="cb2-7"><a></a>    n_jobs<span class="op">=-</span><span class="dv">1</span></span>
-<span id="cb2-8"><a></a>)</span>
-<span id="cb2-9"><a></a>rfecv.fit(X, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>rf <span class="op">=</span> RandomForestRegressor(n_estimators<span class="op">=</span><span class="dv">200</span>, random_state<span class="op">=</span><span class="dv">42</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb1-2"><a></a>rfecv <span class="op">=</span> RFECV(</span>
+<span id="cb1-3"><a></a>    estimator<span class="op">=</span>rf,</span>
+<span id="cb1-4"><a></a>    step<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb1-5"><a></a>    cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb1-6"><a></a>    scoring<span class="op">=</span><span class="st">'r2'</span>,</span>
+<span id="cb1-7"><a></a>    n_jobs<span class="op">=-</span><span class="dv">1</span></span>
+<span id="cb1-8"><a></a>)</span>
+<span id="cb1-9"><a></a>rfecv.fit(X, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="rfecv-example-results" class="slide level2">
 <h2>RFECV example results</h2>
 <ul>
 <li>The optimal #features is 8, as n=8 achieves the highest CV R-squared score.</li>
 </ul>
-<div id="75643f75" class="cell" data-execution_count="3">
+<div id="bc89d3f4" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>Optimal number of features: 8</code></pre>
 </div>

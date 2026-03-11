@@ -368,7 +368,7 @@ Note
 </tr>
 </tbody>
 </table>
-<div id="e6e8a9fb" class="cell" data-execution_count="1">
+<div id="dcdf62d0" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If needed, uncomment and run these lines once:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %pip install xgboost shap lime</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -385,7 +385,7 @@ Note
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xgboost <span class="im">import</span> XGBRegressor</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="b9f8aaa4" class="cell" data-execution_count="2">
+<div id="c810e901" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load California housing dataset</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>housing <span class="op">=</span> fetch_california_housing(as_frame<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> housing.data.copy()</span>
@@ -398,7 +398,7 @@ Note
 Data shape: (20640, 8)</code></pre>
 </div>
 </div>
-<div id="0c578f3b" class="cell" data-execution_count="3">
+<div id="cbdc1c73" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train-test split</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
@@ -440,7 +440,7 @@ Test RMSE: 0.212</code></pre>
 <section id="global-interpretation-1-permutation-importance" class="level1">
 <h1>Global interpretation #1: Permutation Importance</h1>
 <p>Permutation importance measures how much model performance drops after randomly shuffling one feature at a time.</p>
-<div id="8ce18396" class="cell" data-execution_count="4">
+<div id="f80e9b63" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> permutation_importance</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>perm <span class="op">=</span> permutation_importance(</span>
@@ -472,7 +472,7 @@ Test RMSE: 0.212</code></pre>
 3   AveBedrms         0.005258        0.000787</code></pre>
 </div>
 </div>
-<div id="3f276d9c" class="cell" data-execution_count="5">
+<div id="4c0811b9" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot permutation importance</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> perm_df.head(<span class="dv">10</span>).iloc[::<span class="op">-</span><span class="dv">1</span>]</span>
@@ -493,7 +493,7 @@ Test RMSE: 0.212</code></pre>
 <section id="global-interpretation-2-partial-dependence-plot-pdp" class="level1">
 <h1>Global interpretation #2: Partial Dependence Plot (PDP)</h1>
 <p>PDP shows the marginal relationship between selected features and model prediction.</p>
-<div id="7c6f4ceb" class="cell" data-execution_count="6">
+<div id="dbec6eb1" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>top_features <span class="op">=</span> perm_df[<span class="st">'feature'</span>].head(<span class="dv">2</span>).tolist()</span>
@@ -520,7 +520,7 @@ Test RMSE: 0.212</code></pre>
 </div>
 </div>
 </div>
-<div id="8cc2f733" class="cell" data-execution_count="7">
+<div id="d03570c9" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2D PDP interaction for the top 2 features</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>PartialDependenceDisplay.from_estimator(</span>
@@ -544,7 +544,7 @@ Test RMSE: 0.212</code></pre>
 <section id="lime-explanations-on-selected-instances" class="level1">
 <h1>LIME explanations on selected instances</h1>
 <p>LIME fits a local surrogate model around one observation to explain that prediction.</p>
-<div id="7dd93780" class="cell" data-execution_count="8">
+<div id="d8e13724" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lime.lime_tabular <span class="im">import</span> LimeTabularExplainer</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>lime_explainer <span class="op">=</span> LimeTabularExplainer(</span>
@@ -560,7 +560,7 @@ Test RMSE: 0.212</code></pre>
 <pre><code>Selected test indices for LIME: [0, 25]</code></pre>
 </div>
 </div>
-<div id="f6ea4974" class="cell" data-execution_count="9">
+<div id="a64c6e42" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># explain first selected instance</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> selected_instances[<span class="dv">0</span>]</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>exp0 <span class="op">=</span> lime_explainer.explain_instance(</span>
@@ -574,17 +574,17 @@ Test RMSE: 0.212</code></pre>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>LIME explanation (instance 0):
-('34.26 &lt; Latitude &lt;= 37.72', -0.7837524926243604)
-('MedInc &lt;= 2.57', -0.5889227458599527)
-('AveOccup &gt; 3.28', -0.3902649272832985)
-('-121.81 &lt; Longitude &lt;= -118.51', 0.32934340025813896)
+('34.26 &lt; Latitude &lt;= 37.72', -0.7837524926243596)
+('MedInc &lt;= 2.57', -0.5889227458599529)
+('AveOccup &gt; 3.28', -0.3902649272832995)
+('-121.81 &lt; Longitude &lt;= -118.51', 0.32934340025813946)
 ('AveRooms &lt;= 4.45', -0.2756012553522709)
-('1.01 &lt; AveBedrms &lt;= 1.05', -0.057159699238348696)
-('18.00 &lt; HouseAge &lt;= 29.00', -0.02105635946590629)
-('1167.00 &lt; Population &lt;= 1726.00', -0.010292394052920647)</code></pre>
+('1.01 &lt; AveBedrms &lt;= 1.05', -0.05715969923834868)
+('18.00 &lt; HouseAge &lt;= 29.00', -0.021056359465906282)
+('1167.00 &lt; Population &lt;= 1726.00', -0.010292394052920673)</code></pre>
 </div>
 </div>
-<div id="fc190f86" class="cell" data-execution_count="10">
+<div id="773e1dde" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> exp0.as_pyplot_figure()</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>fig.set_size_inches(<span class="dv">8</span>, <span class="dv">4</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
@@ -597,7 +597,7 @@ Test RMSE: 0.212</code></pre>
 </div>
 </div>
 </div>
-<div id="76ee6cc0" class="cell" data-execution_count="11">
+<div id="046b3708" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># explain second selected instance</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> selected_instances[<span class="dv">1</span>]</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>exp1 <span class="op">=</span> lime_explainer.explain_instance(</span>
@@ -611,17 +611,17 @@ Test RMSE: 0.212</code></pre>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>LIME explanation (instance 25):
-('34.26 &lt; Latitude &lt;= 37.72', -0.835702087663883)
-('MedInc &lt;= 2.57', -0.5262201177132679)
-('-121.81 &lt; Longitude &lt;= -118.51', 0.38695363786225395)
-('AveOccup &gt; 3.28', -0.3473597244913454)
-('AveRooms &lt;= 4.45', -0.25683613674482764)
-('1167.00 &lt; Population &lt;= 1726.00', 0.06943511133454196)
-('1.01 &lt; AveBedrms &lt;= 1.05', 0.027832879625163558)
-('HouseAge &gt; 37.00', -0.007124887818044497)</code></pre>
+('34.26 &lt; Latitude &lt;= 37.72', -0.8357020876638822)
+('MedInc &lt;= 2.57', -0.5262201177132678)
+('-121.81 &lt; Longitude &lt;= -118.51', 0.386953637862254)
+('AveOccup &gt; 3.28', -0.347359724491345)
+('AveRooms &lt;= 4.45', -0.25683613674482825)
+('1167.00 &lt; Population &lt;= 1726.00', 0.06943511133454212)
+('1.01 &lt; AveBedrms &lt;= 1.05', 0.027832879625163547)
+('HouseAge &gt; 37.00', -0.007124887818044562)</code></pre>
 </div>
 </div>
-<div id="1e989bd2" class="cell" data-execution_count="12">
+<div id="28e0b1f3" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> exp1.as_pyplot_figure()</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>fig.set_size_inches(<span class="dv">8</span>, <span class="dv">4</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
@@ -638,7 +638,7 @@ Test RMSE: 0.212</code></pre>
 <section id="shap-explanations" class="level1">
 <h1>SHAP explanations</h1>
 <p>SHAP explains predictions using additive feature attributions.</p>
-<div id="5777ba3b" class="cell" data-execution_count="13">
+<div id="288e2eb3" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shap</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># for faster plotting, sample test data</span></span>
@@ -654,7 +654,7 @@ Test RMSE: 0.212</code></pre>
 </div>
 <section id="shap-waterfall-plot-single-instance" class="level2">
 <h2 class="anchored" data-anchor-id="shap-waterfall-plot-single-instance">SHAP waterfall plot (single instance)</h2>
-<div id="ea384a65" class="cell" data-execution_count="14">
+<div id="50e0c3c2" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>instance_idx <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>shap.plots.waterfall(shap_values[instance_idx], max_display<span class="op">=</span><span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -668,7 +668,7 @@ Test RMSE: 0.212</code></pre>
 </section>
 <section id="shap-force-plot-single-instance" class="level2">
 <h2 class="anchored" data-anchor-id="shap-force-plot-single-instance">SHAP force plot (single instance)</h2>
-<div id="ed2b0523" class="cell" data-execution_count="15">
+<div id="6cea6783" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># static matplotlib force plot for compatibility in Quarto output</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>shap.force_plot(</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    base_value<span class="op">=</span>explainer.expected_value,</span>
@@ -691,7 +691,7 @@ Test RMSE: 0.212</code></pre>
 </section>
 <section id="shap-beeswarm-plot" class="level2">
 <h2 class="anchored" data-anchor-id="shap-beeswarm-plot">SHAP beeswarm plot</h2>
-<div id="8dd662b9" class="cell" data-execution_count="16">
+<div id="6b387b26" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>shap.plots.beeswarm(shap_values, max_display<span class="op">=</span><span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -704,7 +704,7 @@ Test RMSE: 0.212</code></pre>
 </section>
 <section id="shap-feature-importance-plot-global" class="level2">
 <h2 class="anchored" data-anchor-id="shap-feature-importance-plot-global">SHAP feature importance plot (global)</h2>
-<div id="c1e07c8e" class="cell" data-execution_count="17">
+<div id="4c13deee" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>shap.plots.bar(shap_values, max_display<span class="op">=</span><span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -719,7 +719,7 @@ Test RMSE: 0.212</code></pre>
 <h2 class="anchored" data-anchor-id="comparing-permutation-importance-and-shap-feature-importance">Comparing permutation importance and SHAP feature importance</h2>
 <p>Although these two methods sound similar, they are different in nature. These two methods can give different feature rankings because they measure different things: permutation importance measures the impact on model performance, while SHAP measures the average contribution to predictions.</p>
 <p>So, how much do they agree with each other?</p>
-<div id="be037878" class="cell" data-execution_count="18">
+<div id="540497ad" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a combined dataframe for comparison</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>shap_importance_df <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature'</span>: X_test_sample.columns,</span>
