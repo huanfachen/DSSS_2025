@@ -53,7 +53,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.base import BaseEstimator
 
 from sklearn.linear_model import LassoCV
-from sklearn.feature_selection import SelectFromModel, RFECV
+from sklearn.feature_selection import RFECV
 from sklearn.feature_selection import mutual_info_regression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.inspection import permutation_importance
@@ -111,7 +111,12 @@ preprocessor = ColumnTransformer([
 X_train_prepared = preprocessor.fit_transform(X_train_raw)
 X_test_prepared = preprocessor.transform(X_test_raw)
 
+# transform these dataframes back to pandas DataFrames
+
 feature_names = preprocessor.get_feature_names_out()
+X_train_prepared = pd.DataFrame(X_train_prepared.toarray() if hasattr(X_train_prepared, "toarray") else X_train_prepared, columns=feature_names)
+X_test_prepared = pd.DataFrame(X_test_prepared.toarray() if hasattr(X_test_prepared, "toarray") else X_test_prepared, columns=feature_names)
+
 print("Prepared train shape:", X_train_prepared.shape)
 print("Prepared test shape:", X_test_prepared.shape)
 ```
@@ -119,6 +124,8 @@ print("Prepared test shape:", X_test_prepared.shape)
 # VIF for linear regression 
 
 VIF addresses multicollinearity among features. We compute VIF for each feature and drop features with VIF above a threshold (e.g. 10). We repeat this process until all remaining features have VIF below the threshold.
+
+Note that the VIF code below takes several minutes, as there are 287 features in the processed data.
 
 ```{python}
 
@@ -161,8 +168,8 @@ def drop_column_using_vif_(df, thresh=10.0):
 
 ```{python}
 # use all prepared features for VIF
-X_vif_train = X_train_prepared.toarray() if hasattr(X_train_prepared, "toarray") else X_train_prepared
-X_vif_train = pd.DataFrame(X_vif_train, columns=feature_names)
+
+X_vif_train = pd.DataFrame(X_train_prepared, columns=feature_names)
 
 # keep columns with some variation
 X_vif_train = X_vif_train.loc[:, X_vif_train.nunique() > 1]
@@ -241,37 +248,25 @@ display(summary_vif_lasso)
 
 # Mutual information (MI) for random forest features (20 features)
 
-MI measures non-linear dependency between each predictor and target. We compute MI on the prepared matrix and then use `SelectFromModel` to keep a predefined number of features. `SelectFromModel` is a convenient way to select features based on importance scores, even if the "estimator" is not a fitted model. Here, we create a custom `PrefitImportanceEstimator` that has a `feature_importances_` attribute set to the MI scores, and use it with `SelectFromModel` to select features.
+MI measures non-linear dependency between each predictor and target. We compute MI on the prepared matrix and then keep the top 20 features with the highest MI scores.
 
 ```{python}
-class PrefitImportanceEstimator(BaseEstimator):
-    def __init__(self, importances):
-        self.importances = importances
-        self.feature_importances_ = np.asarray(self.importances)
 
-# X_train_dense is there because X_train_prepared is usually a sparse matrix after one-hot encoding, and mutual_info_regression is safer/easier here with a dense array for this mixed feature setup
+# X_train_dense = X_train_prepared.toarray() if hasattr(X_train_prepared, "toarray") else X_train_prepared
 
-X_train_dense = X_train_prepared.toarray() if hasattr(X_train_prepared, "toarray") else X_train_prepared
+mi_scores = mutual_info_regression(X_train_prepared, y_train, random_state=42)
 
-mi_scores = mutual_info_regression(X_train_dense, y_train, random_state=42)
-
-mi_estimator = PrefitImportanceEstimator(mi_scores)
-mi_selector = SelectFromModel(
-    estimator=mi_estimator,
-    prefit=True,
-    threshold=-np.inf, # set threshold to -inf to keep all features, and use max_features to select top 20
-    max_features=20
-)
-
-mi_mask = mi_selector.get_support()
-mi_selected_features = feature_names[mi_mask].tolist()
+# mi_mask = mi_selector.get_support()
+# mi_selected_features = feature_names[mi_mask].tolist()
 
 mi_df = pd.DataFrame({
     "feature": feature_names,
     "mi_score": mi_scores
 }).sort_values("mi_score", ascending=False)
 
-print("Number of MI-selected features:", len(mi_selected_features))
+mi_selected_features = mi_df["feature"].head(20).tolist()
+
+# print("Number of MI-selected features:", len(mi_selected_features))
 display(mi_df.head(20))
 ```
 
@@ -281,7 +276,7 @@ PI measures the drop in model performance when one feature is shuffled. We fit a
 
 ```{python}
 rf_full = RandomForestRegressor(
-    n_estimators=500,
+    n_estimators=300,
     random_state=42,
     n_jobs=-1
 )
@@ -297,22 +292,13 @@ perm = permutation_importance(
     n_jobs=-1
 )
 
-perm_estimator = PrefitImportanceEstimator(perm.importances_mean)
-pi_selector = SelectFromModel(
-    estimator=perm_estimator,
-    prefit=True,
-    threshold=-np.inf,
-    max_features=20
-)
-
-pi_mask = pi_selector.get_support()
-pi_selected_features = feature_names[pi_mask].tolist()
-
 pi_df = pd.DataFrame({
     "feature": feature_names,
     "pi_mean": perm.importances_mean,
     "pi_std": perm.importances_std
 }).sort_values("pi_mean", ascending=False)
+
+pi_selected_features = pi_df["feature"].head(20).tolist()
 
 print("Number of PI-selected features:", len(pi_selected_features))
 display(pi_df.head(20))
@@ -334,15 +320,17 @@ rfecv = RFECV(
 rfecv.fit(X_train_prepared, y_train)
 
 ranking = rfecv.ranking_
-top20_idx = np.argsort(ranking)[:20]
-rfecv_mask = np.zeros_like(ranking, dtype=bool)
-rfecv_mask[top20_idx] = True
-rfecv_selected_features = feature_names[rfecv_mask].tolist()
+# top20_idx = np.argsort(ranking)[:20]
+# rfecv_mask = np.zeros_like(ranking, dtype=bool)
+# rfecv_mask[top20_idx] = True
+# rfecv_selected_features = feature_names[rfecv_mask].tolist()
 
 rfecv_df = pd.DataFrame({
     "feature": feature_names,
     "ranking": ranking
 }).sort_values("ranking", ascending=True)
+
+rfecv_selected_features = rfecv_df["feature"].head(20).tolist()
 
 print("RFECV optimal n_features_:", rfecv.n_features_)
 print("Number of RFECV-selected features used here:", len(rfecv_selected_features))
@@ -356,7 +344,7 @@ For MI/PI/RFECV, we now compare random forest performance using all prepared fea
 ```{python}
 def evaluate_rf_subset(mask, label):
     model = RandomForestRegressor(
-        n_estimators=500,
+        n_estimators=300,
         random_state=42,
         n_jobs=-1
     )
@@ -399,5 +387,4 @@ In this practical, we used Ames Housing data to compare feature selection for li
 
 1. [scikit-learn: Ames Housing via fetch_openml](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_openml.html)
 2. [statsmodels VIF](https://www.statsmodels.org/stable/generated/statsmodels.stats.outliers_influence.variance_inflation_factor.html)
-3. [scikit-learn: SelectFromModel](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectFromModel.html)
-4. [scikit-learn: RFECV](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFECV.html)
+3. [scikit-learn: RFECV](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.RFECV.html)
