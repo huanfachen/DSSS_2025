@@ -317,7 +317,7 @@ Note
 <section id="load-data-and-prepare-feature-dataframes" class="level1">
 <h1>Load data and prepare feature dataframes</h1>
 <p>In this practical, we use the <strong>Ames Housing</strong> dataset, which contains information about residential properties in Ames, Iowa. It consists of <strong>2930</strong> samples and <strong>80</strong> variables. The target variable is house sale price, so this is a <strong>regression</strong> task. The features are a mixture of structural housing attributes, location-related descriptors, quality/condition indicators, and sale metadata. These features are a mix of numeric and categorical types and contain some missing values, which is common in real-world datasets. There is a lot of noise and redundancy (e.g., ‘GarageArea’ vs ‘GarageCars’, or ‘TotalBsmtSF’ vs ‘1stFlrSF’).</p>
-<div id="3810df7e" class="cell" data-execution_count="1">
+<div id="d37bc335" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If needed, uncomment and run this line once:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %pip install statsmodels</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -345,7 +345,7 @@ Note
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.outliers_influence <span class="im">import</span> variance_inflation_factor</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tools.tools <span class="im">import</span> add_constant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="49fd81ee" class="cell" data-execution_count="2">
+<div id="9697b448" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load Ames Housing dataset</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ames <span class="op">=</span> fetch_openml(name<span class="op">=</span><span class="st">"house_prices"</span>, version<span class="op">=</span><span class="dv">1</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>X_raw <span class="op">=</span> ames.data.copy()</span>
@@ -367,7 +367,7 @@ Name: count, dtype: int64
 Missing values in predictors: 6965</code></pre>
 </div>
 </div>
-<div id="49931a95" class="cell" data-execution_count="3">
+<div id="0607b608" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># split once and reuse for all methods</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X_train_raw, X_test_raw, y_train, y_test <span class="op">=</span> train_test_split(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    X_raw, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
@@ -384,7 +384,7 @@ Categorical columns: 43</code></pre>
 </div>
 </div>
 <p>We will use a sklearn Pipeline to preprocess the data, which includes missing value imputation for numeric and categorical features, and one-hot encoding for categorical features. For linear models, we also standardise numeric features to have mean=0 and std=1, which is important for VIF and Lasso. For tree-based models, data standardisation is not necessary, but we will keep the same preprocessing for simplicity.</p>
-<div id="dc08807e" class="cell" data-execution_count="4">
+<div id="c60b21f7" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># preprocessing for linear models and random forest</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>numeric_pipe <span class="op">=</span> Pipeline([</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"imputer"</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">"median"</span>)),</span>
@@ -422,7 +422,7 @@ Prepared test shape: (292, 287)</code></pre>
 <h1>VIF for linear regression</h1>
 <p>VIF addresses multicollinearity among features. We compute VIF for each feature and drop features with VIF above a threshold (e.g.&nbsp;10). We repeat this process until all remaining features have VIF below the threshold.</p>
 <p>Note that the VIF code below takes several minutes, as there are 287 features in the processed data.</p>
-<div id="359620c0" class="cell" data-execution_count="5">
+<div id="a4dd4df4" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># drop columns with VIF until all VIFs are below the threshold</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This function is adjusted from: https://stackoverflow.com/a/51329496/4667568</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -459,7 +459,7 @@ Prepared test shape: (292, 287)</code></pre>
 <span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="6bb7b83e" class="cell" data-execution_count="6">
+<div id="18eba45e" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use all prepared features for VIF</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>X_vif_train <span class="op">=</span> pd.DataFrame(X_train_prepared, columns<span class="op">=</span>feature_names)</span>
@@ -489,80 +489,91 @@ Prepared test shape: (292, 287)</code></pre>
 <span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of VIF-selected features:"</span>, <span class="bu">len</span>(vif_selected_features))</span>
 <span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>display(vif_table)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Dropping: num__BsmtFinSF1
-Dropping: num__1stFlrSF
+<pre><code>Dropping: cat__Utilities_NoSeWa
+Dropping: cat__Neighborhood_Blueste
+Dropping: cat__Condition1_RRNe
+Dropping: cat__Condition2_PosA
+Dropping: cat__RoofStyle_Shed
+Dropping: cat__RoofMatl_ClyTile
+Dropping: cat__Exterior1st_AsphShn
+Dropping: cat__Exterior1st_CBlock
+Dropping: cat__Exterior2nd_CBlock
+Dropping: cat__ExterCond_Po
+Dropping: cat__BsmtCond_Po
+Dropping: cat__Heating_Floor
+Dropping: cat__HeatingQC_Po
+Dropping: cat__Functional_Sev
+Dropping: cat__PoolQC_Fa
+Dropping: cat__MiscFeature_Gar2
+Dropping: cat__SaleType_Con
+Dropping: cat__LotConfig_FR3
+Dropping: cat__SaleCondition_AdjLand
 Dropping: cat__MSZoning_'C (all)'
+Dropping: cat__Foundation_Wood
+Dropping: cat__HouseStyle_2.5Fin
+Dropping: cat__Alley_Pave
 Dropping: cat__Street_Grvl
-Dropping: cat__Alley_Grvl
+Dropping: num__BsmtFinSF1
+Dropping: num__1stFlrSF
 Dropping: cat__LotShape_IR1
 Dropping: cat__LandContour_Bnk
-Dropping: cat__Utilities_AllPub
-Dropping: cat__LotConfig_Corner
 Dropping: cat__LandSlope_Gtl
-Dropping: cat__Neighborhood_Blmngtn
-Dropping: cat__Condition1_Artery
-Dropping: cat__Condition2_Artery
 Dropping: cat__BldgType_1Fam
-Dropping: cat__HouseStyle_1.5Fin
-Dropping: cat__RoofStyle_Flat
-Dropping: cat__RoofMatl_ClyTile
-Dropping: cat__Exterior1st_'Wd Sdng'
-Dropping: cat__Exterior1st_CBlock
-Dropping: cat__Exterior2nd_'Brk Cmn'
 Dropping: cat__MasVnrType_BrkCmn
 Dropping: cat__ExterQual_Ex
-Dropping: cat__ExterCond_Ex
-Dropping: cat__Foundation_BrkTil
 Dropping: cat__BsmtQual_Ex
-Dropping: cat__BsmtCond_Fa
 Dropping: cat__BsmtExposure_Av
 Dropping: cat__BsmtFinType1_ALQ
 Dropping: cat__BsmtFinType2_ALQ
-Dropping: cat__Heating_Floor
-Dropping: cat__HeatingQC_Ex
 Dropping: cat__CentralAir_N
 Dropping: cat__Electrical_FuseA
 Dropping: cat__KitchenQual_Ex
-Dropping: cat__Functional_Maj1
 Dropping: cat__FireplaceQu_Ex
 Dropping: cat__GarageType_2Types
 Dropping: cat__GarageFinish_Fin
 Dropping: cat__GarageQual_Ex
 Dropping: cat__GarageCond_Ex
 Dropping: cat__PavedDrive_N
-Dropping: cat__PoolQC_Ex
 Dropping: cat__Fence_GdPrv
-Dropping: cat__MiscFeature_Gar2
-Dropping: cat__SaleType_COD
-Dropping: cat__SaleCondition_Abnorml
-Dropping: cat__RoofStyle_Gable
 Dropping: cat__Exterior2nd_VinylSd
+Dropping: cat__RoofStyle_Gable
+Dropping: cat__HeatingQC_Ex
+Dropping: cat__Exterior1st_VinylSd
+Dropping: cat__BsmtCond_TA
+Dropping: cat__ExterCond_TA
+Dropping: cat__Neighborhood_NAmes
 Dropping: cat__SaleType_New
+Dropping: cat__HouseStyle_1Story
+Dropping: cat__Condition1_Norm
+Dropping: cat__Functional_Typ
+Dropping: cat__Foundation_CBlock
+Dropping: cat__LotConfig_Inside
 Dropping: cat__GarageCond_TA
 Dropping: cat__RoofMatl_CompShg
 Dropping: cat__MSZoning_RL
-Dropping: cat__ExterCond_TA
+Dropping: cat__SaleCondition_Partial
 Dropping: cat__GarageType_Attchd
 Dropping: num__MSSubClass
 Dropping: cat__MiscFeature_Shed
 Dropping: cat__Exterior2nd_MetalSd
+Dropping: cat__SaleCondition_Normal
 Dropping: cat__Heating_GasA
 Dropping: cat__MasVnrType_None
-Dropping: num__2ndFlrSF
-Dropping: cat__Exterior1st_VinylSd
+Dropping: cat__Condition2_Norm
 Dropping: cat__GarageQual_TA
-Dropping: cat__Neighborhood_NAmes
 Dropping: cat__Exterior1st_CemntBd
-Dropping: cat__ExterQual_TA
-Dropping: num__YearBuilt
-Dropping: cat__FireplaceQu_Gd
 Dropping: num__GrLivArea
+Dropping: cat__ExterQual_TA
+Dropping: cat__RoofStyle_Flat
+Dropping: cat__FireplaceQu_Gd
+Dropping: num__YearBuilt
+Dropping: cat__Exterior1st_HdBoard
 Dropping: cat__BsmtFinType2_Unf
-Dropping: cat__Functional_Typ
+Dropping: num__2ndFlrSF
 Dropping: cat__BsmtQual_TA
 Dropping: cat__KitchenQual_TA
 VIF threshold: 10.0
-Number of VIF-selected features: 215</code></pre>
+Number of VIF-selected features: 204</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -579,28 +590,28 @@ Number of VIF-selected features: 215</code></pre>
 <tbody>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">0</th>
-<td>cat__Condition2_Norm</td>
-<td>9.614455</td>
+<td>cat__PoolQC_Ex</td>
+<td>8.917055</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
-<td>cat__Exterior1st_HdBoard</td>
-<td>9.144396</td>
+<td>cat__Exterior2nd_'Wd Sdng'</td>
+<td>8.163297</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
-<td>cat__Exterior2nd_HdBoard</td>
-<td>9.127751</td>
+<td>cat__Exterior1st_'Wd Sdng'</td>
+<td>7.721266</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">3</th>
-<td>cat__Foundation_PConc</td>
-<td>7.957753</td>
+<td>cat__Neighborhood_Somerst</td>
+<td>7.488074</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">4</th>
 <td>num__TotalBsmtSF</td>
-<td>7.504217</td>
+<td>7.356459</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">...</th>
@@ -608,34 +619,34 @@ Number of VIF-selected features: 215</code></pre>
 <td>...</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">210</th>
+<th data-quarto-table-cell-role="th">199</th>
+<td>cat__SaleCondition_Family</td>
+<td>1.189712</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">200</th>
 <td>num__3SsnPorch</td>
-<td>1.223975</td>
+<td>1.184405</td>
 </tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">211</th>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">201</th>
 <td>cat__SaleType_Oth</td>
-<td>1.181287</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">212</th>
-<td>cat__Exterior2nd_Other</td>
-<td>1.131090</td>
+<td>1.182672</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">213</th>
-<td>cat__Neighborhood_Blueste</td>
-<td>1.128655</td>
+<th data-quarto-table-cell-role="th">202</th>
+<td>cat__Condition2_RRAn</td>
+<td>1.171539</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">214</th>
-<td>cat__Condition1_RRNe</td>
-<td>1.113248</td>
+<th data-quarto-table-cell-role="th">203</th>
+<td>cat__Exterior2nd_Other</td>
+<td>1.130220</td>
 </tr>
 </tbody>
 </table>
 
-<p>215 rows × 2 columns</p>
+<p>204 rows × 2 columns</p>
 </div>
 </div>
 </div>
@@ -643,7 +654,7 @@ Number of VIF-selected features: 215</code></pre>
 <section id="lasso-for-linear-regression" class="level1">
 <h1>Lasso for linear regression</h1>
 <p>Lasso performs embedded feature selection via coefficient shrinkage. We fit <code>LassoCV</code> and keep features with non-zero coefficients.</p>
-<div id="0a8a9216" class="cell" data-execution_count="7">
+<div id="880afb5c" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>lasso <span class="op">=</span> LassoCV(cv<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">42</span>, max_iter<span class="op">=</span><span class="dv">20000</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>lasso.fit(X_train_prepared, y_train)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -759,7 +770,7 @@ Number of Lasso-selected features: 82</code></pre>
 </div>
 </div>
 <p>To compare the features selected by VIF and Lasso, we will summarise the number of features selected by each method and the overlap between them. Note that VIF and Lasso optimise different goals (collinearity control vs linear sparsity), therefore we do not expect them to select the same features.</p>
-<div id="11f42d4f" class="cell" data-execution_count="8">
+<div id="efb62ad7" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary of VIF vs Lasso selected features</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>vif_set <span class="op">=</span> <span class="bu">set</span>(vif_selected_features)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>lasso_set <span class="op">=</span> <span class="bu">set</span>(lasso_selected_features)</span>
@@ -790,7 +801,7 @@ Number of Lasso-selected features: 82</code></pre>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">0</th>
 <td>VIF</td>
-<td>215</td>
+<td>204</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
@@ -800,7 +811,7 @@ Number of Lasso-selected features: 82</code></pre>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
 <td>Overlap</td>
-<td>61</td>
+<td>59</td>
 </tr>
 </tbody>
 </table>
@@ -812,7 +823,7 @@ Number of Lasso-selected features: 82</code></pre>
 <section id="mutual-information-mi-for-random-forest-features-20-features" class="level1">
 <h1>Mutual information (MI) for random forest features (20 features)</h1>
 <p>MI measures non-linear dependency between each predictor and target. We compute MI on the prepared matrix and then keep the top 20 features with the highest MI scores.</p>
-<div id="8ab96edb" class="cell" data-execution_count="9">
+<div id="9f6d0072" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mi_scores <span class="op">=</span> mutual_info_regression(X_train_prepared, y_train, random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># mi_mask = mi_selector.get_support()</span></span>
@@ -950,7 +961,7 @@ Number of Lasso-selected features: 82</code></pre>
 <section id="permutation-importance-pi-for-selecting-top-20-features-inrandom-forest" class="level1">
 <h1>Permutation importance (PI) for selecting top 20 features inrandom forest</h1>
 <p>PI measures the drop in model performance when one feature is shuffled. We fit a random forest on all prepared features, compute permutation importance, and keep the top 20 features.</p>
-<div id="72670e46" class="cell" data-execution_count="10">
+<div id="8319cb15" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>rf_full <span class="op">=</span> RandomForestRegressor(</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">300</span>,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
@@ -1125,7 +1136,7 @@ Number of Lasso-selected features: 82</code></pre>
 <section id="rfecv" class="level1">
 <h1>RFECV</h1>
 <p>RFECV recursively removes weak features with cross-validation. To keep exactly 20 features, we use the final feature ranking and keep the top 20 ranked variables.</p>
-<div id="874e48bf" class="cell" data-execution_count="11">
+<div id="c3c8f0ef" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>rfecv <span class="op">=</span> RFECV(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    estimator<span class="op">=</span>RandomForestRegressor(n_estimators<span class="op">=</span><span class="dv">300</span>, random_state<span class="op">=</span><span class="dv">42</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>),</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    step<span class="op">=</span><span class="dv">20</span>,</span>
@@ -1245,28 +1256,28 @@ Number of RFECV-selected features used here: 20</code></pre>
 <td>1</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">286</th>
-<td>cat__SaleCondition_Partial</td>
+<th data-quarto-table-cell-role="th">32</th>
+<td>num__ScreenPorch</td>
 <td>1</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">16</th>
-<td>num__GrLivArea</td>
+<th data-quarto-table-cell-role="th">33</th>
+<td>num__PoolArea</td>
 <td>1</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">17</th>
-<td>num__BsmtFullBath</td>
+<th data-quarto-table-cell-role="th">35</th>
+<td>num__MoSold</td>
 <td>1</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">285</th>
-<td>cat__SaleCondition_Normal</td>
+<th data-quarto-table-cell-role="th">36</th>
+<td>num__YrSold</td>
 <td>1</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">19</th>
-<td>num__FullBath</td>
+<th data-quarto-table-cell-role="th">40</th>
+<td>cat__MSZoning_RL</td>
 <td>1</td>
 </tr>
 </tbody>
@@ -1279,7 +1290,7 @@ Number of RFECV-selected features used here: 20</code></pre>
 <section id="model-performance-all-features-vs-selected-features" class="level1">
 <h1>Model performance: all features vs selected features</h1>
 <p>For MI/PI/RFECV, we now compare random forest performance using all prepared features versus each selected 20-feature subset.</p>
-<div id="d1cf82e6" class="cell" data-execution_count="12">
+<div id="16e368f3" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_rf_subset(selected_features, label):</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> RandomForestRegressor(</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        n_estimators<span class="op">=</span><span class="dv">300</span>,</span>
@@ -1334,18 +1345,18 @@ Number of RFECV-selected features used here: 20</code></pre>
 <td>0.894106</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">3</th>
-<td>RFECV selected (20)</td>
-<td>20</td>
-<td>0.978081</td>
-<td>0.888448</td>
-</tr>
-<tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
 <td>MI selected (20)</td>
 <td>20</td>
 <td>0.977418</td>
 <td>0.888593</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>RFECV selected (20)</td>
+<td>20</td>
+<td>0.976143</td>
+<td>0.877697</td>
 </tr>
 </tbody>
 </table>
