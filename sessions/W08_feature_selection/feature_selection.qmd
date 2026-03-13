@@ -179,7 +179,7 @@ plt.show()
 
 - Compute MI between each feature and target variable
 - Rank features from highst to lowest MI
-- select top k features (e.g. 10) or set a threhld (e.g., MI > 0.1)
+- select top k features (e.g. 10) or set a threshold (e.g., MI > 0.1)
 - Train the model
 
 ## Caveats of MI
