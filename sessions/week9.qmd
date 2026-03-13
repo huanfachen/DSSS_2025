@@ -19,7 +19,7 @@ By the end of this week, you will be able to:
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](W09_imbalanced_data/Imbalanced_data.qmd)
+To access the lecture notes: [Lecture](W09_imbalanced_data/imbalanced_data.qmd)
 
 ## Quiz
 
