@@ -6320,28 +6320,28 @@
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#two-sources-of-imbalance",
     "title": "Imbalanced Data",
     "section": "Two Sources of Imbalance",
-    "text": "Two Sources of Imbalance\n\nAsymmetric data prevalence\nAsymmetric cost between errors\n\nExample: In medical diagnosis, missing a disease (FN) is much worse than a false alarm (FP)\nEven if class prevalence is balanced, the cost of errors is not symmetric"
+    "text": "Two Sources of Imbalance\n\nAsymmetric data prevalence\nAsymmetric cost between errors\n\nExample: In medical diagnosis, missing a disease (FN) is much worse than a false alarm (FP)\n… even if class prevalence is balanced, the cost of errors is not symmetric"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#methods-for-selecting-imbalanced-data",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#methods-for-selecting-imbalanced-data",
     "title": "Imbalanced Data",
     "section": "Methods for selecting imbalanced data",
-    "text": "Methods for selecting imbalanced data\n\nAdjust evaluation metrics (What do you want to optimise?)\nAdjust decision thresholds\nChange class-weights\nResample data"
+    "text": "Methods for selecting imbalanced data\n\nSelect evaluation metrics (What do you want to optimise?)\nAdjust decision thresholds\nChange class-weights\nResample data"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#adjust-evaluation-metrics",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#adjust-evaluation-metrics",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#select-evaluation-metrics",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#select-evaluation-metrics",
     "title": "Imbalanced Data",
-    "section": "Adjust evaluation metrics",
-    "text": "Adjust evaluation metrics\n\nAccuracy paradox: accuracy is misleadingfor imbalanced data\nUse precision or recall"
+    "section": "Select evaluation metrics",
+    "text": "Select evaluation metrics\n\nAccuracy paradox: accuracy is misleadingfor imbalanced data\nUse precision or recall"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#adjust-thresholds",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#adjust-thresholds",
     "title": "Imbalanced Data",
     "section": "Adjust thresholds",
-    "text": "Adjust thresholds\n\nMost models output probabilities (01). Default threshold T is 0.5\nIf p(class=1) &gt; T, predict Class 1; else predict 0\nTuning T shifts the balance between precision and recall"
+    "text": "Adjust thresholds\n\nMost models output probabilities (0-1). Default threshold T = 0.5\nIf p(class=1) &gt; T, predict Class 1; else predict 0\nTuning T shifts the balance between precision and recall"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#precision-recall-curve-with-varying-thresholds",
@@ -6355,14 +6355,14 @@
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#tuning-threshold-with-cross-validation",
     "title": "Imbalanced Data",
     "section": "Tuning Threshold with Cross-Validation",
-    "text": "Tuning Threshold with Cross-Validation\n\nfrom sklearn.datasets import load_breast_cancer\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import recall_score\nfrom sklearn.model_selection import cross_validate, StratifiedKFold\nimport numpy as np\n\n# Load data: 1 = malignant, 0 = benign\ndata = load_breast_cancer(as_frame=True)\nX = data.data\ny = (data.target == 0).astype(int)\n\n# Cross-validation with threshold tuning\ncv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)\nthresholds = np.arange(0.1, 1.0, 0.1)\nrecall_scores = {thresh: [] for thresh in thresholds}\n\nfor train_idx, val_idx in cv.split(X, y):\n    X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]\n    y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]\n    \n    # Train Random Forest\n    rf = RandomForestClassifier(n_estimators=100, random_state=42)\n    rf.fit(X_train, y_train)\n    \n    # Get probability predictions on validation fold\n    y_proba = rf.predict_proba(X_val)[:, 1]\n    \n    # Evaluate recall at different thresholds\n    for thresh in thresholds:\n        y_pred = (y_proba &gt;= thresh).astype(int)\n        recall = recall_score(y_val, y_pred, pos_label=1, zero_division=0)\n        recall_scores[thresh].append(recall)\n\n# Average recall across folds for each threshold\nmean_recalls = {thresh: np.mean(scores) for thresh, scores in recall_scores.items()}\n\n# Find optimal threshold\noptimal_thresh = max(mean_recalls, key=mean_recalls.get)\nprint(f\"Thresholds tested: {thresholds.min():.1f} to {thresholds.max():.1f}, step length = 0.1\")\nprint(f\"Optimal threshold: {optimal_thresh:.1f} (Recall = {mean_recalls[optimal_thresh]:.4f})\")\n\nThresholds tested: 0.1 to 0.9, step length = 0.1\nOptimal threshold: 0.1 (Recall = 0.9858)"
+    "text": "Tuning Threshold with Cross-Validation\n\nRF classifiers don’t support threshold tuning, so we use TunedThresholdClassifierCV from sklearn to tune threshold with CV\n\n\nfrom sklearn.datasets import load_breast_cancer\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import recall_score\nfrom sklearn.model_selection import StratifiedKFold, train_test_split\nfrom sklearn.model_selection import TunedThresholdClassifierCV\nimport numpy as np\n\n# Load data: 1 = malignant, 0 = benign\ndata = load_breast_cancer(as_frame=True)\nX = data.data\ny = (data.target == 0).astype(int)\n\n# Train/test split\nX_train, X_test, y_train, y_test = train_test_split(\n  X, y, test_size=0.2, random_state=42, stratify=y\n)\n\n# Cross-validation with threshold tuning\ncv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)\nthresholds = np.arange(0.1, 1.0, 0.1)\n\n# Tune threshold to maximise recall using CV\nrf = RandomForestClassifier(n_estimators=100, random_state=42)\ntuned_rf = TunedThresholdClassifierCV(\n  estimator=rf,\n  scoring=\"recall\",\n  thresholds=thresholds,\n  cv=cv\n)\ntuned_rf.fit(X_train, y_train)\n\ny_pred = tuned_rf.predict(X_test)\ntest_recall = recall_score(y_test, y_pred, pos_label=1, zero_division=0)\noptimal_thresh = tuned_rf.best_threshold_\n\nprint(f\"Thresholds tested: {thresholds.min():.1f} to {thresholds.max():.1f}, step length = 0.1\")\nprint(f\"Optimal threshold: {optimal_thresh:.1f}\")\nprint(f\"Test recall at optimal threshold: {test_recall:.4f}\")\n\nThresholds tested: 0.1 to 0.9, step length = 0.1\nOptimal threshold: 0.1\nTest recall at optimal threshold: 1.0000"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#change-class-weights",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#change-class-weights",
     "title": "Imbalanced Data",
     "section": "Change class-weights",
-    "text": "Change class-weights\n\nMany classifcation algorithms use a weighted loss function in model training.\n\\[L = \\frac{1}{n} \\sum_{i=1}^{n} c_{y_i} \\cdot \\ell(y_i, \\hat{y}_i)\\]\nWeight indicates importance. The weight can be set for a class or individually for each sample.\nIf weight for a class is set higher, model training will penalise misclassifying that class more heavily.\nCan use cross-validation to tune class weights"
+    "text": "Change class-weights\n\nMany classifcation algorithms use a weighted loss function in model training (or similar mechanisms) to handle imbalanced data\n\\(L = \\frac{1}{n} \\sum_{i=1}^{n} w_{y_i} \\cdot \\ell(y_i, \\hat{y}_i)\\)\nWeight indicates importance. The weight can be set for a class or individually for each sample.\nIf weight for a class is set higher, model training will penalise misclassifying that class more heavily.\nCan use cross-validation to tune class weights"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#class-weights-in-tree-based-methods",
@@ -6397,42 +6397,35 @@
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#random-undersampling",
     "title": "Imbalanced Data",
     "section": "Random Undersampling",
-    "text": "Random Undersampling\n\nDrop majority samples until balanced\nVery fast; dataset shrinks to ~2x minority\nProblem: can lose majority samples; unstable for small datasets\n\n\nfrom sklearn.datasets import load_breast_cancer\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import recall_score, classification_report\nfrom sklearn.model_selection import train_test_split\nfrom imblearn.pipeline import Pipeline\nfrom imblearn.under_sampling import RandomUnderSampler\n\n# Load data: malignant = 1, benign = 0\ndata = load_breast_cancer(as_frame=True)\nX = data.data\ny = (data.target == 0).astype(int)\n\n# Train/test split\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42, stratify=y\n)\n\n# Pipeline: RandomUnderSampler → RandomForestClassifier\npipe = Pipeline([\n    ('sampler', RandomUnderSampler(random_state=42)),\n    ('clf', RandomForestClassifier(n_estimators=100, random_state=42))\n])\n\n# Fit only on training data; sampler is NOT applied at predict time\npipe.fit(X_train, y_train)\ny_pred = pipe.predict(X_test)\n\nprint(f\"Recall (malignant=1): {recall_score(y_test, y_pred, pos_label=1):.4f}\")\nprint(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']))\n\nRecall (malignant=1): 0.9286\n              precision    recall  f1-score   support\n\n      Benign       0.96      0.99      0.97        72\n   Malignant       0.97      0.93      0.95        42\n\n    accuracy                           0.96       114\n   macro avg       0.97      0.96      0.96       114\nweighted avg       0.97      0.96      0.96       114"
+    "text": "Random Undersampling\n\nDrop majority samples until balanced\nVery fast; dataset shrinks to ~2x minority class size\nProblem: can lose majority samples; unstable for small datasets"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#random-oversampling",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#random-oversampling",
     "title": "Imbalanced Data",
     "section": "Random Oversampling",
-    "text": "Random Oversampling\n\nRepeat minority samples until balanced\nDataset grows; slower training\n\nros = RandomOverSampler()\nX_over, y_over = ros.fit_sample(X_train, y_train)"
+    "text": "Random Oversampling\n\nRandomly pick up a minority sample, duplicate it, until balanced\nDataset grows; slower training\n\nros = RandomOverSampler()\nX_over, y_over = ros.fit_sample(X_train, y_train)"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#synthetic-sample-generation",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#synthetic-sample-generation",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-synthetic-minority-oversampling-technique",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-synthetic-minority-oversampling-technique",
     "title": "Imbalanced Data",
-    "section": "Synthetic Sample Generation",
-    "text": "Synthetic Sample Generation\n\nSMOTE: Synthetic Minority Oversampling Technique\nAdd synthetic points for minority class\nFor each minority sample: pick random k neighbors, interpolate on line segment\nLeads to larger datasets"
+    "section": "SMOTE (Synthetic Minority Oversampling Technique)",
+    "text": "SMOTE (Synthetic Minority Oversampling Technique)\n\nAdd synthetic points for minority class\nSteps (repeated until balanced)\n\nRandomly pick up a minority sample, find its k nearest minority neighbors based on features\nRandomly select one neighbor and create a synthetic sample by interpolating between the two samples"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-illustration",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-illustration",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#advantages-of-smote-compared-to-random-oversampling",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#advantages-of-smote-compared-to-random-oversampling",
     "title": "Imbalanced Data",
-    "section": "SMOTE Illustration",
-    "text": "SMOTE Illustration"
+    "section": "Advantages of SMOTE (compared to random oversampling)",
+    "text": "Advantages of SMOTE (compared to random oversampling)\n\nLinear interpolation: synthetic samples are created on the line between two existing minority samples\nNo duplication: it generates new data rather than just duplicating existing ones\nBetter generalisation*: synthetic samples are created in the feature space"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#curves-for-logreg",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#curves-for-logreg",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#variants-of-smote",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#variants-of-smote",
     "title": "Imbalanced Data",
-    "section": "Curves for LogReg",
-    "text": "Curves for LogReg"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#curves-for-random-forest",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#curves-for-random-forest",
-    "title": "Imbalanced Data",
-    "section": "Curves for Random Forest",
-    "text": "Curves for Random Forest"
+    "section": "Variants of SMOTE",
+    "text": "Variants of SMOTE\n\nBorderline-SMOTE: only create synthetic samples near the decision boundary\nADASYN: adaptively create more synthetic samples in harder-to-learn regions\nSMOTE-NC: handles mixed numerical and categorical features\nSMOTE-Tomek: combines SMOTE with under-sampling techniques to clean up noise and overlapping samples"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#resampling-in-practice-when-should-we-apply-resampling",
@@ -6488,7 +6481,7 @@
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#summary",
     "title": "Imbalanced Data",
     "section": "Summary",
-    "text": "Summary\n\nInspect both ROC AUC and average precision; review curves\nUndersampling is fast and can help\nUndersampling plus ensembles is powerful\nSMOTE adds synthetic samples; results vary by metric"
+    "text": "Summary\n\nImbalanced classification is common; accuracy is often misleading\nMethods for handling imbalance: adjust metrics, thresholds, class weights, resample data\nResampling should only be applied to training data, not test data\nSMOTE and Ensemble resampling are more powerful than random undersampling or oversampling."
   },
   {
     "objectID": "sessions/index.html",
