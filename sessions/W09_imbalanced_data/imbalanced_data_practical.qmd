@@ -1,5 +1,5 @@
 ---
-title: 'Practical 9: Imbalanced Classification (Mammography)'
+title: 'Practical 9: Imbalanced Data and Classification'
 format:
   html: default
   ipynb: default
@@ -170,7 +170,7 @@ print(f"Test recall with tuned threshold ({best_threshold:.1f}): {recall_tuned_t
 
 # CV tuning of class weights (maximise recall)
 
-We keep threshold at 0.5 and tune `class_weight={0:1, 1:w}`.
+We keep threshold at 0.5 and tune class weights via `class_weight={0:1, 1:w}`, which means the negative class (0 or benign) has a fixed weight of 1 whilst the positive class (1 or malignant) has a tunable weight `w`. We test `w` values of `[1, 2, 3, 5, 8, 10, 15, 20]` using stratified 5-fold CV.
 
 ```{python}
 weight_grid = [1, 2, 3, 5, 8, 10, 15, 20]
@@ -238,6 +238,8 @@ For each method, the following metrics will be reported:
 - mean test recall
 - range of test recall (max-min)
 - std of test recall
+
+As the pilot study shows that some results are sensitive to random seed, we repeat the experiment with 5 different random seeds (1, 32, 64, 128, 1024) and report the average and variability of the results across these seeds.
 
 :::{.callout-note}
 Please note that balanced random forest is a special case where the resampling is done internally via balanced bootstrap sampling. Therefore, it does not require an explicit sampler step in the pipeline.
@@ -324,7 +326,7 @@ display(resampling_comparison.round(4))
 
 The results show some interesting (and possibly unexpected) patterns. First, these resampling methods are quite computationally efficient (<=5 seconds). Second, the recall on the test set is generally higher than that of cross validation. This is likely because random forest algorithms are trained to maximise predictive accuracy rather than recall. Third, the balanced random forest outperforms the other methods in terms of test recall and robustness of test recall. Random undersampling performs the second best in terms of test recall, but it has a much higher variability in test recall than ADASYN and SMOTE. This is sensible as this method randomly removes samples from the majority class and therefore is sensitive to random seed.
 
-Can you observe more patterns from the results?
+Can you observe other patterns from the results?
 
 # Summary
 
