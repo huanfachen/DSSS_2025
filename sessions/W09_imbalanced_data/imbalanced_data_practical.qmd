@@ -1,0 +1,341 @@
+---
+title: 'Practical 9: Imbalanced Classification (Mammography)'
+format:
+  html: default
+  ipynb: default
+filters:
+  - qna
+  - quarto
+---
+
+This week we focus on **handling imbalanced data and classification** with the Mammography dataset.  
+We will use a **Random Forest** classifier and optimise for **recall** of the positive class (`1`).
+
+## Learning Outcomes
+
+- Use cross-validation to tune the **decision threshold** for maximising recall.
+- Use cross-validation to tune **class weights** for maximising recall.
+- Understand common resampling methods using `imblearn` pipelines:
+  - Random Oversampling
+  - Random Undersampling
+  - SMOTE
+  - ADASYN
+  - Balanced Random Forest
+
+# Starting the Practical
+
+The process for this week is similar with previous weeks: download the notebook to your `DSSS` folder (or wherever you keep your course materials), switch over to `JupyterLab` (running in Podman/Docker), and work through each section.
+
+If you want to save the completed notebook to your Github repo, remember to `add`, `commit`, and `push` your work.
+
+:::{.callout-note}
+Suggestions:
+- Keep software language set to English for easier debugging.
+- Back up work using Git/cloud storage.
+- Avoid spaces in file and column names.
+:::
+
+# Setup and loading libraries
+
+```{python}
+# If needed, uncomment once:
+# %pip install -U imbalanced-learn
+
+import time
+import warnings
+warnings.filterwarnings("ignore")
+
+import numpy as np
+import pandas as pd
+
+from sklearn.datasets import fetch_openml
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.impute import SimpleImputer
+from sklearn.metrics import recall_score, make_scorer
+from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
+from imblearn.pipeline import Pipeline as ImbPipeline
+from imblearn.over_sampling import RandomOverSampler, SMOTE, ADASYN
+from imblearn.under_sampling import RandomUnderSampler
+from imblearn.ensemble import BalancedRandomForestClassifier
+```
+
+# Load Mammography data
+
+We use the Mammography data from OpenML. This is a binary classification dataset for abnormality detection in mammograms. It includes 6 features extracted from mammogram images and a binary target indicating whether the sample is a positive case (microcalcifications, class 1, 2.32%) or negative case (non-microcalcifications, class 0, 97.68%). The dataset is highly imbalanced.
+
+The features describe the visual and structural characteristics of the segmented objects found within the mammogram images:
+
+- **Area**: The area of the object, measured in pixels.
+- **Average grey level**: The average grey-level intensity of the object.
+- **Gradient strength**: The gradient strength of the object's perimeter pixels (measuring edge sharpness).
+- **Root mean square noise**: The root mean square noise fluctuation within the object.
+- **Contrast**: The contrast of the object, calculated as the average grey level of the object minus the average of a two-pixel-wide border surrounding it.
+- **Shape descriptor**: A low-order moment based on a shape descriptor.
+
+```{python}
+# Load mammography data
+mamm = fetch_openml("mammography", version=1, as_frame=True)
+X = mamm.data.copy()
+y = (mamm.target == "1").astype(int)
+
+print(f"Dataset shape: {X.shape[0]} samples × {X.shape[1]} features")
+print("Class counts:")
+class_counts = y.value_counts().sort_index()
+print(class_counts)
+print("Class proportions:")
+print((class_counts / len(y)).rename(index={0: "Class 0", 1: "Class 1"}).round(4))
+
+print(f"\nNumber of features: {X.shape[1]}")
+print("Feature names:")
+print(X.columns.tolist())
+```
+
+A train-test split is performed with stratification to maintain the class distribution in both training and testing sets.
+
+```{python}
+# Train/test split (stratified)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+print("Train shape:", X_train.shape)
+print("Test shape:", X_test.shape)
+```
+
+# Baseline Random Forest (threshold = 0.5)
+
+```{python}
+baseline_pipe = Pipeline([
+    ("imputer", SimpleImputer(strategy="median")),
+    ("scaler", StandardScaler()),
+    ("rf", RandomForestClassifier(n_estimators=300, random_state=42, n_jobs=-1))
+])
+
+baseline_pipe.fit(X_train, y_train)
+proba_test = baseline_pipe.predict_proba(X_test)[:, 1]
+y_pred_default = (proba_test >= 0.5).astype(int)
+
+baseline_recall = recall_score(y_test, y_pred_default, pos_label=1)
+print(f"Baseline recall (threshold=0.5): {baseline_recall:.4f}")
+```
+
+# CV tuning of decision threshold (maximise recall)
+
+We test thresholds from `0.1` to `0.9` (step `0.1`) using stratified 5-fold CV.
+
+```{python}
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+thresholds = np.arange(0.1, 1.0, 0.1)
+
+threshold_scores = {t: [] for t in thresholds}
+
+for tr_idx, val_idx in cv.split(X_train, y_train):
+    X_tr, X_val = X_train.iloc[tr_idx], X_train.iloc[val_idx]
+    y_tr, y_val = y_train.iloc[tr_idx], y_train.iloc[val_idx]
+
+    fold_model = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scaler", StandardScaler()),
+        ("rf", RandomForestClassifier(n_estimators=300, random_state=42, n_jobs=-1))
+    ])
+
+    fold_model.fit(X_tr, y_tr)
+    p_val = fold_model.predict_proba(X_val)[:, 1]
+
+    for t in thresholds:
+        y_val_pred = (p_val >= t).astype(int)
+        r = recall_score(y_val, y_val_pred, pos_label=1, zero_division=0)
+        threshold_scores[t].append(r)
+
+mean_threshold_recall = {t: np.mean(v) for t, v in threshold_scores.items()}
+best_threshold = max(mean_threshold_recall, key=mean_threshold_recall.get)
+
+print(f"Thresholds tested: {thresholds.min():.1f} to {thresholds.max():.1f}, step=0.1")
+print(f"Best threshold by CV recall: {best_threshold:.1f}")
+print(f"Best mean CV recall: {mean_threshold_recall[best_threshold]:.4f}")
+```
+
+```{python}
+# Fit on all training data, evaluate tuned threshold on test
+baseline_pipe.fit(X_train, y_train)
+proba_test = baseline_pipe.predict_proba(X_test)[:, 1]
+y_pred_tuned_threshold = (proba_test >= best_threshold).astype(int)
+
+recall_tuned_threshold = recall_score(y_test, y_pred_tuned_threshold, pos_label=1)
+print(f"Test recall with tuned threshold ({best_threshold:.1f}): {recall_tuned_threshold:.4f}")
+```
+
+# CV tuning of class weights (maximise recall)
+
+We keep threshold at 0.5 and tune `class_weight={0:1, 1:w}`.
+
+```{python}
+weight_grid = [1, 2, 3, 5, 8, 10, 15, 20]
+recall_scorer = make_scorer(recall_score, pos_label=1)
+
+weight_results = []
+
+for w in weight_grid:
+    pipe_w = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scaler", StandardScaler()),
+        ("rf", RandomForestClassifier(
+            n_estimators=300,
+            random_state=42,
+            n_jobs=-1,
+            class_weight={0: 1, 1: w}
+        ))
+    ])
+
+    cv_scores = cross_val_score(pipe_w, X_train, y_train, cv=cv, scoring=recall_scorer, n_jobs=-1)
+    weight_results.append({
+        "weight_for_class_1": w,
+        "mean_cv_recall": cv_scores.mean(),
+        "std_cv_recall": cv_scores.std()
+    })
+
+weight_df = pd.DataFrame(weight_results).sort_values("mean_cv_recall", ascending=False)
+best_weight = int(weight_df.iloc[0]["weight_for_class_1"])
+
+display(weight_df)
+print(f"Best class weight for class 1: {best_weight}")
+```
+
+```{python}
+# Evaluate best class-weight model on test
+best_weight_pipe = Pipeline([
+    ("imputer", SimpleImputer(strategy="median")),
+    ("scaler", StandardScaler()),
+    ("rf", RandomForestClassifier(
+        n_estimators=300,
+        random_state=42,
+        n_jobs=-1,
+        class_weight={0: 1, 1: best_weight}
+    ))
+])
+
+best_weight_pipe.fit(X_train, y_train)
+y_pred_weight = best_weight_pipe.predict(X_test)
+recall_weight = recall_score(y_test, y_pred_weight, pos_label=1)
+print(f"Test recall with tuned class-weight (1:{best_weight}): {recall_weight:.4f}")
+```
+
+# Compare resampling methods (imblearn pipeline)
+
+Now we compare five imbalance-handling methods using `imblearn`:
+- RandomOverSampler
+- RandomUnderSampler
+- SMOTE
+- ADASYN
+- BalancedRandomForest
+
+For each method, the following metrics will be reported:
+- mean CV recall
+- mean CV computing time (seconds)
+- mean test recall
+- range of test recall (max-min)
+- std of test recall
+
+:::{.callout-note}
+Please note that balanced random forest is a special case where the resampling is done internally via balanced bootstrap sampling. Therefore, it does not require an explicit sampler step in the pipeline.
+In the workflow, balanced random forest is separate from the other resampling methods.
+:::
+
+```{python}
+random_states = [1, 32, 64, 128, 1024]
+
+rows = []
+
+for rs in random_states:
+    samplers = {
+        "RandomOverSampler": RandomOverSampler(random_state=rs),
+        "RandomUnderSampler": RandomUnderSampler(random_state=rs),
+        "SMOTE": SMOTE(random_state=rs),
+        "ADASYN": ADASYN(random_state=rs)
+    }
+
+    for name, sampler in samplers.items():
+        pipe = ImbPipeline([
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", StandardScaler()),
+            ("sampler", sampler),
+            ("rf", RandomForestClassifier(n_estimators=300, random_state=rs, n_jobs=-1))
+        ])
+
+        t0 = time.perf_counter()
+        cv_scores = cross_val_score(pipe, X_train, y_train, cv=cv, scoring=recall_scorer, n_jobs=-1)
+        elapsed = time.perf_counter() - t0
+
+        pipe.fit(X_train, y_train)
+        y_pred_test = pipe.predict(X_test)
+        test_recall = recall_score(y_test, y_pred_test, pos_label=1)
+
+        rows.append({
+            "Method": name,
+            "random_state": rs,
+            "CV Recall": cv_scores.mean(),
+            "Test Recall": test_recall,
+            "CV Time (sec)": elapsed
+        })
+
+    # Balanced Random Forest (built-in balanced bootstrap/undersampling)
+    brf_pipe = ImbPipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scaler", StandardScaler()),
+        ("rf", BalancedRandomForestClassifier(n_estimators=300, random_state=rs, n_jobs=-1))
+    ])
+
+    t0 = time.perf_counter()
+    cv_scores = cross_val_score(brf_pipe, X_train, y_train, cv=cv, scoring=recall_scorer, n_jobs=-1)
+    elapsed = time.perf_counter() - t0
+
+    brf_pipe.fit(X_train, y_train)
+    y_pred_test = brf_pipe.predict(X_test)
+    test_recall = recall_score(y_test, y_pred_test, pos_label=1)
+
+    rows.append({
+        "Method": "BalancedRandomForest",
+        "random_state": rs,
+        "CV Recall": cv_scores.mean(),
+        "Test Recall": test_recall,
+        "CV Time (sec)": elapsed
+    })
+
+results_by_seed = pd.DataFrame(rows)
+
+resampling_comparison = (
+    results_by_seed
+    .groupby("Method", as_index=False)
+    .agg(
+        Mean_CV_Recall=("CV Recall", "mean"),
+        Mean_CV_Time_sec=("CV Time (sec)", "mean"),
+        Mean_Test_Recall=("Test Recall", "mean"),
+        Test_Recall_Range=("Test Recall", lambda x: x.max() - x.min()),
+        Std_Test_Recall=("Test Recall", "std")
+    )
+    .sort_values("Mean_Test_Recall", ascending=False)
+)
+
+display(resampling_comparison.round(4))
+```
+
+The results show some interesting (and possibly unexpected) patterns. First, these resampling methods are quite computationally efficient (<=5 seconds). Second, the recall on the test set is generally higher than that of cross validation. This is likely because random forest algorithms are trained to maximise predictive accuracy rather than recall. Third, the balanced random forest outperforms the other methods in terms of test recall and robustness of test recall. Random undersampling performs the second best in terms of test recall, but it has a much higher variability in test recall than ADASYN and SMOTE. This is sensible as this method randomly removes samples from the majority class and therefore is sensitive to random seed.
+
+Can you observe more patterns from the results?
+
+# Summary
+
+Congratulations on completing the practical! In this practical, we have:
+
+- Tuned the **decision threshold** via CV to maximise recall.
+- Tuned **class weights** via CV to maximise recall.
+- Compared resampling methods (RandomOverSampler, RandomUnderSampler, SMOTE, ADASYN, BalancedRandomForest) via using `imblearn` regarding CV and test recall and computing time.
+
+# References
+
+1. [OpenML Mammography dataset](https://www.openml.org/)
+2. [imbalanced-learn documentation](https://imbalanced-learn.org/stable/)
+3. [scikit-learn RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)
