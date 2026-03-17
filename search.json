@@ -6486,14 +6486,14 @@
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data_practical.html",
     "href": "sessions/W09_imbalanced_data/imbalanced_data_practical.html",
-    "title": "Practical 9: Imbalanced Classification (Mammography)",
+    "title": "Practical 9: Imbalanced Data and Classification",
     "section": "",
     "text": "This week we focus on handling imbalanced data and classification with the Mammography dataset.\nWe will use a Random Forest classifier and optimise for recall of the positive class (1)."
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data_practical.html#learning-outcomes",
     "href": "sessions/W09_imbalanced_data/imbalanced_data_practical.html#learning-outcomes",
-    "title": "Practical 9: Imbalanced Classification (Mammography)",
+    "title": "Practical 9: Imbalanced Data and Classification",
     "section": "Learning Outcomes",
     "text": "Learning Outcomes\n\nUse cross-validation to tune the decision threshold for maximising recall.\nUse cross-validation to tune class weights for maximising recall.\nUnderstand common resampling methods using imblearn pipelines:\n\nRandom Oversampling\nRandom Undersampling\nSMOTE\nADASYN\nBalanced Random Forest"
   },

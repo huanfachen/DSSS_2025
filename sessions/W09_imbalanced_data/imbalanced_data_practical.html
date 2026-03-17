@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Practical 9: Imbalanced Classification (Mammography) – Data Science for Spatial Systems</title>
+<title>Practical 9: Imbalanced Data and Classification – Data Science for Spatial Systems</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -113,7 +113,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
-<meta property="og:title" content="Practical 9: Imbalanced Classification (Mammography) – Data Science for Spatial Systems">
+<meta property="og:title" content="Practical 9: Imbalanced Data and Classification – Data Science for Spatial Systems">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://huanfachen.github.io/DSSS_2025/sessions/W09_imbalanced_data/img/logo/full_sm.png">
 <meta property="og:site_name" content="Foundations">
@@ -264,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Practical 9: Imbalanced Classification (Mammography)</h1>
+<h1 class="title">Practical 9: Imbalanced Data and Classification</h1>
 </div>
 
 
@@ -318,7 +318,7 @@ Note
 </section>
 <section id="setup-and-loading-libraries" class="level1">
 <h1>Setup and loading libraries</h1>
-<div id="2f26d145" class="cell" data-execution_count="1">
+<div id="76d6bf5e" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If needed, uncomment once:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %pip install -U imbalanced-learn</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -355,7 +355,7 @@ Note
 <li><strong>Contrast</strong>: The contrast of the object, calculated as the average grey level of the object minus the average of a two-pixel-wide border surrounding it.</li>
 <li><strong>Shape descriptor</strong>: A low-order moment based on a shape descriptor.</li>
 </ul>
-<div id="18596a32" class="cell" data-execution_count="2">
+<div id="6689e67b" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load mammography data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mamm <span class="op">=</span> fetch_openml(<span class="st">"mammography"</span>, version<span class="op">=</span><span class="dv">1</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> mamm.data.copy()</span>
@@ -390,7 +390,7 @@ Feature names:
 </div>
 </div>
 <p>A train-test split is performed with stratification to maintain the class distribution in both training and testing sets.</p>
-<div id="978e36db" class="cell" data-execution_count="3">
+<div id="b0b86ad6" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train/test split (stratified)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
@@ -406,7 +406,7 @@ Test shape: (2237, 6)</code></pre>
 </section>
 <section id="baseline-random-forest-threshold-0.5" class="level1">
 <h1>Baseline Random Forest (threshold = 0.5)</h1>
-<div id="dcb21006" class="cell" data-execution_count="4">
+<div id="83c9cdd4" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>baseline_pipe <span class="op">=</span> Pipeline([</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"imputer"</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">"median"</span>)),</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"scaler"</span>, StandardScaler()),</span>
@@ -427,7 +427,7 @@ Test shape: (2237, 6)</code></pre>
 <section id="cv-tuning-of-decision-threshold-maximise-recall" class="level1">
 <h1>CV tuning of decision threshold (maximise recall)</h1>
 <p>We test thresholds from <code>0.1</code> to <code>0.9</code> (step <code>0.1</code>) using stratified 5-fold CV.</p>
-<div id="da588b8d" class="cell" data-execution_count="5">
+<div id="ceab5dbc" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>thresholds <span class="op">=</span> np.arange(<span class="fl">0.1</span>, <span class="fl">1.0</span>, <span class="fl">0.1</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -463,7 +463,7 @@ Best threshold by CV recall: 0.1
 Best mean CV recall: 0.7839</code></pre>
 </div>
 </div>
-<div id="2355cee5" class="cell" data-execution_count="6">
+<div id="88e8081d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit on all training data, evaluate tuned threshold on test</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>baseline_pipe.fit(X_train, y_train)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>proba_test <span class="op">=</span> baseline_pipe.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
@@ -478,8 +478,8 @@ Best mean CV recall: 0.7839</code></pre>
 </section>
 <section id="cv-tuning-of-class-weights-maximise-recall" class="level1">
 <h1>CV tuning of class weights (maximise recall)</h1>
-<p>We keep threshold at 0.5 and tune <code>class_weight={0:1, 1:w}</code>.</p>
-<div id="93c52fe2" class="cell" data-execution_count="7">
+<p>We keep threshold at 0.5 and tune class weights via <code>class_weight={0:1, 1:w}</code>, which means the negative class (0 or benign) has a fixed weight of 1 whilst the positive class (1 or malignant) has a tunable weight <code>w</code>. We test <code>w</code> values of <code>[1, 2, 3, 5, 8, 10, 15, 20]</code> using stratified 5-fold CV.</p>
+<div id="8191b44a" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>weight_grid <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>]</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>recall_scorer <span class="op">=</span> make_scorer(recall_score, pos_label<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -580,7 +580,7 @@ Best mean CV recall: 0.7839</code></pre>
 <pre><code>Best class weight for class 1: 5</code></pre>
 </div>
 </div>
-<div id="9032cc7d" class="cell" data-execution_count="8">
+<div id="3f3eeb2d" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate best class-weight model on test</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>best_weight_pipe <span class="op">=</span> Pipeline([</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"imputer"</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">"median"</span>)),</span>
@@ -606,6 +606,7 @@ Best mean CV recall: 0.7839</code></pre>
 <h1>Compare resampling methods (imblearn pipeline)</h1>
 <p>Now we compare five imbalance-handling methods using <code>imblearn</code>: - RandomOverSampler - RandomUnderSampler - SMOTE - ADASYN - BalancedRandomForest</p>
 <p>For each method, the following metrics will be reported: - mean CV recall - mean CV computing time (seconds) - mean test recall - range of test recall (max-min) - std of test recall</p>
+<p>As the pilot study shows that some results are sensitive to random seed, we repeat the experiment with 5 different random seeds (1, 32, 64, 128, 1024) and report the average and variability of the results across these seeds.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -619,7 +620,7 @@ Note
 <p>Please note that balanced random forest is a special case where the resampling is done internally via balanced bootstrap sampling. Therefore, it does not require an explicit sampler step in the pipeline. In the workflow, balanced random forest is separate from the other resampling methods.</p>
 </div>
 </div>
-<div id="cbefcc64" class="cell" data-execution_count="9">
+<div id="a01cfbb4" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>random_states <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">128</span>, <span class="dv">1024</span>]</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
@@ -716,7 +717,7 @@ Note
 <th data-quarto-table-cell-role="th">3</th>
 <td>RandomUnderSampler</td>
 <td>0.8733</td>
-<td>1.2242</td>
+<td>1.2121</td>
 <td>0.9538</td>
 <td>0.0577</td>
 <td>0.0219</td>
@@ -725,7 +726,7 @@ Note
 <th data-quarto-table-cell-role="th">1</th>
 <td>BalancedRandomForest</td>
 <td>0.8388</td>
-<td>2.4235</td>
+<td>2.3870</td>
 <td>0.9269</td>
 <td>0.0192</td>
 <td>0.0086</td>
@@ -734,7 +735,7 @@ Note
 <th data-quarto-table-cell-role="th">0</th>
 <td>ADASYN</td>
 <td>0.7320</td>
-<td>8.0094</td>
+<td>7.9473</td>
 <td>0.8346</td>
 <td>0.0192</td>
 <td>0.0105</td>
@@ -743,7 +744,7 @@ Note
 <th data-quarto-table-cell-role="th">4</th>
 <td>SMOTE</td>
 <td>0.7174</td>
-<td>7.9426</td>
+<td>7.8753</td>
 <td>0.8346</td>
 <td>0.0385</td>
 <td>0.0172</td>
@@ -752,7 +753,7 @@ Note
 <th data-quarto-table-cell-role="th">2</th>
 <td>RandomOverSampler</td>
 <td>0.5627</td>
-<td>4.0299</td>
+<td>4.0034</td>
 <td>0.6269</td>
 <td>0.0192</td>
 <td>0.0105</td>
@@ -764,7 +765,7 @@ Note
 </div>
 </div>
 <p>The results show some interesting (and possibly unexpected) patterns. First, these resampling methods are quite computationally efficient (&lt;=5 seconds). Second, the recall on the test set is generally higher than that of cross validation. This is likely because random forest algorithms are trained to maximise predictive accuracy rather than recall. Third, the balanced random forest outperforms the other methods in terms of test recall and robustness of test recall. Random undersampling performs the second best in terms of test recall, but it has a much higher variability in test recall than ADASYN and SMOTE. This is sensible as this method randomly removes samples from the majority class and therefore is sensitive to random seed.</p>
-<p>Can you observe more patterns from the results?</p>
+<p>Can you observe other patterns from the results?</p>
 </section>
 <section id="summary" class="level1">
 <h1>Summary</h1>
