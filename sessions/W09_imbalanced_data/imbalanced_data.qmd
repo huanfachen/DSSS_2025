@@ -596,7 +596,7 @@ print('Saved: images/SMOTE.gif')
 ```
 
 <div style="text-align:center;">
-  <img src="images/SMOTE.gif" style="max-width:40%;">
+  <img src="images/SMOTE.gif" style="max-width:100%;">
 </div>
 :::
 ::::
