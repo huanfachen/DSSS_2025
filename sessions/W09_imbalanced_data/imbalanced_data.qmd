@@ -86,27 +86,27 @@ plt.tight_layout()
 - Asymmetric data prevalence 
 - Asymmetric cost between errors
   - Example: In medical diagnosis, missing a disease (FN) is much worse than a false alarm (FP)
-  - Even if class prevalence is balanced, the cost of errors is not symmetric
+  - ... even if class prevalence is balanced, the cost of errors is not symmetric
 
 <!-- ## Why Do We Care?
 - Real-world costs rarely symmetric
 - Data often heavily imbalanced; rare event detection common -->
 
 ## Methods for selecting imbalanced data
-- Adjust evaluation metrics (*What do you want to optimise?*)
+- Select evaluation metrics (*What do you want to optimise?*)
 - Adjust decision thresholds
 - Change class-weights
 - Resample data
 
-## Adjust evaluation metrics
+## Select evaluation metrics
 
 - Accuracy paradox: accuracy is misleadingfor imbalanced data
 - Use precision or recall
 
 ## Adjust thresholds
 
-- Most models output probabilities (01). Default threshold *T* is 0.5
-- If p(class=1) > *T*, predict Class 1; else predict 0
+- Most models output probabilities (0-1). Default threshold *T* = 0.5
+- If *p*(class=1) > *T*, predict Class 1; else predict 0
 - Tuning *T* shifts the balance between precision and recall
 
 ## Precision-Recall Curve with varying thresholds
@@ -166,12 +166,15 @@ plt.show()
 
 ## Tuning Threshold with Cross-Validation
 
+- RF classifiers don't support threshold tuning, so we use `TunedThresholdClassifierCV` from `sklearn` to tune threshold with CV
+
 ```{python}
 #| echo: true
 from sklearn.datasets import load_breast_cancer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import recall_score
-from sklearn.model_selection import cross_validate, StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.model_selection import TunedThresholdClassifierCV
 import numpy as np
 
 # Load data: 1 = malignant, 0 = benign
@@ -179,41 +182,38 @@ data = load_breast_cancer(as_frame=True)
 X = data.data
 y = (data.target == 0).astype(int)
 
+# Train/test split
+X_train, X_test, y_train, y_test = train_test_split(
+  X, y, test_size=0.2, random_state=42, stratify=y
+)
+
 # Cross-validation with threshold tuning
 cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 thresholds = np.arange(0.1, 1.0, 0.1)
-recall_scores = {thresh: [] for thresh in thresholds}
 
-for train_idx, val_idx in cv.split(X, y):
-    X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
-    y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
-    
-    # Train Random Forest
-    rf = RandomForestClassifier(n_estimators=100, random_state=42)
-    rf.fit(X_train, y_train)
-    
-    # Get probability predictions on validation fold
-    y_proba = rf.predict_proba(X_val)[:, 1]
-    
-    # Evaluate recall at different thresholds
-    for thresh in thresholds:
-        y_pred = (y_proba >= thresh).astype(int)
-        recall = recall_score(y_val, y_pred, pos_label=1, zero_division=0)
-        recall_scores[thresh].append(recall)
+# Tune threshold to maximise recall using CV
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+tuned_rf = TunedThresholdClassifierCV(
+  estimator=rf,
+  scoring="recall",
+  thresholds=thresholds,
+  cv=cv
+)
+tuned_rf.fit(X_train, y_train)
 
-# Average recall across folds for each threshold
-mean_recalls = {thresh: np.mean(scores) for thresh, scores in recall_scores.items()}
+y_pred = tuned_rf.predict(X_test)
+test_recall = recall_score(y_test, y_pred, pos_label=1, zero_division=0)
+optimal_thresh = tuned_rf.best_threshold_
 
-# Find optimal threshold
-optimal_thresh = max(mean_recalls, key=mean_recalls.get)
 print(f"Thresholds tested: {thresholds.min():.1f} to {thresholds.max():.1f}, step length = 0.1")
-print(f"Optimal threshold: {optimal_thresh:.1f} (Recall = {mean_recalls[optimal_thresh]:.4f})")
+print(f"Optimal threshold: {optimal_thresh:.1f}")
+print(f"Test recall at optimal threshold: {test_recall:.4f}")
 ```
 
 ## Change class-weights
 
-- Many classifcation algorithms use a weighted loss function in model training.
-- $$L = \frac{1}{n} \sum_{i=1}^{n} c_{y_i} \cdot \ell(y_i, \hat{y}_i)$$
+- Many classifcation algorithms use a weighted loss function in model training (or similar mechanisms) to handle imbalanced data
+- $L = \frac{1}{n} \sum_{i=1}^{n} w_{y_i} \cdot \ell(y_i, \hat{y}_i)$
 - Weight indicates importance. The weight can be set for a class or individually for each sample. 
 - If weight for a class is set higher, model training will penalise misclassifying that class more heavily.
 - Can use cross-validation to tune class weights
@@ -271,6 +271,8 @@ plt.show()
 - LogisticRegression(class_weight="balanced"): ROC AUC 0.918, AP 0.587
 - RandomForest(class_weight="balanced"): ROC AUC 0.917, AP 0.701 -->
 
+# Resampling
+
 ## Resample data
 
 - Resampling modifies the training data to balance classes. 
@@ -316,10 +318,66 @@ X_train, X_test, y_train, y_test = train_test_split(
 ## Random Undersampling
 
 - Drop majority samples until balanced
-- Very fast; dataset shrinks to ~2x minority
+- Very fast; dataset shrinks to ~2x minority class size
 - Problem: can lose majority samples; unstable for small datasets
 
 ```{python}
+#| echo: false
+#| eval: false
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation, PillowWriter
+from pathlib import Path
+
+# Reproducible random data: 20 blue (majority), 10 red (minority)
+rng = np.random.default_rng(42)
+blue_points = rng.uniform(0, 10, size=(20, 2))
+red_points = rng.uniform(0, 10, size=(10, 2))
+
+# Random removal order for blue samples (remove 10 to match red count)
+remove_order = rng.permutation(len(blue_points))
+
+fig, ax = plt.subplots(figsize=(6, 6))
+
+def update(frame):
+  ax.clear()
+
+  # Keep fewer blue points each frame: 20 -> 10
+  n_blue_keep = 20 - frame
+  keep_idx = remove_order[:n_blue_keep]
+  current_blue = blue_points[keep_idx]
+
+  ax.scatter(current_blue[:, 0], current_blue[:, 1], c='royalblue', s=60,
+         label=f'Blue: {len(current_blue)}')
+  ax.scatter(red_points[:, 0], red_points[:, 1], c='crimson', s=60,
+         label=f'Red: {len(red_points)}')
+
+  ax.set_xlim(0, 10)
+  ax.set_ylim(0, 10)
+  ax.set_xlabel('Feature 1')
+  ax.set_ylabel('Feature 2')
+  ax.set_title(f'Random Undersampling (Step {frame})')
+  ax.legend(loc='upper right')
+  ax.grid(alpha=0.25)
+
+# Frames 0..10 (inclusive): remove one blue sample per step
+anim = FuncAnimation(fig, update, frames=11, interval=700, repeat=False)
+
+# Save GIF to images folder
+output_dir = Path('images')
+output_dir.mkdir(parents=True, exist_ok=True)
+anim.save(output_dir / 'undersampling.gif', writer=PillowWriter(fps=1.5))
+
+plt.close(fig)
+print('Saved: images/undersampling.gif')
+```
+
+<div style="text-align:center;">
+  <img src="images/undersampling.gif" style="max-width:100%;">
+</div>
+
+
+<!-- ```{python}
 #| echo: true
 from sklearn.datasets import load_breast_cancer
 from sklearn.ensemble import RandomForestClassifier
@@ -350,7 +408,7 @@ y_pred = pipe.predict(X_test)
 
 print(f"Recall (malignant=1): {recall_score(y_test, y_pred, pos_label=1):.4f}")
 print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']))
-```
+``` -->
 
 <!-- ## Random Undersampling Results
 - LogisticRegression: ROC AUC 0.927, AP 0.527 (baseline 0.920, 0.630)
@@ -358,23 +416,202 @@ print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']
 - Often as accurate with fraction of data;  -->
 
 ## Random Oversampling
-- Repeat minority samples until balanced
+- Randomly pick up a minority sample, duplicate it, until balanced
 - Dataset grows; slower training
 ```python
 ros = RandomOverSampler()
 X_over, y_over = ros.fit_sample(X_train, y_train)
 ```
 
-## Synthetic Sample Generation
-- SMOTE: Synthetic Minority Oversampling Technique
-- Add synthetic points for minority class
-- For each minority sample: pick random *k* neighbors, interpolate on line segment
-- Leads to larger datasets
+```{python}
+#| echo: false
+#| eval: false
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation, PillowWriter
+from pathlib import Path
 
-## SMOTE Illustration
+# Reproducible random data: 20 blue (majority), 10 red (minority)
+rng = np.random.default_rng(42)
+blue_points = rng.uniform(0, 10, size=(20, 2))
+red_points_init = rng.uniform(0, 10, size=(10, 2))
+
+# Build cumulative red samples: duplicate one random red sample each step
+red_snapshots = [red_points_init.copy()]
+current_red = red_points_init.copy()
+for _ in range(10):
+  base_idx = rng.integers(0, len(current_red))
+  new_red = current_red[base_idx:base_idx + 1].copy()
+  current_red = np.vstack([current_red, new_red])
+  red_snapshots.append(current_red.copy())
+
+fig, ax = plt.subplots(figsize=(6, 6))
+
+def update(frame):
+  ax.clear()
+
+  # Use cumulative red samples for this step: 10 -> 20
+  current_red = red_snapshots[frame]
+
+  ax.scatter(blue_points[:, 0], blue_points[:, 1], c='royalblue', s=60, alpha=0.3,
+        label=f'Blue: {len(blue_points)}')
+  ax.scatter(current_red[:, 0], current_red[:, 1], c='crimson', s=60, alpha=0.3,
+        label=f'Red: {len(current_red)}')
+
+  ax.set_xlim(0, 10)
+  ax.set_ylim(0, 10)
+  ax.set_xlabel('Feature 1')
+  ax.set_ylabel('Feature 2')
+  ax.set_title(f'Random Oversampling (Step {frame})')
+  ax.legend(loc='upper right', fontsize=14)
+  ax.grid(alpha=0.25)
+
+# Frames 0..10 (inclusive): add one red sample per step
+anim = FuncAnimation(fig, update, frames=11, interval=700, repeat=False)
+
+# Save GIF to images folder
+output_dir = Path('images')
+output_dir.mkdir(parents=True, exist_ok=True)
+anim.save(output_dir / 'oversampling.gif', writer=PillowWriter(fps=1.5))
+
+plt.close(fig)
+print('Saved: images/oversampling.gif')
+```
+
+<div style="text-align:center;">
+  <img src="images/oversampling.gif" style="max-width:100%;">
+</div>
+
+## SMOTE (Synthetic Minority Oversampling Technique)
+
+- Add **synthetic** points for minority class
+- Steps (repeated until balanced)
+  1. Randomly pick up a minority sample, find its k nearest minority neighbors based on features
+  2. Randomly select one neighbor and create a synthetic sample by **interpolating** between the two samples
+
+```{python}
+#| echo: false
+#| eval: false
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation, PillowWriter
+from pathlib import Path
+
+# 20 blue samples (majority), 10 red samples (minority), 2D features
+rng = np.random.default_rng(42)
+blue_points = rng.uniform(0, 10, size=(20, 2))
+red_points = rng.uniform(0, 10, size=(10, 2))
+
+# Precompute animation states for 10 SMOTE steps (red: 10 -> 20)
+states = [{
+  'red': red_points.copy(),
+  'anchor': None,
+  'neighbors': None,
+  'chosen': None,
+  'new_point': None
+}]
+
+for _ in range(10):
+  # 1) pick one random red sample (anchor)
+  anchor_idx = rng.integers(0, len(red_points))
+  anchor = red_points[anchor_idx]
+
+  # 2) find nearest 3 red neighbors (excluding anchor)
+  dists = np.linalg.norm(red_points - anchor, axis=1)
+  dists[anchor_idx] = np.inf
+  neighbor_idx = np.argsort(dists)[:3]
+  neighbors = red_points[neighbor_idx]
+
+  # 3) randomly choose one of these neighbors
+  chosen_pos = rng.integers(0, len(neighbor_idx))
+  chosen = neighbors[chosen_pos]
+
+  # 4) create a random point on the segment anchor -> chosen
+  lam = rng.random()
+  new_point = anchor + lam * (chosen - anchor)
+
+  # add new point to red sample list
+  red_points = np.vstack([red_points, new_point])
+
+  states.append({
+    'red': red_points.copy(),
+    'anchor': anchor.copy(),
+    'neighbors': neighbors.copy(),
+    'chosen': chosen.copy(),
+    'new_point': new_point.copy()
+  })
+
+fig, ax = plt.subplots(figsize=(7, 7))
+fig.subplots_adjust(right=0.72)
+
+def update(frame):
+  ax.clear()
+  s = states[frame]
+  current_red = s['red']
+
+  # Base samples with dynamic class counts in legend
+  ax.scatter(blue_points[:, 0], blue_points[:, 1], c='royalblue', alpha=0.35, s=60,
+         label=f'Blue: {len(blue_points)}')
+  ax.scatter(current_red[:, 0], current_red[:, 1], c='crimson', alpha=0.35, s=60,
+         label=f'Red: {len(current_red)}')
+
+  # Visualise the current SMOTE operation
+  if frame > 0:
+    ax.scatter(s['anchor'][0], s['anchor'][1], marker='*', s=260, c='gold',
+           edgecolors='black', linewidths=1.0, label='Picked red sample')
+
+    ax.scatter(s['neighbors'][:, 0], s['neighbors'][:, 1], marker='x', s=120,
+           c='black', linewidths=2, label='3 nearest red neighbors')
+
+    ax.scatter(s['chosen'][0], s['chosen'][1], marker='x', s=260, c='darkred',
+           linewidths=3, label='Chosen neighbor')
+
+    ax.plot([s['anchor'][0], s['chosen'][0]],
+        [s['anchor'][1], s['chosen'][1]],
+        linestyle='--', color='gray', linewidth=2, label='Interpolation line')
+
+    ax.scatter(s['new_point'][0], s['new_point'][1], marker='o', s=95, c='orange',
+           edgecolors='black', linewidths=0.8, label='New synthetic red sample')
+
+  ax.set_xlim(0, 10)
+  ax.set_ylim(0, 10)
+  ax.set_xlabel('Feature 1')
+  ax.set_ylabel('Feature 2')
+  ax.set_title(f'SMOTE demo (Step {frame}/10)')
+  ax.grid(alpha=0.25)
+  ax.legend(loc='upper left', bbox_to_anchor=(1.02, 1.0), borderaxespad=0.0, fontsize=10)
+
+anim = FuncAnimation(fig, update, frames=len(states), interval=1300, repeat=False)
+
+output_dir = Path('images')
+output_dir.mkdir(parents=True, exist_ok=True)
+anim.save(output_dir / 'SMOTE.gif', writer=PillowWriter(fps=0.8))
+
+plt.close(fig)
+print('Saved: images/SMOTE.gif')
+```
+
+<div style="text-align:center;">
+  <img src="images/SMOTE.gif" style="max-width:100%;">
+</div>
+
+## Advantages of SMOTE (compared to random oversampling)
+
+- **Linear interpolation**: synthetic samples are created on the line between two existing minority samples
+- **No duplication**: it generates new data rather than just duplicating existing ones
+- **Better generalisation***: synthetic samples are created in the feature space
+
+## Variants of SMOTE
+
+- **Borderline-SMOTE**: only create synthetic samples near the decision boundary
+- **ADASYN**: adaptively create more synthetic samples in harder-to-learn regions
+- **SMOTE-NC**: handles mixed numerical and categorical features
+- **SMOTE-Tomek**: combines SMOTE with under-sampling techniques to clean up noise and overlapping samples
+
+<!-- ## SMOTE Illustration
 <div style="text-align:center;">
   <img src="images/smote_mammography.png" style="max-width:100%;">
-</div>
+</div> -->
 
 <!-- ## SMOTE Tuning
 <div style="text-align:center;">
@@ -393,7 +630,7 @@ X_over, y_over = ros.fit_sample(X_train, y_train)
 - RandomForest: ROC AUC 0.926, AP 0.715
 - Performance similar to baseline; heavier compute -->
 
-## Curves for LogReg
+<!-- ## Curves for LogReg
 <div style="text-align:center;">
   <img src="images/curves_logreg.png" style="max-width:100%;">
 </div>
@@ -401,7 +638,7 @@ X_over, y_over = ros.fit_sample(X_train, y_train)
 ## Curves for Random Forest
 <div style="text-align:center;">
   <img src="images/curves_rf.png" style="max-width:100%;">
-</div>
+</div> -->
 
 ## Resampling in practice: when should we apply resampling?
 
@@ -503,7 +740,8 @@ y_pred = ee.predict(X_test)
 </div> -->
 
 ## Summary
-- Inspect both ROC AUC and average precision; review curves
-- Undersampling is fast and can help
-- Undersampling plus ensembles is powerful
-- SMOTE adds synthetic samples; results vary by metric
+- Imbalanced classification is common; accuracy is often misleading
+- Methods for handling imbalance: adjust metrics, thresholds, class weights, resample data
+- Resampling should only be applied to training data, not test data
+- **SMOTE** and **Ensemble resampling** are more powerful than *random undersampling* or *oversampling*.
+
