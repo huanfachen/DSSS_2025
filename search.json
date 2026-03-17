@@ -6292,14 +6292,14 @@
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#picking-a-metric",
     "title": "Imbalanced Data",
     "section": "Picking a metric",
-    "text": "Picking a metric\n\nReal-world problems are rarely balanced.\nAccuracy is rarely what you want.\nFind the right criterion; decide between emphasis on recall or precision.\nIdentify which classes are important."
+    "text": "Picking a metric\n\nReal-world problems are rarely balanced.\nAccuracy is rarely what we want.\nFind the right criterion; decide between emphasis on recall or precision.\nIdentify which classes are important."
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#metric-for-breast-cancer-detection",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#metric-for-breast-cancer-detection",
     "title": "Imbalanced Data",
     "section": "Metric for breast cancer detection",
-    "text": "Metric for breast cancer detection\n\n“1”: malignant/cancer; “0”: benign/no cancer.\nMissing a cancer (FN) is much worse than a false alarm (FP)\nSo, we care more about recall than precision or accuracy.\nA model with high recall is preferred, even if it has lower precision."
+    "text": "Metric for breast cancer detection\n\n“1”: malignant/cancer (37.3%)\n“0”: benign/no cancer (62.7%)\nMissing a cancer (FN) is much worse than a false alarm (FP)\nSo, we care more about recall than precision or accuracy.\nA model with high recall is preferred, even if it has lower precision."
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#imbalanced-data-is-common",
@@ -6313,63 +6313,70 @@
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#objectives",
     "title": "Imbalanced Data",
     "section": "Objectives",
-    "text": "Objectives\n\nUnderstand the sources of imbalanced data\nLearn methods to handle imbalanced data"
+    "text": "Objectives\n\nUnderstand the sources of imbalanced data\nLearn methods for handling imbalanced data"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#two-sources-of-imbalance",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#two-sources-of-imbalance",
     "title": "Imbalanced Data",
     "section": "Two Sources of Imbalance",
-    "text": "Two Sources of Imbalance\n\nAsymmetric cost between errors\nAsymmetric data prevalence"
+    "text": "Two Sources of Imbalance\n\nAsymmetric data prevalence\nAsymmetric cost between errors\n\nExample: In medical diagnosis, missing a disease (FN) is much worse than a false alarm (FP)\nEven if class prevalence is balanced, the cost of errors is not symmetric"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#methods",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#methods",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#methods-for-selecting-imbalanced-data",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#methods-for-selecting-imbalanced-data",
     "title": "Imbalanced Data",
-    "section": "Methods",
-    "text": "Methods\n\nAdjust evaluation metrics (What do you want to optimise?)\nChange decision thresholds\nChange class-weights\nRessampling data"
+    "section": "Methods for selecting imbalanced data",
+    "text": "Methods for selecting imbalanced data\n\nAdjust evaluation metrics (What do you want to optimise?)\nAdjust decision thresholds\nChange class-weights\nResample data"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#adjust-evaluation-metrics",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#adjust-evaluation-metrics",
     "title": "Imbalanced Data",
     "section": "Adjust evaluation metrics",
-    "text": "Adjust evaluation metrics\n\nAccuracy paradox for imbalanced data\nUse precision or recall\nIf a method does not optimise your metric directly, use the metric in cross-validation"
+    "text": "Adjust evaluation metrics\n\nAccuracy paradox: accuracy is misleadingfor imbalanced data\nUse precision or recall"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#changing-thresholds",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#changing-thresholds",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#adjust-thresholds",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#adjust-thresholds",
     "title": "Imbalanced Data",
-    "section": "Changing Thresholds",
-    "text": "Changing Thresholds\nDon't think this example is good. Change it\n\nAdjust probability threshold to trade precision/recall\n\ny_pred = lr.predict_proba(X_test)[:, 1] &gt; 0.85\nclassification_report(y_test, y_pred)\n\nChoose threshold to minimise given cost; can tune threshold using cross-validation"
+    "section": "Adjust thresholds",
+    "text": "Adjust thresholds\n\nMost models output probabilities (01). Default threshold T is 0.5\nIf p(class=1) &gt; T, predict Class 1; else predict 0\nTuning T shifts the balance between precision and recall"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#roc-curve",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#roc-curve",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#precision-recall-curve-with-varying-thresholds",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#precision-recall-curve-with-varying-thresholds",
     "title": "Imbalanced Data",
-    "section": "ROC Curve",
-    "text": "ROC Curve\n\n\n\n\nEvaluates all thresholds via TPR vs FPR"
+    "section": "Precision-Recall Curve with varying thresholds",
+    "text": "Precision-Recall Curve with varying thresholds"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#remedies-for-the-model",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#remedies-for-the-model",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#tuning-threshold-with-cross-validation",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#tuning-threshold-with-cross-validation",
     "title": "Imbalanced Data",
-    "section": "Remedies for the Model",
-    "text": "Remedies for the Model\n\nBeyond thresholding: modify data or training to address imbalance"
+    "section": "Tuning Threshold with Cross-Validation",
+    "text": "Tuning Threshold with Cross-Validation\n\nfrom sklearn.datasets import load_breast_cancer\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import recall_score\nfrom sklearn.model_selection import cross_validate, StratifiedKFold\nimport numpy as np\n\n# Load data: 1 = malignant, 0 = benign\ndata = load_breast_cancer(as_frame=True)\nX = data.data\ny = (data.target == 0).astype(int)\n\n# Cross-validation with threshold tuning\ncv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)\nthresholds = np.arange(0.1, 1.0, 0.1)\nrecall_scores = {thresh: [] for thresh in thresholds}\n\nfor train_idx, val_idx in cv.split(X, y):\n    X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]\n    y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]\n    \n    # Train Random Forest\n    rf = RandomForestClassifier(n_estimators=100, random_state=42)\n    rf.fit(X_train, y_train)\n    \n    # Get probability predictions on validation fold\n    y_proba = rf.predict_proba(X_val)[:, 1]\n    \n    # Evaluate recall at different thresholds\n    for thresh in thresholds:\n        y_pred = (y_proba &gt;= thresh).astype(int)\n        recall = recall_score(y_val, y_pred, pos_label=1, zero_division=0)\n        recall_scores[thresh].append(recall)\n\n# Average recall across folds for each threshold\nmean_recalls = {thresh: np.mean(scores) for thresh, scores in recall_scores.items()}\n\n# Find optimal threshold\noptimal_thresh = max(mean_recalls, key=mean_recalls.get)\nprint(f\"Thresholds tested: {thresholds.min():.1f} to {thresholds.max():.1f}, step length = 0.1\")\nprint(f\"Optimal threshold: {optimal_thresh:.1f} (Recall = {mean_recalls[optimal_thresh]:.4f})\")\n\nThresholds tested: 0.1 to 0.9, step length = 0.1\nOptimal threshold: 0.1 (Recall = 0.9858)"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#mammography-data",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#mammography-data",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#change-class-weights",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#change-class-weights",
     "title": "Imbalanced Data",
-    "section": "Mammography Data",
-    "text": "Mammography Data\n\n\ndata = fetch_openml(\"mammography\", as_frame=True)\nX, y = data.data, data.target\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y == \"1\", random_state=0)\n\n\n\n\n\n\nImbalanced dataset: 260 positive of 11183 samples"
+    "section": "Change class-weights",
+    "text": "Change class-weights\n\nMany classifcation algorithms use a weighted loss function in model training.\n\\[L = \\frac{1}{n} \\sum_{i=1}^{n} c_{y_i} \\cdot \\ell(y_i, \\hat{y}_i)\\]\nWeight indicates importance. The weight can be set for a class or individually for each sample.\nIf weight for a class is set higher, model training will penalise misclassifying that class more heavily.\nCan use cross-validation to tune class weights"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#mammography-baselines",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#mammography-baselines",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#class-weights-in-tree-based-methods",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#class-weights-in-tree-based-methods",
     "title": "Imbalanced Data",
-    "section": "Mammography Baselines",
-    "text": "Mammography Baselines\n\nLogisticRegression CV=10: ROC AUC 0.920, AP 0.630\nRandomForest CV=10: ROC AUC 0.939, AP 0.722"
+    "section": "Class-Weights in tree-based methods",
+    "text": "Class-Weights in tree-based methods"
+  },
+  {
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#resample-data",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#resample-data",
+    "title": "Imbalanced Data",
+    "section": "Resample data",
+    "text": "Resample data\n\nResampling modifies the training data to balance classes.\nRandom undersampling: drop majority samples until balanced\nRandom oversampling: repeat minority samples until balanced\nSMOTE: create synthetic minority samples by interpolating between existing ones\nEnsemble resampling: train multiple models on different balanced subsets and aggregate predictions"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#basic-approaches",
@@ -6379,39 +6386,18 @@
     "text": "Basic Approaches\n\n\n\n\n\n\n\nChange the training procedure\nModify data via sampling"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#scikit-learn-vs-resampling",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#scikit-learn-vs-resampling",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#mammography-data",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#mammography-data",
     "title": "Imbalanced Data",
-    "section": "Scikit-learn vs Resampling",
-    "text": "Scikit-learn vs Resampling\n\n\n\n\nStandard pipelines transform X only; cannot resample y without extensions"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#imbalance-learn",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#imbalance-learn",
-    "title": "Imbalanced Data",
-    "section": "Imbalance-Learn",
-    "text": "Imbalance-Learn\n\nLibrary: http://imbalanced-learn.org\npip install -U imbalanced-learn\nExtends sklearn API with samplers and pipelines"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#sampler-api",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#sampler-api",
-    "title": "Imbalanced Data",
-    "section": "Sampler API",
-    "text": "Sampler API\n\ndata_resampled, targets_resampled = sampler.sample(X, y)\nfit_sample convenience to fit and sample\nIn pipelines, sampling only occurs during fit\nMany samplers are binary-only; check multiclass support"
+    "section": "Mammography Data",
+    "text": "Mammography Data\n\nWisconsin Diagnostic Breast Cancer (WDBC) dataset from OpenML\nImbalanced dataset: 260 positive of 11183 samples\n\n\n\ndata = fetch_openml(\"mammography\", as_frame=True)\nX, y = data.data, data.target\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y == \"1\", random_state=0)"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#random-undersampling",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#random-undersampling",
     "title": "Imbalanced Data",
     "section": "Random Undersampling",
-    "text": "Random Undersampling\n\nDrop majority samples until balanced\nVery fast; dataset shrinks to ~2x minority\nLoses data but can still perform well\n\nrus = RandomUnderSampler(replacement=False)\nX_sub, y_sub = rus.fit_sample(X_train, y_train)"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#random-undersampling-results",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#random-undersampling-results",
-    "title": "Imbalanced Data",
-    "section": "Random Undersampling Results",
-    "text": "Random Undersampling Results\n\nLogisticRegression: ROC AUC 0.927, AP 0.527 (baseline 0.920, 0.630)\nRandomForest: ROC AUC 0.951, AP 0.629 (baseline 0.939, 0.722)\nOften as accurate with fraction of data; great for large datasets"
+    "text": "Random Undersampling\n\nDrop majority samples until balanced\nVery fast; dataset shrinks to ~2x minority\nProblem: can lose majority samples; unstable for small datasets\n\n\nfrom sklearn.datasets import load_breast_cancer\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import recall_score, classification_report\nfrom sklearn.model_selection import train_test_split\nfrom imblearn.pipeline import Pipeline\nfrom imblearn.under_sampling import RandomUnderSampler\n\n# Load data: malignant = 1, benign = 0\ndata = load_breast_cancer(as_frame=True)\nX = data.data\ny = (data.target == 0).astype(int)\n\n# Train/test split\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42, stratify=y\n)\n\n# Pipeline: RandomUnderSampler → RandomForestClassifier\npipe = Pipeline([\n    ('sampler', RandomUnderSampler(random_state=42)),\n    ('clf', RandomForestClassifier(n_estimators=100, random_state=42))\n])\n\n# Fit only on training data; sampler is NOT applied at predict time\npipe.fit(X_train, y_train)\ny_pred = pipe.predict(X_test)\n\nprint(f\"Recall (malignant=1): {recall_score(y_test, y_pred, pos_label=1):.4f}\")\nprint(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']))\n\nRecall (malignant=1): 0.9286\n              precision    recall  f1-score   support\n\n      Benign       0.96      0.99      0.97        72\n   Malignant       0.97      0.93      0.95        42\n\n    accuracy                           0.96       114\n   macro avg       0.97      0.96      0.96       114\nweighted avg       0.97      0.96      0.96       114"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#random-oversampling",
@@ -6421,11 +6407,18 @@
     "text": "Random Oversampling\n\nRepeat minority samples until balanced\nDataset grows; slower training\n\nros = RandomOverSampler()\nX_over, y_over = ros.fit_sample(X_train, y_train)"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#random-oversampling-results",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#random-oversampling-results",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#synthetic-sample-generation",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#synthetic-sample-generation",
     "title": "Imbalanced Data",
-    "section": "Random Oversampling Results",
-    "text": "Random Oversampling Results\n\nLogisticRegression: ROC AUC 0.917, AP 0.585\nRandomForest: ROC AUC 0.926, AP 0.715\nPerformance similar to baseline; heavier compute"
+    "section": "Synthetic Sample Generation",
+    "text": "Synthetic Sample Generation\n\nSMOTE: Synthetic Minority Oversampling Technique\nAdd synthetic points for minority class\nFor each minority sample: pick random k neighbors, interpolate on line segment\nLeads to larger datasets"
+  },
+  {
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-illustration",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-illustration",
+    "title": "Imbalanced Data",
+    "section": "SMOTE Illustration",
+    "text": "SMOTE Illustration"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#curves-for-logreg",
@@ -6442,102 +6435,53 @@
     "text": "Curves for Random Forest"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#class-weights",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#class-weights",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#resampling-in-practice-when-should-we-apply-resampling",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#resampling-in-practice-when-should-we-apply-resampling",
     "title": "Imbalanced Data",
-    "section": "Class-Weights",
-    "text": "Class-Weights\n\nReweight loss instead of resampling\nSame effect as oversampling without data duplication\nSupported by most models"
+    "section": "Resampling in practice: when should we apply resampling?",
+    "text": "Resampling in practice: when should we apply resampling?\n\nResampling should be applied after train-test split, and only on the training data\nResampling is only applied to training data, not test data\nTest data should reflect real-world distribution; resampling test data would give an unrealistic evaluation of model performance"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#class-weights-in-linear-models",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#class-weights-in-linear-models",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#scikit-learn-not-support-resampling",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#scikit-learn-not-support-resampling",
     "title": "Imbalanced Data",
-    "section": "Class-Weights in Linear Models",
-    "text": "Class-Weights in Linear Models\n\nModify loss with per-class weight \\(c_{y_i}\\)\nEquivalent to repeating samples by class weight count"
+    "section": "Scikit-learn not support resampling",
+    "text": "Scikit-learn not support resampling\n\nSklearn doesn’t support resampling in its API; sklearn’s pipelines transform X only and cannot resample y\nNeed to do it manually or use imbalaned-learn extension"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#class-weights-in-trees",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#class-weights-in-trees",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#imbalance-learn",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#imbalance-learn",
     "title": "Imbalanced Data",
-    "section": "Class-Weights in Trees",
-    "text": "Class-Weights in Trees\n\nApply class weights in impurity (Gini or entropy)\nUse weighted votes for prediction"
+    "section": "Imbalance-Learn",
+    "text": "Imbalance-Learn\n\nLibrary: http://imbalanced-learn.org\nTo install: pip install -U imbalanced-learn\nExtends sklearn API with samplers and pipelines"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#using-class-weights",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#using-class-weights",
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#sklearn-pipelines-no-resampling",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#sklearn-pipelines-no-resampling",
     "title": "Imbalanced Data",
-    "section": "Using Class-Weights",
-    "text": "Using Class-Weights\n\nLogisticRegression(class_weight=“balanced”): ROC AUC 0.918, AP 0.587\nRandomForest(class_weight=“balanced”): ROC AUC 0.917, AP 0.701"
+    "section": "sklearn pipelines (no resampling)",
+    "text": "sklearn pipelines (no resampling)\n\n# train/test split\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42, stratify=y\n)\n\n# sklearn Pipeline: imputation → normalisation → classifier (no resampling)\nsklearn_pipeline = Pipeline([\n    ('imputer', SimpleImputer(strategy='median')),\n    ('scaler', StandardScaler()),\n    ('clf', RandomForestClassifier(n_estimators=100, random_state=42))\n])\n\nsklearn_pipeline.fit(X_train, y_train)\ny_pred = sklearn_pipeline.predict(X_test)\nprint(f\"Recall (malignant=1): {recall_score(y_test, y_pred, pos_label=1):.4f}\")"
+  },
+  {
+    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#sklearn-pipelines-with-resampling",
+    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#sklearn-pipelines-with-resampling",
+    "title": "Imbalanced Data",
+    "section": "sklearn pipelines with resampling",
+    "text": "sklearn pipelines with resampling\n\nSampler only runs during fit, NOT at prediction\nThis is achieved by from imblearn.pipeline import Pipeline\n\n\nfrom imblearn.pipeline import Pipeline as ImbPipeline\nfrom imblearn.under_sampling import RandomUnderSampler\n\n# imblearn Pipeline: imputation → normalisation → undersampling → classifier\nimb_pipeline = ImbPipeline([\n    ('imputer', SimpleImputer(strategy='median')),\n    ('scaler', StandardScaler()),\n    ('sampler', RandomUnderSampler(random_state=42)),\n    ('clf', RandomForestClassifier(n_estimators=100, random_state=42))\n])\n\n# Sampler only runs during fit, NOT at prediction time\nimb_pipeline.fit(X_train, y_train)\ny_pred = imb_pipeline.predict(X_test)\nprint(f\"Recall (malignant=1): {recall_score(y_test, y_pred, pos_label=1):.4f}\")"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#ensemble-resampling",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#ensemble-resampling",
     "title": "Imbalanced Data",
-    "section": "Ensemble Resampling",
-    "text": "Ensemble Resampling\n\nRandom resampling separately per estimator in ensemble\nExample: Balanced bagging or balanced random forest\nEasy with imblearn; not yet in sklearn core"
+    "section": "Ensemble resampling",
+    "text": "Ensemble resampling\n\nRandom resampling separately per estimator in ensemble\nExample: Balanced bagging or balanced random forest\nEasy with imblearn BalancedBaggingClassifier (sklearn API compatible)"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#easy-ensemble-with-imblearn",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#easy-ensemble-with-imblearn",
     "title": "Imbalanced Data",
     "section": "Easy Ensemble with imblearn",
-    "text": "Easy Ensemble with imblearn\n\n\nfrom imblearn.ensemble import BalancedBaggingClassifier\nbase = DecisionTreeClassifier(max_features=\"auto\")\nresampled_rf = BalancedBaggingClassifier(base_estimator=base, random_state=0)\n\n\nTrains each tree on a different undersampled dataset\nROC AUC 0.957, AP 0.654 (baseline RF 0.939, 0.722)\n\n\n\nAs cheap as undersampling; strong results"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#roc-vs-pr-comparison",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#roc-vs-pr-comparison",
-    "title": "Imbalanced Data",
-    "section": "ROC vs PR Comparison",
-    "text": "ROC vs PR Comparison\n\n\n\n\nEasy ensemble performs well at higher recall and precision regions"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#synthetic-sample-generation",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#synthetic-sample-generation",
-    "title": "Imbalanced Data",
-    "section": "Synthetic Sample Generation",
-    "text": "Synthetic Sample Generation\n\nSMOTE: Synthetic Minority Oversampling Technique\nInterview-friendly method; many variants exist"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#smote",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#smote",
-    "title": "Imbalanced Data",
-    "section": "SMOTE",
-    "text": "SMOTE\n\nAdd synthetic points for minority class\nFor each minority sample: pick random neighbor, interpolate on line segment\nLeads to larger datasets; can combine with undersampling"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-illustration",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-illustration",
-    "title": "Imbalanced Data",
-    "section": "SMOTE Illustration",
-    "text": "SMOTE Illustration"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-results",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-results",
-    "title": "Imbalanced Data",
-    "section": "SMOTE Results",
-    "text": "SMOTE Results\n\nLogisticRegression with SMOTE: ROC AUC 0.919, AP 0.585\nRandomForest with SMOTE: ROC AUC 0.946, AP 0.688\nSimilar to baseline; tune k_neighbors for best AP"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-tuning",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-tuning",
-    "title": "Imbalanced Data",
-    "section": "SMOTE Tuning",
-    "text": "SMOTE Tuning\n\n\n\n\nGridSearch over smote__k_neighbors; moderate impact on metrics"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-curves",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-curves",
-    "title": "Imbalanced Data",
-    "section": "SMOTE Curves",
-    "text": "SMOTE Curves"
-  },
-  {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#roc-vs-pr-with-smote",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#roc-vs-pr-with-smote",
-    "title": "Imbalanced Data",
-    "section": "ROC vs PR with SMOTE",
-    "text": "ROC vs PR with SMOTE"
+    "text": "Easy Ensemble with imblearn\n\nBag of Boosted Learners; by default using AdaBoostClassifier as base estimator\nTrains each tree on a different under-sampled dataset\nAs cheap as undersampling, but much more powerful than undersampling alone, as it prevents overfitting\n\nfrom imblearn.ensemble import EasyEnsembleClassifier\n\nee = EasyEnsembleClassifier(n_estimators=10, random_state=42)\nee.fit(X_train, y_train)\n\ny_pred = ee.predict(X_test)"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#summary",

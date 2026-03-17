@@ -228,7 +228,7 @@
   - y_pred_2: Predicts some positives correctly but misses others
   - y_pred_3: A mix of errors --></li>
 </ul>
-<div id="2535ee21" class="cell" data-execution_count="1">
+<div id="647233fe" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -249,7 +249,7 @@
 <h2>Picking a metric</h2>
 <ul>
 <li>Real-world problems are rarely balanced.</li>
-<li>Accuracy is rarely what you want.</li>
+<li>Accuracy is rarely what we want.</li>
 <li>Find the right criterion; decide between emphasis on recall or precision.</li>
 <li>Identify which classes are important.</li>
 </ul>
@@ -257,7 +257,8 @@
 <section id="metric-for-breast-cancer-detection" class="slide level2">
 <h2>Metric for breast cancer detection</h2>
 <ul>
-<li>“1”: malignant/cancer; “0”: benign/no cancer.</li>
+<li>“1”: malignant/cancer (37.3%)</li>
+<li>“0”: benign/no cancer (62.7%)</li>
 <li>Missing a cancer (FN) is much worse than a false alarm (FP)</li>
 <li>So, we care more about <strong>recall</strong> than precision or accuracy.</li>
 <li>A model with high recall is preferred, even if it has lower precision.</li>
@@ -279,85 +280,141 @@
 <h2>Objectives</h2>
 <ul>
 <li>Understand the sources of imbalanced data</li>
-<li>Learn methods to handle imbalanced data</li>
+<li>Learn methods for handling imbalanced data</li>
 </ul>
 </section>
 <section id="two-sources-of-imbalance" class="slide level2">
 <h2>Two Sources of Imbalance</h2>
 <ul>
-<li>Asymmetric cost between errors</li>
 <li>Asymmetric data prevalence</li>
+<li>Asymmetric cost between errors
+<ul>
+<li>Example: In medical diagnosis, missing a disease (FN) is much worse than a false alarm (FP)</li>
+<li>Even if class prevalence is balanced, the cost of errors is not symmetric</li>
+</ul></li>
 </ul>
 <!-- ## Why Do We Care?
 - Real-world costs rarely symmetric
 - Data often heavily imbalanced; rare event detection common -->
 </section>
-<section id="methods" class="slide level2">
-<h2>Methods</h2>
+<section id="methods-for-selecting-imbalanced-data" class="slide level2">
+<h2>Methods for selecting imbalanced data</h2>
 <ul>
 <li>Adjust evaluation metrics (<em>What do you want to optimise?</em>)</li>
-<li>Change decision thresholds</li>
+<li>Adjust decision thresholds</li>
 <li>Change class-weights</li>
-<li>Ressampling data</li>
+<li>Resample data</li>
 </ul>
 </section>
 <section id="adjust-evaluation-metrics" class="slide level2">
 <h2>Adjust evaluation metrics</h2>
 <ul>
-<li>Accuracy paradox for imbalanced data</li>
+<li>Accuracy paradox: accuracy is misleadingfor imbalanced data</li>
 <li>Use precision or recall</li>
-<li>If a method does not optimise your metric directly, use the metric in cross-validation</li>
 </ul>
 </section>
-<section id="changing-thresholds" class="slide level2">
-<h2>Changing Thresholds</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {notes} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>Don't think this example is good. Change it</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="adjust-thresholds" class="slide level2">
+<h2>Adjust thresholds</h2>
 <ul>
-<li>Adjust probability threshold to trade precision/recall</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>y_pred <span class="op">=</span> lr.predict_proba(X_test)[:, <span class="dv">1</span>] <span class="op">&gt;</span> <span class="fl">0.85</span></span>
-<span id="cb2-2"><a></a>classification_report(y_test, y_pred)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li>Choose threshold to minimise given cost; can tune threshold using cross-validation</li>
+<li>Most models output probabilities (01). Default threshold <em>T</em> is 0.5</li>
+<li>If p(class=1) &gt; <em>T</em>, predict Class 1; else predict 0</li>
+<li>Tuning <em>T</em> shifts the balance between precision and recall</li>
 </ul>
 </section>
-<section id="roc-curve" class="slide level2">
-<h2>ROC Curve</h2>
-<div style="text-align:center;">
-<p><img src="images/roc_svc_rf_curve.png" style="max-width:85%;"></p>
+<section id="precision-recall-curve-with-varying-thresholds" class="slide level2">
+<h2>Precision-Recall Curve with varying thresholds</h2>
+<div id="23026e27" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><a href="imbalanced_data_files/figure-revealjs/cell-3-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img data-src="imbalanced_data_files/figure-revealjs/cell-3-output-1.png" width="951" height="566"></a></p>
+</figure>
 </div>
-<ul>
-<li>Evaluates all thresholds via TPR vs FPR</li>
-</ul>
-</section>
-<section id="remedies-for-the-model" class="slide level2">
-<h2>Remedies for the Model</h2>
-<ul>
-<li>Beyond thresholding: modify data or training to address imbalance</li>
-</ul>
-</section>
-<section id="mammography-data" class="slide level2">
-<h2>Mammography Data</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>data <span class="op">=</span> fetch_openml(<span class="st">"mammography"</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-2"><a></a>X, y <span class="op">=</span> data.data, data.target</span>
-<span id="cb3-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb3-4"><a></a>    X, y <span class="op">==</span> <span class="st">"1"</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
-<div style="text-align:center;">
-<p><img src="images/mammography_data.png" style="max-width:100%;"></p>
 </div>
-</div></div>
+</div>
+</section>
+<section id="tuning-threshold-with-cross-validation" class="slide level2">
+<h2>Tuning Threshold with Cross-Validation</h2>
+<div id="beae1b82" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb1-2"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb1-3"><a></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> recall_score</span>
+<span id="cb1-4"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_validate, StratifiedKFold</span>
+<span id="cb1-5"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-6"><a></a></span>
+<span id="cb1-7"><a></a><span class="co"># Load data: 1 = malignant, 0 = benign</span></span>
+<span id="cb1-8"><a></a>data <span class="op">=</span> load_breast_cancer(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-9"><a></a>X <span class="op">=</span> data.data</span>
+<span id="cb1-10"><a></a>y <span class="op">=</span> (data.target <span class="op">==</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb1-11"><a></a></span>
+<span id="cb1-12"><a></a><span class="co"># Cross-validation with threshold tuning</span></span>
+<span id="cb1-13"><a></a>cv <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb1-14"><a></a>thresholds <span class="op">=</span> np.arange(<span class="fl">0.1</span>, <span class="fl">1.0</span>, <span class="fl">0.1</span>)</span>
+<span id="cb1-15"><a></a>recall_scores <span class="op">=</span> {thresh: [] <span class="cf">for</span> thresh <span class="kw">in</span> thresholds}</span>
+<span id="cb1-16"><a></a></span>
+<span id="cb1-17"><a></a><span class="cf">for</span> train_idx, val_idx <span class="kw">in</span> cv.split(X, y):</span>
+<span id="cb1-18"><a></a>    X_train, X_val <span class="op">=</span> X.iloc[train_idx], X.iloc[val_idx]</span>
+<span id="cb1-19"><a></a>    y_train, y_val <span class="op">=</span> y.iloc[train_idx], y.iloc[val_idx]</span>
+<span id="cb1-20"><a></a>    </span>
+<span id="cb1-21"><a></a>    <span class="co"># Train Random Forest</span></span>
+<span id="cb1-22"><a></a>    rf <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb1-23"><a></a>    rf.fit(X_train, y_train)</span>
+<span id="cb1-24"><a></a>    </span>
+<span id="cb1-25"><a></a>    <span class="co"># Get probability predictions on validation fold</span></span>
+<span id="cb1-26"><a></a>    y_proba <span class="op">=</span> rf.predict_proba(X_val)[:, <span class="dv">1</span>]</span>
+<span id="cb1-27"><a></a>    </span>
+<span id="cb1-28"><a></a>    <span class="co"># Evaluate recall at different thresholds</span></span>
+<span id="cb1-29"><a></a>    <span class="cf">for</span> thresh <span class="kw">in</span> thresholds:</span>
+<span id="cb1-30"><a></a>        y_pred <span class="op">=</span> (y_proba <span class="op">&gt;=</span> thresh).astype(<span class="bu">int</span>)</span>
+<span id="cb1-31"><a></a>        recall <span class="op">=</span> recall_score(y_val, y_pred, pos_label<span class="op">=</span><span class="dv">1</span>, zero_division<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-32"><a></a>        recall_scores[thresh].append(recall)</span>
+<span id="cb1-33"><a></a></span>
+<span id="cb1-34"><a></a><span class="co"># Average recall across folds for each threshold</span></span>
+<span id="cb1-35"><a></a>mean_recalls <span class="op">=</span> {thresh: np.mean(scores) <span class="cf">for</span> thresh, scores <span class="kw">in</span> recall_scores.items()}</span>
+<span id="cb1-36"><a></a></span>
+<span id="cb1-37"><a></a><span class="co"># Find optimal threshold</span></span>
+<span id="cb1-38"><a></a>optimal_thresh <span class="op">=</span> <span class="bu">max</span>(mean_recalls, key<span class="op">=</span>mean_recalls.get)</span>
+<span id="cb1-39"><a></a><span class="bu">print</span>(<span class="ss">f"Thresholds tested: </span><span class="sc">{</span>thresholds<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.1f}</span><span class="ss"> to </span><span class="sc">{</span>thresholds<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.1f}</span><span class="ss">, step length = 0.1"</span>)</span>
+<span id="cb1-40"><a></a><span class="bu">print</span>(<span class="ss">f"Optimal threshold: </span><span class="sc">{</span>optimal_thresh<span class="sc">:.1f}</span><span class="ss"> (Recall = </span><span class="sc">{</span>mean_recalls[optimal_thresh]<span class="sc">:.4f}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Thresholds tested: 0.1 to 0.9, step length = 0.1
+Optimal threshold: 0.1 (Recall = 0.9858)</code></pre>
+</div>
+</div>
+</section>
+<section id="change-class-weights" class="slide level2">
+<h2>Change class-weights</h2>
 <ul>
-<li>Imbalanced dataset: 260 positive of 11183 samples</li>
+<li>Many classifcation algorithms use a weighted loss function in model training.</li>
+<li><span class="math display">\[L = \frac{1}{n} \sum_{i=1}^{n} c_{y_i} \cdot \ell(y_i, \hat{y}_i)\]</span></li>
+<li>Weight indicates importance. The weight can be set for a class or individually for each sample.</li>
+<li>If weight for a class is set higher, model training will penalise misclassifying that class more heavily.</li>
+<li>Can use cross-validation to tune class weights</li>
 </ul>
 </section>
-<section id="mammography-baselines" class="slide level2">
-<h2>Mammography Baselines</h2>
+<section id="class-weights-in-tree-based-methods" class="slide level2">
+<h2>Class-Weights in tree-based methods</h2>
+<div id="40cc2c20" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><a href="imbalanced_data_files/figure-revealjs/cell-5-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img data-src="imbalanced_data_files/figure-revealjs/cell-5-output-1.png" width="758" height="374"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Using Class-Weights
+- LogisticRegression(class_weight="balanced"): ROC AUC 0.918, AP 0.587
+- RandomForest(class_weight="balanced"): ROC AUC 0.917, AP 0.701 -->
+</section>
+<section id="resample-data" class="slide level2">
+<h2>Resample data</h2>
 <ul>
-<li>LogisticRegression CV=10: ROC AUC 0.920, AP 0.630</li>
-<li>RandomForest CV=10: ROC AUC 0.939, AP 0.722</li>
+<li>Resampling modifies the training data to balance classes.</li>
+<li><strong>Random undersampling</strong>: drop majority samples until balanced</li>
+<li><strong>Random oversampling</strong>: repeat minority samples until balanced</li>
+<li><strong>SMOTE</strong>: create synthetic minority samples by interpolating between existing ones</li>
+<li><strong>Ensemble resampling</strong>: train multiple models on different balanced subsets and aggregate predictions</li>
 </ul>
 </section>
 <section id="basic-approaches" class="slide level2">
@@ -374,49 +431,78 @@
 </ul>
 </div></div>
 </section>
-<section id="scikit-learn-vs-resampling" class="slide level2">
-<h2>Scikit-learn vs Resampling</h2>
+<section id="mammography-data" class="slide level2">
+<h2>Mammography Data</h2>
+<ul>
+<li>Wisconsin Diagnostic Breast Cancer (WDBC) dataset from OpenML</li>
+<li>Imbalanced dataset: 260 positive of 11183 samples</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>data <span class="op">=</span> fetch_openml(<span class="st">"mammography"</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-2"><a></a>X, y <span class="op">=</span> data.data, data.target</span>
+<span id="cb3-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb3-4"><a></a>    X, y <span class="op">==</span> <span class="st">"1"</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
 <div style="text-align:center;">
-<p><img src="images/pipeline.png" style="max-width:55%;"></p>
+<p><img src="images/mammography_data.png" style="max-width:100%;"></p>
 </div>
-<ul>
-<li>Standard pipelines transform X only; cannot resample y without extensions</li>
-</ul>
-</section>
-<section id="imbalance-learn" class="slide level2">
-<h2>Imbalance-Learn</h2>
-<ul>
-<li>Library: http://imbalanced-learn.org</li>
-<li><code>pip install -U imbalanced-learn</code></li>
-<li>Extends sklearn API with samplers and pipelines</li>
-</ul>
-</section>
-<section id="sampler-api" class="slide level2">
-<h2>Sampler API</h2>
-<ul>
-<li><code>data_resampled, targets_resampled = sampler.sample(X, y)</code></li>
-<li><code>fit_sample</code> convenience to fit and sample</li>
-<li>In pipelines, sampling only occurs during <code>fit</code></li>
-<li>Many samplers are binary-only; check multiclass support</li>
-</ul>
+</div></div>
 </section>
 <section id="random-undersampling" class="slide level2">
 <h2>Random Undersampling</h2>
 <ul>
 <li>Drop majority samples until balanced</li>
 <li>Very fast; dataset shrinks to ~2x minority</li>
-<li>Loses data but can still perform well</li>
+<li>Problem: can lose majority samples; unstable for small datasets</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>rus <span class="op">=</span> RandomUnderSampler(replacement<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-2"><a></a>X_sub, y_sub <span class="op">=</span> rus.fit_sample(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="random-undersampling-results" class="slide level2">
-<h2>Random Undersampling Results</h2>
-<ul>
-<li>LogisticRegression: ROC AUC 0.927, AP 0.527 (baseline 0.920, 0.630)</li>
-<li>RandomForest: ROC AUC 0.951, AP 0.629 (baseline 0.939, 0.722)</li>
-<li>Often as accurate with fraction of data; great for large datasets</li>
-</ul>
+<div id="c4df4cb2" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb4-2"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb4-3"><a></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> recall_score, classification_report</span>
+<span id="cb4-4"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb4-5"><a></a><span class="im">from</span> imblearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb4-6"><a></a><span class="im">from</span> imblearn.under_sampling <span class="im">import</span> RandomUnderSampler</span>
+<span id="cb4-7"><a></a></span>
+<span id="cb4-8"><a></a><span class="co"># Load data: malignant = 1, benign = 0</span></span>
+<span id="cb4-9"><a></a>data <span class="op">=</span> load_breast_cancer(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-10"><a></a>X <span class="op">=</span> data.data</span>
+<span id="cb4-11"><a></a>y <span class="op">=</span> (data.target <span class="op">==</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb4-12"><a></a></span>
+<span id="cb4-13"><a></a><span class="co"># Train/test split</span></span>
+<span id="cb4-14"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb4-15"><a></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
+<span id="cb4-16"><a></a>)</span>
+<span id="cb4-17"><a></a></span>
+<span id="cb4-18"><a></a><span class="co"># Pipeline: RandomUnderSampler → RandomForestClassifier</span></span>
+<span id="cb4-19"><a></a>pipe <span class="op">=</span> Pipeline([</span>
+<span id="cb4-20"><a></a>    (<span class="st">'sampler'</span>, RandomUnderSampler(random_state<span class="op">=</span><span class="dv">42</span>)),</span>
+<span id="cb4-21"><a></a>    (<span class="st">'clf'</span>, RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
+<span id="cb4-22"><a></a>])</span>
+<span id="cb4-23"><a></a></span>
+<span id="cb4-24"><a></a><span class="co"># Fit only on training data; sampler is NOT applied at predict time</span></span>
+<span id="cb4-25"><a></a>pipe.fit(X_train, y_train)</span>
+<span id="cb4-26"><a></a>y_pred <span class="op">=</span> pipe.predict(X_test)</span>
+<span id="cb4-27"><a></a></span>
+<span id="cb4-28"><a></a><span class="bu">print</span>(<span class="ss">f"Recall (malignant=1): </span><span class="sc">{</span>recall_score(y_test, y_pred, pos_label<span class="op">=</span><span class="dv">1</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb4-29"><a></a><span class="bu">print</span>(classification_report(y_test, y_pred, target_names<span class="op">=</span>[<span class="st">'Benign'</span>, <span class="st">'Malignant'</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Recall (malignant=1): 0.9286
+              precision    recall  f1-score   support
+
+      Benign       0.96      0.99      0.97        72
+   Malignant       0.97      0.93      0.95        42
+
+    accuracy                           0.96       114
+   macro avg       0.97      0.96      0.96       114
+weighted avg       0.97      0.96      0.96       114
+</code></pre>
+</div>
+</div>
+<!-- ## Random Undersampling Results
+- LogisticRegression: ROC AUC 0.927, AP 0.527 (baseline 0.920, 0.630)
+- RandomForest: ROC AUC 0.951, AP 0.629 (baseline 0.939, 0.722)
+- Often as accurate with fraction of data;  -->
 </section>
 <section id="random-oversampling" class="slide level2">
 <h2>Random Oversampling</h2>
@@ -424,16 +510,37 @@
 <li>Repeat minority samples until balanced</li>
 <li>Dataset grows; slower training</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>ros <span class="op">=</span> RandomOverSampler()</span>
-<span id="cb5-2"><a></a>X_over, y_over <span class="op">=</span> ros.fit_sample(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>ros <span class="op">=</span> RandomOverSampler()</span>
+<span id="cb6-2"><a></a>X_over, y_over <span class="op">=</span> ros.fit_sample(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="random-oversampling-results" class="slide level2">
-<h2>Random Oversampling Results</h2>
+<section id="synthetic-sample-generation" class="slide level2">
+<h2>Synthetic Sample Generation</h2>
 <ul>
-<li>LogisticRegression: ROC AUC 0.917, AP 0.585</li>
-<li>RandomForest: ROC AUC 0.926, AP 0.715</li>
-<li>Performance similar to baseline; heavier compute</li>
+<li>SMOTE: Synthetic Minority Oversampling Technique</li>
+<li>Add synthetic points for minority class</li>
+<li>For each minority sample: pick random <em>k</em> neighbors, interpolate on line segment</li>
+<li>Leads to larger datasets</li>
 </ul>
+</section>
+<section id="smote-illustration" class="slide level2">
+<h2>SMOTE Illustration</h2>
+<div style="text-align:center;">
+<p><img src="images/smote_mammography.png" style="max-width:100%;"></p>
+</div>
+<!-- ## SMOTE Tuning
+<div style="text-align:center;">
+  <img src="images/param_smote_k_neighbors.png" style="max-width:60%;">
+</div>
+- GridSearch over `smote__k_neighbors`; moderate impact on metrics
+
+## SMOTE Curves
+<div style="text-align:center;">
+  <img src="images/smote_k_neighbors.png" style="max-width:100%;">
+</div> -->
+<!-- ## Random Oversampling Results
+- LogisticRegression: ROC AUC 0.917, AP 0.585
+- RandomForest: ROC AUC 0.926, AP 0.715
+- Performance similar to baseline; heavier compute -->
 </section>
 <section id="curves-for-logreg" class="slide level2">
 <h2>Curves for LogReg</h2>
@@ -447,123 +554,106 @@
 <p><img src="images/curves_rf.png" style="max-width:100%;"></p>
 </div>
 </section>
-<section id="class-weights" class="slide level2">
-<h2>Class-Weights</h2>
+<section id="resampling-in-practice-when-should-we-apply-resampling" class="slide level2">
+<h2>Resampling in practice: when should we apply resampling?</h2>
 <ul>
-<li>Reweight loss instead of resampling</li>
-<li>Same effect as oversampling without data duplication</li>
-<li>Supported by most models</li>
+<li>Resampling should be applied after train-test split, and only on the training data</li>
+<li>Resampling is only applied to training data, not test data</li>
+<li>Test data should reflect real-world distribution; resampling test data would give an unrealistic evaluation of model performance</li>
 </ul>
 </section>
-<section id="class-weights-in-linear-models" class="slide level2">
-<h2>Class-Weights in Linear Models</h2>
+<section id="scikit-learn-not-support-resampling" class="slide level2">
+<h2>Scikit-learn not support resampling</h2>
 <ul>
-<li>Modify loss with per-class weight <span class="math inline">\(c_{y_i}\)</span></li>
-<li>Equivalent to repeating samples by class weight count</li>
+<li>Sklearn doesn’t support resampling in its API; sklearn’s pipelines transform X only and cannot resample y</li>
+<li>Need to do it manually or use imbalaned-learn extension</li>
+</ul>
+<div style="text-align:center;">
+<p><img src="images/pipeline.png" style="max-width:55%;"></p>
+</div>
+</section>
+<section id="imbalance-learn" class="slide level2">
+<h2>Imbalance-Learn</h2>
+<ul>
+<li>Library: http://imbalanced-learn.org</li>
+<li>To install: <code>pip install -U imbalanced-learn</code></li>
+<li>Extends sklearn API with samplers and pipelines</li>
 </ul>
 </section>
-<section id="class-weights-in-trees" class="slide level2">
-<h2>Class-Weights in Trees</h2>
-<ul>
-<li>Apply class weights in impurity (Gini or entropy)</li>
-<li>Use weighted votes for prediction</li>
-</ul>
+<section id="sklearn-pipelines-no-resampling" class="slide level2">
+<h2>sklearn pipelines (no resampling)</h2>
+<div id="b147ae53" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="co"># train/test split</span></span>
+<span id="cb7-2"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb7-3"><a></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
+<span id="cb7-4"><a></a>)</span>
+<span id="cb7-5"><a></a></span>
+<span id="cb7-6"><a></a><span class="co"># sklearn Pipeline: imputation → normalisation → classifier (no resampling)</span></span>
+<span id="cb7-7"><a></a>sklearn_pipeline <span class="op">=</span> Pipeline([</span>
+<span id="cb7-8"><a></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
+<span id="cb7-9"><a></a>    (<span class="st">'scaler'</span>, StandardScaler()),</span>
+<span id="cb7-10"><a></a>    (<span class="st">'clf'</span>, RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
+<span id="cb7-11"><a></a>])</span>
+<span id="cb7-12"><a></a></span>
+<span id="cb7-13"><a></a>sklearn_pipeline.fit(X_train, y_train)</span>
+<span id="cb7-14"><a></a>y_pred <span class="op">=</span> sklearn_pipeline.predict(X_test)</span>
+<span id="cb7-15"><a></a><span class="bu">print</span>(<span class="ss">f"Recall (malignant=1): </span><span class="sc">{</span>recall_score(y_test, y_pred, pos_label<span class="op">=</span><span class="dv">1</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="using-class-weights" class="slide level2">
-<h2>Using Class-Weights</h2>
+<section id="sklearn-pipelines-with-resampling" class="slide level2">
+<h2>sklearn pipelines with resampling</h2>
 <ul>
-<li>LogisticRegression(class_weight=“balanced”): ROC AUC 0.918, AP 0.587</li>
-<li>RandomForest(class_weight=“balanced”): ROC AUC 0.917, AP 0.701</li>
+<li>Sampler only runs during fit, NOT at prediction</li>
+<li>This is achieved by <code>from imblearn.pipeline import Pipeline</code></li>
 </ul>
-</section></section>
-<section>
-<section id="resampling" class="title-slide slide level1 center">
-<h1>Resampling</h1>
-
+<div id="f4171150" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">from</span> imblearn.pipeline <span class="im">import</span> Pipeline <span class="im">as</span> ImbPipeline</span>
+<span id="cb8-2"><a></a><span class="im">from</span> imblearn.under_sampling <span class="im">import</span> RandomUnderSampler</span>
+<span id="cb8-3"><a></a></span>
+<span id="cb8-4"><a></a><span class="co"># imblearn Pipeline: imputation → normalisation → undersampling → classifier</span></span>
+<span id="cb8-5"><a></a>imb_pipeline <span class="op">=</span> ImbPipeline([</span>
+<span id="cb8-6"><a></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
+<span id="cb8-7"><a></a>    (<span class="st">'scaler'</span>, StandardScaler()),</span>
+<span id="cb8-8"><a></a>    (<span class="st">'sampler'</span>, RandomUnderSampler(random_state<span class="op">=</span><span class="dv">42</span>)),</span>
+<span id="cb8-9"><a></a>    (<span class="st">'clf'</span>, RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
+<span id="cb8-10"><a></a>])</span>
+<span id="cb8-11"><a></a></span>
+<span id="cb8-12"><a></a><span class="co"># Sampler only runs during fit, NOT at prediction time</span></span>
+<span id="cb8-13"><a></a>imb_pipeline.fit(X_train, y_train)</span>
+<span id="cb8-14"><a></a>y_pred <span class="op">=</span> imb_pipeline.predict(X_test)</span>
+<span id="cb8-15"><a></a><span class="bu">print</span>(<span class="ss">f"Recall (malignant=1): </span><span class="sc">{</span>recall_score(y_test, y_pred, pos_label<span class="op">=</span><span class="dv">1</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 <section id="ensemble-resampling" class="slide level2">
-<h2>Ensemble Resampling</h2>
+<h2>Ensemble resampling</h2>
 <ul>
 <li>Random resampling separately per estimator in ensemble</li>
 <li>Example: Balanced bagging or balanced random forest</li>
-<li>Easy with imblearn; not yet in sklearn core</li>
+<li>Easy with imblearn <code>BalancedBaggingClassifier</code> (sklearn API compatible)</li>
 </ul>
 </section>
 <section id="easy-ensemble-with-imblearn" class="slide level2">
 <h2>Easy Ensemble with imblearn</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> imblearn.ensemble <span class="im">import</span> BalancedBaggingClassifier</span>
-<span id="cb6-2"><a></a>base <span class="op">=</span> DecisionTreeClassifier(max_features<span class="op">=</span><span class="st">"auto"</span>)</span>
-<span id="cb6-3"><a></a>resampled_rf <span class="op">=</span> BalancedBaggingClassifier(base_estimator<span class="op">=</span>base, random_state<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
 <ul>
-<li>Trains each tree on a different undersampled dataset</li>
-<li>ROC AUC 0.957, AP 0.654 (baseline RF 0.939, 0.722)</li>
+<li>Bag of Boosted Learners; by default using AdaBoostClassifier as base estimator</li>
+<li>Trains each tree on a different under-sampled dataset</li>
+<li>As cheap as undersampling, but much more powerful than undersampling alone, as it prevents overfitting</li>
 </ul>
-</div></div>
-<ul>
-<li>As cheap as undersampling; strong results</li>
-</ul>
-</section>
-<section id="roc-vs-pr-comparison" class="slide level2">
-<h2>ROC vs PR Comparison</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="im">from</span> imblearn.ensemble <span class="im">import</span> EasyEnsembleClassifier</span>
+<span id="cb9-2"><a></a></span>
+<span id="cb9-3"><a></a>ee <span class="op">=</span> EasyEnsembleClassifier(n_estimators<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb9-4"><a></a>ee.fit(X_train, y_train)</span>
+<span id="cb9-5"><a></a></span>
+<span id="cb9-6"><a></a>y_pred <span class="op">=</span> ee.predict(X_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<!-- ## ROC vs PR Comparison
 <div style="text-align:center;">
-<p><img src="images/roc_vs_pr.png" style="max-width:100%;"></p>
+  <img src="images/roc_vs_pr.png" style="max-width:100%;">
 </div>
-<ul>
-<li>Easy ensemble performs well at higher recall and precision regions</li>
-</ul>
-</section>
-<section id="synthetic-sample-generation" class="slide level2">
-<h2>Synthetic Sample Generation</h2>
-<ul>
-<li>SMOTE: Synthetic Minority Oversampling Technique</li>
-<li>Interview-friendly method; many variants exist</li>
-</ul>
-</section>
-<section id="smote" class="slide level2">
-<h2>SMOTE</h2>
-<ul>
-<li>Add synthetic points for minority class</li>
-<li>For each minority sample: pick random neighbor, interpolate on line segment</li>
-<li>Leads to larger datasets; can combine with undersampling</li>
-</ul>
-</section>
-<section id="smote-illustration" class="slide level2">
-<h2>SMOTE Illustration</h2>
+- Easy ensemble performs well at higher recall and precision regions -->
+<!-- ## ROC vs PR with SMOTE
 <div style="text-align:center;">
-<p><img src="images/smote_mammography.png" style="max-width:100%;"></p>
-</div>
-</section>
-<section id="smote-results" class="slide level2">
-<h2>SMOTE Results</h2>
-<ul>
-<li>LogisticRegression with SMOTE: ROC AUC 0.919, AP 0.585</li>
-<li>RandomForest with SMOTE: ROC AUC 0.946, AP 0.688</li>
-<li>Similar to baseline; tune k_neighbors for best AP</li>
-</ul>
-</section>
-<section id="smote-tuning" class="slide level2">
-<h2>SMOTE Tuning</h2>
-<div style="text-align:center;">
-<p><img src="images/param_smote_k_neighbors.png" style="max-width:60%;"></p>
-</div>
-<ul>
-<li>GridSearch over <code>smote__k_neighbors</code>; moderate impact on metrics</li>
-</ul>
-</section>
-<section id="smote-curves" class="slide level2">
-<h2>SMOTE Curves</h2>
-<div style="text-align:center;">
-<p><img src="images/smote_k_neighbors.png" style="max-width:100%;"></p>
-</div>
-</section>
-<section id="roc-vs-pr-with-smote" class="slide level2">
-<h2>ROC vs PR with SMOTE</h2>
-<div style="text-align:center;">
-<p><img src="images/roc_vs_pr_smote.png" style="max-width:100%;"></p>
-</div>
+  <img src="images/roc_vs_pr_smote.png" style="max-width:100%;">
+</div> -->
 </section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
