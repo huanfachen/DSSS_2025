@@ -294,7 +294,7 @@ plt.show()
 :::
 ::::
 
-## Mammography Data
+<!-- ## Mammography Data
 
 - Wisconsin Diagnostic Breast Cancer (WDBC) dataset from OpenML
 - Imbalanced dataset: 260 positive of 11183 samples
@@ -313,7 +313,7 @@ X_train, X_test, y_train, y_test = train_test_split(
   <img src="images/mammography_data.png" style="max-width:100%;">
 </div>
 :::
-::::
+:::: -->
 
 ## Random Undersampling
 
@@ -484,10 +484,14 @@ print('Saved: images/oversampling.gif')
 
 ## SMOTE (Synthetic Minority Oversampling Technique)
 
-- Add **synthetic** points for minority class
+:::: columns
+::: {.column width="50%"}
 - Steps (repeated until balanced)
-  1. Randomly pick up a minority sample, find its k nearest minority neighbors based on features
-  2. Randomly select one neighbor and create a synthetic sample by **interpolating** between the two samples
+  1. Randomly pick up **a minority sample *A***, find its *k* **nearest minority neighbors** based on feature distance
+  2. Randomly select **one neighbor *B***
+  3. Create a **synthetic** sample by **interpolating** between *A* and *B*
+:::
+::: {.column width="50%"}
 
 ```{python}
 #| echo: false
@@ -592,8 +596,10 @@ print('Saved: images/SMOTE.gif')
 ```
 
 <div style="text-align:center;">
-  <img src="images/SMOTE.gif" style="max-width:100%;">
+  <img src="images/SMOTE.gif" style="max-width:40%;">
 </div>
+:::
+::::
 
 ## Advantages of SMOTE (compared to random oversampling)
 
@@ -652,7 +658,7 @@ print('Saved: images/SMOTE.gif')
 - Need to do it manually or use imbalaned-learn extension
 
 <div style="text-align:center;">
-  <img src="images/pipeline.png" style="max-width:55%;">
+  <img src="images/pipeline.png" style="max-width:35%;">
 </div>
 
 ## Imbalance-Learn
