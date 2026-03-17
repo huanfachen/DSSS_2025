@@ -228,7 +228,7 @@
   - y_pred_2: Predicts some positives correctly but misses others
   - y_pred_3: A mix of errors --></li>
 </ul>
-<div id="0b138548" class="cell" data-execution_count="1">
+<div id="e1b5f5f3" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -323,7 +323,7 @@
 </section>
 <section id="precision-recall-curve-with-varying-thresholds" class="slide level2">
 <h2>Precision-Recall Curve with varying thresholds</h2>
-<div id="4c93d60c" class="cell" data-execution_count="2">
+<div id="79c8ab1a" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -338,7 +338,7 @@
 <ul>
 <li>RF classifiers don’t support threshold tuning, so we use <code>TunedThresholdClassifierCV</code> from <code>sklearn</code> to tune threshold with CV</li>
 </ul>
-<div id="34aa880d" class="cell" data-execution_count="3">
+<div id="ddaaff44" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
 <span id="cb1-2"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
 <span id="cb1-3"><a></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> recall_score</span>
@@ -396,7 +396,7 @@ Test recall at optimal threshold: 1.0000</code></pre>
 </section>
 <section id="class-weights-in-tree-based-methods" class="slide level2">
 <h2>Class-Weights in tree-based methods</h2>
-<div id="5657d15a" class="cell" data-execution_count="4">
+<div id="0ddd98c5" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -531,7 +531,7 @@ print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']
 </ul>
 </div><div class="column" style="width:50%;">
 <div style="text-align:center;">
-<p><img src="images/SMOTE.gif" style="max-width:40%;"></p>
+<p><img src="images/SMOTE.gif" style="max-width:100%;"></p>
 </div>
 </div></div>
 </section>
@@ -607,7 +607,7 @@ print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']
 </section>
 <section id="sklearn-pipelines-no-resampling" class="slide level2">
 <h2>sklearn pipelines (no resampling)</h2>
-<div id="97d1c5c8" class="cell" data-execution_count="8">
+<div id="31f41498" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="co"># train/test split</span></span>
 <span id="cb4-2"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
 <span id="cb4-3"><a></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
@@ -631,7 +631,7 @@ print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']
 <li>Sampler only runs during fit, NOT at prediction</li>
 <li>This is achieved by <code>from imblearn.pipeline import Pipeline</code></li>
 </ul>
-<div id="3249ed9c" class="cell" data-execution_count="9">
+<div id="4ec7c49f" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">from</span> imblearn.pipeline <span class="im">import</span> Pipeline <span class="im">as</span> ImbPipeline</span>
 <span id="cb5-2"><a></a><span class="im">from</span> imblearn.under_sampling <span class="im">import</span> RandomUnderSampler</span>
 <span id="cb5-3"><a></a></span>
