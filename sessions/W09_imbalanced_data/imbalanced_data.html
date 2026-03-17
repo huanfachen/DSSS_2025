@@ -228,7 +228,7 @@
   - y_pred_2: Predicts some positives correctly but misses others
   - y_pred_3: A mix of errors --></li>
 </ul>
-<div id="55e1058b" class="cell" data-execution_count="1">
+<div id="0b138548" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -323,7 +323,7 @@
 </section>
 <section id="precision-recall-curve-with-varying-thresholds" class="slide level2">
 <h2>Precision-Recall Curve with varying thresholds</h2>
-<div id="2ae9f100" class="cell" data-execution_count="2">
+<div id="4c93d60c" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -338,7 +338,7 @@
 <ul>
 <li>RF classifiers don’t support threshold tuning, so we use <code>TunedThresholdClassifierCV</code> from <code>sklearn</code> to tune threshold with CV</li>
 </ul>
-<div id="a545bbb6" class="cell" data-execution_count="3">
+<div id="34aa880d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
 <span id="cb1-2"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
 <span id="cb1-3"><a></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> recall_score</span>
@@ -396,7 +396,7 @@ Test recall at optimal threshold: 1.0000</code></pre>
 </section>
 <section id="class-weights-in-tree-based-methods" class="slide level2">
 <h2>Class-Weights in tree-based methods</h2>
-<div id="ef7b2326" class="cell" data-execution_count="4">
+<div id="5657d15a" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -437,24 +437,26 @@ Test recall at optimal threshold: 1.0000</code></pre>
 <li>Modify data via sampling</li>
 </ul>
 </div></div>
-</section>
-<section id="mammography-data" class="slide level2">
-<h2>Mammography Data</h2>
-<ul>
-<li>Wisconsin Diagnostic Breast Cancer (WDBC) dataset from OpenML</li>
-<li>Imbalanced dataset: 260 positive of 11183 samples</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>data <span class="op">=</span> fetch_openml(<span class="st">"mammography"</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-2"><a></a>X, y <span class="op">=</span> data.data, data.target</span>
-<span id="cb3-3"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb3-4"><a></a>    X, y <span class="op">==</span> <span class="st">"1"</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:50%;">
+<!-- ## Mammography Data
+
+- Wisconsin Diagnostic Breast Cancer (WDBC) dataset from OpenML
+- Imbalanced dataset: 260 positive of 11183 samples
+
+:::: columns
+::: {.column width="50%"}
+```python
+data = fetch_openml("mammography", as_frame=True)
+X, y = data.data, data.target
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y == "1", random_state=0)
+```
+:::
+::: {.column width="50%"}
 <div style="text-align:center;">
-<p><img src="images/mammography_data.png" style="max-width:100%;"></p>
+  <img src="images/mammography_data.png" style="max-width:100%;">
 </div>
-</div></div>
+:::
+:::: -->
 </section>
 <section id="random-undersampling" class="slide level2">
 <h2>Random Undersampling</h2>
@@ -509,25 +511,29 @@ print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']
 <li>Randomly pick up a minority sample, duplicate it, until balanced</li>
 <li>Dataset grows; slower training</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>ros <span class="op">=</span> RandomOverSampler()</span>
-<span id="cb4-2"><a></a>X_over, y_over <span class="op">=</span> ros.fit_sample(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>ros <span class="op">=</span> RandomOverSampler()</span>
+<span id="cb3-2"><a></a>X_over, y_over <span class="op">=</span> ros.fit_sample(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align:center;">
 <p><img src="images/oversampling.gif" style="max-width:100%;"></p>
 </div>
 </section>
 <section id="smote-synthetic-minority-oversampling-technique" class="slide level2">
 <h2>SMOTE (Synthetic Minority Oversampling Technique)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>Add <strong>synthetic</strong> points for minority class</li>
 <li>Steps (repeated until balanced)
 <ol type="1">
-<li>Randomly pick up a minority sample, find its k nearest minority neighbors based on features</li>
-<li>Randomly select one neighbor and create a synthetic sample by <strong>interpolating</strong> between the two samples</li>
+<li>Randomly pick up <strong>a minority sample <em>A</em></strong>, find its <em>k</em> <strong>nearest minority neighbors</strong> based on feature distance</li>
+<li>Randomly select <strong>one neighbor <em>B</em></strong></li>
+<li>Create a <strong>synthetic</strong> sample by <strong>interpolating</strong> between <em>A</em> and <em>B</em></li>
 </ol></li>
 </ul>
+</div><div class="column" style="width:50%;">
 <div style="text-align:center;">
-<p><img src="images/SMOTE.gif" style="max-width:100%;"></p>
+<p><img src="images/SMOTE.gif" style="max-width:40%;"></p>
 </div>
+</div></div>
 </section>
 <section id="advantages-of-smote-compared-to-random-oversampling" class="slide level2">
 <h2>Advantages of SMOTE (compared to random oversampling)</h2>
@@ -588,7 +594,7 @@ print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']
 <li>Need to do it manually or use imbalaned-learn extension</li>
 </ul>
 <div style="text-align:center;">
-<p><img src="images/pipeline.png" style="max-width:55%;"></p>
+<p><img src="images/pipeline.png" style="max-width:35%;"></p>
 </div>
 </section>
 <section id="imbalance-learn" class="slide level2">
@@ -601,22 +607,22 @@ print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']
 </section>
 <section id="sklearn-pipelines-no-resampling" class="slide level2">
 <h2>sklearn pipelines (no resampling)</h2>
-<div id="15ea6f04" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="co"># train/test split</span></span>
-<span id="cb5-2"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb5-3"><a></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
-<span id="cb5-4"><a></a>)</span>
-<span id="cb5-5"><a></a></span>
-<span id="cb5-6"><a></a><span class="co"># sklearn Pipeline: imputation → normalisation → classifier (no resampling)</span></span>
-<span id="cb5-7"><a></a>sklearn_pipeline <span class="op">=</span> Pipeline([</span>
-<span id="cb5-8"><a></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
-<span id="cb5-9"><a></a>    (<span class="st">'scaler'</span>, StandardScaler()),</span>
-<span id="cb5-10"><a></a>    (<span class="st">'clf'</span>, RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
-<span id="cb5-11"><a></a>])</span>
-<span id="cb5-12"><a></a></span>
-<span id="cb5-13"><a></a>sklearn_pipeline.fit(X_train, y_train)</span>
-<span id="cb5-14"><a></a>y_pred <span class="op">=</span> sklearn_pipeline.predict(X_test)</span>
-<span id="cb5-15"><a></a><span class="bu">print</span>(<span class="ss">f"Recall (malignant=1): </span><span class="sc">{</span>recall_score(y_test, y_pred, pos_label<span class="op">=</span><span class="dv">1</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="97d1c5c8" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="co"># train/test split</span></span>
+<span id="cb4-2"><a></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb4-3"><a></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
+<span id="cb4-4"><a></a>)</span>
+<span id="cb4-5"><a></a></span>
+<span id="cb4-6"><a></a><span class="co"># sklearn Pipeline: imputation → normalisation → classifier (no resampling)</span></span>
+<span id="cb4-7"><a></a>sklearn_pipeline <span class="op">=</span> Pipeline([</span>
+<span id="cb4-8"><a></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
+<span id="cb4-9"><a></a>    (<span class="st">'scaler'</span>, StandardScaler()),</span>
+<span id="cb4-10"><a></a>    (<span class="st">'clf'</span>, RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
+<span id="cb4-11"><a></a>])</span>
+<span id="cb4-12"><a></a></span>
+<span id="cb4-13"><a></a>sklearn_pipeline.fit(X_train, y_train)</span>
+<span id="cb4-14"><a></a>y_pred <span class="op">=</span> sklearn_pipeline.predict(X_test)</span>
+<span id="cb4-15"><a></a><span class="bu">print</span>(<span class="ss">f"Recall (malignant=1): </span><span class="sc">{</span>recall_score(y_test, y_pred, pos_label<span class="op">=</span><span class="dv">1</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="sklearn-pipelines-with-resampling" class="slide level2">
@@ -625,22 +631,22 @@ print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']
 <li>Sampler only runs during fit, NOT at prediction</li>
 <li>This is achieved by <code>from imblearn.pipeline import Pipeline</code></li>
 </ul>
-<div id="f9896882" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> imblearn.pipeline <span class="im">import</span> Pipeline <span class="im">as</span> ImbPipeline</span>
-<span id="cb6-2"><a></a><span class="im">from</span> imblearn.under_sampling <span class="im">import</span> RandomUnderSampler</span>
-<span id="cb6-3"><a></a></span>
-<span id="cb6-4"><a></a><span class="co"># imblearn Pipeline: imputation → normalisation → undersampling → classifier</span></span>
-<span id="cb6-5"><a></a>imb_pipeline <span class="op">=</span> ImbPipeline([</span>
-<span id="cb6-6"><a></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
-<span id="cb6-7"><a></a>    (<span class="st">'scaler'</span>, StandardScaler()),</span>
-<span id="cb6-8"><a></a>    (<span class="st">'sampler'</span>, RandomUnderSampler(random_state<span class="op">=</span><span class="dv">42</span>)),</span>
-<span id="cb6-9"><a></a>    (<span class="st">'clf'</span>, RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
-<span id="cb6-10"><a></a>])</span>
-<span id="cb6-11"><a></a></span>
-<span id="cb6-12"><a></a><span class="co"># Sampler only runs during fit, NOT at prediction time</span></span>
-<span id="cb6-13"><a></a>imb_pipeline.fit(X_train, y_train)</span>
-<span id="cb6-14"><a></a>y_pred <span class="op">=</span> imb_pipeline.predict(X_test)</span>
-<span id="cb6-15"><a></a><span class="bu">print</span>(<span class="ss">f"Recall (malignant=1): </span><span class="sc">{</span>recall_score(y_test, y_pred, pos_label<span class="op">=</span><span class="dv">1</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="3249ed9c" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">from</span> imblearn.pipeline <span class="im">import</span> Pipeline <span class="im">as</span> ImbPipeline</span>
+<span id="cb5-2"><a></a><span class="im">from</span> imblearn.under_sampling <span class="im">import</span> RandomUnderSampler</span>
+<span id="cb5-3"><a></a></span>
+<span id="cb5-4"><a></a><span class="co"># imblearn Pipeline: imputation → normalisation → undersampling → classifier</span></span>
+<span id="cb5-5"><a></a>imb_pipeline <span class="op">=</span> ImbPipeline([</span>
+<span id="cb5-6"><a></a>    (<span class="st">'imputer'</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">'median'</span>)),</span>
+<span id="cb5-7"><a></a>    (<span class="st">'scaler'</span>, StandardScaler()),</span>
+<span id="cb5-8"><a></a>    (<span class="st">'sampler'</span>, RandomUnderSampler(random_state<span class="op">=</span><span class="dv">42</span>)),</span>
+<span id="cb5-9"><a></a>    (<span class="st">'clf'</span>, RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>))</span>
+<span id="cb5-10"><a></a>])</span>
+<span id="cb5-11"><a></a></span>
+<span id="cb5-12"><a></a><span class="co"># Sampler only runs during fit, NOT at prediction time</span></span>
+<span id="cb5-13"><a></a>imb_pipeline.fit(X_train, y_train)</span>
+<span id="cb5-14"><a></a>y_pred <span class="op">=</span> imb_pipeline.predict(X_test)</span>
+<span id="cb5-15"><a></a><span class="bu">print</span>(<span class="ss">f"Recall (malignant=1): </span><span class="sc">{</span>recall_score(y_test, y_pred, pos_label<span class="op">=</span><span class="dv">1</span>)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="ensemble-resampling" class="slide level2">
@@ -658,12 +664,12 @@ print(classification_report(y_test, y_pred, target_names=['Benign', 'Malignant']
 <li>Trains each tree on a different under-sampled dataset</li>
 <li>As cheap as undersampling, but much more powerful than undersampling alone, as it prevents overfitting</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">from</span> imblearn.ensemble <span class="im">import</span> EasyEnsembleClassifier</span>
-<span id="cb7-2"><a></a></span>
-<span id="cb7-3"><a></a>ee <span class="op">=</span> EasyEnsembleClassifier(n_estimators<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb7-4"><a></a>ee.fit(X_train, y_train)</span>
-<span id="cb7-5"><a></a></span>
-<span id="cb7-6"><a></a>y_pred <span class="op">=</span> ee.predict(X_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> imblearn.ensemble <span class="im">import</span> EasyEnsembleClassifier</span>
+<span id="cb6-2"><a></a></span>
+<span id="cb6-3"><a></a>ee <span class="op">=</span> EasyEnsembleClassifier(n_estimators<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb6-4"><a></a>ee.fit(X_train, y_train)</span>
+<span id="cb6-5"><a></a></span>
+<span id="cb6-6"><a></a>y_pred <span class="op">=</span> ee.predict(X_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <!-- ## ROC vs PR Comparison
 <div style="text-align:center;">
   <img src="images/roc_vs_pr.png" style="max-width:100%;">

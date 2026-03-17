@@ -1456,13 +1456,6 @@
     "text": "Basic Approaches\n\n\n\n\n\n\n\nChange the training procedure\nModify data via sampling"
   },
   {
-    "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#mammography-data",
-    "href": "sessions/W09_imbalanced_data/imbalanced_data.html#mammography-data",
-    "title": "Imbalanced Data",
-    "section": "Mammography Data",
-    "text": "Mammography Data\n\nWisconsin Diagnostic Breast Cancer (WDBC) dataset from OpenML\nImbalanced dataset: 260 positive of 11183 samples\n\n\n\ndata = fetch_openml(\"mammography\", as_frame=True)\nX, y = data.data, data.target\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y == \"1\", random_state=0)"
-  },
-  {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#random-undersampling",
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#random-undersampling",
     "title": "Imbalanced Data",
@@ -1481,7 +1474,7 @@
     "href": "sessions/W09_imbalanced_data/imbalanced_data.html#smote-synthetic-minority-oversampling-technique",
     "title": "Imbalanced Data",
     "section": "SMOTE (Synthetic Minority Oversampling Technique)",
-    "text": "SMOTE (Synthetic Minority Oversampling Technique)\n\nAdd synthetic points for minority class\nSteps (repeated until balanced)\n\nRandomly pick up a minority sample, find its k nearest minority neighbors based on features\nRandomly select one neighbor and create a synthetic sample by interpolating between the two samples"
+    "text": "SMOTE (Synthetic Minority Oversampling Technique)\n\n\n\nSteps (repeated until balanced)\n\nRandomly pick up a minority sample A, find its k nearest minority neighbors based on feature distance\nRandomly select one neighbor B\nCreate a synthetic sample by interpolating between A and B"
   },
   {
     "objectID": "sessions/W09_imbalanced_data/imbalanced_data.html#advantages-of-smote-compared-to-random-oversampling",
