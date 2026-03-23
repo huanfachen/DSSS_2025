@@ -72,7 +72,7 @@ website:
             href: sessions/week9.qmd
           - text: "10. Testing Machine Learning Systems"
             href: sessions/week10.qmd
-          - text: "11. Machine Learning Operations"
-            href: sessions/week11.qmd
+          # - text: "11. Machine Learning Operations"
+          #   href: sessions/week11.qmd
         - text: "Bibliography"
           href: references.qmd

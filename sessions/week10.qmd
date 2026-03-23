@@ -13,12 +13,15 @@ This week will introduce how to conduct various types of testing of code, data, 
 
 By the end of this week, you will be able to:
 
-1. Understand the principle and types of testing in ML systems.
-2. Can use ``pytest`` and ``great expectations`` to test ML code and data.
+1. Understand the motivation of moving from notebooks to scripts.
+2. Understand the principle and types of testing in ML systems.
+3. Can use ``pytest`` and ``great expectations`` to test ML code and data.
 
 ## Lecture 
 
-To access the lecture notes: [Lecture](W10_testing_ML_systems/Testing_ML_systems.qmd)
+There are two parts of lecture notes:
+1. MLOps and moving to scripts: [Lecture](W10_testing_ML_systems/MLOps_moving_to_scripts.qmd)
+2. Testing ML systems: [Lecture](W10_testing_ML_systems/Testing_ML_systems.qmd)
 
 ## Quiz
 
