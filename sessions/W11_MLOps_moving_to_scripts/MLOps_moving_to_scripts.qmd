@@ -15,7 +15,7 @@ format:
 
 ## Intro to MLOps
 
-- with MLOps, we strive to make machine learning models reliable and maintainable in production
+- MLOps will make machine learning models reliable and maintainable in production
 - three key stages
 
 <div style="text-align:center;">
