@@ -639,7 +639,7 @@
     "href": "sessions/week10.html#lecture",
     "title": "Week 10",
     "section": "Lecture",
-    "text": "Lecture\nThere are two parts of lecture notes: 1. MLOps and moving to scripts: Lecture 2. Testing ML systems: Lecture",
+    "text": "Lecture\nThere are two parts of lecture notes:\n\nMLOps and moving to scripts: Lecture\nTesting ML systems: Lecture",
     "crumbs": [
       "Part 3: Advanced Topics",
       "10. Testing Machine Learning Systems"
