@@ -20,6 +20,7 @@ By the end of this week, you will be able to:
 ## Lecture 
 
 There are two parts of lecture notes:
+
 1. MLOps and moving to scripts: [Lecture](W10_testing_ML_systems/MLOps_moving_to_scripts.qmd)
 2. Testing ML systems: [Lecture](W10_testing_ML_systems/Testing_ML_systems.qmd)
 
