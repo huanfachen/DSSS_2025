@@ -1,0 +1,231 @@
+---
+title: "Practical 10: Testing ML Systems with pytest"
+format:
+  html: default
+  ipynb: default
+filters:
+  - qna
+  - quarto
+---
+
+This week we focus on **using pytest** to test the code and system behaviour of an ML project. We will use the example that predicts daily call-outs of London Fire Brigade (LFB) based on weather and calendar data. 
+
+This example was introduced in [Week 4 practical](https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/tree_based_methods_practical.html). The codebase is structured into a `firepredict` package and a `tests` folder, each containing Python files. The tests are written using `pytest`, which is a popular testing framework in Python.
+
+Please note that this practical contains a lot of command-line instructions. You can either run these commands in a terminal, or using magic of `!` in Jupyter notebooks.
+
+## Learning outcomes
+
+In this practical, we will:
+
+1. Practise using **pytest** for automated testing.
+2. Run test coverage and interpret missing coverage.
+
+# Starting the Practical
+
+The process for this week is similar with previous weeks: download the notebook to your `DSSS` folder (or wherever you keep your course materials), switch over to `JupyterLab` (running in Podman/Docker), and work through each section.
+
+If you want to save the completed notebook to your Github repo, remember to `add`, `commit`, and `push` your work.
+
+:::{.callout-note}
+Suggestions:
+- Keep software language set to English for easier debugging.
+- Back up work using Git/cloud storage.
+- Avoid spaces in file and column names.
+:::
+
+
+---
+
+## Quick recap: why testing ML systems?
+
+Testing in ML is about testing the **code and system behavior**, rather than train-test split on the dataset.
+
+### Common test types
+
+- **Unit tests**: test one function/class in isolation.
+- **Integration tests**: test interactions across components.
+- **System tests**: test end-to-end workflows.
+- **Acceptance tests**: verify requirements from a user/business perspective.
+
+### Good testing principles
+
+- Keep tests separate from core code (`tests/` folder) to avoid polluting production code.
+- Automate tests so they can run in CI/CD.
+- Use the AAA pattern: **Arrange → Act → Assert**.
+
+---
+
+## Fetch the repository
+
+The dataset and code for this practical are stored in the `ML-Testing` repository on GitHub. You can clone it using either SSH or HTTPS. Run the following commands in Jupyter, or open a terminal and run them there (without `!`).
+
+```bash
+!# clone with SSH
+
+!git clone git@github.com:huanfachen/ML-Testing.git
+```
+
+If the above command fails, it means SSH is not configured on your machine. Then, please use HTTPS instead:
+
+```bash
+!git clone https://github.com/huanfachen/ML-Testing.git
+```
+
+Now print the file tree of the `ML-Testing` folder:
+
+```bash
+!cd ML-Testing && find . -maxdepth 3 -print
+```
+
+You should be able to see key folders such as:
+
+- `firepredict/`
+    - `__init__.py` (this defines the 'firepredict' package and loads environment variables)
+    - `data.py` (containing data loading and split functions)
+    - `train.py` (containing model training functions)
+    - `tune.py` (containing hyperparameter tuning functions)
+    - `evaluate.py` (containing model evaluation functions)
+    - `main.py` (containing the script to run the full pipeline. Don't test this file)
+- `tests/`
+    - `test_data.py`
+    - `test_train.py`
+    - `test_tune.py`
+    - `test_evaluate.py`
+
+---
+
+## What tests are included?
+
+You can open each test file in the `tests/` folder to see the tests included. For example, `test_data.py` contains tests for the data loading and splitting functions in `data.py`:
+
+- *test_load_data_returns_dataframe* (load_data should return a non-empty DataFrame)
+- *test_load_data_has_target_column* (Raw dataset must contain the target column 'IncidentCount')
+- *test_load_data_has_feature_columns* (Raw dataset must contain all expected feature columns)
+- *test_load_data_no_duplicate_rows* (Dataset should have no fully duplicated rows)
+- *test_preprocess_returns_tuple* (preprocess should return a (DataFrame, Series) tuple)
+- *test_preprocess_encodes_weekday* (After one-hot encoding, 'weekday' must not appear as a raw column)
+- *test_preprocess_creates_dummy_columns* (One-hot encoding should produce at least one 'weekday_*' column)
+- *test_preprocess_lengths_match* (X and y must have the same number of rows)
+- *test_preprocess_no_nulls* (Preprocessed features and target must be free of NaN values)
+- *test_preprocess_target_positive* (Daily incident counts should be strictly positive integers)
+- *test_get_data_splits_sizes* (Train + test should equal the full dataset; test should be ~20%)
+- *test_get_data_splits_columns_match* (Train and test splits must have identical column sets)
+- *test_get_data_splits_reproducible* (The same random_state should produce identical splits)
+- *test_get_data_splits_no_overlap* (Train and test index sets must be disjoint)
+
+It is very time consuming to write all these tests manually. Good news is that there are tools to help you generate test stubs (e.g. `pytest --stub`), and even to automatically generate tests using LLMs (e.g. GitHub Copilot). We used Github Copilot to generate these tests before reviewing them. We should always review and edit generated tests to ensure they are correct and meaningful.
+
+## Run pytest from the project root
+
+From the root of `ML-Testing`, run the following command to execute all tests in the `tests/` folder.
+
+```bash
+!python3 -m pytest tests/ -v
+```
+
+If all tests pass, you will see a summary similar to:
+
+```text
+============================= test session starts =============================
+...
+collected XX items
+
+tests/test_data.py ....
+tests/test_train.py ...
+tests/test_tune.py ....
+tests/test_evaluate.py ....
+
+============================== XX passed in Ys ===============================
+```
+
+If not all tests pass, you will see error messages indicating which tests failed and why. You can click on the file paths in the error messages to jump to the relevant test code.
+
+### Checkpoint questions
+
+1. Which test file took the longest time?
+2. Which tests are unit tests, and which are closer to integration/system tests?
+
+---
+
+## Run coverage with pytest-cov
+
+Now, we will check coverage of tests on the `firepredict` package.
+
+```bash
+!python3 -m pytest tests/ --cov=firepredict --cov-report=term-missing -v
+```
+
+Here is the breakdown of each parameter:
+
+- **`python3`**: This invokes the Python 3 interpreter to run the subsequent commands.
+- **`-m pytest`**: The `-m` flag stands for "module". This tells Python to run the `pytest` module as a script. Using `python3 -m pytest` instead of just typing `pytest` is considered best practice because it ensures you are using the version of pytest installed in your current Python environment.
+- **`tests/`**: This is the target directory. It tells pytest to look inside the `tests/` folder and execute all the test files it finds there.
+- **`--cov=firepredict`**: This invokes the `pytest-cov` plugin. It instructs the tool to measure the code coverage specifically for the `firepredict` package or directory. It will track which lines of code inside `firepredict` are run during the tests.
+- **`--cov-report=term-missing`**: This formats the output of the coverage data. `term` tells it to print the report directly to the terminal. `missing` adds an incredibly useful extra column to that report, listing the exact line numbers in your code that were *not* executed by your tests.
+- **`-v`**: This stands for "verbose". Instead of printing a single dot for every passing test, pytest will print the specific name of every single test file and test function it runs, along with its individual pass or fail status.
+
+As said before, we want to skip testing `main.py` because it is just a script to run the full pipeline. To exclude it from coverage, we have included the following option in the *pyproject.toml* file. This configuration file is used to configure various tools in Python, including pytest and coverage.py.
+
+```
+# Pytest cov
+[tool.coverage.run]
+omit=["firepredict/main.py"]
+```
+
+If you also want an HTML report rather than a terminal report, you can run:
+
+```bash
+!python3 -m pytest tests/ --cov=firepredict --cov-report=html --cov-report=term-missing --cov-omit=firepredict/main.py -v
+```
+
+Then open the html report using `xdg-open` or open it manually in your browser.
+
+```bash
+!xdg-open htmlcov/index.html
+```
+
+---
+
+## Interpreting missing coverage
+
+The key part of the coverage report is the `Missing` column, see below. It says that Line 54 in `tune.py` is not covered by any test. This line is ```param_grid = DEFAULT_PARAM_GRID```, which is about setting up the default hyperparameter grid for tuning. 
+
+```
+----------- coverage: platform linux, python 3.9.6-final-0 -----------
+Name                      Stmts   Miss  Cover   Missing
+-------------------------------------------------------
+firepredict/__init__.py       2      0   100%
+firepredict/data.py          22      0   100%
+firepredict/evaluate.py      10      0   100%
+firepredict/train.py          7      0   100%
+firepredict/tune.py          11      1    91%   54
+-------------------------------------------------------
+TOTAL                        52      1    98%
+
+======================= 44 passed, 2 warnings in 11.38s ========================
+```
+
+To achieve 100% coverage, we need to add a test that covers Line 54 in `tune.py`. To do this, you can manually uncomment the test function `test_default_param_grid` in `tests/test_tune.py` (by removing the `#` at the beginning of Line 110-119) and run all tests again.
+
+In general, when a file is not fully covered (e.g. `91%`), common reasons are:
+
+- one branch of an `if` statement is never tested,
+- edge-case inputs are not included,
+- fallback/error paths are not exercised.
+
+To improve coverage, you can:
+
+1. Pick one file with incomplete coverage.
+2. Identify missing lines from the coverage report.
+3. Add one new pytest test to cover at least one missing path.
+
+## Summary
+
+Well done! In this practical, you have practiced with `pytest` to test the code and system behaviour of an ML project and to generate coverage reports. You have also learned how to interpret missing coverage and add new tests to improve it.
+
+If you are working in a data science team, you are likely expected to regularly write tests for your code and to maintain good test coverage.
+
+## References
+
+This practical is inspired by the great Made-with-ML repo (https://github.com/GokuMohandas/Made-With-ML). It contains a much more complicated codebase and more comprehensive tests. Please check it out if you are interested.
