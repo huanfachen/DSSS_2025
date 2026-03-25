@@ -2,234 +2,238 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/setup/index.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/weekX_lecture.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week9.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week7.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week5.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week3.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week1_practical.html</loc>
-    <lastmod>2026-03-24T16:32:39.069Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week1_lecture.backup.html</loc>
-    <lastmod>2026-03-24T16:32:39.069Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.041Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week10.html</loc>
-    <lastmod>2026-03-24T16:32:39.069Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.041Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/supervised_learning_workflow/supervised_learning_workflow.html</loc>
-    <lastmod>2026-03-24T16:32:39.069Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.041Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/intro_machine_learning/intro_machine_learning.html</loc>
-    <lastmod>2026-03-24T16:32:39.046Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.016Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/W11_MLOps_moving_to_scripts/MLOps_moving_to_scripts.html</loc>
-    <lastmod>2026-03-24T16:32:38.725Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W10_testing_ML_systems/Testing_ML_systems.html</loc>
-    <lastmod>2026-03-24T16:32:38.722Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W09_imbalanced_data/imbalanced_data_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.722Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W09_MLOps_moving_to_scripts/MLOps_moving_to_scripts.html</loc>
-    <lastmod>2026-03-24T16:32:38.695Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W08_imbalanced_data/calibration.html</loc>
-    <lastmod>2026-03-24T16:32:38.671Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W08_feature_selection/feature_selection.html</loc>
-    <lastmod>2026-03-24T16:32:38.562Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection_backup.html</loc>
-    <lastmod>2026-03-24T16:32:38.562Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W07_model_interpretation_feature_selection/model_interpretation.html</loc>
-    <lastmod>2026-03-24T16:32:38.562Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W06_graph_neural_networks/graph_neural_networks.html</loc>
-    <lastmod>2026-03-24T16:32:38.464Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W05_neural_networks/neural_networks.html</loc>
-    <lastmod>2026-03-24T16:32:38.462Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W05_neural_networks/aml_convolutional_nets.html</loc>
-    <lastmod>2026-03-24T16:32:38.415Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/tree_based_methods_UPDATED.html</loc>
-    <lastmod>2026-03-24T16:32:38.371Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/aml-08-gradient-boosting/gradient_boosting.html</loc>
-    <lastmod>2026-03-24T16:32:38.338Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W03_supervised_learning_workflow/supervised_learning_workflow_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.310Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html</loc>
-    <lastmod>2026-03-24T16:32:38.288Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W01_intro_machine_learning/intro_machine_learning_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.286Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/references.html</loc>
-    <lastmod>2026-03-24T16:32:38.205Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/help.html</loc>
-    <lastmod>2026-03-24T16:32:38.201Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/assessments/index.html</loc>
-    <lastmod>2026-03-24T16:32:38.063Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/index.html</loc>
-    <lastmod>2026-03-24T16:32:38.204Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W01_intro_machine_learning/intro_machine_learning.html</loc>
-    <lastmod>2026-03-24T16:32:38.286Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.287Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html</loc>
-    <lastmod>2026-03-24T16:32:38.310Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/aml-07-trees-forests/tree_forest.html</loc>
-    <lastmod>2026-03-24T16:32:38.336Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/tree_based_methods.html</loc>
-    <lastmod>2026-03-24T16:32:38.371Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/tree_based_methods_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.371Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W05_neural_networks/aml_neural_networks.html</loc>
-    <lastmod>2026-03-24T16:32:38.415Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W05_neural_networks/neural_networks_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.463Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W06_graph_neural_networks/graph_neural_networks_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.468Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html</loc>
-    <lastmod>2026-03-24T16:32:38.562Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W07_model_interpretation_feature_selection/model_interpretation_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.562Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W08_feature_selection/feature_selection_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.563Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W08_imbalanced_data/imbalanced_data.html</loc>
-    <lastmod>2026-03-24T16:32:38.695Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W09_imbalanced_data/imbalanced_data.html</loc>
-    <lastmod>2026-03-24T16:32:38.722Z</lastmod>
-  </url>
-  <url>
-    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W10_testing_ML_systems/MLOps_moving_to_scripts.html</loc>
-    <lastmod>2026-03-24T16:32:38.722Z</lastmod>
+    <lastmod>2026-03-25T12:17:48.691Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/W10_testing_ML_systems/Testing_ML_systems_practical.html</loc>
-    <lastmod>2026-03-24T16:32:38.722Z</lastmod>
+    <lastmod>2026-03-25T12:17:48.688Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W10_testing_ML_systems/MLOps_moving_to_scripts.html</loc>
+    <lastmod>2026-03-25T12:17:48.687Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W09_imbalanced_data/imbalanced_data.html</loc>
+    <lastmod>2026-03-25T12:17:48.687Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W08_imbalanced_data/imbalanced_data.html</loc>
+    <lastmod>2026-03-25T12:17:48.660Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W08_feature_selection/feature_selection_practical.html</loc>
+    <lastmod>2026-03-25T12:17:48.527Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W07_model_interpretation_feature_selection/model_interpretation_practical.html</loc>
+    <lastmod>2026-03-25T12:17:48.527Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection.html</loc>
+    <lastmod>2026-03-25T12:17:48.527Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W06_graph_neural_networks/graph_neural_networks_practical.html</loc>
+    <lastmod>2026-03-25T12:17:48.432Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W05_neural_networks/neural_networks_practical.html</loc>
+    <lastmod>2026-03-25T12:17:48.427Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W05_neural_networks/aml_neural_networks.html</loc>
+    <lastmod>2026-03-25T12:17:48.379Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/tree_based_methods_practical.html</loc>
+    <lastmod>2026-03-25T12:17:48.335Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/tree_based_methods.html</loc>
+    <lastmod>2026-03-25T12:17:48.335Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/aml-07-trees-forests/tree_forest.html</loc>
+    <lastmod>2026-03-25T12:17:48.299Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W03_supervised_learning_workflow/supervised_learning_workflow.html</loc>
+    <lastmod>2026-03-25T12:17:48.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W02_supervised_learning_metrics/Supervised_learning_metrics_practical.html</loc>
+    <lastmod>2026-03-25T12:17:48.249Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W01_intro_machine_learning/intro_machine_learning.html</loc>
+    <lastmod>2026-03-25T12:17:48.249Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/index.html</loc>
+    <lastmod>2026-03-25T12:17:48.163Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/assessments/index.html</loc>
+    <lastmod>2026-03-25T12:17:48.022Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/help.html</loc>
+    <lastmod>2026-03-25T12:17:48.160Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/references.html</loc>
+    <lastmod>2026-03-25T12:17:48.163Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W01_intro_machine_learning/intro_machine_learning_practical.html</loc>
+    <lastmod>2026-03-25T12:17:48.249Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W02_supervised_learning_metrics/supervised_learning_metrics.html</loc>
+    <lastmod>2026-03-25T12:17:48.251Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W03_supervised_learning_workflow/supervised_learning_workflow_practical.html</loc>
+    <lastmod>2026-03-25T12:17:48.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/aml-08-gradient-boosting/gradient_boosting.html</loc>
+    <lastmod>2026-03-25T12:17:48.301Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W04_tree_based_methods/tree_based_methods_UPDATED.html</loc>
+    <lastmod>2026-03-25T12:17:48.335Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W05_neural_networks/aml_convolutional_nets.html</loc>
+    <lastmod>2026-03-25T12:17:48.379Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W05_neural_networks/neural_networks.html</loc>
+    <lastmod>2026-03-25T12:17:48.426Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W06_graph_neural_networks/graph_neural_networks.html</loc>
+    <lastmod>2026-03-25T12:17:48.427Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W07_model_interpretation_feature_selection/model_interpretation.html</loc>
+    <lastmod>2026-03-25T12:17:48.527Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W07_model_interpretation_feature_selection/model_interpretation_feature_selection_backup.html</loc>
+    <lastmod>2026-03-25T12:17:48.527Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W08_feature_selection/feature_selection.html</loc>
+    <lastmod>2026-03-25T12:17:48.527Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W08_imbalanced_data/calibration.html</loc>
+    <lastmod>2026-03-25T12:17:48.637Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W09_MLOps_moving_to_scripts/MLOps_moving_to_scripts.html</loc>
+    <lastmod>2026-03-25T12:17:48.660Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W09_imbalanced_data/imbalanced_data_practical.html</loc>
+    <lastmod>2026-03-25T12:17:48.687Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W10_testing_ML_systems/Testing_ML_systems.html</loc>
+    <lastmod>2026-03-25T12:17:48.688Z</lastmod>
+  </url>
+  <url>
+    <loc>https://huanfachen.github.io/DSSS_2025/sessions/W10_testing_ML_systems/Testing_ML_systems_practical_backup.html</loc>
+    <lastmod>2026-03-25T12:17:48.688Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/index.html</loc>
-    <lastmod>2026-03-24T16:32:39.029Z</lastmod>
+    <lastmod>2026-03-25T12:17:48.998Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/supervised_learning_metrics/supervised_learning_metrics.html</loc>
-    <lastmod>2026-03-24T16:32:39.047Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.017Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week1.html</loc>
-    <lastmod>2026-03-24T16:32:39.069Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.041Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week11.html</loc>
-    <lastmod>2026-03-24T16:32:39.069Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.041Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week1_lecture.html</loc>
-    <lastmod>2026-03-24T16:32:39.069Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.041Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week2.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week4.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week6.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/week8.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/weekX.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
   <url>
     <loc>https://huanfachen.github.io/DSSS_2025/sessions/weekX_practical.html</loc>
-    <lastmod>2026-03-24T16:32:39.070Z</lastmod>
+    <lastmod>2026-03-25T12:17:49.042Z</lastmod>
   </url>
 </urlset>

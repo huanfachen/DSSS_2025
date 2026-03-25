@@ -310,13 +310,18 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suggestions: - Keep software language set to English for easier debugging. - Back up work using Git/cloud storage. - Avoid spaces in file and column names.</p>
+<p>Suggestions:</p>
+<ul>
+<li>Keep software language set to English for easier debugging.</li>
+<li>Back up work using Git/cloud storage.</li>
+<li>Avoid spaces in file and column names.</li>
+</ul>
 </div>
 </div>
 <hr>
 <section id="quick-recap-why-testing-ml-systems" class="level2">
 <h2 class="anchored" data-anchor-id="quick-recap-why-testing-ml-systems">Quick recap: why testing ML systems?</h2>
-<p>Testing in ML is about testing the <strong>code and system behavior</strong>, rather than train-test split on the dataset.</p>
+<p>Testing in ML is about testing the <strong>code and system behaviour</strong>, rather than train-test split on the dataset.</p>
 <section id="common-test-types" class="level3">
 <h3 class="anchored" data-anchor-id="common-test-types">Common test types</h3>
 <ul>
@@ -431,7 +436,7 @@ tests/test_evaluate.py ....
 [tool.coverage.run]
 omit=["firepredict/main.py"]</code></pre>
 <p>If you also want an HTML report rather than a terminal report, you can run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">!python3</span> <span class="at">-m</span> pytest tests/ <span class="at">--cov</span><span class="op">=</span>firepredict <span class="at">--cov-report</span><span class="op">=</span>html <span class="at">--cov-report</span><span class="op">=</span>term-missing <span class="at">--cov-omit</span><span class="op">=</span>firepredict/main.py <span class="at">-v</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">!python3</span> <span class="at">-m</span> pytest tests/ <span class="at">--cov</span><span class="op">=</span>firepredict <span class="at">--cov-report</span><span class="op">=</span>html <span class="at">--cov-report</span><span class="op">=</span>term-missing <span class="at">-v</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Then open the html report using <code>xdg-open</code> or open it manually in your browser.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">!xdg-open</span> htmlcov/index.html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <hr>
