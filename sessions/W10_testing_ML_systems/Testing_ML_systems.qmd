@@ -4,7 +4,7 @@ title: "Testing ML Systems"
 author: 
   - name: "Huanfa Chen"
 email: "huanfa.chen@ucl.ac.uk"
-date-as-string: "13/12/2025"
+date-as-string: "23/03/2026"
 from: markdown+emoji
 format:
   revealjs:
@@ -21,11 +21,11 @@ format:
 - Some bugs are nuanced and hard to spot without tests
 - Some systems can run to completion without throwing errors, but produce invalid results
 
-## Targest of code testing
+## Targets of code testing
 
 - Not polluting main codebase; tests are in separate files
-- Automated testing; can be integrated into CI/CD pipelines
-- 100% Coverage of different code and edge cases
+- Automated testing; can be integrated into CI/CD pipelines (CI: continuous integration; CD: continuous deployment)
+- 100% coverage of different code and edge cases
 
 ## Types of tests
 
@@ -113,12 +113,12 @@ assert decoded == ["x", "y", "y"] ## assert
 
 ## Three key features of pytest
  
-- Parameterize
+- parametrize
 - Fixtures
 - Markers
 - *Why? Aim to reduce redundancy and to automate test setup*
 
-## Parameterize
+## parametrize
 
 - Use ``@pytest.mark.parametrize`` to run the same test with different inputs
 - Helps reduce code redundancy; similar to loops but better reporting

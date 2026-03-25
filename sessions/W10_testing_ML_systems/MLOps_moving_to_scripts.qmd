@@ -72,7 +72,7 @@ Notebooks have been great so far for development and testing new ideas.
 ## Steps to move from notebooks to scripts
 
 1. Remove non-essential cells (``print X shape``, ``df.describe()``)
-2. Refacto code into functions (and classes)
+2. Refactor code into functions (and classes)
 3. Combine related functions into Python files (modules)
 
 ## More considerations

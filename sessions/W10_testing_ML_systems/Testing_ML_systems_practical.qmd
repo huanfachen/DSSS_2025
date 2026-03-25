@@ -29,17 +29,17 @@ If you want to save the completed notebook to your Github repo, remember to `add
 
 :::{.callout-note}
 Suggestions:
+
 - Keep software language set to English for easier debugging.
 - Back up work using Git/cloud storage.
 - Avoid spaces in file and column names.
 :::
 
-
 ---
 
 ## Quick recap: why testing ML systems?
 
-Testing in ML is about testing the **code and system behavior**, rather than train-test split on the dataset.
+Testing in ML is about testing the **code and system behaviour**, rather than train-test split on the dataset.
 
 ### Common test types
 
@@ -176,7 +176,7 @@ omit=["firepredict/main.py"]
 If you also want an HTML report rather than a terminal report, you can run:
 
 ```bash
-!python3 -m pytest tests/ --cov=firepredict --cov-report=html --cov-report=term-missing --cov-omit=firepredict/main.py -v
+!python3 -m pytest tests/ --cov=firepredict --cov-report=html --cov-report=term-missing -v
 ```
 
 Then open the html report using `xdg-open` or open it manually in your browser.
